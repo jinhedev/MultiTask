@@ -71,28 +71,6 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         self.tableView.reloadData()
     }
 
-    // MARK: - AVAudioPlayer
-
-    private var player: AVAudioPlayer?
-
-    private func playErrorSound() {
-        guard let sound = NSDataAsset(name: "Error") else {
-            print("sound file not found")
-            return
-        }
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            player = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
-            DispatchQueue.main.async {
-                guard let player = self.player else { return }
-                player.play() // schwoof
-            }
-        } catch let err {
-            print(err.localizedDescription)
-        }
-    }
-
     // MARK: - UINavigationController
 
     var timer: Timer?

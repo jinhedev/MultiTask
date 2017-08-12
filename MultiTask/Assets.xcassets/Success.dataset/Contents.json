@@ -6,8 +6,7 @@
   "data" : [
     {
       "idiom" : "universal",
-      "filename" : "beep-plucked.aif",
-      "universal-type-identifier" : "public.aifc-audio"
+      "filename" : "beep-xylo.aif"
     }
   ]
 }

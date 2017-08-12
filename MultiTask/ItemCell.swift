@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class ItemCell: UITableViewCell {
 
@@ -29,7 +30,10 @@ class ItemCell: UITableViewCell {
         if let item = self.item {
             if item.is_completed == false {
                 noteLabel.textColor = Color.white
+                dateLabel.text = nil
             } else {
+                dateLabel.text = "Completed: " + String(describing: item.updated_at)
+                dateLabel.textColor = Color.seaweedGreen
                 noteLabel.textColor = Color.lightGray
             }
             noteLabel.text = item.note
@@ -42,8 +46,9 @@ class ItemCell: UITableViewCell {
     }
 
     private func postNotification(is_completed: Bool) {
-        let notificationName = NSNotification.Name(rawValue: CompletionSiwtchNotifications.notification)
-        let userInfo: [String : Bool] = ["is_completed" : is_completed]
+        guard let item = self.item else { return }
+        let notificationName = NSNotification.Name(rawValue: CompletionSiwtchNotifications.notificationName)
+        let userInfo: [String : Object] = [CompletionSiwtchNotifications.key : item]
         let notification = Notification(name: notificationName, object: self, userInfo: userInfo)
         NotificationCenter.default.post(notification)
     }
@@ -62,8 +67,8 @@ class ItemCell: UITableViewCell {
 }
 
 struct CompletionSiwtchNotifications {
-    static let key: String = "CompletionSwitch"
-    static let notification: String = "CompletionSwitchValueDidChange"
+    static let key: String = "item"
+    static let notificationName: String = "CompletionSwitchValueDidChange"
 }
 
 

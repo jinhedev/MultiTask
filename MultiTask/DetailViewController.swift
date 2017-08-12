@@ -19,10 +19,24 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
 
     // MARK: - NotificationCenter
 
+    private var completionSwitchObserver: NSObjectProtocol?
+
     private func setupNotificationForCompletionSwitch() {
-        let notificationName = NSNotification.Name(CompletionSiwtchNotifications.notification)
-        let observer = NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: OperationQueue.main) { (notification: Notification) in
-            //
+        let notificationName = NSNotification.Name(CompletionSiwtchNotifications.notificationName)
+        completionSwitchObserver = NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: OperationQueue.main) { (notification: Notification) in
+            if let item = notification.userInfo?[CompletionSiwtchNotifications.key] as? Item {
+                let is_completed = item.is_completed
+                self.realmManager?.updateObject(object: item, keyedValues: ["is_completed" : !is_completed, "updated_at" : NSDate()])
+                guard let task = self.selectedTask else { return }
+                self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
+            }
+        }
+    }
+
+    private func removeNotificationForCompletionSwitch() {
+        if let observer = completionSwitchObserver {
+            NotificationCenter.default.removeObserver(observer)
+            completionSwitchObserver = nil
         }
     }
 
@@ -143,6 +157,12 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
         super.viewDidLoad()
         setupNavigationController()
         setupRealmManager()
+        setupNotificationForCompletionSwitch()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        removeNotificationForCompletionSwitch()
     }
 
     override func viewWillAppear(_ animated: Bool) {

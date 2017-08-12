@@ -33,3 +33,73 @@ extension Color {
     static var miamiBlue: Color { return #colorLiteral(red: 0, green: 0.5254901961, blue: 0.9764705882, alpha: 1) }
     
 }
+
+// MARK: - Application sound notification
+
+import AVFoundation
+
+var avaPlayer: AVAudioPlayer?
+
+func playErrorSound() {
+    guard let sound = NSDataAsset(name: "Error") else {
+        print("sound file not found")
+        return
+    }
+    do {
+        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try AVAudioSession.sharedInstance().setActive(true)
+        avaPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
+        DispatchQueue.main.async {
+            guard let player = avaPlayer else { return }
+            player.play()
+        }
+    } catch let err {
+        print(err.localizedDescription)
+    }
+}
+
+func playSuccessSound() {
+    guard let sound = NSDataAsset(name: "Success") else {
+        print("sound file not found")
+        return
+    }
+    do {
+        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        try AVAudioSession.sharedInstance().setActive(true)
+        avaPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
+        DispatchQueue.main.async {
+            guard let player = avaPlayer else { return }
+            player.play()
+        }
+    } catch let err {
+        print(err.localizedDescription)
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

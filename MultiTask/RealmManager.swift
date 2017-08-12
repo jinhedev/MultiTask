@@ -118,6 +118,10 @@ class RealmManager: NSObject {
                 if items.count > 0 && n == items.count {
                     task.is_completed = true
                     realm.add(task)
+                    playSuccessSound()
+                } else {
+                    task.is_completed = false
+                    realm.add(task)
                 }
             }
             delegate?.didUpdateTasks()

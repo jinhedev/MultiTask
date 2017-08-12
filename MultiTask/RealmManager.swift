@@ -93,11 +93,11 @@ class RealmManager: NSObject {
 
     // MARK: - Update
 
-    func completeTask(task: Task) {
+    func updateObject(object: Object, keyedValues: [String : Any]) {
         do {
             try realm.write {
-                task.is_completed = true
-                realm.add(task, update: true)
+                object.setValuesForKeys(keyedValues)
+                realm.add(object)
             }
             delegate?.didUpdateTasks()
         } catch let err {
@@ -105,7 +105,28 @@ class RealmManager: NSObject {
         }
     }
 
-    func updateTask(task: Task, with item: Item) {
+    func checkOrUpdateItemsForCompletion(in task: Task) {
+        let items = task.items
+        do {
+            try realm.write {
+                var n: Int = 0
+                for item in items {
+                    if item.is_completed == true {
+                        n += 1
+                    }
+                }
+                if items.count > 0 && n == items.count {
+                    task.is_completed = true
+                    realm.add(task)
+                }
+            }
+            delegate?.didUpdateTasks()
+        } catch let err {
+            delegate?.realmErrorHandler(error: err)
+        }
+    }
+
+    func appendItem(to task: Task, with item: Item) {
         do {
             try realm.write {
                 task.items.append(item)

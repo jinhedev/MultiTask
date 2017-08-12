@@ -12,9 +12,19 @@ import AVFoundation
 
 class DetailViewController: UITableViewController, PersistentContainerDelegate {
 
-    var items: List<Item>?
+    // MARK: - API
+
     var selectedTask: Task?
     static let destinationSegueID = String(describing: DetailViewController.self)
+
+    // MARK: - NotificationCenter
+
+    private func setupNotificationForCompletionSwitch() {
+        let notificationName = NSNotification.Name(CompletionSiwtchNotifications.notification)
+        let observer = NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: OperationQueue.main) { (notification: Notification) in
+            //
+        }
+    }
 
     // MARK: - PersistentContainerDelegate
 
@@ -23,7 +33,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
     func createItem(note: String) {
         guard let task = selectedTask else { return }
         let newItem = Item(id: NSUUID().uuidString, note: note, is_completed: false, created_at: NSDate(), updated_at: NSDate())
-        realmManager?.updateTask(task: task, with: newItem)
+        realmManager?.appendItem(to: task, with: newItem)
     }
 
     func setupRealmManager() {
@@ -37,6 +47,10 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
     }
 
     func didUpdateTasks() {
+        reloadTableView()
+    }
+
+    func didDeleteTasks() {
         reloadTableView()
     }
 
@@ -70,6 +84,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
         alertController.addTextField { textField in
             alertTextField = textField
             textField.placeholder = "Note"
+            textField.keyboardAppearance = UIKeyboardAppearance.dark
         }
         let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             guard let note = alertTextField.text , !note.isEmpty else { return }
@@ -128,7 +143,6 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
         super.viewDidLoad()
         setupNavigationController()
         setupRealmManager()
-        print(selectedTask!)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -153,7 +167,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: PendingItemCell.id, for: indexPath) as? PendingItemCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.id, for: indexPath) as? ItemCell else {
             return UITableViewCell()
         }
         let item = selectedTask?.items[indexPath.row]
@@ -167,8 +181,9 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action: UITableViewRowAction, indexPath: IndexPath) in
-            if let taskToBeDeleted = self.items?[indexPath.row] {
-                self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
+            if let itemToBeDeleted = self.selectedTask?.items[indexPath.row] {
+                self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
+                self.realmManager?.checkOrUpdateItemsForCompletion(in: self.selectedTask!)
             }
         }
         return [deleteAction]

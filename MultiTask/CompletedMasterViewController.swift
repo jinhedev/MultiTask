@@ -12,6 +12,8 @@ import AVFoundation
 
 class CompletedMasterViewController: UITableViewController, PersistentContainerDelegate {
 
+    // MARK: - API
+
     var tasks: Results<Task>?
 
     // MARK: - PersistentContainerDelegate
@@ -39,6 +41,18 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
 
     func didFetchTasks() {
         reloadTableView()
+        updateNavigationTitle()
+    }
+
+    func didUpdateTasks() {
+        fetchCompletedTasks()
+        reloadTableView()
+        updateNavigationTitle()
+    }
+
+    func didDeleteTasks() {
+        reloadTableView()
+        fetchCompletedTasks()
         updateNavigationTitle()
     }
 
@@ -147,17 +161,19 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         setupTabBarController()
     }
 
-    // MARK: - Segue
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
-            // set the navigationItem.title here
-            guard let completedTasks = tasks, let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
-            detailViewController.navigationItem.title = completedTasks[selectedIndexPath.row].name
+            guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else { return }
+            detailViewController.navigationItem.title = selectedTask.name
+            detailViewController.selectedTask = selectedTask
         }
     }
 
     // MARK: - UITableViewDataSource
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: DetailViewController.destinationSegueID, sender: self)
+    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tasks?.count ?? 0
@@ -167,7 +183,8 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CompletedCell.id, for: indexPath) as? CompletedCell else {
             return UITableViewCell()
         }
-        cell.completedTask = tasks?[indexPath.row]
+        let task = tasks?[indexPath.row]
+        cell.completedTask = task
         return cell
     }
 
@@ -177,11 +194,8 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action: UITableViewRowAction, indexPath: IndexPath) in
-            let taskToBeDeleted = self.tasks?[indexPath.row]
-            do {
-                // delete and update
-            } catch let err {
-                print(err.localizedDescription)
+            if let taskToBeDeleted = self.tasks?[indexPath.row] {
+                self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
             }
         }
         return [deleteAction]

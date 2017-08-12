@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PendingItemCell: UITableViewCell {
+class ItemCell: UITableViewCell {
 
     var item: Item? {
         didSet {
@@ -16,24 +16,41 @@ class PendingItemCell: UITableViewCell {
         }
     }
 
-    static let id = String(describing: PendingItemCell.self)
+    static let id = String(describing: ItemCell.self)
 
-    @IBOutlet weak var noteTextView: UITextView!
+    @IBOutlet weak var noteLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var completionSwitch: UISwitch!
 
     private func updateCell() {
         // STEP 1: reset any existing UI info/outlets, otherwise info could become misplaced
-        noteTextView?.text = nil
+        noteLabel?.text = nil
         // STEP 2: load new info from user (if any)
         if let item = self.item {
-            noteTextView.text = item.note
+            if item.is_completed == false {
+                noteLabel.textColor = Color.white
+            } else {
+                noteLabel.textColor = Color.lightGray
+            }
+            noteLabel.text = item.note
             completionSwitch.isOn = item.is_completed
         }
     }
 
+    @IBAction func toggleCompletion(_ sender: UISwitch) {
+        postNotification(is_completed: sender.isOn)
+    }
+
+    private func postNotification(is_completed: Bool) {
+        let notificationName = NSNotification.Name(rawValue: CompletionSiwtchNotifications.notification)
+        let userInfo: [String : Bool] = ["is_completed" : is_completed]
+        let notification = Notification(name: notificationName, object: self, userInfo: userInfo)
+        NotificationCenter.default.post(notification)
+    }
+
     private func setupViews() {
         completionSwitch.isOn = false
-        self.noteTextView.textColor = Color.lightGray
+        self.noteLabel.textColor = Color.white
         self.backgroundColor = Color.midNightBlack
     }
 
@@ -43,3 +60,28 @@ class PendingItemCell: UITableViewCell {
     }
 
 }
+
+struct CompletionSiwtchNotifications {
+    static let key: String = "CompletionSwitch"
+    static let notification: String = "CompletionSwitchValueDidChange"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

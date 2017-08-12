@@ -12,6 +12,8 @@ import AVFoundation
 
 class PendingMasterViewController: UITableViewController, PersistentContainerDelegate, UISearchBarDelegate {
 
+    // MARK: - API
+
     var tasks: Results<Task>?
 
     // MARK: - UISearchBar & UISearchBarDelegate
@@ -20,12 +22,6 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
 
     private func setupSearchBar() {
         searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        self.view.addGestureRecognizer(tap)
-    }
-
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -35,10 +31,11 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
             let pendingTasks = realmManager?.getOrderedTasks(predicate: compoundPredicate)
             self.tasks = pendingTasks
         } else {
+            searchBar.endEditing(true)
             fetchPendingTasks()
         }
     }
-
+    
     // MARK: - PersistentContainerDelegate
 
     var realmManager: RealmManager? {
@@ -52,13 +49,6 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         self.tasks = pendingTasks
     }
 
-    func createTask(taskName: String) {
-        let task = Task()
-        task.id = NSUUID().uuidString
-        task.name = taskName
-        realmManager?.createObjects(objects: [task])
-    }
-
     func setupRealmManager() {
         realmManager = RealmManager()
         realmManager!.delegate = self
@@ -67,6 +57,13 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
     func realmErrorHandler(error: Error) {
         playErrorSound()
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+    }
+
+    func createTask(taskName: String) {
+        let task = Task()
+        task.id = NSUUID().uuidString
+        task.name = taskName
+        realmManager?.createObjects(objects: [task])
     }
 
     func didFetchTasks() {
@@ -121,6 +118,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         var alertTextField: UITextField!
         alertController.addTextField { textField in
             alertTextField = textField
+            textField.keyboardAppearance = UIKeyboardAppearance.dark
             textField.placeholder = "Task Name"
         }
         let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
@@ -201,11 +199,8 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         setupTabBarController()
     }
 
-    // MARK: - Segue
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
-            // set the navigationItem.title here
             guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else { return }
             detailViewController.navigationItem.title = selectedTask.name
             detailViewController.selectedTask = selectedTask
@@ -241,12 +236,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
                 self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
             }
         }
-        let completeAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "Complete") { (action: UITableViewRowAction, indexPath: IndexPath) in
-            if let taskToBeUpdated = self.tasks?[indexPath.row] {
-                self.realmManager?.completeTask(task: taskToBeUpdated)
-            }
-        }
-        return [deleteAction, completeAction]
+        return [deleteAction]
     }
 
     // MARK: - UITableViewDelegate

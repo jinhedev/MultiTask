@@ -28,7 +28,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
                 let is_completed = item.is_completed
                 self.realmManager?.updateObject(object: item, keyedValues: ["is_completed" : !is_completed, "updated_at" : NSDate()])
                 guard let task = self.selectedTask else {
-                    trace(file: #file, function: #function, line: #line)
+                    print(trace(file: #file, function: #function, line: #line))
                     return
                 }
                 self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
@@ -41,7 +41,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
             NotificationCenter.default.removeObserver(observer)
             completionSwitchObserver = nil
         } else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
         }
     }
 
@@ -64,7 +64,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
 
     func createItem(note: String) {
         guard let task = selectedTask else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             return
         }
         let newItem = Item(id: NSUUID().uuidString, note: note, is_completed: false, created_at: NSDate(), updated_at: NSDate())
@@ -80,7 +80,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
         playAlertSound(type: AlertSoundType.error)
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
         remoteLogManager?.logCustomEvent(type: String(describing: DetailViewController.self), key: #function, value: error.localizedDescription)
-        trace(file: #file, function: #function, line: #line)
+        print(trace(file: #file, function: #function, line: #line))
     }
 
     func containerDidUpdateTasks() {
@@ -105,6 +105,8 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
             guard let note = alertTextField.text , !note.isEmpty else { return }
             // add thing items to realm
             self.createItem(note: note)
+            guard let task = self.selectedTask else { return }
+            self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
         alertController.addAction(cancelAction)
@@ -152,13 +154,17 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
         }
     }
 
+    private func setupTableView() {
+        self.tableView.backgroundColor = Color.inkBlack
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
         setupNavigationController()
         setupRealmManager()
-        setupNotificationForCompletionSwitch()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -169,6 +175,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupTabBarController()
+        setupNotificationForCompletionSwitch()
     }
 
     // MARK: - UITableViewDelegate
@@ -190,7 +197,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.id, for: indexPath) as? ItemCell else {
             // Warning: extremely verbose
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             remoteLogManager?.logCustomEvent(type: String(describing: DetailViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: ItemCell.self))")
             return UITableViewCell()
         }
@@ -209,7 +216,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
                 self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
                 self.realmManager?.checkOrUpdateItemsForCompletion(in: self.selectedTask!)
             } else {
-                trace(file: #file, function: #function, line: #line)
+                print(trace(file: #file, function: #function, line: #line))
             }
         }
         return [deleteAction]

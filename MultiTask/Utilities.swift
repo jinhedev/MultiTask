@@ -21,8 +21,7 @@ enum AlertSoundType: String {
 
 func playAlertSound(type: AlertSoundType) {
     guard let sound = NSDataAsset(name: type.rawValue) else {
-        print("sound file not found")
-        trace(file: #file, function: #function, line: #line)
+        print(trace(file: #file, function: #function, line: #line))
         return
     }
     do {
@@ -34,7 +33,7 @@ func playAlertSound(type: AlertSoundType) {
             player.play()
         }
     } catch let err {
-        trace(file: #file, function: #function, line: #line)
+        print(trace(file: #file, function: #function, line: #line))
         print(err.localizedDescription)
     }
 }
@@ -74,9 +73,9 @@ func prettyPrintJson(_ object: AnyObject?) -> String {
 
 // MARK: - Error handler
 
-func trace(file: String, function: String, line: Int) {
+func trace(file: String, function: String, line: Int) -> String {
     let trace = "\n" + "file: " + file + "\n" + "function: " + function + "\n" + "line: " + String(describing: line) + "\n"
-    print(trace)
+    return trace
 }
 
 // MARK: - Human readable date

@@ -51,7 +51,7 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         playAlertSound(type: AlertSoundType.error)
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
         remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: error.localizedDescription)
-        trace(file: #file, function: #function, line: #line)
+        print(trace(file: #file, function: #function, line: #line))
     }
 
     func containerDidFetchTasks() {
@@ -119,7 +119,7 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
     private func updateNavigationTitle() {
         if let count = tasks?.count {
             DispatchQueue.main.async {
-                self.navigationItem.title = String(describing: count) + " Pending Tasks"
+                self.navigationItem.title = String(describing: count) + " Completed Tasks"
             }
         }
     }
@@ -142,10 +142,15 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         }
     }
 
+    private func setupTableView() {
+        self.tableView.backgroundColor = Color.inkBlack
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
         setupNavigationController()
         setupRealmManager()
     }
@@ -163,7 +168,7 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
             guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else {
-                trace(file: #file, function: #function, line: #line)
+                print(trace(file: #file, function: #function, line: #line))
                 remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: String(describing: tasks))
                 return
             }
@@ -185,7 +190,7 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CompletedCell.id, for: indexPath) as? CompletedCell else {
             // Warning: extremely verbose
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: CompletedCell.self))")
             return UITableViewCell()
         }
@@ -203,7 +208,7 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
             if let taskToBeDeleted = self.tasks?[indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
             } else {
-                trace(file: #file, function: #function, line: #line)
+                print(trace(file: #file, function: #function, line: #line))
             }
         }
         return [deleteAction]

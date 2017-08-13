@@ -32,7 +32,7 @@ class RemoteLogManager: NSObject {
     /// refactor this
     func logCustomEvent(type: String, key: String, value: String) {
         guard let pinpointAnalyticsClient = AWSMobileClient.sharedInstance.pinpoint?.analyticsClient else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             return
         }
         let event = pinpointAnalyticsClient.createEvent(withEventType: type)
@@ -44,7 +44,7 @@ class RemoteLogManager: NSObject {
 
     func logCustomEvent(sender: Any, method: String, value: Any, metrics: [String : NSNumber]?) {
         guard let pinpointAnalyticsClient = AWSMobileClient.sharedInstance.pinpoint?.analyticsClient else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             return
         }
         let type = String(describing: sender)
@@ -66,7 +66,7 @@ class RemoteLogManager: NSObject {
 
     func logMonetizationEvent(productID: String, price: Double, quantity: Int, currency: String) {
         guard let pinpointAnalyticsClient = AWSMobileClient.sharedInstance.pinpoint?.analyticsClient else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             return
         }
         let event = pinpointAnalyticsClient.createVirtualMonetizationEvent(withProductId: productID, withItemPrice: price, withQuantity: quantity, withCurrency: currency)
@@ -77,7 +77,7 @@ class RemoteLogManager: NSObject {
 
     func logAppleMonetizationEvent(transaction: SKPaymentTransaction, product: SKProduct) {
         guard let pinpointAnalyticsClient = AWSMobileClient.sharedInstance.pinpoint?.analyticsClient else {
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             return
         }
         let event = pinpointAnalyticsClient.createAppleMonetizationEvent(with: transaction, with: product)

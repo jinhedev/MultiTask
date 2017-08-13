@@ -78,7 +78,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         playAlertSound(type: AlertSoundType.error)
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
         remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: error.localizedDescription)
-        trace(file: #file, function: #function, line: #line)
+        print(trace(file: #file, function: #function, line: #line))
     }
 
     func containerDidFetchTasks() {
@@ -152,7 +152,6 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         DispatchQueue.main.async {
             self.navigationItem.title = String(describing: count) + " Pending Tasks"
         }
-
     }
 
     private func setupNavigationController() {
@@ -173,10 +172,15 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         }
     }
 
+    private func setupTableView() {
+        self.tableView.backgroundColor = Color.inkBlack
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTableView()
         setupNavigationController()
         setupRealmManager()
         setupSearchBar()
@@ -195,7 +199,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
             guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else {
-                trace(file: #file, function: #function, line: #line)
+                print(trace(file: #file, function: #function, line: #line))
                 remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: String(describing: tasks))
                 return
             }
@@ -217,7 +221,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as? PendingCell else {
             // Warning: extremely verbose
-            trace(file: #file, function: #function, line: #line)
+            print(trace(file: #file, function: #function, line: #line))
             remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: PendingCell.self))")
             return UITableViewCell()
         }
@@ -235,7 +239,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
             if let taskToBeDeleted = self.tasks?[indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
             } else {
-                trace(file: #file, function: #function, line: #line)
+                print(trace(file: #file, function: #function, line: #line))
             }
         }
         return [deleteAction]

@@ -21,6 +21,10 @@
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26501F3F14D8001743E4 /* UserFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E264F1F3F14D8001743E4 /* UserFilesManager.swift */; };
 		C55E26541F3F67FD001743E4 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26531F3F67FD001743E4 /* LogManager.swift */; };
+		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
+		C55E26591F404249001743E4 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E265A1F404249001743E4 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; };
+		C55E265B1F404249001743E4 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */; };
 		C5A9A8A61F3BB06C00601CFF /* PendingMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */; };
 		C5A9A8A81F3BB06C00601CFF /* CompletedMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A71F3BB06C00601CFF /* CompletedMasterViewController.swift */; };
@@ -31,10 +35,6 @@
 		C5A9A8BF1F3BC0A200601CFF /* PendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8BE1F3BC0A200601CFF /* PendingCell.swift */; };
 		C5A9A8C11F3BC5C500601CFF /* CompletedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8C01F3BC5C500601CFF /* CompletedCell.swift */; };
 		C5A9A8C31F3BD51000601CFF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8C21F3BD51000601CFF /* DetailViewController.swift */; };
-		C5A9A8CB1F3BD81C00601CFF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A9A8C91F3BD81C00601CFF /* Realm.framework */; };
-		C5A9A8CC1F3BD81C00601CFF /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5A9A8C91F3BD81C00601CFF /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C5A9A8CD1F3BD81C00601CFF /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A9A8CA1F3BD81C00601CFF /* RealmSwift.framework */; };
-		C5A9A8CE1F3BD81C00601CFF /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5A9A8CA1F3BD81C00601CFF /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8D11F3BD87700601CFF /* Task.swift */; };
 		C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */; };
 		C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8D51F3BE85800601CFF /* Item.swift */; };
@@ -52,11 +52,11 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C55E26461F3F11CD001743E4 /* AWSCognito.framework in Embed Frameworks */,
-				C5A9A8CE1F3BD81C00601CFF /* RealmSwift.framework in Embed Frameworks */,
 				C55E26411F3F11C5001743E4 /* AWSPinpoint.framework in Embed Frameworks */,
-				C5A9A8CC1F3BD81C00601CFF /* Realm.framework in Embed Frameworks */,
+				C55E265B1F404249001743E4 /* RealmSwift.framework in Embed Frameworks */,
 				C55E263F1F3F11C5001743E4 /* AWSCore.framework in Embed Frameworks */,
 				C55E26431F3F11C5001743E4 /* AWSS3.framework in Embed Frameworks */,
+				C55E26591F404249001743E4 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +74,8 @@
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E264F1F3F14D8001743E4 /* UserFilesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFilesManager.swift; sourceTree = "<group>"; };
 		C55E26531F3F67FD001743E4 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		C55E26571F404249001743E4 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		C5A9A8A01F3BB06C00601CFF /* MultiTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingMasterViewController.swift; sourceTree = "<group>"; };
@@ -86,8 +88,6 @@
 		C5A9A8BE1F3BC0A200601CFF /* PendingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PendingCell.swift; sourceTree = "<group>"; };
 		C5A9A8C01F3BC5C500601CFF /* CompletedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedCell.swift; sourceTree = "<group>"; };
 		C5A9A8C21F3BD51000601CFF /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
-		C5A9A8C91F3BD81C00601CFF /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		C5A9A8CA1F3BD81C00601CFF /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		C5A9A8D11F3BD87700601CFF /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		C5A9A8D51F3BE85800601CFF /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -104,10 +104,10 @@
 			files = (
 				C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */,
 				C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */,
+				C55E265A1F404249001743E4 /* RealmSwift.framework in Frameworks */,
 				C55E26451F3F11CD001743E4 /* AWSCognito.framework in Frameworks */,
-				C5A9A8CD1F3BD81C00601CFF /* RealmSwift.framework in Frameworks */,
 				C55E26401F3F11C5001743E4 /* AWSPinpoint.framework in Frameworks */,
-				C5A9A8CB1F3BD81C00601CFF /* Realm.framework in Frameworks */,
+				C55E26581F404249001743E4 /* Realm.framework in Frameworks */,
 				C55E263E1F3F11C5001743E4 /* AWSCore.framework in Frameworks */,
 				C55E264A1F3F1244001743E4 /* AWSMobileHubHelper.framework in Frameworks */,
 				C55E26421F3F11C5001743E4 /* AWSS3.framework in Frameworks */,
@@ -214,13 +214,13 @@
 			children = (
 				C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */,
 				C55E264B1F3F1296001743E4 /* libz.tbd */,
+				C55E26561F404249001743E4 /* Realm.framework */,
+				C55E26571F404249001743E4 /* RealmSwift.framework */,
 				C55E26491F3F1244001743E4 /* AWSMobileHubHelper.framework */,
 				C55E26441F3F11CD001743E4 /* AWSCognito.framework */,
 				C55E263B1F3F11C5001743E4 /* AWSCore.framework */,
 				C55E263C1F3F11C5001743E4 /* AWSPinpoint.framework */,
 				C55E263D1F3F11C5001743E4 /* AWSS3.framework */,
-				C5A9A8C91F3BD81C00601CFF /* Realm.framework */,
-				C5A9A8CA1F3BD81C00601CFF /* RealmSwift.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -470,6 +470,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -487,6 +488,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

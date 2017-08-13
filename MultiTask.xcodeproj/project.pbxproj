@@ -246,6 +246,7 @@
 				C5A9A89E1F3BB06C00601CFF /* Resources */,
 				C5A9A8CF1F3BD81C00601CFF /* Embed Frameworks */,
 				C55E263A1F3F1146001743E4 /* ShellScript */,
+				C55E265C1F404484001743E4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -317,6 +318,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework/strip-frameworks.sh\"";
+		};
+		C55E265C1F404484001743E4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
 /* End PBXShellScriptBuildPhase section */
 

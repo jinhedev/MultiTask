@@ -25,6 +25,9 @@
 		C55E26591F404249001743E4 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C55E265A1F404249001743E4 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; };
 		C55E265B1F404249001743E4 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E26651F40DC17001743E4 /* MultiTaskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26641F40DC17001743E4 /* MultiTaskUITests.swift */; };
+		C55E266D1F40DE02001743E4 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */; };
+		C55E26751F40F100001743E4 /* MultiTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26741F40F100001743E4 /* MultiTaskTests.swift */; };
 		C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */; };
 		C5A9A8A61F3BB06C00601CFF /* PendingMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */; };
 		C5A9A8A81F3BB06C00601CFF /* CompletedMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A71F3BB06C00601CFF /* CompletedMasterViewController.swift */; };
@@ -43,6 +46,23 @@
 		C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DC1F3C2CF100601CFF /* Constants.swift */; };
 		C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C55E26671F40DC17001743E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5A9A8981F3BB06C00601CFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5A9A89F1F3BB06C00601CFF;
+			remoteInfo = MultiTask;
+		};
+		C55E26771F40F100001743E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5A9A8981F3BB06C00601CFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5A9A89F1F3BB06C00601CFF;
+			remoteInfo = MultiTask;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C5A9A8CF1F3BD81C00601CFF /* Embed Frameworks */ = {
@@ -76,6 +96,13 @@
 		C55E26531F3F67FD001743E4 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		C55E26571F404249001743E4 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		C55E26621F40DC17001743E4 /* MultiTaskUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiTaskUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C55E26641F40DC17001743E4 /* MultiTaskUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTaskUITests.swift; sourceTree = "<group>"; };
+		C55E26661F40DC17001743E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		C55E26721F40F100001743E4 /* MultiTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C55E26741F40F100001743E4 /* MultiTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTaskTests.swift; sourceTree = "<group>"; };
+		C55E26761F40F100001743E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C5A9A8A01F3BB06C00601CFF /* MultiTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingMasterViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +125,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C55E265F1F40DC17001743E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C55E266F1F40F100001743E4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5A9A89D1F3BB06C00601CFF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,10 +158,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C55E26631F40DC17001743E4 /* MultiTaskUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */,
+				C55E26641F40DC17001743E4 /* MultiTaskUITests.swift */,
+				C55E26661F40DC17001743E4 /* Info.plist */,
+			);
+			path = MultiTaskUITests;
+			sourceTree = "<group>";
+		};
+		C55E26731F40F100001743E4 /* MultiTaskTests */ = {
+			isa = PBXGroup;
+			children = (
+				C55E26741F40F100001743E4 /* MultiTaskTests.swift */,
+				C55E26761F40F100001743E4 /* Info.plist */,
+			);
+			path = MultiTaskTests;
+			sourceTree = "<group>";
+		};
 		C5A9A8971F3BB06C00601CFF = {
 			isa = PBXGroup;
 			children = (
 				C5A9A8DB1F3C2CCB00601CFF /* Shared */,
+				C55E26631F40DC17001743E4 /* MultiTaskUITests */,
+				C55E26731F40F100001743E4 /* MultiTaskTests */,
 				C5A9A8C81F3BD7D300601CFF /* Frameworks */,
 				C5A9A8A21F3BB06C00601CFF /* MultiTask */,
 				C5A9A8A11F3BB06C00601CFF /* Products */,
@@ -131,6 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				C5A9A8A01F3BB06C00601CFF /* MultiTask.app */,
+				C55E26621F40DC17001743E4 /* MultiTaskUITests.xctest */,
+				C55E26721F40F100001743E4 /* MultiTaskTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -237,6 +301,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C55E26611F40DC17001743E4 /* MultiTaskUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */;
+			buildPhases = (
+				C55E265E1F40DC17001743E4 /* Sources */,
+				C55E265F1F40DC17001743E4 /* Frameworks */,
+				C55E26601F40DC17001743E4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C55E26681F40DC17001743E4 /* PBXTargetDependency */,
+			);
+			name = MultiTaskUITests;
+			productName = MultiTaskUITests;
+			productReference = C55E26621F40DC17001743E4 /* MultiTaskUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		C55E26711F40F100001743E4 /* MultiTaskTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C55E26791F40F100001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskTests" */;
+			buildPhases = (
+				C55E266E1F40F100001743E4 /* Sources */,
+				C55E266F1F40F100001743E4 /* Frameworks */,
+				C55E26701F40F100001743E4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C55E26781F40F100001743E4 /* PBXTargetDependency */,
+			);
+			name = MultiTaskTests;
+			productName = MultiTaskTests;
+			productReference = C55E26721F40F100001743E4 /* MultiTaskTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C5A9A89F1F3BB06C00601CFF /* MultiTask */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C5A9A8B41F3BB06C00601CFF /* Build configuration list for PBXNativeTarget "MultiTask" */;
@@ -267,6 +367,18 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Duckensburg;
 				TargetAttributes = {
+					C55E26611F40DC17001743E4 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = ZLUJC28Y9H;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C5A9A89F1F3BB06C00601CFF;
+					};
+					C55E26711F40F100001743E4 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = ZLUJC28Y9H;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C5A9A89F1F3BB06C00601CFF;
+					};
 					C5A9A89F1F3BB06C00601CFF = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = ZLUJC28Y9H;
@@ -288,11 +400,27 @@
 			projectRoot = "";
 			targets = (
 				C5A9A89F1F3BB06C00601CFF /* MultiTask */,
+				C55E26611F40DC17001743E4 /* MultiTaskUITests */,
+				C55E26711F40F100001743E4 /* MultiTaskTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C55E26601F40DC17001743E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C55E26701F40F100001743E4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5A9A89E1F3BB06C00601CFF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,6 +465,23 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C55E265E1F40DC17001743E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C55E26651F40DC17001743E4 /* MultiTaskUITests.swift in Sources */,
+				C55E266D1F40DE02001743E4 /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C55E266E1F40F100001743E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C55E26751F40F100001743E4 /* MultiTaskTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5A9A89C1F3BB06C00601CFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -363,6 +508,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C55E26681F40DC17001743E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5A9A89F1F3BB06C00601CFF /* MultiTask */;
+			targetProxy = C55E26671F40DC17001743E4 /* PBXContainerItemProxy */;
+		};
+		C55E26781F40F100001743E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5A9A89F1F3BB06C00601CFF /* MultiTask */;
+			targetProxy = C55E26771F40F100001743E4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		C5A9A8A91F3BB06C00601CFF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -383,6 +541,60 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C55E266A1F40DC17001743E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				INFOPLIST_FILE = MultiTaskUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MultiTask;
+			};
+			name = Debug;
+		};
+		C55E266B1F40DC17001743E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				INFOPLIST_FILE = MultiTaskUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = MultiTask;
+			};
+			name = Release;
+		};
+		C55E267A1F40F100001743E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				INFOPLIST_FILE = MultiTaskTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiTask.app/MultiTask";
+			};
+			name = Debug;
+		};
+		C55E267B1F40F100001743E4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				INFOPLIST_FILE = MultiTaskTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiTask.app/MultiTask";
+			};
+			name = Release;
+		};
 		C5A9A8B21F3BB06C00601CFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -482,6 +694,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZLUJC28Y9H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -492,6 +706,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -500,6 +715,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZLUJC28Y9H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -510,6 +727,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -517,6 +735,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C55E266A1F40DC17001743E4 /* Debug */,
+				C55E266B1F40DC17001743E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		C55E26791F40F100001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C55E267A1F40F100001743E4 /* Debug */,
+				C55E267B1F40F100001743E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		C5A9A89B1F3BB06C00601CFF /* Build configuration list for PBXProject "MultiTask" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

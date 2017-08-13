@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import AVFoundation
 
-class PendingMasterViewController: UITableViewController, PersistentContainerDelegate, UISearchBarDelegate {
+class PendingMasterViewController: UITableViewController, PersistentContainerDelegate, UISearchBarDelegate, Loggable {
 
     // MARK: - API
 
@@ -35,6 +35,19 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
             fetchPendingTasks()
         }
     }
+
+    // MARK:- Loggable
+
+    var remoteLogManager: RemoteLogManager?
+
+    private func setupRemoteLogManager() {
+        remoteLogManager = RemoteLogManager()
+        remoteLogManager!.delegate = self
+    }
+
+    func didLogged() {
+        // ignore, for now.
+    }
     
     // MARK: - PersistentContainerDelegate
 
@@ -49,14 +62,9 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         self.tasks = pendingTasks
     }
 
-    func setupRealmManager() {
+    private func setupRealmManager() {
         realmManager = RealmManager()
         realmManager!.delegate = self
-    }
-
-    func realmErrorHandler(error: Error) {
-        playErrorSound()
-        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
     }
 
     func createTask(taskName: String) {
@@ -66,24 +74,31 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         realmManager?.createObjects(objects: [task])
     }
 
-    func didFetchTasks() {
+    func containerDidErr(error: Error) {
+        playAlertSound(type: AlertSoundType.error)
+        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+        remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: error.localizedDescription)
+        trace(file: #file, function: #function, line: #line)
+    }
+
+    func containerDidFetchTasks() {
         reloadTableView()
         updateNavigationTitle()
     }
 
-    func didCreateTasks() {
+    func containerDidCreateTasks() {
         fetchPendingTasks()
         reloadTableView()
         updateNavigationTitle()
     }
 
-    func didUpdateTasks() {
+    func containerDidUpdateTasks() {
         fetchPendingTasks()
         reloadTableView()
         updateNavigationTitle()
     }
 
-    func didDeleteTasks() {
+    func containerDidDeleteTasks() {
         fetchPendingTasks()
         reloadTableView()
         updateNavigationTitle()
@@ -179,7 +194,11 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
-            guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else { return }
+            guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else {
+                trace(file: #file, function: #function, line: #line)
+                remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: String(describing: tasks))
+                return
+            }
             detailViewController.navigationItem.title = selectedTask.name
             detailViewController.selectedTask = selectedTask
         }
@@ -197,6 +216,9 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as? PendingCell else {
+            // Warning: extremely verbose
+            trace(file: #file, function: #function, line: #line)
+            remoteLogManager?.logCustomEvent(type: String(describing: PendingMasterViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: PendingCell.self))")
             return UITableViewCell()
         }
         let task = tasks?[indexPath.row]
@@ -212,6 +234,8 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action: UITableViewRowAction, indexPath: IndexPath) in
             if let taskToBeDeleted = self.tasks?[indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
+            } else {
+                trace(file: #file, function: #function, line: #line)
             }
         }
         return [deleteAction]

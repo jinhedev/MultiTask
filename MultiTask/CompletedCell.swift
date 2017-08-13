@@ -29,7 +29,7 @@ class CompletedCell: UITableViewCell {
         // STEP 2: load new info from user (if any)
         if let completedTask = self.completedTask {
             taskLabel.text = completedTask.name
-            dateLabel.text = String(describing: completedTask.updated_at)
+            dateLabel.text = completedTask.updated_at.toRelativeDate()
             itemCountLabel.text = String(describing: completedTask.items.count)
         }
     }

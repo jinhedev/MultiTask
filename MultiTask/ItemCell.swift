@@ -32,7 +32,7 @@ class ItemCell: UITableViewCell {
                 noteLabel.textColor = Color.white
                 dateLabel.text = nil
             } else {
-                dateLabel.text = "Completed: " + String(describing: item.updated_at)
+                dateLabel.text = "Completed: " + item.updated_at.toRelativeDate()
                 dateLabel.textColor = Color.seaweedGreen
                 noteLabel.textColor = Color.lightGray
             }

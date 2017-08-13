@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import AVFoundation
 
-class DetailViewController: UITableViewController, PersistentContainerDelegate {
+class DetailViewController: UITableViewController, PersistentContainerDelegate, Loggable {
 
     // MARK: - API
 
@@ -27,7 +27,10 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
             if let item = notification.userInfo?[CompletionSiwtchNotifications.key] as? Item {
                 let is_completed = item.is_completed
                 self.realmManager?.updateObject(object: item, keyedValues: ["is_completed" : !is_completed, "updated_at" : NSDate()])
-                guard let task = self.selectedTask else { return }
+                guard let task = self.selectedTask else {
+                    trace(file: #file, function: #function, line: #line)
+                    return
+                }
                 self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
             }
         }
@@ -37,7 +40,22 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
         if let observer = completionSwitchObserver {
             NotificationCenter.default.removeObserver(observer)
             completionSwitchObserver = nil
+        } else {
+            trace(file: #file, function: #function, line: #line)
         }
+    }
+
+    // MARK: - Loggable
+
+    var remoteLogManager: RemoteLogManager?
+
+    private func setupRemoteLogManager() {
+        remoteLogManager = RemoteLogManager()
+        remoteLogManager!.delegate = self
+    }
+
+    func didLogged() {
+        // ignore, for now.
     }
 
     // MARK: - PersistentContainerDelegate
@@ -45,52 +63,35 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
     var realmManager: RealmManager?
 
     func createItem(note: String) {
-        guard let task = selectedTask else { return }
+        guard let task = selectedTask else {
+            trace(file: #file, function: #function, line: #line)
+            return
+        }
         let newItem = Item(id: NSUUID().uuidString, note: note, is_completed: false, created_at: NSDate(), updated_at: NSDate())
         realmManager?.appendItem(to: task, with: newItem)
     }
 
-    func setupRealmManager() {
+    private func setupRealmManager() {
         realmManager = RealmManager()
         realmManager!.delegate = self
     }
 
-    func realmErrorHandler(error: Error) {
-        playErrorSound()
+    func containerDidErr(error: Error) {
+        playAlertSound(type: AlertSoundType.error)
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+        remoteLogManager?.logCustomEvent(type: String(describing: DetailViewController.self), key: #function, value: error.localizedDescription)
+        trace(file: #file, function: #function, line: #line)
     }
 
-    func didUpdateTasks() {
+    func containerDidUpdateTasks() {
         reloadTableView()
     }
 
-    func didDeleteTasks() {
+    func containerDidDeleteTasks() {
         reloadTableView()
     }
 
-    // MARK: - AVAudioPlayer
-
-    private var player: AVAudioPlayer?
-
-    private func playErrorSound() {
-        guard let sound = NSDataAsset(name: "Error") else {
-            print("sound file not found")
-            return
-        }
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            try AVAudioSession.sharedInstance().setActive(true)
-            player = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
-            DispatchQueue.main.async {
-                guard let player = self.player else { return }
-                player.play() // schwoof
-            }
-        } catch let err {
-            print(err.localizedDescription)
-        }
-    }
-
-    // MARK: - NavigationController
+    // MARK: - UINavigationController
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "New Item", message: "Add a new item", preferredStyle: UIAlertControllerStyle.alert)
@@ -188,6 +189,9 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ItemCell.id, for: indexPath) as? ItemCell else {
+            // Warning: extremely verbose
+            trace(file: #file, function: #function, line: #line)
+            remoteLogManager?.logCustomEvent(type: String(describing: DetailViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: ItemCell.self))")
             return UITableViewCell()
         }
         let item = selectedTask?.items[indexPath.row]
@@ -204,6 +208,8 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate {
             if let itemToBeDeleted = self.selectedTask?.items[indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
                 self.realmManager?.checkOrUpdateItemsForCompletion(in: self.selectedTask!)
+            } else {
+                trace(file: #file, function: #function, line: #line)
             }
         }
         return [deleteAction]

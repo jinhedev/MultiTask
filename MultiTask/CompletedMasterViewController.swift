@@ -10,11 +10,24 @@ import UIKit
 import RealmSwift
 import AVFoundation
 
-class CompletedMasterViewController: UITableViewController, PersistentContainerDelegate {
+class CompletedMasterViewController: UITableViewController, PersistentContainerDelegate, Loggable {
 
     // MARK: - API
 
     var tasks: Results<Task>?
+
+    // MARK: - Loggable
+
+    var remoteLogManager: RemoteLogManager?
+
+    private func setupRemoteLogManager() {
+        remoteLogManager = RemoteLogManager()
+        remoteLogManager!.delegate = self
+    }
+
+    func didLogged() {
+        // ignore, for now
+    }
 
     // MARK: - PersistentContainerDelegate
 
@@ -29,28 +42,30 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         self.tasks = completedTasks
     }
 
-    func setupRealmManager() {
+    private func setupRealmManager() {
         realmManager = RealmManager()
         realmManager!.delegate = self
     }
 
-    func realmErrorHandler(error: Error) {
-        playErrorSound()
+    func containerDidErr(error: Error) {
+        playAlertSound(type: AlertSoundType.error)
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+        remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: error.localizedDescription)
+        trace(file: #file, function: #function, line: #line)
     }
 
-    func didFetchTasks() {
+    func containerDidFetchTasks() {
         reloadTableView()
         updateNavigationTitle()
     }
 
-    func didUpdateTasks() {
+    func containerDidUpdateTasks() {
         fetchCompletedTasks()
         reloadTableView()
         updateNavigationTitle()
     }
 
-    func didDeleteTasks() {
+    func containerDidDeleteTasks() {
         reloadTableView()
         fetchCompletedTasks()
         updateNavigationTitle()
@@ -58,15 +73,21 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
 
     // MARK: - UISegmentedControl
 
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var segmentedControl: UISegmentedControl! {
+        didSet {
+            remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: "\(segmentedControl.selectedSegmentIndex)")
+        }
+    }
 
     @IBAction func handleSortCriteria(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             // Latest
             self.tasks = self.tasks?.sorted(byKeyPath: "updated_at", ascending: false)
+            remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: "\(sender.selectedSegmentIndex)")
         } else {
             // Oldest
             self.tasks = self.tasks?.sorted(byKeyPath: "updated_at", ascending: true)
+            remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: "\(sender.selectedSegmentIndex)")
         }
         self.tableView.reloadData()
     }
@@ -141,7 +162,11 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailViewController = segue.destination as? DetailViewController {
-            guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else { return }
+            guard let selectedIndexPath = tableView.indexPathForSelectedRow, let selectedTask = tasks?[selectedIndexPath.row] else {
+                trace(file: #file, function: #function, line: #line)
+                remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: String(describing: tasks))
+                return
+            }
             detailViewController.navigationItem.title = selectedTask.name
             detailViewController.selectedTask = selectedTask
         }
@@ -159,6 +184,9 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CompletedCell.id, for: indexPath) as? CompletedCell else {
+            // Warning: extremely verbose
+            trace(file: #file, function: #function, line: #line)
+            remoteLogManager?.logCustomEvent(type: String(describing: CompletedMasterViewController.self), key: #function, value: "Failed to dequeue: \(String(describing: CompletedCell.self))")
             return UITableViewCell()
         }
         let task = tasks?[indexPath.row]
@@ -174,6 +202,8 @@ class CompletedMasterViewController: UITableViewController, PersistentContainerD
         let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action: UITableViewRowAction, indexPath: IndexPath) in
             if let taskToBeDeleted = self.tasks?[indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [taskToBeDeleted])
+            } else {
+                trace(file: #file, function: #function, line: #line)
             }
         }
         return [deleteAction]

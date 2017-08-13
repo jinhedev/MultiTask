@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C55E263E1F3F11C5001743E4 /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263B1F3F11C5001743E4 /* AWSCore.framework */; };
+		C55E263F1F3F11C5001743E4 /* AWSCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263B1F3F11C5001743E4 /* AWSCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E26401F3F11C5001743E4 /* AWSPinpoint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263C1F3F11C5001743E4 /* AWSPinpoint.framework */; };
+		C55E26411F3F11C5001743E4 /* AWSPinpoint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263C1F3F11C5001743E4 /* AWSPinpoint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E26421F3F11C5001743E4 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263D1F3F11C5001743E4 /* AWSS3.framework */; };
+		C55E26431F3F11C5001743E4 /* AWSS3.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E263D1F3F11C5001743E4 /* AWSS3.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E26451F3F11CD001743E4 /* AWSCognito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26441F3F11CD001743E4 /* AWSCognito.framework */; };
+		C55E26461F3F11CD001743E4 /* AWSCognito.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26441F3F11CD001743E4 /* AWSCognito.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C55E26481F3F1230001743E4 /* AWSMobileClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26471F3F1230001743E4 /* AWSMobileClient.swift */; };
+		C55E264A1F3F1244001743E4 /* AWSMobileHubHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26491F3F1244001743E4 /* AWSMobileHubHelper.framework */; };
+		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
+		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
+		C55E26501F3F14D8001743E4 /* UserFilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E264F1F3F14D8001743E4 /* UserFilesManager.swift */; };
+		C55E26541F3F67FD001743E4 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26531F3F67FD001743E4 /* LogManager.swift */; };
 		C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */; };
 		C5A9A8A61F3BB06C00601CFF /* PendingMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */; };
 		C5A9A8A81F3BB06C00601CFF /* CompletedMasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A71F3BB06C00601CFF /* CompletedMasterViewController.swift */; };
@@ -37,8 +51,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C55E26461F3F11CD001743E4 /* AWSCognito.framework in Embed Frameworks */,
 				C5A9A8CE1F3BD81C00601CFF /* RealmSwift.framework in Embed Frameworks */,
+				C55E26411F3F11C5001743E4 /* AWSPinpoint.framework in Embed Frameworks */,
 				C5A9A8CC1F3BD81C00601CFF /* Realm.framework in Embed Frameworks */,
+				C55E263F1F3F11C5001743E4 /* AWSCore.framework in Embed Frameworks */,
+				C55E26431F3F11C5001743E4 /* AWSS3.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -46,6 +64,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C55E263B1F3F11C5001743E4 /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
+		C55E263C1F3F11C5001743E4 /* AWSPinpoint.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSPinpoint.framework; sourceTree = "<group>"; };
+		C55E263D1F3F11C5001743E4 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSS3.framework; sourceTree = "<group>"; };
+		C55E26441F3F11CD001743E4 /* AWSCognito.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCognito.framework; sourceTree = "<group>"; };
+		C55E26471F3F1230001743E4 /* AWSMobileClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AWSMobileClient.swift; sourceTree = "<group>"; };
+		C55E26491F3F1244001743E4 /* AWSMobileHubHelper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSMobileHubHelper.framework; sourceTree = "<group>"; };
+		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		C55E264F1F3F14D8001743E4 /* UserFilesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserFilesManager.swift; sourceTree = "<group>"; };
+		C55E26531F3F67FD001743E4 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		C5A9A8A01F3BB06C00601CFF /* MultiTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5A9A8A51F3BB06C00601CFF /* PendingMasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingMasterViewController.swift; sourceTree = "<group>"; };
@@ -65,7 +93,7 @@
 		C5A9A8D51F3BE85800601CFF /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C5A9A8D71F3C1E7300601CFF /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C5A9A8D91F3C1F5300601CFF /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = MultiTask/Constants.swift; sourceTree = "<group>"; };
 		C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,8 +102,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */,
+				C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */,
+				C55E26451F3F11CD001743E4 /* AWSCognito.framework in Frameworks */,
 				C5A9A8CD1F3BD81C00601CFF /* RealmSwift.framework in Frameworks */,
+				C55E26401F3F11C5001743E4 /* AWSPinpoint.framework in Frameworks */,
 				C5A9A8CB1F3BD81C00601CFF /* Realm.framework in Frameworks */,
+				C55E263E1F3F11C5001743E4 /* AWSCore.framework in Frameworks */,
+				C55E264A1F3F1244001743E4 /* AWSMobileHubHelper.framework in Frameworks */,
+				C55E26421F3F11C5001743E4 /* AWSS3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +181,9 @@
 			isa = PBXGroup;
 			children = (
 				C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */,
+				C55E26531F3F67FD001743E4 /* LogManager.swift */,
+				C55E26471F3F1230001743E4 /* AWSMobileClient.swift */,
+				C55E264F1F3F14D8001743E4 /* UserFilesManager.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -174,6 +212,13 @@
 		C5A9A8C81F3BD7D300601CFF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */,
+				C55E264B1F3F1296001743E4 /* libz.tbd */,
+				C55E26491F3F1244001743E4 /* AWSMobileHubHelper.framework */,
+				C55E26441F3F11CD001743E4 /* AWSCognito.framework */,
+				C55E263B1F3F11C5001743E4 /* AWSCore.framework */,
+				C55E263C1F3F11C5001743E4 /* AWSPinpoint.framework */,
+				C55E263D1F3F11C5001743E4 /* AWSS3.framework */,
 				C5A9A8C91F3BD81C00601CFF /* Realm.framework */,
 				C5A9A8CA1F3BD81C00601CFF /* RealmSwift.framework */,
 			);
@@ -200,6 +245,7 @@
 				C5A9A89D1F3BB06C00601CFF /* Frameworks */,
 				C5A9A89E1F3BB06C00601CFF /* Resources */,
 				C5A9A8CF1F3BD81C00601CFF /* Embed Frameworks */,
+				C55E263A1F3F1146001743E4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -258,6 +304,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C55E263A1F3F1146001743E4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "bash \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}/AWSCore.framework/strip-frameworks.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C5A9A89C1F3BB06C00601CFF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -266,8 +328,10 @@
 				C5A9A8BF1F3BC0A200601CFF /* PendingCell.swift in Sources */,
 				C5A9A8C31F3BD51000601CFF /* DetailViewController.swift in Sources */,
 				C5A9A8A81F3BB06C00601CFF /* CompletedMasterViewController.swift in Sources */,
+				C55E26541F3F67FD001743E4 /* LogManager.swift in Sources */,
 				C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */,
 				C5A9A8B81F3BB76B00601CFF /* Utilities.swift in Sources */,
+				C55E26481F3F1230001743E4 /* AWSMobileClient.swift in Sources */,
 				C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */,
 				C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */,
 				C5A9A8A61F3BB06C00601CFF /* PendingMasterViewController.swift in Sources */,
@@ -276,6 +340,7 @@
 				C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */,
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
 				C5A9A8C11F3BC5C500601CFF /* CompletedCell.swift in Sources */,
+				C55E26501F3F14D8001743E4 /* UserFilesManager.swift in Sources */,
 				C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -29,7 +29,7 @@ class PendingCell: UITableViewCell {
         // STEP 2: load new info from user (if any)
         if let pendingTask = self.pendingTask {
             taskLabel.text = pendingTask.name
-            dateLabel.text = String(describing: pendingTask.created_at)
+            dateLabel.text = pendingTask.created_at.toRelativeDate()
             itemCountLabel.text = String(describing: pendingTask.items.count)
         }
     }

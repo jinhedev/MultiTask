@@ -10,22 +10,22 @@ import Foundation
 import RealmSwift
 
 protocol PersistentContainerDelegate {
-    func realmErrorHandler(error: Error)
-    func didLogin()
-    func didLogout()
-    func didFetchTasks()
-    func didCreateTasks()
-    func didUpdateTasks()
-    func didDeleteTasks()
+    func containerDidErr(error: Error)
+    func containerDidLogin()
+    func containerDidLogout()
+    func containerDidFetchTasks()
+    func containerDidCreateTasks()
+    func containerDidUpdateTasks()
+    func containerDidDeleteTasks()
 }
 
 extension PersistentContainerDelegate {
-    func didLogin() {}
-    func didLogout() {}
-    func didFetchTasks() {}
-    func didCreateTasks() {}
-    func didUpdateTasks() {}
-    func didDeleteTasks() {}
+    func containerDidLogin() {}
+    func containerDidLogout() {}
+    func containerDidFetchTasks() {}
+    func containerDidCreateTasks() {}
+    func containerDidUpdateTasks() {}
+    func containerDidDeleteTasks() {}
 }
 
 let realm = try! Realm()
@@ -37,12 +37,12 @@ class RealmManager: NSObject {
     // MARK: - Authentication
 
     func login() {
-        delegate?.didLogin()
+        delegate?.containerDidLogin()
     }
 
     func logout() {
         deleteDatabase()
-        delegate?.didLogout()
+        delegate?.containerDidLogout()
     }
 
     // MARK: - Database wildcard methods
@@ -53,7 +53,7 @@ class RealmManager: NSObject {
                 realm.deleteAll()
             }
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
@@ -61,7 +61,7 @@ class RealmManager: NSObject {
 
     func getOrderedTasks(predicate: NSPredicate) -> Results<Task>? {
         let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
-        delegate?.didFetchTasks()
+        delegate?.containerDidFetchTasks()
         return tasks
     }
 
@@ -72,9 +72,9 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.delete(objects)
             }
-            delegate?.didDeleteTasks()
+            delegate?.containerDidDeleteTasks()
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
@@ -85,9 +85,9 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.add(objects, update: true)
             }
-            delegate?.didCreateTasks()
+            delegate?.containerDidCreateTasks()
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
@@ -99,9 +99,9 @@ class RealmManager: NSObject {
                 object.setValuesForKeys(keyedValues)
                 realm.add(object)
             }
-            delegate?.didUpdateTasks()
+            delegate?.containerDidUpdateTasks()
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
@@ -118,15 +118,15 @@ class RealmManager: NSObject {
                 if items.count > 0 && n == items.count {
                     task.is_completed = true
                     realm.add(task)
-                    playSuccessSound()
+                    playAlertSound(type: AlertSoundType.success)
                 } else {
                     task.is_completed = false
                     realm.add(task)
                 }
             }
-            delegate?.didUpdateTasks()
+            delegate?.containerDidUpdateTasks()
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
@@ -136,15 +136,25 @@ class RealmManager: NSObject {
                 task.items.append(item)
                 realm.add(task)
             }
-            delegate?.didUpdateTasks()
+            delegate?.containerDidUpdateTasks()
         } catch let err {
-            delegate?.realmErrorHandler(error: err)
+            delegate?.containerDidErr(error: err)
         }
     }
 
 }
 
+class UserDefaultsManager: NSObject {
 
+    var delegate: PersistentContainerDelegate?
+
+    // MARK: - Create
+
+    func createObject() {
+
+    }
+
+}
 
 
 

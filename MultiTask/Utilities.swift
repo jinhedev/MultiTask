@@ -7,42 +7,22 @@
 //
 
 import Foundation
-
-// MARK: - Color customization
-
-#if os(iOS)
-    import UIKit
-    typealias Color = UIColor
-#elseif os(OSX)
-    import AppKit
-    typealias Color = NSColor
-#endif
-
-extension Color {
-
-    static var midNightBlack: Color { return  #colorLiteral(red: 0.1568627451, green: 0.1568627451, blue: 0.1568627451, alpha: 1) }
-    static var seaweedGreen: Color { return #colorLiteral(red: 0.4470588235, green: 0.5607843137, blue: 0.2549019608, alpha: 1) }
-    static var roseScarlet: Color { return #colorLiteral(red: 0.5607843137, green: 0.1960784314, blue: 0.2156862745, alpha: 1) }
-    static var candyWhite: Color { return #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1) }
-    static var mandarinOrange: Color { return #colorLiteral(red: 0.7411764706, green: 0.3921568627, blue: 0.2235294118, alpha: 1) }
-    static var metallicGold: Color { return #colorLiteral(red: 0.831372549, green: 0.6862745098, blue: 0.2156862745, alpha: 1) }
-    static var deepSeaBlue: Color { return #colorLiteral(red: 0.1568627451, green: 0.1725490196, blue: 0.231372549, alpha: 1) }
-    static var mediumBlueGray: Color { return #colorLiteral(red: 0.3294117647, green: 0.3294117647, blue: 0.368627451, alpha: 1) }
-    static var mildBlueGray: Color { return #colorLiteral(red: 0.4117647059, green: 0.4117647059, blue: 0.4588235294, alpha: 1) }
-    static var lightBlue: Color { return #colorLiteral(red: 0.9098039216, green: 0.9254901961, blue: 0.9450980392, alpha: 1) }
-    static var miamiBlue: Color { return #colorLiteral(red: 0, green: 0.5254901961, blue: 0.9764705882, alpha: 1) }
-    
-}
+import AVFoundation
+import UIKit
 
 // MARK: - Application sound notification
 
-import AVFoundation
-
 var avaPlayer: AVAudioPlayer?
 
-func playErrorSound() {
-    guard let sound = NSDataAsset(name: "Error") else {
+enum AlertSoundType: String {
+    case error = "Error"
+    case success = "Success"
+}
+
+func playAlertSound(type: AlertSoundType) {
+    guard let sound = NSDataAsset(name: type.rawValue) else {
         print("sound file not found")
+        trace(file: #file, function: #function, line: #line)
         return
     }
     do {
@@ -54,38 +34,74 @@ func playErrorSound() {
             player.play()
         }
     } catch let err {
+        trace(file: #file, function: #function, line: #line)
         print(err.localizedDescription)
     }
 }
 
-func playSuccessSound() {
-    guard let sound = NSDataAsset(name: "Success") else {
-        print("sound file not found")
-        return
-    }
-    do {
-        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-        try AVAudioSession.sharedInstance().setActive(true)
-        avaPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
-        DispatchQueue.main.async {
-            guard let player = avaPlayer else { return }
-            player.play()
+// MARK: - JSON
+
+func prettyPrintJson(_ object: AnyObject?) -> String {
+    var prettyResult: String = ""
+    if object == nil {
+        return ""
+    } else if let resultArray = object as? [AnyObject] {
+        var entries: String = ""
+        for index in 0..<resultArray.count {
+            if (index == 0) {
+                entries = "\(resultArray[index])"
+            } else {
+                entries = "\(entries), \(prettyPrintJson(resultArray[index]))"
+            }
         }
-    } catch let err {
-        print(err.localizedDescription)
+        prettyResult = "[\(entries)]"
+    } else if object is NSDictionary  {
+        let objectAsDictionary: [String: AnyObject] = object as! [String: AnyObject]
+        prettyResult = "{"
+        var entries: String = ""
+        for (key,_) in objectAsDictionary {
+            entries = "\"\(entries), \"\(key)\":\(prettyPrintJson(objectAsDictionary[key]))"
+        }
+        prettyResult = "{\(entries)}"
+        return prettyResult
+    } else if let objectAsNumber = object as? NSNumber {
+        prettyResult = "\(objectAsNumber.stringValue)"
+    } else if let objectAsString = object as? NSString {
+        prettyResult = "\"\(objectAsString)\""
     }
+    return prettyResult
 }
 
+// MARK: - Error handler
 
+func trace(file: String, function: String, line: Int) {
+    let trace = "\n" + "file: " + file + "\n" + "function: " + function + "\n" + "line: " + String(describing: line) + "\n"
+    print(trace)
+}
 
+// MARK: - Human readable date
 
+extension NSDate {
 
+    func toRelativeDate() -> String {
+        let secondsAgo = Int(Date().timeIntervalSince(self as Date))
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        let week = 7 * day
+        if secondsAgo < minute {
+            return "\(secondsAgo) seconds ago"
+        } else if secondsAgo < hour {
+            return "\(secondsAgo / minute) minutes ago"
+        } else if secondsAgo < day {
+            return "\(secondsAgo / hour) hours ago"
+        } else if secondsAgo < week {
+            return "\(secondsAgo / day) days ago"
+        }
+        return "\(secondsAgo / week) weeks ago"
+    }
 
-
-
-
-
-
+}
 
 
 

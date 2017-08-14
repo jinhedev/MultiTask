@@ -65,6 +65,27 @@ platform :ios do
       snapshot
   end
 
+  desc "Create ipa"
+  lane :build do
+      increment_build_number
+      gym
+  end
+
+  desc "Upload to App Store"
+  lane :upload do
+      deliver(
+        submit_for_review: true
+      )
+  end
+
+  desc "Provision, take screenshots, build and upload to App Store"
+  lane :do_everything do
+      provision
+      screenshots
+      build
+      upload
+  end
+
   after_all do |lane|
     # This block is called, only if the executed lane was successful
 

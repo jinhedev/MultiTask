@@ -52,6 +52,11 @@ Deploy a new version to the App Store
 fastlane ios provision
 ```
 Creating a code signing certificate and provisioning profile
+### ios screenshot
+```
+fastlane ios screenshot
+```
+Take screenshots
 
 ----
 

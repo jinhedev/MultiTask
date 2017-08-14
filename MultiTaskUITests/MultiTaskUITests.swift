@@ -18,6 +18,7 @@ class MultiTaskUITests: XCTestCase {
         app = XCUIApplication()
         setupSnapshot(app)
         app.launch()
+        snapshot("00LaunchScreen")
     }
 
     override func tearDown() {
@@ -33,10 +34,34 @@ class MultiTaskUITests: XCTestCase {
         if searchSearchField.isSelected {
             XCTAssert(app.keyboards.count > 0, "The keyboard is not shown")
         }
-        // can't
         searchSearchField.typeText("Shopping")
         snapshot("02UserEntries")
         app.tables.containing(.searchField, identifier:"Search").element.swipeDown()
     }
-    
+
+    func testAddNewTaskAndNewItem() {
+        app.navigationBars.buttons["Add"].tap()
+        let newTaskAlert = app.alerts["New Task"]
+        let taskNameTextField = newTaskAlert.collectionViews.textFields["Task Name"]
+        taskNameTextField.typeText("car")
+        snapshot("03ButtonTapped")
+        newTaskAlert.buttons["Add"].tap()
+        snapshot("04ButtonTapped")
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

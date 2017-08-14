@@ -100,6 +100,7 @@ class DetailViewController: UITableViewController, PersistentContainerDelegate, 
             alertTextField = textField
             textField.placeholder = "Note"
             textField.keyboardAppearance = UIKeyboardAppearance.dark
+            textField.autocapitalizationType = .sentences
         }
         let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             guard let note = alertTextField.text , !note.isEmpty else { return }

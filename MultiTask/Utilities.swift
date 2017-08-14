@@ -102,9 +102,11 @@ extension NSDate {
 
 }
 
+// MARK: Gradient CALayer
 
+func createGradientLayer(colors: [Color], startPoint: CGPoint, endPoint: CGPoint, layer: CGLayer) {
 
-
+}
 
 
 

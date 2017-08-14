@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PendingCell: UITableViewCell {
 
@@ -30,8 +31,19 @@ class PendingCell: UITableViewCell {
         if let pendingTask = self.pendingTask {
             taskLabel.text = pendingTask.name
             dateLabel.text = pendingTask.created_at.toRelativeDate()
-            itemCountLabel.text = String(describing: pendingTask.items.count)
+            // fraction representation of item count
+            itemCountLabel.text = String(describing: calculateCountForCompletedItems(items: pendingTask.items)) + "/" + String(describing: pendingTask.items.count)
         }
+    }
+
+    private func calculateCountForCompletedItems(items: List<Item>) -> Int {
+        var completedTasksCount: Int = 0
+        for item in items {
+            if item.is_completed == true {
+                completedTasksCount += 1
+            }
+        }
+        return completedTasksCount
     }
 
     private func setupViews() {

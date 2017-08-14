@@ -57,6 +57,21 @@ Creating a code signing certificate and provisioning profile
 fastlane ios screenshot
 ```
 Take screenshots
+### ios build
+```
+fastlane ios build
+```
+Create ipa
+### ios upload
+```
+fastlane ios upload
+```
+Upload to App Store
+### ios do_everything
+```
+fastlane ios do_everything
+```
+Provision, take screenshots, build and upload to App Store
 
 ----
 

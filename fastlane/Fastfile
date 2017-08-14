@@ -81,7 +81,7 @@ platform :ios do
   desc "Provision, take screenshots, build and upload to App Store"
   lane :do_everything do
       provision
-      screenshots
+      screenshot
       build
       upload
   end

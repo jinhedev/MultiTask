@@ -36,6 +36,10 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
         }
     }
 
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+
     // MARK:- Loggable
 
     var remoteLogManager: RemoteLogManager?
@@ -113,6 +117,7 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
             alertTextField = textField
             textField.keyboardAppearance = UIKeyboardAppearance.dark
             textField.placeholder = "Task Name"
+            textField.autocapitalizationType = .sentences
         }
         let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
             guard let taskName = alertTextField.text , !taskName.isEmpty else { return }
@@ -254,6 +259,35 @@ class PendingMasterViewController: UITableViewController, PersistentContainerDel
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 44
     }
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

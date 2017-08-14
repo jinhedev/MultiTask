@@ -55,6 +55,7 @@ class ItemCell: UITableViewCell {
 
     private func setupViews() {
         completionSwitch.isOn = false
+        completionSwitch.thumbTintColor = Color.candyWhite
         self.noteLabel.textColor = Color.white
         self.backgroundColor = Color.midNightBlack
     }

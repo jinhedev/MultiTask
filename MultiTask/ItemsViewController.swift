@@ -177,8 +177,46 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // MARK: - UITableViewDelegate
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ItemCell else { return }
+        cell.isCompleting = false
+        cell.isDeleting = false
+    }
+
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
+            cell.isCompleting = true
+        }
+        let doneAction = UIContextualAction(style: UIContextualAction.Style.normal, title: "Done") { (action, view, is_success) in
+            // do done action
+            is_success(true)
+        }
+        doneAction.image = #imageLiteral(resourceName: "Tick")
+        doneAction.backgroundColor = Color.inkBlack
+        let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [doneAction])
+        swipeActionConfigurations.performsFirstActionWithFullSwipe = true
+        return swipeActionConfigurations
+    }
+
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
+            cell.isDeleting = true
+        }
+        let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Delete") { (action, view, is_success) in
+            // do delete action
+            is_success(true)
+        }
+        deleteAction.image = #imageLiteral(resourceName: "Delete")
+        deleteAction.backgroundColor = Color.inkBlack
+        let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
+        swipeActionConfigurations.performsFirstActionWithFullSwipe = false
+        return swipeActionConfigurations
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
     }
 
     // MARK: - UITableViewDataSource

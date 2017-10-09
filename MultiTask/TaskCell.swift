@@ -14,7 +14,7 @@ class TaskCell: UITableViewCell {
     // MARK: - API
 
     var pendingTask: Task? { didSet { updateCell() } }
-    override var isEditing: Bool { didSet { animateCell() } }
+    var isDeleting: Bool = false { didSet { animateCell() } }
     static let id = String(describing: TaskCell.self)
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var taskLabel: UILabel!
@@ -24,14 +24,9 @@ class TaskCell: UITableViewCell {
     @IBOutlet weak var idLabel: UILabel!
 
     private func animateCell() {
-        if isEditing == true {
+        if isDeleting == true {
             UIView.animate(withDuration: 0.7, delay: 0, options: [.allowUserInteraction], animations: {
                 self.containerView.backgroundColor = Color.red
-                self.idLabel.textColor = Color.black
-                self.taskLabel.textColor = Color.black
-                self.dateLabel.textColor = Color.black
-                self.separatorLabel.textColor = Color.black
-                self.itemsCountLabel.textColor = Color.black
             }, completion: nil)
         } else {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
@@ -45,9 +40,18 @@ class TaskCell: UITableViewCell {
             idLabel.text = pendingTask.id
             taskLabel.text = pendingTask.name
             dateLabel.text = pendingTask.created_at.toRelativeDate()
-            // fractional representation of item count
             itemsCountLabel.text = String(describing: calculateCountForCompletedItems(items: pendingTask.items)) + "/" + String(describing: pendingTask.items.count)
         }
+    }
+
+    func addGradientSublayer() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.containerView.frame
+        gradientLayer.colors = [Color.midNightBlack.cgColor, Color.inkBlack.cgColor]
+        gradientLayer.locations = [0.0, 0.5]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        self.containerView.layer.addSublayer(gradientLayer)
     }
 
     private func calculateCountForCompletedItems(items: List<Item>) -> Int {
@@ -65,6 +69,7 @@ class TaskCell: UITableViewCell {
         self.contentView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.midNightBlack
         self.containerView.layer.cornerRadius = 8.0
+        self.containerView.clipsToBounds = true
         self.idLabel.textColor = Color.lightGray
         self.idLabel.backgroundColor = Color.clear
         self.taskLabel.textColor = Color.white

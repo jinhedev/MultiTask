@@ -165,28 +165,20 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cell
     }
 
-    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.isEditing = true
-        }
-    }
+    // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        if let cell = tableView.cellForRow(at: indexPath!) as? TaskCell {
-            cell.isEditing = false
+        if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
+            cell.isDeleting = false
         }
     }
-
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    // MARK: - UITableViewDelegate
 
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
+            cell.isDeleting = true
+        }
         let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Delete") { (action, view, is_success) in
-            // do delete action
             is_success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Delete")

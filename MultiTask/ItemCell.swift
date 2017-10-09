@@ -15,14 +15,36 @@ class ItemCell: UITableViewCell {
 
     var item: Item? { didSet { updateCell() } }
     static let cell_id = String(describing: ItemCell.self)
+    var isCompleting: Bool = false { didSet { animateCell() } }
+    var isDeleting: Bool = false { didSet { animateCell() } }
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var itemTextView: UITextView!
     @IBOutlet weak var delegateLabel: UILabel!
     @IBOutlet weak var separatorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var separatorView: UIView!
+
+    private func animateCell() {
+        if isDeleting == true {
+            UIView.animate(withDuration: 0.7, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.red
+            }, completion: nil)
+        } else if isCompleting == true {
+            UIView.animate(withDuration: 0.7, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.seaweedGreen
+            }, completion: nil)
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                self.setupCell()
+            }, completion: nil)
+        }
+    }
 
     private func updateCell() {
         guard let item = self.item else { return }
         self.itemTextView.text = item.note
+        self.idLabel.text = item.id
         if item.is_completed == true {
             self.backgroundColor = Color.inkBlack
             self.itemTextView.textColor = Color.lightGray
@@ -45,6 +67,10 @@ class ItemCell: UITableViewCell {
     private func setupCell() {
         self.backgroundColor = Color.midNightBlack
         self.contentView.backgroundColor = Color.clear
+        self.containerView.backgroundColor = Color.midNightBlack
+        self.idLabel.textColor = Color.lightGray
+        self.idLabel.backgroundColor = Color.clear
+        self.separatorView.backgroundColor = Color.darkGray
         self.itemTextView.textColor = Color.white
         self.itemTextView.tintColor = Color.orange
         self.itemTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)

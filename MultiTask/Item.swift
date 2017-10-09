@@ -16,7 +16,8 @@ final class Item: Object {
     dynamic var is_completed = false
     dynamic var created_at = NSDate()
     dynamic var updated_at = NSDate()
-    let owners = LinkingObjects(fromType: Task.self, property: "items")
+    
+    let task = LinkingObjects(fromType: Task.self, property: "items")
 
     override static func primaryKey() -> String? {
         return "id"
@@ -32,3 +33,33 @@ final class Item: Object {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

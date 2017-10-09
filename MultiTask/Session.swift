@@ -11,6 +11,10 @@ import RealmSwift
 
 final class Session: Object {
 
-    
+    dynamic var access_token: String = ""
+    dynamic var created_at: NSDate = NSDate()
+    dynamic var updated_at: NSDate = NSDate()
+
+    let user = LinkingObjects(fromType: User.self, property: "sessions")
 
 }

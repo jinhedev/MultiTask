@@ -9,60 +9,92 @@
 import Foundation
 import RealmSwift
 
-protocol PersistentContainerDelegate {
-    func containerDidErr(error: Error)
+protocol PersistentContainerDelegate: NSObjectProtocol {
+    func container(_ manager: RealmManager, didErr error: Error)
     func containerDidLogin()
     func containerDidLogout()
-    func containerDidFetchTasks()
-    func containerDidCreateTasks()
-    func containerDidUpdateTasks()
-    func containerDidDeleteTasks()
+    func containerDidFetch(_ manager: RealmManager, tasks: Results<Task>)
+    func containerDidCreateTasks(_ manager: RealmManager)
+    func containerDidUpdateTasks(_ manager: RealmManager)
+    func containerDidDeleteTasks(_ manager: RealmManager)
 }
 
 extension PersistentContainerDelegate {
     func containerDidLogin() {}
     func containerDidLogout() {}
-    func containerDidFetchTasks() {}
-    func containerDidCreateTasks() {}
-    func containerDidUpdateTasks() {}
-    func containerDidDeleteTasks() {}
+    func containerDidFetch(_ manager: RealmManager, tasks: Results<Task>) {}
+    func containerDidCreateTasks(_ manager: RealmManager) {}
+    func containerDidUpdateTasks(_ manager: RealmManager) {}
+    func containerDidDeleteTasks(_ manager: RealmManager) {}
 }
 
-let realm = try! Realm()
+var realm = try! Realm() // A realm instance for local persistent container
 
 class RealmManager: NSObject {
 
-    var delegate: PersistentContainerDelegate?
+    weak var delegate: PersistentContainerDelegate?
+    var pathForContainer: URL? { return Realm.Configuration.defaultConfiguration.fileURL }
 
-    // MARK: - Authentication
+    // MARK: - Database
 
-    func login() {
-        delegate?.containerDidLogin()
+    func migrateDatabase() {
+        // TODO: implement this
     }
 
-    func logout() {
-        deleteDatabase()
-        delegate?.containerDidLogout()
-    }
-
-    // MARK: - Database wildcard methods
-
-    func deleteDatabase() {
+    func purgeDatabase() {
         do {
             try realm.write {
                 realm.deleteAll()
             }
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
+    }
+
+    // MARK: - App Settings
+
+    var isOnboardingCompleted: Bool {
+        let settings = realm.objects(AppSettings.self).sorted(byKeyPath: "created_at", ascending: false)
+        if settings.isEmpty || settings.first?.isOnboardingCompleted == false {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    // MARK: - Authentication
+
+    func login(user: String, pass: String) {
+        let credentials = SyncCredentials.usernamePassword(username: user, password: pass, register: false)
+        SyncUser.logIn(with: credentials, server: WebServiceConfigurations.syncAuthURL) { user, error in
+            if let err = error {
+                self.delegate?.container(self, didErr: err)
+            } else {
+                // remote login to realm object server
+                guard let user = user else {
+                    print(trace(file: #file, function: #function, line: #line))
+                    return
+                }
+                var configuration = Realm.Configuration.defaultConfiguration
+                configuration.syncConfiguration = SyncConfiguration(user: user, realmURL: WebServiceConfigurations.remoteServerURL)
+                Realm.Configuration.defaultConfiguration = configuration
+
+                let remoteRealm = try! Realm() // A realm instance for remote realm object server
+                self.delegate?.containerDidLogin()
+            }
+        }
+    }
+
+    func logout() {
+        purgeDatabase()
+        delegate?.containerDidLogout()
     }
 
     // MARK: - Get
 
-    func getOrderedTasks(predicate: NSPredicate) -> Results<Task>? {
+    func fetchTasks(predicate: NSPredicate) {
         let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
-        delegate?.containerDidFetchTasks()
-        return tasks
+        delegate?.containerDidFetch(self, tasks: tasks)
     }
 
     // MARK: - Delete
@@ -72,9 +104,9 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.delete(objects)
             }
-            delegate?.containerDidDeleteTasks()
+            delegate?.containerDidDeleteTasks(self)
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
     }
 
@@ -85,9 +117,9 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.add(objects, update: true)
             }
-            delegate?.containerDidCreateTasks()
+            delegate?.containerDidCreateTasks(self)
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
     }
 
@@ -99,9 +131,9 @@ class RealmManager: NSObject {
                 object.setValuesForKeys(keyedValues)
                 realm.add(object)
             }
-            delegate?.containerDidUpdateTasks()
+            delegate?.containerDidUpdateTasks(self)
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
     }
 
@@ -118,15 +150,14 @@ class RealmManager: NSObject {
                 if items.count > 0 && n == items.count {
                     task.is_completed = true
                     realm.add(task)
-                    playAlertSound(type: AlertSoundType.success)
                 } else {
                     task.is_completed = false
                     realm.add(task)
                 }
             }
-            delegate?.containerDidUpdateTasks()
+            delegate?.containerDidUpdateTasks(self)
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
     }
 
@@ -136,22 +167,10 @@ class RealmManager: NSObject {
                 task.items.append(item)
                 realm.add(task)
             }
-            delegate?.containerDidUpdateTasks()
+            delegate?.containerDidUpdateTasks(self)
         } catch let err {
-            delegate?.containerDidErr(error: err)
+            delegate?.container(self, didErr: err)
         }
-    }
-
-}
-
-class UserDefaultsManager: NSObject {
-
-    var delegate: PersistentContainerDelegate?
-
-    // MARK: - Create
-
-    func createObject() {
-
     }
 
 }

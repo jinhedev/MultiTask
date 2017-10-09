@@ -13,13 +13,19 @@ final class Task: Object {
 
     dynamic var id: String = ""
     dynamic var name = ""
-    var items = List<Item>()
     dynamic var is_completed = false
     dynamic var created_at = NSDate()
     dynamic var updated_at = NSDate()
 
+    var items = List<Item>()
+
     static let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
     static let completedPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
+
+    static func getNamePredicate(value: String) -> NSPredicate {
+        let predicate = NSPredicate(format: "name contains[c] %@", value)
+        return predicate
+    }
 
     override static func primaryKey() -> String? {
         return "id"

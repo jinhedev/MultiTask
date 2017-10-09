@@ -11,65 +11,67 @@ import RealmSwift
 
 class ItemCell: UITableViewCell {
 
-    var item: Item? {
-        didSet {
-            updateCell()
-        }
-    }
+    // MARK: - API
 
-    static let id = String(describing: ItemCell.self)
-
-    @IBOutlet weak var noteLabel: UILabel!
+    var item: Item? { didSet { updateCell() } }
+    static let cell_id = String(describing: ItemCell.self)
+    @IBOutlet weak var itemTextView: UITextView!
+    @IBOutlet weak var delegateLabel: UILabel!
+    @IBOutlet weak var separatorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var completionSwitch: UISwitch!
 
     private func updateCell() {
-        // STEP 1: reset any existing UI info/outlets, otherwise info could become misplaced
-        noteLabel?.text = nil
-        // STEP 2: load new info from user (if any)
-        if let item = self.item {
-            if item.is_completed == false {
-                noteLabel.textColor = Color.white
-                dateLabel.text = nil
-            } else {
-                dateLabel.text = "Completed: " + item.updated_at.toRelativeDate()
-                dateLabel.textColor = Color.seaweedGreen
-                noteLabel.textColor = Color.lightGray
-            }
-            noteLabel.text = item.note
-            completionSwitch.isOn = item.is_completed
+        guard let item = self.item else { return }
+        self.itemTextView.text = item.note
+        if item.is_completed == true {
+            self.backgroundColor = Color.inkBlack
+            self.itemTextView.textColor = Color.lightGray
+            self.dateLabel.textColor = Color.seaweedGreen
+        } else {
+            self.backgroundColor = Color.midNightBlack
+            self.itemTextView.textColor = Color.white
+            self.dateLabel.textColor = Color.lightGray
         }
     }
 
-    @IBAction func toggleCompletion(_ sender: UISwitch) {
-        postNotification(is_completed: sender.isOn)
-    }
+//    private func postNotification(is_completed: Bool) {
+//        guard let item = self.item else { return }
+//        let notificationName = NSNotification.Name(rawValue: CompletionSiwtchNotifications.notificationName)
+//        let userInfo: [String : Object] = [CompletionSiwtchNotifications.key : item]
+//        let notification = Notification(name: notificationName, object: self, userInfo: userInfo)
+//        NotificationCenter.default.post(notification)
+//    }
 
-    private func postNotification(is_completed: Bool) {
-        guard let item = self.item else { return }
-        let notificationName = NSNotification.Name(rawValue: CompletionSiwtchNotifications.notificationName)
-        let userInfo: [String : Object] = [CompletionSiwtchNotifications.key : item]
-        let notification = Notification(name: notificationName, object: self, userInfo: userInfo)
-        NotificationCenter.default.post(notification)
-    }
-
-    private func setupViews() {
-        completionSwitch.isOn = false
-        completionSwitch.thumbTintColor = Color.candyWhite
-        self.noteLabel.textColor = Color.white
+    private func setupCell() {
         self.backgroundColor = Color.midNightBlack
+        self.contentView.backgroundColor = Color.clear
+        self.itemTextView.textColor = Color.white
+        self.itemTextView.tintColor = Color.orange
+        self.itemTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+        self.itemTextView.backgroundColor = Color.clear
+        self.delegateLabel.backgroundColor = Color.clear
+        self.delegateLabel.textColor = Color.lightGray
+        self.separatorLabel.backgroundColor = Color.clear
+        self.separatorLabel.textColor = Color.lightGray
+        self.dateLabel.backgroundColor = Color.clear
+        self.dateLabel.textColor = Color.lightGray
     }
+
+    // MARK: - Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupViews()
+        setupCell()
     }
 
-}
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        itemTextView.text = nil
+        delegateLabel.text = nil
+        separatorLabel.text = nil
+        dateLabel.text = nil
+    }
 
-struct CompletionSiwtchNotifications {
-    static let key: String = "item"
-    static let notificationName: String = "CompletionSwitchValueDidChange"
 }
 
 

@@ -15,6 +15,8 @@ final class User: Object {
     dynamic var email = ""
     dynamic var session: Session?
 
+    var sessions = List<Session>()
+
     override static func primaryKey() -> String? {
         return "id"
     }

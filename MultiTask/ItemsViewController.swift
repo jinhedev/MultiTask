@@ -10,40 +10,33 @@ import UIKit
 import RealmSwift
 import AVFoundation
 
-class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PersistentContainerDelegate, Loggable {
+class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, Loggable {
 
     // MARK: - API
 
     var selectedTask: Task?
-    static let destinationSegueID = String(describing: ItemsViewController.self)
 
-    // MARK: - NotificationCenter
+    // MARK: - UISearchController & UISearchResultsUpdating
 
-//    private var completionSwitchObserver: NSObjectProtocol?
+    lazy var searchController: UISearchController = {
+        let controller = UISearchController(searchResultsController: nil)
+        return controller
+    }()
 
-//    private func setupNotificationForCompletionSwitch() {
-//        let notificationName = NSNotification.Name(CompletionSiwtchNotifications.notificationName)
-//        completionSwitchObserver = NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: OperationQueue.main) { (notification: Notification) in
-//            if let item = notification.userInfo?[CompletionSiwtchNotifications.key] as? Item {
-//                let is_completed = item.is_completed
-//                self.realmManager?.updateObject(object: item, keyedValues: ["is_completed" : !is_completed, "updated_at" : NSDate()])
-//                guard let task = self.selectedTask else {
-//                    print(trace(file: #file, function: #function, line: #line))
-//                    return
-//                }
-//                self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
-//            }
-//        }
-//    }
+    private func setupSearchController() {
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            // TODO: Fallback on earlier versions
+        }
+    }
 
-//    private func removeNotificationForCompletionSwitch() {
-//        if let observer = completionSwitchObserver {
-//            NotificationCenter.default.removeObserver(observer)
-//            completionSwitchObserver = nil
-//        } else {
-//            print(trace(file: #file, function: #function, line: #line))
-//        }
-//    }
+    func updateSearchResults(for searchController: UISearchController) {
+        if let text = searchController.searchBar.text {
+            // TODO: implement this
+            print(text)
+        }
+    }
 
     // MARK: - PersistentContainerDelegate
 
@@ -161,6 +154,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         setupTableView()
         setupNavigationController()
+        setupSearchController()
         setupRealmManager()
     }
 
@@ -193,7 +187,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             is_success(true)
         }
         doneAction.image = #imageLiteral(resourceName: "Tick")
-        doneAction.backgroundColor = Color.inkBlack
+        doneAction.backgroundColor = Color.seaweedGreen
         let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [doneAction])
         swipeActionConfigurations.performsFirstActionWithFullSwipe = true
         return swipeActionConfigurations
@@ -209,7 +203,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
             is_success(true)
         }
         deleteAction.image = #imageLiteral(resourceName: "Delete")
-        deleteAction.backgroundColor = Color.inkBlack
+        deleteAction.backgroundColor = Color.red
         let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeActionConfigurations.performsFirstActionWithFullSwipe = false
         return swipeActionConfigurations

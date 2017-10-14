@@ -37,7 +37,10 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func updateSearchResults(for searchController: UISearchController) {
-        // TODO: implement this
+        if let text = searchController.searchBar.text {
+            // TODO: implement this
+            print(text)
+        }
     }
     
     // MARK: - PersistentContainerDelegate
@@ -86,23 +89,25 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - UINavigationBar
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "New Task", message: "Add a new task", preferredStyle: UIAlertControllerStyle.alert)
-        var alertTextField: UITextField!
-        alertController.addTextField { textField in
-            alertTextField = textField
-            textField.keyboardAppearance = UIKeyboardAppearance.dark
-            textField.placeholder = "Task Name"
-            textField.autocapitalizationType = .sentences
-        }
-        let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            guard let taskName = alertTextField.text , !taskName.isEmpty else { return }
-            // add thing items to realm
-            self.createTask(taskName: taskName)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
-        alertController.addAction(cancelAction)
-        alertController.addAction(addAction)
-        present(alertController, animated: true, completion: nil)
+        
+
+//        let alertController = UIAlertController(title: "New Task", message: "Add a new task", preferredStyle: UIAlertControllerStyle.alert)
+//        var alertTextField: UITextField!
+//        alertController.addTextField { textField in
+//            alertTextField = textField
+//            textField.keyboardAppearance = UIKeyboardAppearance.dark
+//            textField.placeholder = "Task Name"
+//            textField.autocapitalizationType = .sentences
+//        }
+//        let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
+//            guard let taskName = alertTextField.text , !taskName.isEmpty else { return }
+//            // add thing items to realm
+//            self.createTask(taskName: taskName)
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+//        alertController.addAction(cancelAction)
+//        alertController.addAction(addAction)
+//        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - UITableView
@@ -117,6 +122,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     private func setupTableView() {
         self.tableView.backgroundColor = Color.inkBlack
+        self.tableView.register(UINib(nibName: TaskHeaderView.nibName, bundle: nil), forHeaderFooterViewReuseIdentifier: TaskHeaderView.header_id)
     }
 
     // MARK: - Lifecycle
@@ -155,7 +161,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.id, for: indexPath) as? TaskCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.cell_id, for: indexPath) as? TaskCell else {
             // Warning: verbose
             print(trace(file: #file, function: #function, line: #line))
             return UITableViewCell()
@@ -189,6 +195,22 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TaskHeaderView.header_id) as? TaskHeaderView {
+            return headerView
+        } else {
+            return nil
+        }
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
+    }
+
+    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return 44
     }
 

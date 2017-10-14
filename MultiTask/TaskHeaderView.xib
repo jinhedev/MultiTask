@@ -4,41 +4,51 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskHeaderView" customModule="MultiTask" customModuleProvider="target">
-            <connections>
-                <outlet property="segmentedControl" destination="9VF-yU-Ozg" id="92L-LU-746"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TaskHeaderView" customModule="MultiTask" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="506" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9VF-yU-Ozg">
-                    <rect key="frame" x="16" y="8" width="474" height="49"/>
-                    <segments>
-                        <segment title="Assigned"/>
-                        <segment title="Done"/>
-                    </segments>
-                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                </segmentedControl>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ev0-ES-v77">
+                    <rect key="frame" x="0.0" y="0.0" width="506" height="64"/>
+                    <subviews>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9VF-yU-Ozg">
+                            <rect key="frame" x="16" y="8" width="474" height="49"/>
+                            <segments>
+                                <segment title="Assigned"/>
+                                <segment title="Done"/>
+                            </segments>
+                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="9VF-yU-Ozg" firstAttribute="leading" secondItem="ev0-ES-v77" secondAttribute="leading" constant="16" id="5YX-p6-Ems"/>
+                        <constraint firstItem="9VF-yU-Ozg" firstAttribute="top" secondItem="ev0-ES-v77" secondAttribute="top" constant="8" id="6ZX-8C-fUZ"/>
+                        <constraint firstAttribute="trailing" secondItem="9VF-yU-Ozg" secondAttribute="trailing" constant="16" id="w8F-jc-IUy"/>
+                        <constraint firstAttribute="bottom" secondItem="9VF-yU-Ozg" secondAttribute="bottom" constant="8" id="wD4-YO-O8b"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="9VF-yU-Ozg" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="Dim-CQ-PA7"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="9VF-yU-Ozg" secondAttribute="bottom" constant="8" id="U7c-SN-M0A"/>
-                <constraint firstItem="9VF-yU-Ozg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="h3e-VM-e0O"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="9VF-yU-Ozg" secondAttribute="trailing" constant="16" id="vk4-o5-992"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="ev0-ES-v77" secondAttribute="trailing" id="25w-ZJ-rcA"/>
+                <constraint firstItem="ev0-ES-v77" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="4mA-pv-cBR"/>
+                <constraint firstAttribute="bottom" secondItem="ev0-ES-v77" secondAttribute="bottom" id="5pR-Oz-Pfr"/>
+                <constraint firstItem="ev0-ES-v77" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ecs-sc-sif"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="segmentedControl" destination="9VF-yU-Ozg" id="hPF-87-gfk"/>
+            </connections>
             <point key="canvasLocation" x="90" y="-249"/>
         </view>
     </objects>

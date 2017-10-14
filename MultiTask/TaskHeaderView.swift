@@ -8,14 +8,20 @@
 
 import UIKit
 
-class TaskHeaderView: UIView {
+class TaskHeaderView: UITableViewHeaderFooterView {
 
     // AMRK: - API
 
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    static let nibName = String(describing: TaskHeaderView.self)
+    static let header_id = String(describing: TaskHeaderView.self)
+    @IBOutlet weak var segmentedControl: UISegmentedControl! { didSet { updateView() } }
+
+    private func updateView() {
+        // TODO: implement this
+    }
 
     private func setupView() {
-        self.backgroundColor = Color.inkBlack
+        self.contentView.backgroundColor = Color.inkBlack
         self.segmentedControl.backgroundColor = Color.clear
     }
 
@@ -25,5 +31,10 @@ class TaskHeaderView: UIView {
         super.awakeFromNib()
         setupView()
     }
+
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        UINib(nibName: TaskHeaderView.nibName, bundle: nil).instantiate(withOwner: self, options: nil)
+//    }
 
 }

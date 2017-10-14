@@ -15,7 +15,7 @@ class TaskCell: UITableViewCell {
 
     var pendingTask: Task? { didSet { updateCell() } }
     var isDeleting: Bool = false { didSet { animateCell() } }
-    static let id = String(describing: TaskCell.self)
+    static let cell_id = String(describing: TaskCell.self)
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var taskLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -27,6 +27,11 @@ class TaskCell: UITableViewCell {
         if isDeleting == true {
             UIView.animate(withDuration: 0.7, delay: 0, options: [.allowUserInteraction], animations: {
                 self.containerView.backgroundColor = Color.red
+                self.taskLabel.textColor = Color.white
+                self.dateLabel.textColor = Color.white
+                self.itemsCountLabel.textColor = Color.white
+                self.separatorLabel.textColor = Color.white
+                self.idLabel.textColor = Color.white
             }, completion: nil)
         } else {
             UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {

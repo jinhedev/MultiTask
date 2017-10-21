@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50974351F4EA986007C6EAA /* WebServiceManager.swift */; };
-		C52183941F4271BC008B8276 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52183931F4271BC008B8276 /* EditView.swift */; };
 		C52681F21F8AB65B002BBFD2 /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C52681F11F8AB65B002BBFD2 /* TaskHeaderView.swift */; };
 		C52681F41F8AB71D002BBFD2 /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C52681F31F8AB71D002BBFD2 /* TaskHeaderView.xib */; };
 		C54B6A1F1F69165900ABC572 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B6A1E1F69165900ABC572 /* AppSettings.swift */; };
@@ -22,7 +21,8 @@
 		C55E26651F40DC17001743E4 /* MultiTaskUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26641F40DC17001743E4 /* MultiTaskUITests.swift */; };
 		C55E266D1F40DE02001743E4 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */; };
 		C55E26751F40F100001743E4 /* MultiTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26741F40F100001743E4 /* MultiTaskTests.swift */; };
-		C562B14B1F9261760090E432 /* EditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C562B14A1F9261760090E432 /* EditView.xib */; };
+		C562B14F1F946A540090E432 /* PopAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C562B14E1F946A540090E432 /* PopAnimator.swift */; };
+		C562B1511F947E250090E432 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C562B1501F947E250090E432 /* EditViewController.swift */; };
 		C587E1981F4F7D3700CC7FF8 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C587E1971F4F7D3700CC7FF8 /* KeychainManager.swift */; };
 		C587E19D1F4F8C6C00CC7FF8 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */; };
 		C587E19E1F4F8C6C00CC7FF8 /* Locksmith.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -42,9 +42,7 @@
 		C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8D91F3C1F5300601CFF /* Session.swift */; };
 		C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DC1F3C2CF100601CFF /* Constants.swift */; };
 		C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */; };
-		C5B00E4A1F8361C60032054C /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B00E491F8361C60032054C /* NotificationCell.swift */; };
 		C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E1566C1F484473006247C4 /* OnboardingViewController.swift */; };
-		C5EC4D081F81799D00DBF675 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D071F81799C00DBF675 /* NotificationsViewController.swift */; };
 		C5EC4D0A1F817C2B00DBF675 /* DynamicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D091F817C2B00DBF675 /* DynamicNavigationController.swift */; };
 		C5EC4D0C1F817C5800DBF675 /* DynamicTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */; };
 		C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F43B891F4AFDE100F702DE /* icon.png */; };
@@ -85,7 +83,6 @@
 
 /* Begin PBXFileReference section */
 		C50974351F4EA986007C6EAA /* WebServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceManager.swift; sourceTree = "<group>"; };
-		C52183931F4271BC008B8276 /* EditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 		C52681F11F8AB65B002BBFD2 /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
 		C52681F31F8AB71D002BBFD2 /* TaskHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
 		C54B6A1E1F69165900ABC572 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -101,7 +98,8 @@
 		C55E26721F40F100001743E4 /* MultiTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55E26741F40F100001743E4 /* MultiTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTaskTests.swift; sourceTree = "<group>"; };
 		C55E26761F40F100001743E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C562B14A1F9261760090E432 /* EditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditView.xib; sourceTree = "<group>"; };
+		C562B14E1F946A540090E432 /* PopAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimator.swift; sourceTree = "<group>"; };
+		C562B1501F947E250090E432 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		C587E1971F4F7D3700CC7FF8 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -122,9 +120,7 @@
 		C5A9A8D91F3C1F5300601CFF /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
-		C5B00E491F8361C60032054C /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		C5E1566C1F484473006247C4 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		C5EC4D071F81799C00DBF675 /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		C5EC4D091F817C2B00DBF675 /* DynamicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicNavigationController.swift; sourceTree = "<group>"; };
 		C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTabBarController.swift; sourceTree = "<group>"; };
 		C5F43B891F4AFDE100F702DE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -238,7 +234,7 @@
 				C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */,
 				C5A9A8A51F3BB06C00601CFF /* TasksViewController.swift */,
 				C5A9A8C21F3BD51000601CFF /* ItemsViewController.swift */,
-				C5EC4D071F81799C00DBF675 /* NotificationsViewController.swift */,
+				C562B1501F947E250090E432 /* EditViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -248,7 +244,6 @@
 			children = (
 				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
 				C5A9A8AE1F3BB06C00601CFF /* LaunchScreen.storyboard */,
-				C562B14A1F9261760090E432 /* EditView.xib */,
 				C52681F31F8AB71D002BBFD2 /* TaskHeaderView.xib */,
 			);
 			name = Storyboards;
@@ -284,9 +279,8 @@
 			children = (
 				C5A9A8BE1F3BC0A200601CFF /* TaskCell.swift */,
 				C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */,
-				C52183931F4271BC008B8276 /* EditView.swift */,
-				C5B00E491F8361C60032054C /* NotificationCell.swift */,
 				C52681F11F8AB65B002BBFD2 /* TaskHeaderView.swift */,
+				C562B14E1F946A540090E432 /* PopAnimator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -453,7 +447,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5A9A8B01F3BB06C00601CFF /* LaunchScreen.storyboard in Resources */,
-				C562B14B1F9261760090E432 /* EditView.xib in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */,
 				C52681F41F8AB71D002BBFD2 /* TaskHeaderView.xib in Resources */,
@@ -503,15 +496,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C562B1511F947E250090E432 /* EditViewController.swift in Sources */,
 				C5A9A8BF1F3BC0A200601CFF /* TaskCell.swift in Sources */,
 				C5A9A8C31F3BD51000601CFF /* ItemsViewController.swift in Sources */,
-				C5B00E4A1F8361C60032054C /* NotificationCell.swift in Sources */,
-				C5EC4D081F81799D00DBF675 /* NotificationsViewController.swift in Sources */,
-				C52183941F4271BC008B8276 /* EditView.swift in Sources */,
 				C55E26541F3F67FD001743E4 /* AnalyticsManager.swift in Sources */,
 				C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */,
 				C5A9A8B81F3BB76B00601CFF /* Utilities.swift in Sources */,
 				C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */,
+				C562B14F1F946A540090E432 /* PopAnimator.swift in Sources */,
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
 				C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */,
 				C5EC4D0A1F817C2B00DBF675 /* DynamicNavigationController.swift in Sources */,

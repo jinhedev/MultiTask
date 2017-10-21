@@ -15,6 +15,7 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     // MARK: - API
 
     var selectedTask: Task?
+    static let storyboard_id = String(describing: ItemsViewController.self)
 
     // MARK: - UISearchController & UISearchResultsUpdating
 

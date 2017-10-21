@@ -73,7 +73,7 @@ class TaskCell: UITableViewCell {
         self.backgroundColor = Color.clear
         self.contentView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.layer.cornerRadius = 8.0
+        self.containerView.layer.cornerRadius = 5.0
         self.containerView.clipsToBounds = true
         self.idLabel.textColor = Color.lightGray
         self.idLabel.backgroundColor = Color.clear

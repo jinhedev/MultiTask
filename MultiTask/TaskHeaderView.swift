@@ -32,9 +32,4 @@ class TaskHeaderView: UITableViewHeaderFooterView {
         setupView()
     }
 
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        UINib(nibName: TaskHeaderView.nibName, bundle: nil).instantiate(withOwner: self, options: nil)
-//    }
-
 }

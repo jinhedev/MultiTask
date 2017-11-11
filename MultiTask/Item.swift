@@ -12,7 +12,7 @@ import RealmSwift
 final class Item: Object {
 
     dynamic var id = ""
-    dynamic var note = ""
+    dynamic var title = ""
     dynamic var is_completed = false
     dynamic var created_at = NSDate()
     dynamic var updated_at = NSDate()
@@ -23,10 +23,10 @@ final class Item: Object {
         return "id"
     }
 
-    convenience init(id: String, note: String, is_completed: Bool, created_at: NSDate, updated_at: NSDate) {
+    convenience init(id: String, title: String, is_completed: Bool, created_at: NSDate, updated_at: NSDate) {
         self.init()
         self.id = id
-        self.note = note
+        self.title = title
         self.is_completed = is_completed
         self.created_at = created_at
         self.updated_at = updated_at

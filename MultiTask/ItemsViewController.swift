@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import RealmSwift
 import AVFoundation
+import RealmSwift
 
-class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, Loggable {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate {
 
     // MARK: - API
 
@@ -43,12 +43,12 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     var realmManager: RealmManager?
 
-    func createItem(note: String) {
+    func createItem(title: String) {
         guard let task = selectedTask else {
             print(trace(file: #file, function: #function, line: #line))
             return
         }
-        let newItem = Item(id: NSUUID().uuidString, note: note, is_completed: false, created_at: NSDate(), updated_at: NSDate())
+        let newItem = Item(id: NSUUID().uuidString, title: title, is_completed: false, created_at: NSDate(), updated_at: NSDate())
         realmManager?.appendItem(to: task, with: newItem)
     }
 
@@ -57,22 +57,21 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         realmManager!.delegate = self
     }
 
-    func container(_ manager: RealmManager, didErr error: Error) {
-        playAlertSound(type: AlertSoundType.error)
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
-        print(trace(file: #file, function: #function, line: #line))
     }
 
-    func containerDidUpdateTasks(_ manager: RealmManager) {
-        guard let itemCount = selectedTask?.items.count, let numberOfCompletedItems = selectedTask?.items.filter({$0.is_completed == true}).count else { return }
-        if (itemCount != 0) && (itemCount == numberOfCompletedItems) {
-            self.scheduleNavigationPrompt(with: "Task Completed", duration: 4)
-        }
-        // reload cell at indexPath
-        reloadTableView()
+    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
+//        guard let itemCount = selectedTask?.items.count else { return }
+//        guard let numberOfCompletedItems = selectedTask?.items.filter {$0.is_completed == true} else { return }
+//        if (itemCount != 0) && (itemCount == numberOfCompletedItems.count) {
+//            self.scheduleNavigationPrompt(with: "Task Completed", duration: 4)
+//        }
+//        // reload cell at indexPath
+//        reloadTableView()
     }
 
-    func containerDidDeleteTasks(_ manager: RealmManager) {
+    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]) {
         guard let task = self.selectedTask else {
             print(trace(file: #file, function: #function, line: #line))
             return
@@ -87,13 +86,13 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         var alertTextField: UITextField!
         alertController.addTextField { textField in
             alertTextField = textField
-            textField.placeholder = "Note"
+            textField.placeholder = "title"
             textField.keyboardAppearance = UIKeyboardAppearance.dark
             textField.autocapitalizationType = .sentences
         }
         let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            guard let note = alertTextField.text , !note.isEmpty else { return }
-            self.createItem(note: note)
+            guard let title = alertTextField.text , !title.isEmpty else { return }
+            self.createItem(title: title)
             guard let task = self.selectedTask else { return }
             self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
         }
@@ -101,38 +100,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         alertController.addAction(cancelAction)
         alertController.addAction(addAction)
         present(alertController, animated: true, completion: nil)
-    }
-
-    var timer: Timer?
-
-    func scheduleNavigationPrompt(with message: String, duration: TimeInterval) {
-        DispatchQueue.main.async {
-            self.navigationItem.prompt = message
-            self.timer = Timer.scheduledTimer(timeInterval: duration,
-                                              target: self,
-                                              selector: #selector(self.removePrompt),
-                                              userInfo: nil,
-                                              repeats: false)
-            self.timer?.tolerance = 5
-        }
-    }
-
-    @objc private func removePrompt() {
-        if navigationItem.prompt != nil {
-            DispatchQueue.main.async {
-                self.navigationItem.prompt = nil
-            }
-        }
-    }
-
-    private func setupNavigationController() {
-        navigationController?.navigationBar.barTintColor = Color.midNightBlack
-    }
-
-    // MARK: - UITabBar
-
-    private func setupTabBarController() {
-        tabBarController?.tabBar.barTintColor = Color.midNightBlack
     }
 
     // MARK: - UITableView
@@ -154,7 +121,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        setupNavigationController()
         setupSearchController()
         setupRealmManager()
     }
@@ -166,7 +132,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupTabBarController()
 //        setupNotificationForCompletionSwitch()
     }
 
@@ -178,7 +143,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.isDeleting = false
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
             cell.isCompleting = true
@@ -194,7 +158,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return swipeActionConfigurations
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
             cell.isDeleting = true
@@ -251,39 +214,6 @@ class ItemsViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PopAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+class PopTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     // MARK: - API
 

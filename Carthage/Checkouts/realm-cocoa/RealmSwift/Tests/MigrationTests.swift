@@ -19,7 +19,6 @@
 import XCTest
 import RealmSwift
 import Realm
-import Realm.Private
 import Realm.Dynamic
 import Foundation
 
@@ -117,8 +116,16 @@ class MigrationTests: TestCase {
         _ = try! Realm()
         XCTAssertEqual(0, try! schemaVersionAtURL(defaultRealmURL()),
                        "Initial version should be 0")
-        assertFails(.fail) {
-            try schemaVersionAtURL(URL(fileURLWithPath: "/dev/null"))
+
+        do {
+            _ = try schemaVersionAtURL(URL(fileURLWithPath: "/dev/null"))
+            XCTFail("Expected .filePermissionDenied or .fileAccess, but no error was raised")
+        } catch Realm.Error.filePermissionDenied {
+            // Success!
+        } catch Realm.Error.fileAccess {
+            // Success!
+        } catch {
+            XCTFail("Expected .filePermissionDenied or .fileAccess, got \(error)")
         }
     }
 
@@ -359,6 +366,34 @@ class MigrationTests: TestCase {
             migration.enumerateObjects(ofType: "SwiftBoolObject") { _, _ in
                 XCTFail("This line should not executed since all objects have been deleted.")
             }
+        }
+    }
+
+    func testEnumerateObjectsAfterDeleteData() {
+        autoreleasepool {
+            // add object
+            try! Realm().write {
+                try! Realm().create(SwiftStringObject.self, value: ["1"])
+                try! Realm().create(SwiftStringObject.self, value: ["2"])
+                try! Realm().create(SwiftStringObject.self, value: ["3"])
+            }
+        }
+
+        migrateAndTestDefaultRealm(1) { migration, _ in
+            var count = 0
+            migration.enumerateObjects(ofType: "SwiftStringObject") { _, _ in
+                count += 1
+            }
+            XCTAssertEqual(count, 3)
+
+            migration.deleteData(forType: "SwiftStringObject")
+            migration.create("SwiftStringObject", value: ["A"])
+
+            count = 0
+            migration.enumerateObjects(ofType: "SwiftStringObject") { _, _ in
+                count += 1
+            }
+            XCTAssertEqual(count, 0)
         }
     }
 

@@ -1,8 +1,8 @@
 //
-//  PendingCell.swift
+//  InformationCell.swift
 //  MultiTask
 //
-//  Created by rightmeow on 8/9/17.
+//  Created by rightmeow on 10/24/17.
 //  Copyright © 2017 Duckensburg. All rights reserved.
 //
 
@@ -11,52 +11,54 @@ import RealmSwift
 
 class TaskCell: UITableViewCell {
 
-    // MARK: - API
+    // MARK: - Public API
 
-    var pendingTask: Task? { didSet { updateCell() } }
-    var isDeleting: Bool = false { didSet { animateCell() } }
+    var task: Task? { didSet { self.configureCell(task: task) } }
     static let cell_id = String(describing: TaskCell.self)
+    static let nibName = String(describing: TaskCell.self)
+    override var isEditing: Bool { didSet { self.animateCell(isEditing: isEditing) } }
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var taskLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var itemsCountLabel: UILabel!
-    @IBOutlet weak var separatorLabel: UILabel!
-    @IBOutlet weak var idLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var createdAtLabel: UILabel!
+    @IBOutlet weak var statsLabel: UILabel!
 
-    private func animateCell() {
-        if isDeleting == true {
-            UIView.animate(withDuration: 0.7, delay: 0, options: [.allowUserInteraction], animations: {
+    func animateCell(isEditing: Bool) {
+        if isEditing {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.containerView.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
                 self.containerView.backgroundColor = Color.red
-                self.taskLabel.textColor = Color.white
-                self.dateLabel.textColor = Color.white
-                self.itemsCountLabel.textColor = Color.white
-                self.separatorLabel.textColor = Color.white
-                self.idLabel.textColor = Color.white
-            }, completion: nil)
+            })
         } else {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-                self.setupCell()
-            }, completion: nil)
+            UIView.animate(withDuration: 0.3, animations: {
+                self.containerView.transform = CGAffineTransform.identity
+                self.containerView.backgroundColor = Color.midNightBlack
+            })
         }
     }
 
-    private func updateCell() {
-        if let pendingTask = self.pendingTask {
-            idLabel.text = pendingTask.id
-            taskLabel.text = pendingTask.name
-            dateLabel.text = pendingTask.created_at.toRelativeDate()
-            itemsCountLabel.text = String(describing: calculateCountForCompletedItems(items: pendingTask.items)) + "/" + String(describing: pendingTask.items.count)
-        }
+    func animateBorderColor(_ view: UIView, duration: TimeInterval, color: Color) {
+        UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction, .curveEaseInOut], animations: {
+            view.layer.borderColor = color.cgColor
+        }, completion: nil)
     }
 
-    func addGradientSublayer() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.containerView.frame
-        gradientLayer.colors = [Color.midNightBlack.cgColor, Color.inkBlack.cgColor]
-        gradientLayer.locations = [0.0, 0.5]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        self.containerView.layer.addSublayer(gradientLayer)
+    // MARK: - Private API
+
+    private func configureCell(task: Task?) {
+        if let task = task {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.titleLabel.text = task.title
+                self.subtitleLabel.text = task.id
+                self.createdAtLabel.text = task.created_at.toRelativeDate()
+                self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
+                if task.is_completed {
+                    self.createdAtLabel.textColor = Color.seaweedGreen
+                } else {
+                    self.createdAtLabel.textColor = Color.mandarinOrange
+                }
+            })
+        }
     }
 
     private func calculateCountForCompletedItems(items: List<Item>) -> Int {
@@ -70,40 +72,55 @@ class TaskCell: UITableViewCell {
     }
 
     private func setupCell() {
-        self.backgroundColor = Color.clear
-        self.contentView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.layer.cornerRadius = 5.0
+        self.containerView.layer.cornerRadius = 5
+        self.containerView.layer.borderColor = Color.clear.cgColor
+        self.containerView.layer.borderWidth = 1
         self.containerView.clipsToBounds = true
-        self.idLabel.textColor = Color.lightGray
-        self.idLabel.backgroundColor = Color.clear
-        self.taskLabel.textColor = Color.white
-        self.taskLabel.backgroundColor = Color.clear
-        self.dateLabel.textColor = Color.lightGray
-        self.dateLabel.backgroundColor = Color.clear
-        self.itemsCountLabel.textColor = Color.lightGray
-        self.itemsCountLabel.backgroundColor = Color.clear
-        self.separatorLabel.textColor = Color.lightGray
-        self.separatorLabel.backgroundColor = Color.clear
+        self.containerView.layer.masksToBounds = true
+        self.titleLabel.text?.removeAll()
+        self.subtitleLabel.text?.removeAll()
+        self.createdAtLabel.text?.removeAll()
+        self.statsLabel.text?.removeAll()
+        self.titleLabel.backgroundColor = Color.clear
+        self.subtitleLabel.backgroundColor = Color.clear
+        self.createdAtLabel.backgroundColor = Color.clear
+        self.statsLabel.backgroundColor = Color.clear
+    }
+
+    private func resetDataForReuse() {
+        self.titleLabel.text?.removeAll()
+        self.subtitleLabel.text?.removeAll()
+        self.createdAtLabel.text?.removeAll()
+        self.statsLabel.text?.removeAll()
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if selected {
+            self.animateBorderColor(self.containerView, duration: 0.3, color: .mandarinOrange)
+        } else {
+            self.animateBorderColor(self.containerView, duration: 0.3, color: .clear)
+        }
     }
 
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        setupCell()
+        self.setupCell()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.idLabel.text = nil
-        self.taskLabel.text = nil
-        self.dateLabel.text = nil
-        self.separatorLabel.text = nil
-        self.itemsCountLabel.text = nil
+        self.resetDataForReuse()
     }
-
+    
 }
+
+
+
+
 
 
 

@@ -81,7 +81,7 @@ extension AppDelegate: PersistentContainerDelegate {
         realmManager!.delegate = self
     }
 
-    func container(_ manager: RealmManager, didErr error: Error) {
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
 

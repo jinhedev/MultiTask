@@ -66,9 +66,9 @@ class KeychainManager: NSObject {
 }
 
 struct KeychainSettings {
-    static let keychainAccount: String = "com.rightmeow.multitask"
-    static let keychainService: String = "com.rightmeow.multitask"
-    static let keychainGroup: String = "com.rightmeow.multitask"
+    static let keychainAccount: String = "com.rightmeow.multitask.keychainAccount"
+    static let keychainService: String = "com.rightmeow.multitask.keychainService"
+    static let keychainGroup: String = "com.rightmeow.multitask.keychainGroup"
 }
 
 enum KeychainType: String {

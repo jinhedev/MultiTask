@@ -43,7 +43,7 @@ class ItemCell: UITableViewCell {
 
     private func updateCell() {
         guard let item = self.item else { return }
-        self.itemTextView.text = item.note
+        self.itemTextView.text = item.title
         self.idLabel.text = item.id
         if item.is_completed == true {
             self.backgroundColor = Color.inkBlack
@@ -65,6 +65,7 @@ class ItemCell: UITableViewCell {
 //    }
 
     private func setupCell() {
+        self.selectionStyle = .none
         self.backgroundColor = Color.midNightBlack
         self.contentView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.midNightBlack

@@ -10,13 +10,12 @@ import UIKit
 import RealmSwift
 import AVFoundation
 
-class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate, PersistentContainerDelegate, UISearchResultsUpdating, EditViewDelegate {
+class TasksViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerTransitioningDelegate, PersistentContainerDelegate, UISearchResultsUpdating, EditTaskViewControllerDelegate {
 
     // MARK: - API
 
     let PAGE_SIZE: Int = 20
-    let preloadMargin: Int = 5
-    var lastLoadedPage: Int = 0
+    let CURRENT_PAGE: Int = 0
 
     var tasks: [Results<Task>]?
     var notificationToken: NotificationToken?
@@ -24,22 +23,16 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // MARK: - UISearchController & UISearchResultsUpdating
 
-    lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        controller.searchResultsUpdater = self
-        controller.searchBar.tintColor = Color.white
-        controller.dimsBackgroundDuringPresentation = true
-        controller.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        controller.searchBar.placeholder = "Search"
-        return controller
-    }()
+    let searchController = UISearchController(searchResultsController: nil)
 
-    private func setupSearchBar() {
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // TODO: Fallback on earlier versions
-        }
+    private func setupSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.tintColor = Color.white
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
+        searchController.searchBar.placeholder = "Search"
+        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -58,10 +51,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     private func setupNotifications() {
-        notificationToken = realm.addNotificationBlock { [unowned self] notification, realm in
-            print(notification)
-            // TODO: retrieve data from the database
-        }
+        // TODO: implement this
     }
 
     private func setupRealmManager() {
@@ -72,17 +62,15 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func createTask(taskName: String) {
         let task = Task()
         task.id = NSUUID().uuidString
-        task.name = taskName
+        task.title = taskName
         realmManager?.createObjects(objects: [task])
     }
 
-    func container(_ manager: RealmManager, didErr error: Error) {
-        playAlertSound(type: AlertSoundType.error)
-        //        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
-        print(trace(file: #file, function: #function, line: #line))
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+//        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
     }
 
-    func containerDidFetch(_ manager: RealmManager, tasks: Results<Task>) {
+    func persistentContainer(_ manager: RealmManager, didFetch tasks: Results<Task>) {
         if self.tasks == nil {
             self.tasks = [Results<Task>]()
             self.tasks!.append(tasks)
@@ -92,14 +80,13 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         self.reloadTableView()
     }
 
-    func containerDidCreateTasks(_ manager: RealmManager) {
+    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
         manager.fetchTasks(predicate: Task.pendingPredicate)
         reloadTableView()
     }
 
-    func containerDidUpdateTasks() {
+    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
         realmManager?.fetchTasks(predicate: Task.pendingPredicate)
-        reloadTableView()
     }
 
     // MARK: - UINavigationBar
@@ -107,39 +94,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var addButton: UIBarButtonItem!
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
-        guard let editViewController = storyboard?.instantiateViewController(withIdentifier: EditViewController.storyboard_id) as? EditViewController else { return }
-        editViewController.transitioningDelegate = self
-        editViewController.delegate = self
-        self.present(editViewController, animated: true, completion: nil)
-
-//        let alertController = UIAlertController(title: "New Task", message: "Add a new task", preferredStyle: UIAlertControllerStyle.alert)
-//        var alertTextField: UITextField!
-//        alertController.addTextField { textField in
-//            alertTextField = textField
-//            textField.keyboardAppearance = UIKeyboardAppearance.dark
-//            textField.placeholder = "Task Name"
-//            textField.autocapitalizationType = .sentences
-//        }
-//        let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-//            guard let taskName = alertTextField.text , !taskName.isEmpty else { return }
-//            // add thing items to realm
-//            self.createTask(taskName: taskName)
-//        }
-//        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
-//        alertController.addAction(cancelAction)
-//        alertController.addAction(addAction)
-//        present(alertController, animated: true, completion: nil)
-    }
-
-    // MARK: - EditViewDelegate
-
-    private func setupEditViewDelegate() {
-        // TODO: implement this
-    }
-
-    func editView(_ controller: EditViewController, didSave input: String) {
-        // TODO: implement this
-        print(input)
+        // TODO: handle segue
     }
 
     // MARK: - UITableView
@@ -155,17 +110,19 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     private func setupTableView() {
         self.tableView.backgroundColor = Color.inkBlack
         self.tableView.register(UINib(nibName: TaskHeaderView.nibName, bundle: nil), forHeaderFooterViewReuseIdentifier: TaskHeaderView.header_id)
+        self.tableView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellReuseIdentifier: TaskCell.cell_id)
     }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        setupSearchBar()
-        setupRealmManager()
-        setupNotifications()
+        self.setupTableView()
+        self.setupSearchController()
+        self.setupRealmManager()
+        self.setupNotifications()
         realmManager?.fetchTasks(predicate: Task.pendingPredicate)
+        print(realmManager?.pathForContainer)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -178,7 +135,7 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 print(trace(file: #file, function: #function, line: #line))
                 return
             }
-            itemsViewController.navigationItem.title = selectedTask.name
+            itemsViewController.navigationItem.title = selectedTask.title
             itemsViewController.selectedTask = selectedTask
         }
     }
@@ -192,23 +149,23 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     // MARK: - UIViewControllerTransitioningDelegate
 
-    let popTransition = PopAnimator()
+    let popTransitionAnimator = PopTransitionAnimator()
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if let barButtonView = self.navigationItem.rightBarButtonItem?.value(forKey: "view") as? UIView {
-            let barButtonFrame = barButtonView.frame
-            popTransition.originFrame = barButtonFrame
-            popTransition.isPresenting = true
-            return popTransition
+        if let addButtonView = self.addButton.value(forKey: "view") as? UIView {
+            let barButtonFrame = addButtonView.frame
+            popTransitionAnimator.originFrame = barButtonFrame
+            popTransitionAnimator.isPresenting = true
+            return popTransitionAnimator
         } else {
             return nil
         }
     }
 
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        // MARK: - implement this
-        popTransition.isPresenting = false
-        return popTransition
+        // TODO: - implement this
+        popTransitionAnimator.isPresenting = false
+        return popTransitionAnimator
     }
 
     // MARK: - UITableViewDataSource
@@ -226,28 +183,39 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.cell_id, for: indexPath) as? TaskCell else {
-            // Warning: verbose
-            print(trace(file: #file, function: #function, line: #line))
+        if tasks != nil {
+            guard let taskCell = tableView.dequeueReusableCell(withIdentifier: TaskCell.cell_id, for: indexPath) as? TaskCell else {
+                print(trace(file: #file, function: #function, line: #line))
+                return UITableViewCell()
+            }
+            let task = tasks?[indexPath.section][indexPath.row]
+            taskCell.task = task
+            return taskCell
+        } else {
             return UITableViewCell()
         }
-        let task = tasks?[indexPath.section][indexPath.row]
-        cell.pendingTask = task
-        return cell
+    }
+
+    // MARK: - EditTaskViewControllerDelegate
+
+    func editTaskViewController(_ viewController: EditTaskViewController, didTap saveButton: UIButton, toSave task: Task) {
+        // TODO: implement this
+        print(task)
     }
 
     // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         if let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.isDeleting = false
+            // TODO: animate end of editing
+            print(cell)
         }
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell = tableView.cellForRow(at: indexPath) as? TaskCell {
-            cell.isDeleting = true
+            // TODO: animate editing
+            print(cell)
         }
         let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Delete") { (action, view, is_success) in
             is_success(true)
@@ -260,20 +228,13 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TaskHeaderView.header_id) as? TaskHeaderView
-        return headerView
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 44
+        if tasks == nil {
+            // user has not created any tasks, show a placeholder cell
+            let tableViewHeight = self.tableView.frame.height
+            return tableViewHeight
+        } else {
+            return 44
+        }
     }
 
     // MARK: - UIViewControllerPreviewingDelegate

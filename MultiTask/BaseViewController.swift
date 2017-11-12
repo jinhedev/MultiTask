@@ -44,9 +44,9 @@ class BaseViewController: UIViewController {
     }
 
     // MARK: - Navigation prompt
-
+    
     var timer: Timer?
-
+    
     func scheduleNavigationPrompt(with message: String, duration: TimeInterval) {
         DispatchQueue.main.async {
             self.navigationItem.prompt = message
@@ -58,7 +58,7 @@ class BaseViewController: UIViewController {
             self.timer?.tolerance = 5
         }
     }
-
+    
     @objc private func removePrompt() {
         if navigationItem.prompt != nil {
             DispatchQueue.main.async {
@@ -67,15 +67,10 @@ class BaseViewController: UIViewController {
         }
     }
 
-    private func setupNavigationController() {
-        navigationController?.navigationBar.barTintColor = Color.midNightBlack
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationController()
         self.setupView()
     }
 

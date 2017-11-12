@@ -9,21 +9,21 @@
 import UIKit
 import RealmSwift
 
-class ItemCell: UITableViewCell {
+class ItemCell: BaseTableViewCell {
 
     // MARK: - API
 
     var item: Item? { didSet { updateCell() } }
+
     static let cell_id = String(describing: ItemCell.self)
+    static let nibName = String(describing: ItemCell.self)
     var isCompleting: Bool = false { didSet { animateCell() } }
     var isDeleting: Bool = false { didSet { animateCell() } }
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var idLabel: UILabel!
-    @IBOutlet weak var itemTextView: UITextView!
+    @IBOutlet weak var titleTextView: UITextView!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var delegateLabel: UILabel!
-    @IBOutlet weak var separatorLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var separatorView: UIView!
 
     private func animateCell() {
         if isDeleting == true {
@@ -43,15 +43,15 @@ class ItemCell: UITableViewCell {
 
     private func updateCell() {
         guard let item = self.item else { return }
-        self.itemTextView.text = item.title
-        self.idLabel.text = item.id
+        self.titleTextView.text = item.title
+        self.subtitleLabel.text = item.id
         if item.is_completed == true {
             self.backgroundColor = Color.inkBlack
-            self.itemTextView.textColor = Color.lightGray
+            self.titleTextView.textColor = Color.lightGray
             self.dateLabel.textColor = Color.seaweedGreen
         } else {
             self.backgroundColor = Color.midNightBlack
-            self.itemTextView.textColor = Color.white
+            self.titleTextView.textColor = Color.white
             self.dateLabel.textColor = Color.lightGray
         }
     }
@@ -69,17 +69,14 @@ class ItemCell: UITableViewCell {
         self.backgroundColor = Color.midNightBlack
         self.contentView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.midNightBlack
-        self.idLabel.textColor = Color.lightGray
-        self.idLabel.backgroundColor = Color.clear
-        self.separatorView.backgroundColor = Color.darkGray
-        self.itemTextView.textColor = Color.white
-        self.itemTextView.tintColor = Color.orange
-        self.itemTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
-        self.itemTextView.backgroundColor = Color.clear
+        self.subtitleLabel.textColor = Color.lightGray
+        self.subtitleLabel.backgroundColor = Color.clear
+        self.titleTextView.textColor = Color.white
+        self.titleTextView.tintColor = Color.orange
+        self.titleTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+        self.titleTextView.backgroundColor = Color.clear
         self.delegateLabel.backgroundColor = Color.clear
         self.delegateLabel.textColor = Color.lightGray
-        self.separatorLabel.backgroundColor = Color.clear
-        self.separatorLabel.textColor = Color.lightGray
         self.dateLabel.backgroundColor = Color.clear
         self.dateLabel.textColor = Color.lightGray
     }
@@ -93,9 +90,8 @@ class ItemCell: UITableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        itemTextView.text = nil
+        titleTextView.text = nil
         delegateLabel.text = nil
-        separatorLabel.text = nil
         dateLabel.text = nil
     }
 

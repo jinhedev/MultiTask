@@ -97,7 +97,7 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
             cell.menu = menus[indexPath.item]
             return cell
         } else {
-            return UICollectionViewCell()
+            return BaseCollectionViewCell()
         }
     }
 

@@ -11,8 +11,11 @@ import Foundation
 // MARK: - Segue IDs
 
 struct Segue {
-    static let TaskCellToItemsViewController = "TaskCellToItemsViewController"
+    static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
+    static let CompletedTaskCellToItemsViewController = "CompletedTaskCellToItemsViewController"
     static let MenuBarContainerViewToMenuBarViewController = "MenuBarContainerViewToMenuBarViewController"
+    static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
+    static let TasksContainerViewToPageViewController = "TasksContainerViewToPageViewController"
 }
 
 // MARK: - Color

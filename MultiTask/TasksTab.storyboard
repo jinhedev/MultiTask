@@ -10,32 +10,6 @@
     </dependencies>
     <scenes>
         <!--Tasks-->
-        <scene sceneID="nyz-Qs-HHx">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RvL-qL-rDx" customClass="DynamicNavigationController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="Starfish" landscapeImage="Starfish" largeContentSizeImage="Starfish" badgeValue="3" id="VMU-Xy-4zd"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" largeTitles="YES" id="o3p-TV-zcm">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="1" green="0.49803921568627452" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <color key="textShadowColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="z0N-2Y-Y34" kind="relationship" relationship="rootViewController" id="Dpt-iK-K3A"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zkF-Wc-3Bt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="750" y="18"/>
-        </scene>
-        <!--Tasks-->
         <scene sceneID="hgm-Wn-b8p">
             <objects>
                 <viewController id="dsH-gt-lIU" customClass="MainTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
@@ -45,6 +19,7 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ua8-gK-niy">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="prE-0a-eNe"/>
                                 </constraints>
@@ -52,94 +27,43 @@
                                     <segue destination="bSN-m0-CI0" kind="embed" identifier="MenuBarContainerViewToMenuBarViewController" id="ycR-CD-dDK"/>
                                 </connections>
                             </containerView>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="WC5-Zb-gaY">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Krh-gR-vv0">
                                 <rect key="frame" x="0.0" y="44" width="375" height="507"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6Q1-x1-SHH">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="dataSource" destination="dsH-gt-lIU" id="pyX-kc-ftE"/>
-                                    <outlet property="delegate" destination="dsH-gt-lIU" id="VcG-UO-CpX"/>
+                                    <segue destination="cfL-Th-EVs" kind="embed" identifier="TasksContainerViewToPageViewController" id="pQI-HR-Ghc"/>
                                 </connections>
-                            </collectionView>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="WC5-Zb-gaY" secondAttribute="trailing" id="G0z-4b-cu9"/>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="bottom" secondItem="WC5-Zb-gaY" secondAttribute="bottom" id="NSA-mi-UFQ"/>
+                            <constraint firstItem="Krh-gR-vv0" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="Dn2-T7-Fc9"/>
+                            <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="Krh-gR-vv0" secondAttribute="trailing" id="LBr-cO-OVy"/>
+                            <constraint firstItem="Krh-gR-vv0" firstAttribute="top" secondItem="Ua8-gK-niy" secondAttribute="bottom" id="PcE-8T-vGb"/>
                             <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="Ua8-gK-niy" secondAttribute="trailing" id="UVx-xk-oRF"/>
-                            <constraint firstItem="WC5-Zb-gaY" firstAttribute="top" secondItem="Ua8-gK-niy" secondAttribute="bottom" id="Vnt-5B-b74"/>
                             <constraint firstItem="Ua8-gK-niy" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="dhT-Fx-083"/>
-                            <constraint firstItem="WC5-Zb-gaY" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="f77-e2-eIT"/>
+                            <constraint firstItem="Un2-CH-2LP" firstAttribute="bottom" secondItem="Krh-gR-vv0" secondAttribute="bottom" id="gcT-LZ-F5k"/>
                             <constraint firstItem="Ua8-gK-niy" firstAttribute="top" secondItem="Un2-CH-2LP" secondAttribute="top" id="hUU-TS-zo7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Un2-CH-2LP"/>
                     </view>
                     <navigationItem key="navigationItem" title="Tasks" id="gC8-og-jR3">
-                        <barButtonItem key="rightBarButtonItem" image="Plus" landscapeImage="Plus" largeContentSizeImage="Plus" id="oYD-2Z-rIe"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="collectionView" destination="WC5-Zb-gaY" id="0S7-rO-FKk"/>
-                        <outlet property="menuBarContainerView" destination="Ua8-gK-niy" id="Rif-53-Dqd"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="zaV-bv-Y6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1724" y="-702"/>
-        </scene>
-        <!--Tasks-->
-        <scene sceneID="waM-DK-gai">
-            <objects>
-                <viewController storyboardIdentifier="TasksViewController" id="z0N-2Y-Y34" customClass="TasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="7Rj-L4-gTm"/>
-                        <viewControllerLayoutGuide type="bottom" id="fZ7-C5-4uc"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6h3-6M-YRv">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mDI-mq-9hD">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="z0N-2Y-Y34" id="tcr-xc-cmC"/>
-                                    <outlet property="delegate" destination="z0N-2Y-Y34" id="p5q-fP-kkN"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="mDI-mq-9hD" firstAttribute="top" secondItem="322-XU-1dI" secondAttribute="top" id="mE8-Sg-Taq"/>
-                            <constraint firstItem="322-XU-1dI" firstAttribute="trailing" secondItem="mDI-mq-9hD" secondAttribute="trailing" id="nRr-DM-UIJ"/>
-                            <constraint firstItem="mDI-mq-9hD" firstAttribute="leading" secondItem="322-XU-1dI" secondAttribute="leading" id="r4j-w1-HsE"/>
-                            <constraint firstItem="322-XU-1dI" firstAttribute="bottom" secondItem="mDI-mq-9hD" secondAttribute="bottom" id="tGO-Uf-nma"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="322-XU-1dI"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Tasks" id="ZUM-c3-uYN">
-                        <barButtonItem key="rightBarButtonItem" image="Plus" landscapeImage="Plus" largeContentSizeImage="Plus" id="sQL-sA-MMi">
+                        <barButtonItem key="rightBarButtonItem" image="Plus" landscapeImage="Plus" largeContentSizeImage="Plus" id="oYD-2Z-rIe">
                             <connections>
-                                <segue destination="Qb7-A2-IyR" kind="presentation" modalPresentationStyle="overFullScreen" id="IkF-37-Zlh"/>
+                                <action selector="handleAdd:" destination="dsH-gt-lIU" id="hHy-QN-AbR"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addButton" destination="sQL-sA-MMi" id="CGm-An-wLS"/>
-                        <outlet property="tableView" destination="mDI-mq-9hD" id="Fjt-aq-vlt"/>
-                        <segue destination="4U5-QD-6XH" kind="show" identifier="TaskCellToItemsViewController" id="wj7-6p-85l">
-                            <nil key="action"/>
-                        </segue>
+                        <outlet property="addButton" destination="oYD-2Z-rIe" id="Pb6-15-T3v"/>
+                        <outlet property="menuBarContainerView" destination="Ua8-gK-niy" id="Rif-53-Dqd"/>
+                        <outlet property="tasksContainerView" destination="Krh-gR-vv0" id="KaT-zc-x3e"/>
+                        <segue destination="Qb7-A2-IyR" kind="presentation" identifier="AddButtonToEditTaskViewController" modalPresentationStyle="overFullScreen" id="qXS-1W-mkt"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s81-c9-AbF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zaV-bv-Y6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1724" y="17.541229385307346"/>
+            <point key="canvasLocation" x="1724" y="-748"/>
         </scene>
         <!--Edit Task View Controller-->
         <scene sceneID="UDi-eW-VHO">
@@ -247,7 +171,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9n5-EA-lYa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3200.8000000000002" y="-379.16041979010498"/>
+            <point key="canvasLocation" x="2676" y="-1325"/>
         </scene>
         <!--Items-->
         <scene sceneID="taI-hQ-hYa">
@@ -258,11 +182,11 @@
                         <viewControllerLayoutGuide type="bottom" id="5LE-zs-XFy"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tAw-fc-YeH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Rx-vH-Iel">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" red="0.44705882349999998" green="0.56078431370000004" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="4U5-QD-6XH" id="qMi-88-kDr"/>
@@ -292,7 +216,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKI-Ae-VT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2863" y="339"/>
+            <point key="canvasLocation" x="4687" y="-405"/>
+        </scene>
+        <!--Tasks Page View Controller-->
+        <scene sceneID="CdY-5U-W0U">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="cfL-Th-EVs" customClass="TasksPageViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lMH-QY-F7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2676" y="-477"/>
         </scene>
         <!--Dynamic Navigation Controller-->
         <scene sceneID="iKN-MD-4NR">
@@ -302,7 +234,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" largeTitles="YES" id="MLV-uS-TL8">
                         <rect key="frame" x="0.0" y="20" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="0.49803921569999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" red="0.13725490200000001" green="0.13725490200000001" blue="0.13725490200000001" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -312,7 +244,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiO-Tz-TW7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="-702"/>
+            <point key="canvasLocation" x="750" y="-749"/>
         </scene>
         <!--Menu Bar View Controller-->
         <scene sceneID="wRw-Pk-kdM">
@@ -324,7 +256,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bRf-Ak-O09">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="XAp-ws-Vf4">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -353,11 +285,89 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B5i-KH-g6f" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1724" y="-1236.8815592203898"/>
+            <point key="canvasLocation" x="2676" y="-921"/>
+        </scene>
+        <!--Pending Tasks View Controller-->
+        <scene sceneID="ygp-l5-hwN">
+            <objects>
+                <viewController storyboardIdentifier="PendingTasksViewController" id="2wH-8a-RPp" customClass="PendingTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5CQ-8d-8i8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nDK-zE-hF6">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="aaZ-22-8pr">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="nDK-zE-hF6" firstAttribute="top" secondItem="niw-Nh-EEq" secondAttribute="top" id="Nca-84-uEQ"/>
+                            <constraint firstItem="nDK-zE-hF6" firstAttribute="leading" secondItem="niw-Nh-EEq" secondAttribute="leading" id="SC7-0u-Out"/>
+                            <constraint firstItem="niw-Nh-EEq" firstAttribute="bottom" secondItem="nDK-zE-hF6" secondAttribute="bottom" id="g1m-6a-Tyn"/>
+                            <constraint firstItem="niw-Nh-EEq" firstAttribute="trailing" secondItem="nDK-zE-hF6" secondAttribute="trailing" id="yY7-9S-Y8Z"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="niw-Nh-EEq"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="nDK-zE-hF6" id="xPF-FP-oHM"/>
+                        <segue destination="4U5-QD-6XH" kind="show" identifier="PendingTaskCellToItemsViewController" id="AEp-jo-Cf1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Epw-88-Fe7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3681" y="-859"/>
+        </scene>
+        <!--Completed Tasks View Controller-->
+        <scene sceneID="Sbt-6O-1Z9">
+            <objects>
+                <viewController storyboardIdentifier="CompletedTasksViewController" id="Nxl-yP-lk6" customClass="CompletedTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ilZ-RK-Buy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eRh-tg-jV6">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="itM-F6-Sxs">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wFs-Uc-VOg" firstAttribute="trailing" secondItem="eRh-tg-jV6" secondAttribute="trailing" id="5Rr-xk-xcH"/>
+                            <constraint firstItem="wFs-Uc-VOg" firstAttribute="bottom" secondItem="eRh-tg-jV6" secondAttribute="bottom" id="9dE-1i-aSC"/>
+                            <constraint firstItem="eRh-tg-jV6" firstAttribute="leading" secondItem="wFs-Uc-VOg" secondAttribute="leading" id="Shg-dR-6NZ"/>
+                            <constraint firstItem="eRh-tg-jV6" firstAttribute="top" secondItem="wFs-Uc-VOg" secondAttribute="top" id="aPJ-82-7Wa"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wFs-Uc-VOg"/>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="eRh-tg-jV6" id="dtu-Lh-WHH"/>
+                        <segue destination="4U5-QD-6XH" kind="show" identifier="CompletedTaskCellToItemsViewController" id="3iy-CS-klH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uz0-zH-RoH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3681" y="-170"/>
         </scene>
     </scenes>
     <resources>
         <image name="Plus" width="50" height="50"/>
-        <image name="Starfish" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="3iy-CS-klH"/>
+    </inferredMetricsTieBreakers>
 </document>

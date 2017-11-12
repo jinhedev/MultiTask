@@ -8,16 +8,16 @@
 
 import UIKit
 
-protocol EditTaskViewControllerDelegate: NSObjectProtocol {
-    func editTaskViewController(_ viewController: EditTaskViewController, didTap saveButton: UIButton, toSave task: Task)
+protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didTap saveButton: UIButton, toSave task: Task)
 }
 
-class EditTaskViewController: BaseViewController, UITextViewDelegate, UIViewControllerTransitioningDelegate {
+class TaskEditorViewController: BaseViewController, UITextViewDelegate, UIViewControllerTransitioningDelegate {
 
     // MARK: - API
 
-    static let storyboard_id = String(describing: EditTaskViewController.self)
-    var delegate: EditTaskViewControllerDelegate?
+    static let storyboard_id = String(describing: TaskEditorViewController.self)
+    var delegate: TaskEditorViewControllerDelegate?
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
@@ -30,10 +30,18 @@ class EditTaskViewController: BaseViewController, UITextViewDelegate, UIViewCont
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
-        // TODO: implement this
+        if !taskTitleTextView.text.isEmpty {
+            let newTask = self.createNewTask(taskTitle: taskTitleTextView.text)
+            self.delegate?.taskEditorViewController(self, didTap: sender, toSave: newTask)
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func createNewTask(taskTitle: String) -> Task {
         let task = Task()
-        self.delegate?.editTaskViewController(self, didTap: sender, toSave: task)
-        self.dismiss(animated: true, completion: nil)
+        task.id = NSUUID().uuidString
+        task.title = taskTitle
+        return task
     }
 
     private func setupView() {

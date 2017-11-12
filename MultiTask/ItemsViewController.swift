@@ -58,7 +58,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+//        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
@@ -80,6 +80,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - UINavigationBar
+
+    private func setupNavigationBar() {
+        self.navigationItem.title?.removeAll()
+    }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "New Item", message: "Add a new item", preferredStyle: UIAlertControllerStyle.alert)
@@ -112,6 +116,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+    /**
+     Reload the whole tableView on a main thread.
+     - warning: Reloading the whole tableView is expensive. Only use this method for the initial reload at the first time tableView is set at viewDidLoad.
+     */
     private func setupTableView() {
         self.tableView.backgroundColor = Color.inkBlack
     }
@@ -120,9 +128,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
-        setupSearchController()
-        setupRealmManager()
+        self.setupNavigationBar()
+        self.setupTableView()
+        self.setupSearchController()
+        self.setupRealmManager()
     }
 
     override func viewDidDisappear(_ animated: Bool) {

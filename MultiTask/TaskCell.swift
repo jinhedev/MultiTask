@@ -9,18 +9,18 @@
 import UIKit
 import RealmSwift
 
-class TaskCell: UITableViewCell {
+class TaskCell: BaseCollectionViewCell {
 
     // MARK: - Public API
 
     var task: Task? { didSet { self.configureCell(task: task) } }
+
     static let cell_id = String(describing: TaskCell.self)
     static let nibName = String(describing: TaskCell.self)
-    override var isEditing: Bool { didSet { self.animateCell(isEditing: isEditing) } }
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var createdAtLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
 
     func animateCell(isEditing: Bool) {
@@ -50,12 +50,12 @@ class TaskCell: UITableViewCell {
             UIView.animate(withDuration: 0.3, animations: {
                 self.titleLabel.text = task.title
                 self.subtitleLabel.text = task.id
-                self.createdAtLabel.text = task.created_at.toRelativeDate()
+                self.dateLabel.text = task.created_at.toRelativeDate()
                 self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
                 if task.is_completed {
-                    self.createdAtLabel.textColor = Color.seaweedGreen
+                    self.dateLabel.textColor = Color.seaweedGreen
                 } else {
-                    self.createdAtLabel.textColor = Color.mandarinOrange
+                    self.dateLabel.textColor = Color.mandarinOrange
                 }
             })
         }
@@ -73,35 +73,30 @@ class TaskCell: UITableViewCell {
 
     private func setupCell() {
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.layer.cornerRadius = 5
+        self.containerView.layer.cornerRadius = 8
         self.containerView.layer.borderColor = Color.clear.cgColor
         self.containerView.layer.borderWidth = 1
         self.containerView.clipsToBounds = true
         self.containerView.layer.masksToBounds = true
         self.titleLabel.text?.removeAll()
-        self.subtitleLabel.text?.removeAll()
-        self.createdAtLabel.text?.removeAll()
-        self.statsLabel.text?.removeAll()
         self.titleLabel.backgroundColor = Color.clear
+        self.titleLabel.textColor = Color.white
+        self.subtitleLabel.text?.removeAll()
         self.subtitleLabel.backgroundColor = Color.clear
-        self.createdAtLabel.backgroundColor = Color.clear
+        self.subtitleLabel.textColor = Color.lightGray
+        self.dateLabel.text?.removeAll()
+        self.dateLabel.backgroundColor = Color.clear
+        self.dateLabel.textColor = Color.mandarinOrange
+        self.statsLabel.text?.removeAll()
         self.statsLabel.backgroundColor = Color.clear
+        self.statsLabel.textColor = Color.lightGray
     }
 
     private func resetDataForReuse() {
         self.titleLabel.text?.removeAll()
         self.subtitleLabel.text?.removeAll()
-        self.createdAtLabel.text?.removeAll()
+        self.dateLabel.text?.removeAll()
         self.statsLabel.text?.removeAll()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        if selected {
-            self.animateBorderColor(self.containerView, duration: 0.3, color: .mandarinOrange)
-        } else {
-            self.animateBorderColor(self.containerView, duration: 0.3, color: .clear)
-        }
     }
 
     // MARK: - Lifecycle

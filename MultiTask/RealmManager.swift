@@ -106,7 +106,7 @@ class RealmManager: NSObject {
 
     // MARK: - Create
 
-    func createObjects(objects: [Object]) {
+    func addObjects(objects: [Object]) {
         do {
             try realm.write {
                 realm.add(objects, update: true)

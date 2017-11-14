@@ -10,32 +10,55 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
 
     // MARK: - API
 
-    var selectedTask: Task?
+    var selectedTask: Task? // only use this object's id for query for items
+    var items: [Results<Item>]?
+
     static let storyboard_id = String(describing: ItemsViewController.self)
 
-    // MARK: - UISearchController & UISearchResultsUpdating
+    // MARK: - ItemEditorContainerView && ItemEditorViewControllerDelegate
 
-    lazy var searchController: UISearchController = {
-        let controller = UISearchController(searchResultsController: nil)
-        return controller
-    }()
+    var itemEditorViewController: ItemEditorViewController?
 
-    private func setupSearchController() {
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // TODO: Fallback on earlier versions
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton) {
+        // TODO: implement this if needed
+    }
+
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton, toSave item: Item) {
+        if let task = self.selectedTask {
+            realmManager?.appendItem(item, into: task)
         }
     }
 
+    // MARK: - UISearchController & UISearchResultsUpdating
+
+    let searchController = UISearchController(searchResultsController: nil)
+
+    private func setupSearchController() {
+        self.searchController.searchBar.barStyle = .black
+        self.searchController.searchResultsUpdater = self
+        self.searchController.searchBar.tintColor = Color.mandarinOrange
+        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
+        self.definesPresentationContext = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
+    }
+
     func updateSearchResults(for searchController: UISearchController) {
-        if let text = searchController.searchBar.text {
-            // TODO: implement this
-            print(text)
+        if let searchString = searchController.searchBar.text {
+            if !searchString.isEmpty {
+                if let taskId = self.selectedTask?.id {
+                    realmManager?.fetchItems(parentTaskId: taskId, predicate: Item.getTitlePredicate(value: searchString))
+                }
+            } else {
+                if let taskId = self.selectedTask?.id {
+                    realmManager?.fetchItems(parentTaskId: taskId)
+                }
+            }
         }
     }
 
@@ -43,13 +66,14 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var realmManager: RealmManager?
 
-    func createItem(title: String) {
-        guard let task = selectedTask else {
-            print(trace(file: #file, function: #function, line: #line))
-            return
+    func checkParentTaskForCompletion() -> Bool {
+        let completionPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
+        let completionCountInItems = self.items?.first?.filter(completionPredicate).count
+        if self.items?.first?.count == completionCountInItems {
+            return true
+        } else {
+            return false
         }
-        let newItem = Item(id: NSUUID().uuidString, title: title, is_completed: false, created_at: NSDate(), updated_at: NSDate())
-        realmManager?.appendItem(to: task, with: newItem)
     }
 
     private func setupRealmManager() {
@@ -58,25 +82,44 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-//        scheduleNavigationPrompt(with: error.localizedDescription, duration: 4)
+        print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
+        guard let unwrappedItems = items else { return }
+        if self.items == nil {
+            // for initial fetch only
+            self.items = [Results<Item>]()
+            self.items!.append(unwrappedItems)
+        } else {
+            // called when updating protocol is triggered by search
+            self.items!.removeAll()
+            self.items!.append(unwrappedItems)
+        }
+        self.reloadTableView()
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-//        guard let itemCount = selectedTask?.items.count else { return }
-//        guard let numberOfCompletedItems = selectedTask?.items.filter {$0.is_completed == true} else { return }
-//        if (itemCount != 0) && (itemCount == numberOfCompletedItems.count) {
-//            self.scheduleNavigationPrompt(with: "Task Completed", duration: 4)
-//        }
-//        // reload cell at indexPath
-//        reloadTableView()
+        if checkParentTaskForCompletion() == true {
+            self.postNotificationForTaskCompletion(task: selectedTask!)
+        }
+    }
+
+    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+        self.insertRowsAtTableViewTopIndexPath()
     }
 
     func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]) {
-        guard let task = self.selectedTask else {
-            print(trace(file: #file, function: #function, line: #line))
-            return
+        if self.checkParentTaskForCompletion() == true {
+            self.postNotificationForTaskCompletion(task: selectedTask!)
         }
-        self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
+    }
+
+    // MARK: - Notification
+
+    func postNotificationForTaskCompletion(task: Task) {
+        let notification = Notification(name: Notification.Name.init(NotificationKey.TaskCompletion), object: nil, userInfo: [NotificationKey.TaskCompletion : task])
+        NotificationCenter.default.post(notification)
     }
 
     // MARK: - UINavigationBar
@@ -86,41 +129,49 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: "New Item", message: "Add a new item", preferredStyle: UIAlertControllerStyle.alert)
-        var alertTextField: UITextField!
-        alertController.addTextField { textField in
-            alertTextField = textField
-            textField.placeholder = "title"
-            textField.keyboardAppearance = UIKeyboardAppearance.dark
-            textField.autocapitalizationType = .sentences
-        }
-        let addAction = UIAlertAction(title: "Add", style: UIAlertActionStyle.default) { (action: UIAlertAction) in
-            guard let title = alertTextField.text , !title.isEmpty else { return }
-            self.createItem(title: title)
-            guard let task = self.selectedTask else { return }
-            self.realmManager?.checkOrUpdateItemsForCompletion(in: task)
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
-        alertController.addAction(cancelAction)
-        alertController.addAction(addAction)
-        present(alertController, animated: true, completion: nil)
+        self.performSegue(withIdentifier: Segue.ItemEditorContainerViewToItemEditorViewController, sender: self)
     }
 
     // MARK: - UITableView
 
     @IBOutlet weak var tableView: UITableView!
 
+    /**
+     Reload the whole tableView on a main thread.
+     - warning: Reloading the whole tableView is expensive. Only use this method for the initial reload at the first time tableView is set at viewDidLoad.
+     */
     func reloadTableView() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
 
-    /**
-     Reload the whole tableView on a main thread.
-     - warning: Reloading the whole tableView is expensive. Only use this method for the initial reload at the first time tableView is set at viewDidLoad.
-     */
+    func deleteRowAtTableView(indexPath: IndexPath) {
+        self.tableView.performBatchUpdates({
+            self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        }, completion: nil)
+    }
+
+    func updateRowAtTableView(indexPath: IndexPath) {
+        if let cell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
+            cell.item = items?[indexPath.section][indexPath.row]
+            self.tableView.performBatchUpdates({
+                self.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+            }, completion: nil)
+        }
+    }
+
+    func insertRowsAtTableViewTopIndexPath() {
+        let topIndexPath = IndexPath(row: 0, section: 0)
+        self.tableView.performBatchUpdates({
+            self.tableView.insertRows(at: [topIndexPath], with: UITableViewRowAnimation.automatic)
+        }, completion: nil)
+    }
+
     private func setupTableView() {
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.register(UINib(nibName: ItemCell.nibName, bundle: nil), forCellReuseIdentifier: ItemCell.cell_id)
         self.tableView.backgroundColor = Color.inkBlack
     }
 
@@ -132,51 +183,56 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupTableView()
         self.setupSearchController()
         self.setupRealmManager()
+        if let task = selectedTask {
+            realmManager?.fetchItems(parentTaskId: task.id)
+        }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-//        removeNotificationForCompletionSwitch()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        setupNotificationForCompletionSwitch()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Segue.ItemEditorContainerViewToItemEditorViewController {
+            itemEditorViewController = segue.destination as? ItemEditorViewController
+            itemEditorViewController?.delegate = self
+        }
     }
 
     // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
         guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ItemCell else { return }
-        cell.isCompleting = false
-        cell.isDeleting = false
+        cell.animateForDefault()
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
-            cell.isCompleting = true
-        }
-        let doneAction = UIContextualAction(style: UIContextualAction.Style.normal, title: "Done") { (action, view, is_success) in
-            // do done action
+        let doneAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
+            // perform complete action
+            if let itemToBeCompleted = self.items?[indexPath.section][indexPath.row] {
+                self.realmManager?.updateObject(object: itemToBeCompleted, keyedValues: [Item.isCompletedKeyPath : true, Item.completedAtKeyPath : NSDate(), Item.updatedAtKeyPath : NSDate()])
+                self.updateRowAtTableView(indexPath: indexPath)
+            } else {
+                print(trace(file: #file, function: #function, line: #line))
+            }
             is_success(true)
         }
-        doneAction.image = #imageLiteral(resourceName: "Tick")
-        doneAction.backgroundColor = Color.seaweedGreen
+        doneAction.image = #imageLiteral(resourceName: "Tick") // <<-- watch out for image literal
+        doneAction.backgroundColor = Color.seaweedGreen // <<-- hacky
         let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [doneAction])
         swipeActionConfigurations.performsFirstActionWithFullSwipe = true
         return swipeActionConfigurations
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell = tableView.cellForRow(at: indexPath) as? ItemCell {
-            cell.isDeleting = true
-        }
-        let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Delete") { (action, view, is_success) in
-            // do delete action
+        let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: nil) { (action, view, is_success) in
+            // perform delete action
+            if let itemToBeDeleted = self.selectedTask?.items[indexPath.row] {
+                self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
+                self.deleteRowAtTableView(indexPath: indexPath)
+            } else {
+                print(trace(file: #file, function: #function, line: #line))
+            }
             is_success(true)
         }
-        deleteAction.image = #imageLiteral(resourceName: "Delete")
-        deleteAction.backgroundColor = Color.red
+        deleteAction.image = #imageLiteral(resourceName: "Delete") // <<-- watch out for image literal
+        deleteAction.backgroundColor = Color.roseScarlet // <<-- hacky
         let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeActionConfigurations.performsFirstActionWithFullSwipe = false
         return swipeActionConfigurations
@@ -186,40 +242,31 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         return 44
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let itemCell = self.tableView.dequeueReusableCell(withIdentifier: ItemCell.cell_id, for: indexPath) as? ItemCell else {
-            return UITableViewCell()
+            return BaseTableViewCell()
         }
-        let item = selectedTask?.items[indexPath.item]
+        let item = items?[indexPath.section][indexPath.row]
         itemCell.item = item
         return itemCell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return selectedTask?.items.count ?? 0
+        return items?[section].count ?? 0
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        // TODO: implement this
-        return 1
+        return items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
-    }
-
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action: UITableViewRowAction, indexPath: IndexPath) in
-            if let itemToBeDeleted = self.selectedTask?.items[indexPath.row] {
-                self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
-                self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.left)
-            } else {
-                print(trace(file: #file, function: #function, line: #line))
-            }
-        }
-        return [deleteAction]
     }
 
 }

@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var realmManager: RealmManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        setupSearchBar()
         setupPersistentContainerDelegate()
         setupRemoteNotification()
         if realmManager?.isOnboardingCompleted == true {
@@ -86,19 +85,6 @@ extension AppDelegate: PersistentContainerDelegate {
     }
 
 }
-
-extension AppDelegate {
-
-    /**
-     In iOS 11.0 or higher does not provide support for modifying the textColor of the UITextField in UISearchBar. It is likely a small bug introduced in this version of Swift 4. As a result, I used the keyPath to UITextField's attributes to reset its global property across the app.
-     - returns: Void
-     */
-    func setupSearchBar() {
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-    }
-
-}
-
 
 
 

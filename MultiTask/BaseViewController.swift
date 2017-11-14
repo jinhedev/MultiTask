@@ -11,6 +11,10 @@ import AVFoundation
 
 class BaseViewController: UIViewController {
 
+    private func setupView() {
+        self.view.backgroundColor = Color.inkBlack
+    }
+
     // MARK: - Application sound notification
 
     var avaPlayer: AVAudioPlayer?
@@ -39,8 +43,10 @@ class BaseViewController: UIViewController {
         }
     }
 
-    private func setupView() {
-        self.view.backgroundColor = Color.inkBlack
+    // MARK: - 3D touch
+
+    func is3DTouchAvailable() -> Bool {
+        return self.traitCollection.forceTouchCapability == UIForceTouchCapability.available
     }
 
     // MARK: - Navigation prompt
@@ -48,21 +54,27 @@ class BaseViewController: UIViewController {
     var timer: Timer?
     
     func scheduleNavigationPrompt(with message: String, duration: TimeInterval) {
-        DispatchQueue.main.async {
-            self.navigationItem.prompt = message
-            self.timer = Timer.scheduledTimer(timeInterval: duration,
-                                              target: self,
-                                              selector: #selector(self.removePrompt),
-                                              userInfo: nil,
-                                              repeats: false)
-            self.timer?.tolerance = 5
+        if let navigationController = self.navigationController as? BaseNavigationController {
+            UIView.animate(withDuration: 0.3) {
+                navigationController.navigationItem.prompt = message
+            }
+            DispatchQueue.main.async {
+                self.timer = Timer.scheduledTimer(timeInterval: duration,
+                                                  target: self,
+                                                  selector: #selector(self.removePrompt),
+                                                  userInfo: nil,
+                                                  repeats: false)
+                self.timer?.tolerance = 5
+            }
         }
     }
     
     @objc private func removePrompt() {
-        if navigationItem.prompt != nil {
-            DispatchQueue.main.async {
-                self.navigationItem.prompt = nil
+        if let navigationController = self.navigationController as? BaseNavigationController {
+            if navigationController.navigationItem.prompt  != nil {
+                DispatchQueue.main.async {
+                    navigationController.navigationItem.prompt = nil
+                }
             }
         }
     }

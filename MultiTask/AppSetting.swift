@@ -19,6 +19,8 @@ final class AppSetting: Object {
     dynamic var created_at: NSDate = NSDate()
     dynamic var updated_at: NSDate = NSDate()
 
+    static var dateKeyPath = "created_at" // called in RealmManager for its sorting logic
+
     // MARK: - Lifecycle
 
     override static func primaryKey() -> String? {

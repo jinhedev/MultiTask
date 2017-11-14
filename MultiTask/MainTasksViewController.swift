@@ -17,33 +17,19 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - TaskEditorViewControllerDelegate
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTap saveButton: UIButton, toSave task: Task) {
-        // notify my child collectionViewController to update or add the new tasks
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapSave button: UIButton, toSave task: Task) {
+        self.tasksPageViewController?.pendingTasksViewController?.realmManager?.addObjects(objects: [task])
+    }
 
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapCancel button: UIButton) {
+        // TODO: implement this if needed
     }
 
     // MARK: - MenuBarContainerView
 
     @IBOutlet weak var menuBarContainerView: UIView!
+
     var menuBarViewController: MenuBarViewController?
-
-    func scrollToMenuIndex(menuIndex: Int) {
-        let indexPath = IndexPath(item: menuIndex, section: 0)
-        // manually scroll pageView to the next or previous page by menuIndex
-
-
-//        self.collectionView.scrollToItem(at: indexPath, at: [], animated: true)
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        menuBarViewController?.indicatorBarLeftAnchor?.constant = scrollView.contentOffset.x / 2 // because the collectionView is 2X as width as one menuBarViewController's cell
-    }
-
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let index = targetContentOffset.pointee.x / self.view.frame.width
-        let indexPath = IndexPath(item: Int(index), section: 0)
-        menuBarViewController?.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
-    }
 
     private func setupMenuBarContainerView() {
         self.menuBarContainerView.backgroundColor = Color.clear
@@ -109,8 +95,8 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
             menuBarViewController = segue.destination as? MenuBarViewController
             menuBarViewController?.mainTasksViewController = self
         } else if segue.identifier == Segue.AddButtonToTaskEditorViewController {
-            if let editTaskViewController = segue.destination as? TaskEditorViewController {
-                editTaskViewController.delegate = self
+            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
+                taskEditorViewController.delegate = self
             }
         } else if segue.identifier == Segue.TasksContainerViewToPageViewController {
             tasksPageViewController = segue.destination as? TasksPageViewController

@@ -27,9 +27,10 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
     // MARK: - Horizontal indicator bar
 
     var indicatorBarLeftAnchor: NSLayoutConstraint?
+    var indicatorBar: UIView!
 
     func setupIndicatorBar() {
-        let indicatorBar = UIView()
+        indicatorBar = UIView()
         indicatorBar.backgroundColor = Color.mandarinOrange
         indicatorBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(indicatorBar)
@@ -41,13 +42,23 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
         indicatorBar.heightAnchor.constraint(equalToConstant: 3).isActive = true
     }
 
+    func indicatorBar(scrollTo point: CGFloat) {
+        indicatorBarLeftAnchor?.constant = point
+        UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+
     // MARK: - UICollectionView
 
     @IBOutlet weak var collectionView: UICollectionView!
 
     private func setupCollectionView() {
-        self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.backgroundColor = Color.red
         self.collectionView.register(UINib(nibName: MenuCell.nibName, bundle: nil), forCellWithReuseIdentifier: MenuCell.cell_id)
+        // initial selected state for the first cell
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.left)
     }
@@ -57,29 +68,35 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.setupCollectionViewFlowLayout()
         self.setupIndicatorBar()
     }
 
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        mainTasksViewController?.scrollToMenuIndex(menuIndex: indexPath.item)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        let x = CGFloat(indexPath.item) * self.collectionView.frame.width / 2
+        indicatorBarLeftAnchor?.constant = x
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            self.view.layoutIfNeeded()
+        }) { (completed) in
+            self.mainTasksViewController?.tasksPageViewController?.scrollToPageIndex(pageIndex: indexPath.item)
+        }
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
 
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
+    private func setupCollectionViewFlowLayout() {
+        self.collectionViewFlowLayout.minimumLineSpacing = 0
+        self.collectionViewFlowLayout.sectionInset = UIEdgeInsets.zero
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let collectionViewWidth = self.collectionView.frame.width
-        let collectionViewHeight = self.collectionView.frame.height
-        return CGSize(width: collectionViewWidth / 2, height: collectionViewHeight)
+        let cellWidth = self.collectionView.frame.width / 2
+        let cellHeight = self.collectionView.frame.height
+        return CGSize(width: cellWidth, height: cellHeight)
     }
 
     // MARK: - UICollectionViewDataSource

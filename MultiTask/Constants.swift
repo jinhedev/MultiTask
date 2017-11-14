@@ -7,6 +7,13 @@
 //
 
 import Foundation
+#if os(iOS)
+    import UIKit
+    typealias Color = UIColor
+#elseif os(OSX)
+    import AppKit
+    typealias Color = NSColor
+#endif
 
 // MARK: - Segue IDs
 
@@ -16,6 +23,13 @@ struct Segue {
     static let MenuBarContainerViewToMenuBarViewController = "MenuBarContainerViewToMenuBarViewController"
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
     static let TasksContainerViewToPageViewController = "TasksContainerViewToPageViewController"
+    static let ItemEditorContainerViewToItemEditorViewController = "ItemEditorContainerViewToItemEditorViewController"
+}
+
+// MARK: - Notification
+
+struct NotificationKey {
+    static let TaskCompletion = "TaskCompletion"
 }
 
 // MARK: - Color
@@ -23,6 +37,7 @@ struct Segue {
 extension Color {
     static var inkBlack: Color { return #colorLiteral(red: 0.05882352941, green: 0.05882352941, blue: 0.05882352941, alpha: 1) }
     static var midNightBlack: Color { return  #colorLiteral(red: 0.137254902, green: 0.137254902, blue: 0.137254902, alpha: 1) }
+    static var transparentBlack: Color { return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.55) }
     static var seaweedGreen: Color { return #colorLiteral(red: 0.4470588235, green: 0.5607843137, blue: 0.2549019608, alpha: 1) }
     static var roseScarlet: Color { return #colorLiteral(red: 0.5607843137, green: 0.1960784314, blue: 0.2156862745, alpha: 1) }
     static var candyWhite: Color { return #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1) }

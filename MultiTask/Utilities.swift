@@ -9,10 +9,8 @@
 import Foundation
 #if os(iOS)
     import UIKit
-    typealias Color = UIColor
 #elseif os(OSX)
     import AppKit
-    typealias Color = NSColor
 #endif
 
 // MARK: - Error handler
@@ -33,6 +31,8 @@ extension NSDate {
         let hour = 60 * minute
         let day = 24 * hour
         let week = 7 * day
+        let month = 30 * day
+        let year = 365 * day
         if secondsAgo < minute {
             return "\(secondsAgo) seconds ago"
         } else if secondsAgo < hour {
@@ -41,8 +41,12 @@ extension NSDate {
             return "\(secondsAgo / hour) hours ago"
         } else if secondsAgo < week {
             return "\(secondsAgo / day) days ago"
+        } else if secondsAgo < month {
+            return "\(secondsAgo / week) weeks ago"
+        } else if secondsAgo < year {
+            return "\(secondsAgo / month) months ago"
         }
-        return "\(secondsAgo / week) weeks ago"
+        return "\(secondsAgo / year) years ago"
     }
 
 }

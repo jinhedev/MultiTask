@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DynamicTabBarController: UITabBarController {
+class BaseTabBarController: UITabBarController {
 
     private func setupTabBar() {
         self.tabBar.barTintColor = Color.inkBlack

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIScrollViewDelegate {
+class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIScrollViewDelegate, UIPageViewControllerDelegate {
 
     var pendingTasksViewController: PendingTasksViewController?
     var completedTasksViewController: CompletedTasksViewController?
@@ -22,18 +22,32 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
     }
 
     private func setupPageViewController() {
-        let pendingTasksViewController = self.getViewController(withIdentifier: PendingTasksViewController.storyboard_id, in: "TasksTab")
-        let completedTasksViewController = self.getViewController(withIdentifier: CompletedTasksViewController.storyboard_id, in: "TasksTab")
-        pages = [pendingTasksViewController, completedTasksViewController]
+        let storyboard = UIStoryboard(name: "TasksTab", bundle: nil)
+        pendingTasksViewController = storyboard.instantiateViewController(withIdentifier: PendingTasksViewController.storyboard_id) as? PendingTasksViewController
+        completedTasksViewController = storyboard.instantiateViewController(withIdentifier: CompletedTasksViewController.storyboard_id) as? CompletedTasksViewController
+        pages = [pendingTasksViewController!, completedTasksViewController!]
         self.dataSource = self
+        self.delegate = self
         if let firstViewController = pages.first {
             self.setViewControllers([firstViewController], direction: .forward, animated: false, completion: nil)
         }
     }
 
+    func goToNextPage(animated: Bool = true) {
+        guard let currentViewController = self.viewControllers?.first else { return }
+        guard let nextViewController = dataSource?.pageViewController(self, viewControllerAfter: currentViewController) else { return }
+        setViewControllers([nextViewController], direction: .forward, animated: animated, completion: nil)
+    }
+
+    func goToPreviousPage(animated: Bool = true) {
+        guard let currentViewController = self.viewControllers?.first else { return }
+        guard let previousViewController = dataSource?.pageViewController(self, viewControllerBefore: currentViewController) else { return }
+        setViewControllers([previousViewController], direction: .reverse, animated: animated, completion: nil)
+    }
+
     // MARK: - UIScrollViewDelegate
 
-    private func setupUIScrollViewDelegate() {
+    private func setupScrollViewDelegate() {
         for view in self.view.subviews {
             if let view = view as? UIScrollView {
                 view.delegate = self
@@ -43,13 +57,25 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(123)
+//        print(scrollView.contentOffset.x)
+
+    }
+
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+//        print(scrollView.contentOffset.x)
+//        let itemPosition = Int((scrollView.contentOffset.x / 2) / (self.view.frame.width))
+//        let indexPath = IndexPath(item: itemPosition, section: 0)
+//        self.mainTasksViewController?.menuBarViewController?.collectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
     }
 
     func scrollToPageIndex(pageIndex: Int) {
-        let indexPath = IndexPath(item: pageIndex, section: 0)
         // manually scroll pageView to the next or previous page by menuIndex
-//        self.collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        // FIXME: breakable logic, not scalable to 3 indices
+        if pageIndex == 1 {
+            self.goToNextPage()
+        } else if pageIndex == 0 {
+            self.goToPreviousPage()
+        }
     }
 
     // MARK: - Lifecycle
@@ -57,6 +83,26 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupPageViewController()
+        self.setupScrollViewDelegate()
+    }
+
+    // MARK: - UIPageViewControllerDelegate
+
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        if completed {
+            // FIXME: extremely hacky
+            if let previousViewController = previousViewControllers.first as? PendingTasksViewController {
+                print(previousViewController.PAGE_INDEX, #file, #line)
+                let currentPageIndexPathAgainstMenuBar = IndexPath(item: 1, section: 0)
+                self.mainTasksViewController?.menuBarViewController?.collectionView.selectItem(at: currentPageIndexPathAgainstMenuBar, animated: true, scrollPosition: [])
+                self.mainTasksViewController?.menuBarViewController?.indicatorBar(scrollTo: self.view.frame.width / 2)
+            } else if let previousViewController = previousViewControllers.first as? CompletedTasksViewController {
+                print(previousViewController.PAGE_INDEX, #file, #line)
+                let currentPageIndexPathAgainstMenuBar = IndexPath(item: 0, section: 0)
+                self.mainTasksViewController?.menuBarViewController?.collectionView.selectItem(at: currentPageIndexPathAgainstMenuBar, animated: true, scrollPosition: [])
+                self.mainTasksViewController?.menuBarViewController?.indicatorBar(scrollTo: 0)
+            }
+        }
     }
 
     // MARK: - UIPageViewControllerDataSource

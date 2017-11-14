@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50974351F4EA986007C6EAA /* WebServiceManager.swift */; };
 		C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */; };
+		C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */; };
+		C53C3EBF1FBA0EED0064DDB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */; };
+		C53C3EC11FBA0EED0064DDB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */; };
+		C53C3EC31FBA0EED0064DDB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */; };
+		C53C3EC61FBA0EED0064DDB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */; };
+		C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */; };
 		C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */; };
 		C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5409B371FA50758004BAF4F /* ItemCell.xib */; };
 		C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C543943E1FB5292C009EC104 /* MenuCell.xib */; };
@@ -54,8 +60,8 @@
 		C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DC1F3C2CF100601CFF /* Constants.swift */; };
 		C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */; };
 		C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E1566C1F484473006247C4 /* OnboardingViewController.swift */; };
-		C5EC4D0A1F817C2B00DBF675 /* DynamicNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D091F817C2B00DBF675 /* DynamicNavigationController.swift */; };
-		C5EC4D0C1F817C5800DBF675 /* DynamicTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */; };
+		C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */; };
+		C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */; };
 		C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F43B891F4AFDE100F702DE /* icon.png */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
 		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
@@ -81,6 +87,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		C53C3EB71FBA0CFF0064DDB4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C53C3EF31FBA10FA0064DDB4 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C5A9A8CF1F3BD81C00601CFF /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -99,6 +125,17 @@
 /* Begin PBXFileReference section */
 		C50974351F4EA986007C6EAA /* WebServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceManager.swift; sourceTree = "<group>"; };
 		C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
+		C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MultiTask.entitlements; path = MultiTask/MultiTask.entitlements; sourceTree = "<group>"; };
+		C53C3EA81FBA0CFF0064DDB4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MultiTask macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C53C3EC51FBA0EED0064DDB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C53C3EC71FBA0EED0064DDB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C53C3EC81FBA0EED0064DDB4 /* MultiTask_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MultiTask_macOS.entitlements; sourceTree = "<group>"; };
+		C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeTab.storyboard; sourceTree = "<group>"; };
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
 		C5409B371FA50758004BAF4F /* ItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
 		C543943E1FB5292C009EC104 /* MenuCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuCell.xib; sourceTree = "<group>"; };
@@ -147,8 +184,8 @@
 		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		C5E1566C1F484473006247C4 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		C5EC4D091F817C2B00DBF675 /* DynamicNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicNavigationController.swift; sourceTree = "<group>"; };
-		C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTabBarController.swift; sourceTree = "<group>"; };
+		C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		C5F43B891F4AFDE100F702DE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
 		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
@@ -157,6 +194,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C53C3EB91FBA0EED0064DDB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55E265F1F40DC17001743E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -186,18 +230,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C509742F1F4EA655007C6EAA /* MultiTask macOS */ = {
+		C53C3EA71FBA0CFF0064DDB4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C53C3EA81FBA0CFF0064DDB4 /* NotificationCenter.framework */,
 			);
-			name = "MultiTask macOS";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C54B6A261F6C984B00ABC572 /* MultiTask watchOS */ = {
+		C53C3EBD1FBA0EED0064DDB4 /* MultiTask macOS */ = {
 			isa = PBXGroup;
 			children = (
+				C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */,
+				C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */,
+				C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */,
+				C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */,
+				C53C3EC71FBA0EED0064DDB4 /* Info.plist */,
+				C53C3EC81FBA0EED0064DDB4 /* MultiTask_macOS.entitlements */,
 			);
-			name = "MultiTask watchOS";
+			path = "MultiTask macOS";
 			sourceTree = "<group>";
 		};
 		C55E26631F40DC17001743E4 /* MultiTaskUITests */ = {
@@ -222,10 +273,11 @@
 		C5A9A8971F3BB06C00601CFF = {
 			isa = PBXGroup;
 			children = (
+				C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */,
 				C5A9A8DB1F3C2CCB00601CFF /* Shared */,
 				C5A9A8A21F3BB06C00601CFF /* MultiTask iOS */,
-				C509742F1F4EA655007C6EAA /* MultiTask macOS */,
-				C54B6A261F6C984B00ABC572 /* MultiTask watchOS */,
+				C53C3EBD1FBA0EED0064DDB4 /* MultiTask macOS */,
+				C53C3EA71FBA0CFF0064DDB4 /* Frameworks */,
 				C5A9A8A11F3BB06C00601CFF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -236,6 +288,7 @@
 				C5A9A8A01F3BB06C00601CFF /* MultiTask.app */,
 				C55E26621F40DC17001743E4 /* MultiTaskUITests.xctest */,
 				C55E26721F40F100001743E4 /* MultiTaskTests.xctest */,
+				C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -260,15 +313,16 @@
 			isa = PBXGroup;
 			children = (
 				C5E1566C1F484473006247C4 /* OnboardingViewController.swift */,
-				C5EC4D091F817C2B00DBF675 /* DynamicNavigationController.swift */,
-				C5EC4D0B1F817C5800DBF675 /* DynamicTabBarController.swift */,
 				C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */,
 				C54394461FB56DDA009EC104 /* MenuBarViewController.swift */,
 				C5A0D7761FB7885E002968F7 /* TasksPageViewController.swift */,
-				C5A0D77A1FB78BD8002968F7 /* CompletedTasksViewController.swift */,
 				C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */,
+				C5A0D77A1FB78BD8002968F7 /* CompletedTasksViewController.swift */,
 				C5A9A8C21F3BD51000601CFF /* ItemsViewController.swift */,
 				C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */,
+				C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */,
+				C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */,
+				C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */,
 				C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */,
 			);
 			name = Controllers;
@@ -280,11 +334,12 @@
 				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
 				C5A9A8AE1F3BB06C00601CFF /* LaunchScreen.storyboard */,
 				C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */,
+				C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */,
 				C56B29331FA2F59C0093BA32 /* AuthCell.xib */,
+				C5A0D7741FB67D8B002968F7 /* TaskCell.xib */,
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
 				C5F748B61FAECBE4004F2491 /* ErrorCell.xib */,
 				C543943E1FB5292C009EC104 /* MenuCell.xib */,
-				C5A0D7741FB67D8B002968F7 /* TaskCell.xib */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -368,6 +423,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C53C3EBB1FBA0EED0064DDB4 /* MultiTask macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53C3EC91FBA0EED0064DDB4 /* Build configuration list for PBXNativeTarget "MultiTask macOS" */;
+			buildPhases = (
+				C53C3EB81FBA0EED0064DDB4 /* Sources */,
+				C53C3EB91FBA0EED0064DDB4 /* Frameworks */,
+				C53C3EBA1FBA0EED0064DDB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MultiTask macOS";
+			productName = "MultiTask macOS";
+			productReference = C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		C55E26611F40DC17001743E4 /* MultiTaskUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */;
@@ -413,6 +485,8 @@
 				C5A9A89E1F3BB06C00601CFF /* Resources */,
 				C5A9A8CF1F3BD81C00601CFF /* Embed Frameworks */,
 				C55E265C1F404484001743E4 /* ShellScript */,
+				C53C3EB71FBA0CFF0064DDB4 /* Embed App Extensions */,
+				C53C3EF31FBA10FA0064DDB4 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
@@ -429,10 +503,15 @@
 		C5A9A8981F3BB06C00601CFF /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0910;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Duckensburg;
 				TargetAttributes = {
+					C53C3EBB1FBA0EED0064DDB4 = {
+						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = ZLUJC28Y9H;
+						ProvisioningStyle = Automatic;
+					};
 					C55E26611F40DC17001743E4 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = ZLUJC28Y9H;
@@ -447,8 +526,13 @@
 					};
 					C5A9A89F1F3BB06C00601CFF = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = QUK6EBV763;
+						DevelopmentTeam = ZLUJC28Y9H;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -466,6 +550,7 @@
 			projectRoot = "";
 			targets = (
 				C5A9A89F1F3BB06C00601CFF /* MultiTask */,
+				C53C3EBB1FBA0EED0064DDB4 /* MultiTask macOS */,
 				C55E26611F40DC17001743E4 /* MultiTaskUITests */,
 				C55E26711F40F100001743E4 /* MultiTaskTests */,
 			);
@@ -473,6 +558,15 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C53C3EBA1FBA0EED0064DDB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53C3EC31FBA0EED0064DDB4 /* Assets.xcassets in Resources */,
+				C53C3EC61FBA0EED0064DDB4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55E26601F40DC17001743E4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -496,6 +590,7 @@
 				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
 				C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */,
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
+				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
 				C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
 				C5F748B71FAECBE4004F2491 /* ErrorCell.xib in Resources */,
@@ -525,6 +620,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C53C3EB81FBA0EED0064DDB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C53C3EC11FBA0EED0064DDB4 /* ViewController.swift in Sources */,
+				C53C3EBF1FBA0EED0064DDB4 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C55E265E1F40DC17001743E4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -560,12 +664,12 @@
 				C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */,
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
 				C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */,
-				C5EC4D0A1F817C2B00DBF675 /* DynamicNavigationController.swift in Sources */,
+				C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */,
 				C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */,
 				C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */,
 				C5A9A8D81F3C1E7300601CFF /* User.swift in Sources */,
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
-				C5EC4D0C1F817C5800DBF675 /* DynamicTabBarController.swift in Sources */,
+				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,
 				C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */,
 				C5F748B51FAEC2DC004F2491 /* ErrorCell.swift in Sources */,
 				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,
@@ -574,6 +678,7 @@
 				C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */,
 				C5A0D77B1FB78BD8002968F7 /* CompletedTasksViewController.swift in Sources */,
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
+				C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */,
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,
 				C587E1981F4F7D3700CC7FF8 /* KeychainManager.swift in Sources */,
 				C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */,
@@ -598,6 +703,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C53C3EC51FBA0EED0064DDB4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		C5A9A8A91F3BB06C00601CFF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -617,6 +730,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C53C3ECA1FBA0EED0064DDB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MultiTask macOS/MultiTask_macOS.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Debug;
+		};
+		C53C3ECB1FBA0EED0064DDB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "MultiTask macOS/MultiTask_macOS.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-macOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.0;
+			};
+			name = Release;
+		};
 		C55E266A1F40DC17001743E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -769,11 +938,12 @@
 		C5A9A8B51F3BB06C00601CFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = QUK6EBV763;
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -782,7 +952,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -793,11 +963,12 @@
 		C5A9A8B61F3BB06C00601CFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 0;
-				DEVELOPMENT_TEAM = QUK6EBV763;
+				DEVELOPMENT_TEAM = ZLUJC28Y9H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -806,7 +977,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -817,6 +988,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C53C3EC91FBA0EED0064DDB4 /* Build configuration list for PBXNativeTarget "MultiTask macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C53C3ECA1FBA0EED0064DDB4 /* Debug */,
+				C53C3ECB1FBA0EED0064DDB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

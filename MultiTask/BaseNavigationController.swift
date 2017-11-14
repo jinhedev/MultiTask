@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DynamicNavigationController: UINavigationController {
+class BaseNavigationController: UINavigationController {
 
     // MARK: - API
 

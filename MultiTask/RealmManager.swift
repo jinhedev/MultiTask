@@ -16,7 +16,8 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func persistentContainer(_ manager: RealmManager, didLogin: Bool)
     func persistentContainer(_ manager: RealmManager, didLogout: Bool)
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetch tasks: Results<Task>)
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>)
+    func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?)
     // create
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object])
     // update
@@ -30,7 +31,8 @@ extension PersistentContainerDelegate {
     func persistentContainer(_ manager: RealmManager, didLogin: Bool) {}
     func persistentContainer(_ manager: RealmManager, didLogout: Bool) {}
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetch tasks: Results<Task>) {}
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>) {}
+    func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {}
     // create
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {}
     // update
@@ -65,7 +67,7 @@ class RealmManager: NSObject {
     // MARK: - App Settings
 
     var isOnboardingCompleted: Bool {
-        let settings = realm.objects(AppSetting.self).sorted(byKeyPath: "created_at", ascending: false)
+        let settings = realm.objects(AppSetting.self).sorted(byKeyPath: AppSetting.dateKeyPath, ascending: false)
         if settings.isEmpty || settings.first?.isOnboardingCompleted == false {
             return false
         } else {
@@ -87,18 +89,31 @@ class RealmManager: NSObject {
     // MARK: - Fetch
 
     func fetchTasks(predicate: NSPredicate) {
-        let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
-        delegate?.persistentContainer(self, didFetch: tasks)
+        let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: Task.createdAtKeyPath, ascending: false)
+        if !tasks.isEmpty {
+            delegate?.persistentContainer(self, didFetchTasks: tasks)
+        }
+    }
+
+    func fetchItems(parentTaskId: String) {
+        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
+        delegate?.persistentContainer(self, didFetchItems: items)
+    }
+
+    func fetchItems(parentTaskId: String, predicate: NSPredicate) {
+        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.filter(predicate).sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
+        delegate?.persistentContainer(self, didFetchItems: items)
     }
 
     // MARK: - Delete
 
     func deleteObjects(objects: [Object]) {
+        let objectCopy = objects
         do {
             try realm.write {
                 realm.delete(objects)
             }
-            delegate?.persistentContainer(self, didDelete: objects)
+            delegate?.persistentContainer(self, didDelete: objectCopy)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }
@@ -112,6 +127,22 @@ class RealmManager: NSObject {
                 realm.add(objects, update: true)
             }
             delegate?.persistentContainer(self, didAdd: objects)
+        } catch let err {
+            delegate?.persistentContainer(self, didErr: err)
+        }
+    }
+
+    /**
+     Append an item object to the item array of its belonging task.
+     - remark: Calling this delegate method will trigger the didAdd protocol.
+     */
+    func appendItem(_ item: Item, into parentTask: Task) {
+        do {
+            try realm.write {
+                parentTask.items.append(item)
+                realm.add(parentTask)
+            }
+            delegate?.persistentContainer(self, didAdd: [item])
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }
@@ -155,26 +186,4 @@ class RealmManager: NSObject {
         }
     }
 
-    func appendItem(to task: Task, with item: Item) {
-        do {
-            try realm.write {
-                task.items.append(item)
-                realm.add(task)
-            }
-            delegate?.persistentContainer(self, didUpdate: task)
-        } catch let err {
-            delegate?.persistentContainer(self, didErr: err)
-        }
-    }
-
 }
-
-
-
-
-
-
-
-
-
-

@@ -8,52 +8,63 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TaskCell" id="p7J-gl-UBk" customClass="TaskCell" customModule="MultiTask" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="389" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="377" height="159"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                <rect key="frame" x="0.0" y="0.0" width="389" height="100"/>
+                <rect key="frame" x="0.0" y="0.0" width="377" height="159"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2xG-0n-HQE">
-                        <rect key="frame" x="0.0" y="0.0" width="389" height="100"/>
+                        <rect key="frame" x="0.0" y="0.0" width="377" height="159"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tYf-km-5DM">
-                                <rect key="frame" x="16" y="8" width="357" height="84"/>
+                                <rect key="frame" x="16" y="8" width="345" height="143"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sas-4I-tGq">
-                                        <rect key="frame" x="16" y="36.5" width="325" height="16"/>
+                                        <rect key="frame" x="16" y="105" width="313" height="15"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="UsM-lW-ZPv"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Byg-dO-88g">
-                                        <rect key="frame" x="16" y="52" width="122.5" height="24"/>
+                                        <rect key="frame" x="16" y="120" width="122.5" height="15"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dateLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilO-rp-Mli">
-                                                <rect key="frame" x="0.0" y="0.0" width="52" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="52" height="15"/>
                                                 <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="statsLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyn-hj-W6e">
-                                                <rect key="frame" x="68" y="0.0" width="54.5" height="24"/>
+                                                <rect key="frame" x="68" y="0.0" width="54.5" height="15"/>
                                                 <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="jlS-R3-Ogb"/>
+                                        </constraints>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmh-Md-RSS">
-                                        <rect key="frame" x="16" y="8" width="325" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmh-Md-RSS">
+                                        <rect key="frame" x="16" y="8" width="313" height="89"/>
                                         <color key="backgroundColor" red="1" green="0.49803921569999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -89,7 +100,7 @@
                 <constraint firstItem="2xG-0n-HQE" firstAttribute="leading" secondItem="p7J-gl-UBk" secondAttribute="leading" id="rFN-bR-BIo"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="WZ9-RW-NrC"/>
-            <size key="customSize" width="389" height="100"/>
+            <size key="customSize" width="377" height="159"/>
             <connections>
                 <outlet property="containerView" destination="tYf-km-5DM" id="6Sg-yM-glO"/>
                 <outlet property="dateLabel" destination="ilO-rp-Mli" id="InH-uo-SK3"/>
@@ -97,7 +108,7 @@
                 <outlet property="subtitleLabel" destination="Sas-4I-tGq" id="cOl-iR-jRB"/>
                 <outlet property="titleLabel" destination="hmh-Md-RSS" id="65I-6m-HX5"/>
             </connections>
-            <point key="canvasLocation" x="420.5" y="198"/>
+            <point key="canvasLocation" x="414.5" y="227.5"/>
         </collectionViewCell>
     </objects>
 </document>

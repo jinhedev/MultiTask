@@ -1,86 +1,87 @@
 //
-//  EditTaskViewController.swift
+//  ItemEditorView.swift
 //  MultiTask
 //
-//  Created by rightmeow on 11/4/17.
+//  Created by rightmeow on 11/12/17.
 //  Copyright © 2017 Duckensburg. All rights reserved.
 //
 
 import UIKit
 import RealmSwift
 
-protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapSave button: UIButton, toSave task: Task)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapCancel button: UIButton)
+protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton, toSave item: Item)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton)
 }
 
-class TaskEditorViewController: BaseViewController, UITextViewDelegate {
+class ItemEditorViewController: BaseViewController, UITextViewDelegate {
 
     // MARK: - API
 
-    var task: Task?
-    var delegate: TaskEditorViewControllerDelegate?
-    static let storyboard_id = String(describing: TaskEditorViewController.self)
+    var item: Item?
+    var delegate: ItemEditorViewControllerDelegate?
+    static let storyboard_id = String(describing: ItemEditorViewController.self)
 
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var contentContainerView: UIView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var contentContainerView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
-        self.delegate?.taskEditorViewController(self, didTapCancel: sender)
+        self.delegate?.itemEditorViewController(self, didTapCancel: sender)
         self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
         if !titleTextView.text.isEmpty {
-            let newTask = self.createNewTask(taskTitle: titleTextView.text)
-            self.delegate?.taskEditorViewController(self, didTapSave: sender, toSave: newTask)
+            let newItem = self.createNewItem(itemTitle: titleTextView.text)
+            self.delegate?.itemEditorViewController(self, didTapSave: sender, toSave: newItem)
             self.dismiss(animated: true, completion: nil)
         }
     }
 
-    func createNewTask(taskTitle: String) -> Task {
-        let task = Task(title: taskTitle, items: List<Item>(), is_completed: false)
-        return task
+    func createNewItem(itemTitle: String) -> Item {
+        let item = Item(title: itemTitle, is_completed: false)
+        return item
     }
 
     private func setupView() {
-        if self.task == nil {
-            self.titleLabel.text = "Add a new task"
+        if self.item == nil {
+            self.titleLabel.text = "Add a new item"
             self.titleTextView.text?.removeAll()
         } else {
-            self.titleLabel.text = "Edit a task"
-            self.titleTextView.text = task?.title
+            self.titleLabel.text = "Edit a item"
+            self.titleTextView.text = item?.title
         }
+        self.view.backgroundColor = Color.transparentBlack
+        self.scrollView.backgroundColor = Color.clear
         self.containerView.backgroundColor = Color.clear
-        self.containerView.clipsToBounds = true
         self.contentContainerView.backgroundColor = Color.inkBlack
         self.contentContainerView.layer.borderColor = Color.midNightBlack.cgColor
         self.contentContainerView.layer.borderWidth = 3
         self.contentContainerView.layer.cornerRadius = 8
         self.contentContainerView.clipsToBounds = true
-        self.titleLabel.textColor = Color.lightGray
         self.titleLabel.backgroundColor = Color.clear
-        self.titleTextView.tintColor = Color.mandarinOrange
+        self.titleLabel.textColor = Color.white
         self.titleTextView.backgroundColor = Color.midNightBlack
+        self.titleTextView.textColor = Color.white
         self.titleTextView.layer.cornerRadius = 8
         self.titleTextView.clipsToBounds = true
-        self.cancelButton.backgroundColor = Color.midNightBlack
-        self.cancelButton.layer.cornerRadius = 8
-        self.cancelButton.clipsToBounds = true
-        self.cancelButton.setTitleColor(Color.white, for: UIControlState.normal)
+        self.titleTextView.becomeFirstResponder()
+        self.titleTextView.tintColor = Color.mandarinOrange
         self.cancelButton.setTitle("Cancel", for: UIControlState.normal)
-        self.saveButton.backgroundColor = Color.seaweedGreen
-        self.saveButton.layer.cornerRadius = 8
-        self.saveButton.clipsToBounds = true
-        self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
+        self.cancelButton.layer.cornerRadius = 8
+        self.cancelButton.backgroundColor = Color.midNightBlack
+        self.cancelButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.setTitle("Save", for: UIControlState.normal)
+        self.saveButton.layer.cornerRadius = 8
+        self.saveButton.backgroundColor = Color.seaweedGreen
+        self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
     }
 
     // MARK: - UITextViewDelegate
@@ -109,3 +110,19 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

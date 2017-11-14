@@ -10,18 +10,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="90" id="Cc1-uI-C3N" customClass="ItemCell" customModule="MultiTask" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="305" height="90"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="151" id="Cc1-uI-C3N" customClass="ItemCell" customModule="MultiTask" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="258" height="151"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cc1-uI-C3N" id="zGu-Ah-KWW">
-                <rect key="frame" x="0.0" y="0.0" width="305" height="89.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="258" height="150.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKm-45-CUT">
-                        <rect key="frame" x="0.0" y="0.0" width="305" height="89.5"/>
+                        <rect key="frame" x="16" y="8" width="226" height="134.5"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="titleTextView" textAlignment="justified" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9TT-hU-Fuw">
-                                <rect key="frame" x="16" y="8" width="273" height="36"/>
+                                <rect key="frame" x="16" y="8" width="194" height="88.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -29,37 +29,43 @@
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ckK-h4-crJ">
-                                <rect key="frame" x="16" y="52" width="273" height="13.5"/>
+                                <rect key="frame" x="16" y="96.5" width="194" height="15"/>
                                 <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="SHg-UL-mj2"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ot4-0g-sdQ">
-                                <rect key="frame" x="16" y="65.5" width="162" height="16"/>
+                                <rect key="frame" x="16" y="111.5" width="142.5" height="15"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dateLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPu-Cd-47D">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="16"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="52" height="15"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="delegateLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raS-eD-xv7">
-                                        <rect key="frame" x="76" y="0.0" width="86" height="16"/>
+                                        <rect key="frame" x="68" y="0.0" width="74.5" height="15"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="zMZ-QF-3rO"/>
+                                </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="0.49803921569999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9TT-hU-Fuw" firstAttribute="top" secondItem="cKm-45-CUT" secondAttribute="top" constant="8" id="44V-YS-A8S"/>
                             <constraint firstItem="9TT-hU-Fuw" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="8R6-Tu-9Yk"/>
-                            <constraint firstItem="ckK-h4-crJ" firstAttribute="top" secondItem="9TT-hU-Fuw" secondAttribute="bottom" constant="8" id="KUv-5i-VhM"/>
+                            <constraint firstItem="ckK-h4-crJ" firstAttribute="top" secondItem="9TT-hU-Fuw" secondAttribute="bottom" id="KUv-5i-VhM"/>
                             <constraint firstAttribute="trailing" secondItem="ckK-h4-crJ" secondAttribute="trailing" constant="16" id="OyN-f1-1KO"/>
                             <constraint firstItem="ckK-h4-crJ" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="aqt-uu-GMj"/>
                             <constraint firstAttribute="bottom" secondItem="ot4-0g-sdQ" secondAttribute="bottom" constant="8" id="eu3-a4-QhH"/>
@@ -71,12 +77,13 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="cKm-45-CUT" firstAttribute="top" secondItem="zGu-Ah-KWW" secondAttribute="top" id="EZZ-27-0Yh"/>
-                    <constraint firstAttribute="bottom" secondItem="cKm-45-CUT" secondAttribute="bottom" id="Tmi-Rh-3xk"/>
-                    <constraint firstAttribute="trailing" secondItem="cKm-45-CUT" secondAttribute="trailing" id="Zje-MB-Azg"/>
-                    <constraint firstItem="cKm-45-CUT" firstAttribute="leading" secondItem="zGu-Ah-KWW" secondAttribute="leading" id="mJ7-cw-8XL"/>
+                    <constraint firstItem="cKm-45-CUT" firstAttribute="top" secondItem="zGu-Ah-KWW" secondAttribute="top" constant="8" id="EZZ-27-0Yh"/>
+                    <constraint firstAttribute="bottom" secondItem="cKm-45-CUT" secondAttribute="bottom" constant="8" id="Tmi-Rh-3xk"/>
+                    <constraint firstAttribute="trailing" secondItem="cKm-45-CUT" secondAttribute="trailing" constant="16" id="Zje-MB-Azg"/>
+                    <constraint firstItem="cKm-45-CUT" firstAttribute="leading" secondItem="zGu-Ah-KWW" secondAttribute="leading" constant="16" id="mJ7-cw-8XL"/>
                 </constraints>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="containerView" destination="cKm-45-CUT" id="5Zy-U3-pd5"/>
                 <outlet property="dateLabel" destination="BPu-Cd-47D" id="8T8-Hk-5bJ"/>
@@ -84,7 +91,7 @@
                 <outlet property="subtitleLabel" destination="ckK-h4-crJ" id="fes-Dv-Bx0"/>
                 <outlet property="titleTextView" destination="9TT-hU-Fuw" id="lRW-ut-RZy"/>
             </connections>
-            <point key="canvasLocation" x="95.5" y="71"/>
+            <point key="canvasLocation" x="72" y="101.5"/>
         </tableViewCell>
     </objects>
 </document>

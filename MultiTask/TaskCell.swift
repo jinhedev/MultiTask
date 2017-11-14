@@ -49,13 +49,21 @@ class TaskCell: BaseCollectionViewCell {
         if let task = task {
             UIView.animate(withDuration: 0.3, animations: {
                 self.titleLabel.text = task.title
-                self.subtitleLabel.text = task.id
-                self.dateLabel.text = task.created_at.toRelativeDate()
-                self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
-                if task.is_completed {
-                    self.dateLabel.textColor = Color.seaweedGreen
+                if task.items.isEmpty {
+                    self.subtitleLabel.text = "No items found"
                 } else {
+                    self.subtitleLabel.text = task.items.last!.title
+                }
+                self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
+                if task.completed_at != nil {
+                    self.dateLabel.text = "Completed " + task.completed_at!.toRelativeDate()
+                    self.dateLabel.textColor = Color.metallicGold
+                } else if task.updated_at != nil {
+                    self.dateLabel.text = "Updated " + task.updated_at!.toRelativeDate()
                     self.dateLabel.textColor = Color.mandarinOrange
+                } else {
+                    self.dateLabel.text = "Created " + task.created_at.toRelativeDate()
+                    self.dateLabel.textColor = Color.lightGray
                 }
             })
         }
@@ -86,7 +94,7 @@ class TaskCell: BaseCollectionViewCell {
         self.subtitleLabel.textColor = Color.lightGray
         self.dateLabel.text?.removeAll()
         self.dateLabel.backgroundColor = Color.clear
-        self.dateLabel.textColor = Color.mandarinOrange
+        self.dateLabel.textColor = Color.lightGray
         self.statsLabel.text?.removeAll()
         self.statsLabel.backgroundColor = Color.clear
         self.statsLabel.textColor = Color.lightGray

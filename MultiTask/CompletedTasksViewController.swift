@@ -11,9 +11,12 @@ import RealmSwift
 
 class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
+    // MARK: - API
+
     var completedTasks: [Results<Task>]?
     var notificationToken: NotificationToken?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
+    let PAGE_INDEX = 1 // provides index data for parent pageViewController
 
     // MARK: - UICollectionView
 
@@ -29,11 +32,45 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         }
     }
 
+    func deleteItemAtCollectionView(indexPath: [IndexPath]) {
+        self.collectionView.performBatchUpdates({
+            self.collectionView.deleteItems(at: indexPath)
+        }, completion: nil)
+    }
+
+    func insertItemsAtCollectionViewTopIndexPath() {
+        let topIndexPath = IndexPath(item: 0, section: 0)
+        self.collectionView.performBatchUpdates({
+            self.collectionView.insertItems(at: [topIndexPath])
+        }, completion: nil)
+    }
+
+    func updateRowAtCollectionView(indexPath: IndexPath) {
+        if let cell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            cell.task = completedTasks?[indexPath.section][indexPath.item]
+            self.collectionView.performBatchUpdates({
+                self.collectionView.reloadItems(at: [indexPath])
+            }, completion: nil)
+        }
+    }
+
     private func setupCollectionView() {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
+    }
+
+    // MARK: - Notification
+
+    private func observeNotificationForTaskCompletion() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForCompletion(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
+    }
+
+    func updateTaskForCompletion(notification: Notification) {
+        if let task = notification.userInfo?[NotificationKey.TaskCompletion] as? Task {
+            realmManager?.updateObject(object: task, keyedValues: [Task.isCompletedKeyPath : true])
+        }
     }
 
     // MARK: - PersistentContainerDelegate
@@ -49,32 +86,64 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         print(error.localizedDescription)
     }
 
-    func persistentContainer(_ manager: RealmManager, didFetch tasks: Results<Task>) {
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>) {
         if self.completedTasks == nil {
+            // for initial fetch only
             self.completedTasks = [Results<Task>]()
             self.completedTasks!.append(tasks)
         } else {
-            self.completedTasks!.append(tasks)
+            // called when task completed
+            self.completedTasks?.removeAll()
+            self.completedTasks?.append(tasks)
         }
         self.reloadCollectionView()
     }
 
+    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+        if completedTasks == nil {
+            self.reloadCollectionView()
+        } else {
+            self.insertItemsAtCollectionViewTopIndexPath()
+        }
+    }
+
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-        // TODO: implement this
+        realmManager?.fetchTasks(predicate: Task.completedPredicate)
     }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupCollectionView()
         self.setupPersistentContainerDelegate()
+        self.setupCollectionView()
+        self.observeNotificationForTaskCompletion()
         self.realmManager?.fetchTasks(predicate: Task.completedPredicate)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let itemsViewController = segue.destination as? ItemsViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.reloadCollectionView()
+    }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { (context) in
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Segue.CompletedTaskCellToItemsViewController {
+            guard let itemsViewController = segue.destination as? ItemsViewController else {
+                print(trace(file: #file, function: #function, line: #line))
+                return
+            }
+            guard let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else {
+                print(trace(file: #file, function: #function, line: #line))
+                return
+            }
+            itemsViewController.selectedTask = self.completedTasks?[selectedIndexPath.section][selectedIndexPath.item]
         }
     }
 
@@ -86,10 +155,25 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     // MARK: - UICollectionViewDelegateFlowLayout
 
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets.zero
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = self.collectionView.frame.width
-        let cellHeight: CGFloat = 128
-        return CGSize(width: cellWidth, height: cellHeight)
+        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 // containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin (see TaskCell.xib for references)
+        if let task = self.completedTasks?[indexPath.section][indexPath.item] {
+            let estimateSize = CGSize(width: cellWidth, height: cellHeight)
+            let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15)], context: nil)
+            return CGSize(width: cellWidth, height: estimatedFrame.height + cellHeight)
+        }
+        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated height for titleLabel
     }
 
     // MARK: - UICollectionViewDataSource
@@ -112,3 +196,14 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+

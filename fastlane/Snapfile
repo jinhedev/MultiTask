@@ -2,12 +2,19 @@
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iPhone 6",
-  "iPhone 6 Plus",
-  "iPhone 5",
-  "iPad Pro (12.9-inch)",
-  "iPad Pro (9.7-inch)",
-  # "Apple TV 1080p"
+    "iPhone X",
+    "iPhone 8",
+    "iPhone 8 Plus",
+    "iPhone 7",
+    "iPhone 7 Plus",
+    "iPhone 6s",
+    "iPhone 6s Plus",
+    "iPhone 6",
+    "iPhone 6 Plus",
+    "iPhone SE",
+    "iPad Pro (12.9-inch)",
+    "iPad Pro (9.7-inch)",
+    # "Apple TV 1080p"
 ])
 
 ENV['FASTLANE_SNAPSHOT'] = "1"
@@ -30,7 +37,7 @@ output_directory "./fastlane/screenshots"
 clear_previous_screenshots true
 
 # Latest version of iOS
-ios_version '10.1'
+ios_version '11.0.1'
 
 # Choose which project/workspace to use
 # project "./Project.xcodeproj"

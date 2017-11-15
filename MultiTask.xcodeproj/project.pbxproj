@@ -37,9 +37,6 @@
 		C56B29321FA2F3E40093BA32 /* AuthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B29311FA2F3E40093BA32 /* AuthCell.swift */; };
 		C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56B29331FA2F59C0093BA32 /* AuthCell.xib */; };
 		C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */; };
-		C587E1981F4F7D3700CC7FF8 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C587E1971F4F7D3700CC7FF8 /* KeychainManager.swift */; };
-		C587E19D1F4F8C6C00CC7FF8 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */; };
-		C587E19E1F4F8C6C00CC7FF8 /* Locksmith.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A0D7741FB67D8B002968F7 /* TaskCell.xib */; };
 		C5A0D7771FB7885E002968F7 /* TasksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D7761FB7885E002968F7 /* TasksPageViewController.swift */; };
 		C5A0D7791FB78BC8002968F7 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */; };
@@ -114,7 +111,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C55E265B1F404249001743E4 /* RealmSwift.framework in Embed Frameworks */,
-				C587E19E1F4F8C6C00CC7FF8 /* Locksmith.framework in Embed Frameworks */,
 				C55E26591F404249001743E4 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -160,8 +156,6 @@
 		C56B29311FA2F3E40093BA32 /* AuthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCell.swift; sourceTree = "<group>"; };
 		C56B29331FA2F59C0093BA32 /* AuthCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthCell.xib; sourceTree = "<group>"; };
 		C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksViewController.swift; sourceTree = "<group>"; };
-		C587E1971F4F7D3700CC7FF8 /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
-		C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
 		C5A0D7741FB67D8B002968F7 /* TaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
 		C5A0D7761FB7885E002968F7 /* TasksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksPageViewController.swift; sourceTree = "<group>"; };
 		C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
@@ -222,7 +216,6 @@
 				C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */,
 				C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */,
 				C55E265A1F404249001743E4 /* RealmSwift.framework in Frameworks */,
-				C587E19D1F4F8C6C00CC7FF8 /* Locksmith.framework in Frameworks */,
 				C55E26581F404249001743E4 /* Realm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -360,7 +353,6 @@
 				C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */,
 				C50974351F4EA986007C6EAA /* WebServiceManager.swift */,
 				C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */,
-				C587E1971F4F7D3700CC7FF8 /* KeychainManager.swift */,
 				C5A9A8B71F3BB76B00601CFF /* Utilities.swift */,
 				C5A9A8DC1F3C2CF100601CFF /* Constants.swift */,
 			);
@@ -403,7 +395,6 @@
 			children = (
 				C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */,
 				C55E264B1F3F1296001743E4 /* libz.tbd */,
-				C587E19C1F4F8C6C00CC7FF8 /* Locksmith.framework */,
 				C55E26561F404249001743E4 /* Realm.framework */,
 				C55E26571F404249001743E4 /* RealmSwift.framework */,
 			);
@@ -680,7 +671,6 @@
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
 				C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */,
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,
-				C587E1981F4F7D3700CC7FF8 /* KeychainManager.swift in Sources */,
 				C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */,
 				C5A0D7771FB7885E002968F7 /* TasksPageViewController.swift in Sources */,
 				C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */,
@@ -751,7 +741,7 @@
 				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "Duckensburg.MultiTask-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.0;
@@ -779,7 +769,7 @@
 				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-macOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "Duckensburg.MultiTask-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 4.0;
@@ -938,7 +928,6 @@
 		C5A9A8B51F3BB06C00601CFF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -952,7 +941,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
@@ -963,7 +952,6 @@
 		C5A9A8B61F3BB06C00601CFF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -977,7 +965,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.rightmeow.multitask-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;

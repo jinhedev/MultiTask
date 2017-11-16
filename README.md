@@ -34,7 +34,7 @@ This project uses [agvtool](https://developer.apple.com/library/content/qa/qa182
 
 ## Authors
 
-Voat unofficial client for iOS was originally created by [rightmeow](https://github.com/jinhedev/).
+MultiTask for iOS was originally created by [rightmeow](https://github.com/jinhedev/).
 
 See also the list of [contributors](CREDITS.md) who helped in this project.
 

@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
 
     // MARK: - API
 
@@ -17,6 +17,27 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     var notificationToken: NotificationToken?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
+        itemsViewController?.selectedTask = self.completedTasks?[indexPath.section][indexPath.item]
+        // setting the peeking cell's animation
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return itemsViewController
+    }
 
     // MARK: - UICollectionView
 
@@ -117,6 +138,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         super.viewDidLoad()
         self.setupPersistentContainerDelegate()
         self.setupCollectionView()
+        self.setupViewControllerPreviewingDelegate()
         self.observeNotificationForTaskCompletion()
         self.realmManager?.fetchTasks(predicate: Task.completedPredicate)
     }

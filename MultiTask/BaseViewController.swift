@@ -46,6 +46,7 @@ class BaseViewController: UIViewController {
     // MARK: - 3D touch
 
     func is3DTouchAvailable() -> Bool {
+        // FIXME: this logic seems to be off
         return self.traitCollection.forceTouchCapability == UIForceTouchCapability.available
     }
 

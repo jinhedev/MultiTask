@@ -18,11 +18,13 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     // MARK: - TaskEditorViewControllerDelegate
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didTapSave button: UIButton, toSave task: Task) {
-        self.tasksPageViewController?.pendingTasksViewController?.realmManager?.addObjects(objects: [task])
+        viewController.dismiss(animated: true) {
+            self.tasksPageViewController?.pendingTasksViewController?.realmManager?.addObjects(objects: [task])
+        }
     }
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didTapCancel button: UIButton) {
-        // TODO: implement this if needed
+        viewController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - MenuBarContainerView
@@ -37,8 +39,9 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - TasksContainerView
 
-    @IBOutlet weak var tasksContainerView: UIView!
-    var tasksPageViewController: TasksPageViewController?
+    @IBOutlet weak var tasksContainerView: UIView! // tasksContainerView contains tasksPageViewController
+
+    var tasksPageViewController: TasksPageViewController? // tasksPageViewController contains PendingTasksViewController and CompletedTasksViewController
 
     private func setupTasksContainerView() {
         self.tasksContainerView.backgroundColor = Color.clear

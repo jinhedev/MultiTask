@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
 
     // MARK: - API
 
@@ -20,7 +20,24 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     // MARK: - UIViewControllerPreviewingDelegate
 
-    
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
+        itemsViewController?.selectedTask = self.pendingTasks?[indexPath.section][indexPath.item]
+        // setting the peeking cell's animation
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return itemsViewController
+    }
 
     // MARK: - UICollecitonView
 
@@ -71,9 +88,19 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForCompletion(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
     }
 
-    func updateTaskForCompletion(notification: Notification) {
+    private func observeNotificationForTaskUpdate() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForUpdate(notification:)), name: Notification.Name(rawValue: NotificationKey.TaskUpdate), object: nil)
+    }
+
+    @objc func updateTaskForCompletion(notification: Notification) {
         if let task = notification.userInfo?[NotificationKey.TaskCompletion] as? Task {
-            realmManager?.updateObject(object: task, keyedValues: [Task.isCompletedKeyPath: true])
+            realmManager?.updateObject(object: task, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate(), Task.completedAtKeyPath : NSDate()])
+        }
+    }
+
+    @objc func updateTaskForUpdate(notification: Notification) {
+        if let task = notification.userInfo?[NotificationKey.TaskUpdate] as? Task {
+            realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
         }
     }
 
@@ -121,11 +148,14 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()
+        self.observeNotificationForTaskUpdate()
         realmManager!.fetchTasks(predicate: Task.pendingPredicate)
-//        print(realmManager!.pathForContainer?.absoluteString)
-        print(is3DTouchAvailable())
+        if let pathToSandbox = realmManager?.pathForContainer?.absoluteString {
+            print(pathToSandbox)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

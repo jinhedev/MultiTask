@@ -10,12 +10,13 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
 
     // MARK: - API
 
     var selectedTask: Task? // only use this object's id for query for items
     var items: [Results<Item>]?
+    lazy var apiClient: APIClientProtocol = APIClient()
 
     static let storyboard_id = String(describing: ItemsViewController.self)
 
@@ -23,13 +24,14 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var itemEditorViewController: ItemEditorViewController?
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton) {
-        // TODO: implement this if needed
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton?) {
+        viewController.dismiss(animated: true, completion: nil)
     }
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton, toSave item: Item) {
-        if let task = self.selectedTask {
-            realmManager?.appendItem(item, into: task)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton?, toSave item: Item) {
+        viewController.dismiss(animated: true) {
+            self.reloadTableView()
+            self.postNotificationForTaskUpdate(task: self.selectedTask!)
         }
     }
 
@@ -60,6 +62,29 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
                 }
             }
         }
+    }
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.tableView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.present(viewControllerToCommit, animated: true, completion: nil)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
+        let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
+        itemEditorViewController?.delegate = self
+        itemEditorViewController?.parentTask = self.selectedTask
+        itemEditorViewController?.selectedItem = items?[indexPath.section][indexPath.row]
+        // setting the peeking cell's animation
+        if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return itemEditorViewController
     }
 
     // MARK: - PersistentContainerDelegate
@@ -107,6 +132,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
         self.insertRowsAtTableViewTopIndexPath()
+        if selectedTask?.items.count != items?.count {
+            // a new task has been added to **items**
+            self.postNotificationForTaskUpdate(task: selectedTask!)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]) {
@@ -122,6 +151,11 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         NotificationCenter.default.post(notification)
     }
 
+    func postNotificationForTaskUpdate(task: Task) {
+        let notification = Notification(name: Notification.Name.init(NotificationKey.TaskUpdate), object: nil, userInfo: [NotificationKey.TaskUpdate : task])
+        NotificationCenter.default.post(notification)
+    }
+
     // MARK: - UINavigationBar
 
     private func setupNavigationBar() {
@@ -129,7 +163,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: Segue.ItemEditorContainerViewToItemEditorViewController, sender: self)
+        self.performSegue(withIdentifier: Segue.ItemsViewControllerToItemEditorViewController, sender: self)
     }
 
     // MARK: - UITableView
@@ -183,15 +217,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupTableView()
         self.setupSearchController()
         self.setupRealmManager()
+        self.setupViewControllerPreviewingDelegate()
         if let task = selectedTask {
             realmManager?.fetchItems(parentTaskId: task.id)
         }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.ItemEditorContainerViewToItemEditorViewController {
+        if segue.identifier == Segue.ItemsViewControllerToItemEditorViewController {
             itemEditorViewController = segue.destination as? ItemEditorViewController
             itemEditorViewController?.delegate = self
+            itemEditorViewController?.parentTask = self.selectedTask
         }
     }
 

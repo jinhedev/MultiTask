@@ -23,13 +23,14 @@ struct Segue {
     static let MenuBarContainerViewToMenuBarViewController = "MenuBarContainerViewToMenuBarViewController"
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
     static let TasksContainerViewToPageViewController = "TasksContainerViewToPageViewController"
-    static let ItemEditorContainerViewToItemEditorViewController = "ItemEditorContainerViewToItemEditorViewController"
+    static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
 }
 
 // MARK: - Notification
 
 struct NotificationKey {
     static let TaskCompletion = "TaskCompletion"
+    static let TaskUpdate = "TaskUpdate"
 }
 
 // MARK: - Color

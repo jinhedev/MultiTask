@@ -33,7 +33,6 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
         self.delegate?.taskEditorViewController(self, didTapCancel: sender)
-        self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
@@ -41,7 +40,6 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
         if !titleTextView.text.isEmpty {
             let newTask = self.createNewTask(taskTitle: titleTextView.text)
             self.delegate?.taskEditorViewController(self, didTapSave: sender, toSave: newTask)
-            self.dismiss(animated: true, completion: nil)
         }
     }
 

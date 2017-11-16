@@ -21,6 +21,7 @@ final class Item: Object {
     dynamic var delegate: String = ""
     
     let task = LinkingObjects(fromType: Task.self, property: "items")
+    static let titleKeyPath = "title" // called in RealmManager for updating
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
     static let completedAtKeyPath = "completed_at" // called in RealmManager for its updating logic

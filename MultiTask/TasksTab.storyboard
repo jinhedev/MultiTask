@@ -73,7 +73,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="wZy-iu-dmg">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="wZy-iu-dmg">
                                 <rect key="frame" x="0.0" y="20" width="375" height="598"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khB-Pl-5KY">
@@ -206,7 +206,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Rx-vH-Iel">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Rx-vH-Iel">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" red="0.44705882349999998" green="0.56078431370000004" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -233,7 +233,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="8Rx-vH-Iel" id="y6S-gR-hfg"/>
-                        <segue destination="7lz-Dp-OH2" kind="presentation" identifier="ItemEditorContainerViewToItemEditorViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="Njx-nM-cak"/>
+                        <segue destination="7lz-Dp-OH2" kind="presentation" identifier="ItemsViewControllerToItemEditorViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="Njx-nM-cak"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKI-Ae-VT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -401,12 +401,12 @@
         <!--Item Editor View Controller-->
         <scene sceneID="BXu-m1-X3x">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="7lz-Dp-OH2" customClass="ItemEditorViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ItemEditorViewController" modalPresentationStyle="overCurrentContext" id="7lz-Dp-OH2" customClass="ItemEditorViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EbK-yj-cnY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" delaysContentTouches="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="ilk-Gh-8oi">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" delaysContentTouches="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="ilk-Gh-8oi">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="45a-Wj-0Sl">
@@ -428,7 +428,7 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="titleTextView" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xlL-kq-M6y">
+                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="titleTextView" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xlL-kq-M6y">
                                                                 <rect key="frame" x="0.0" y="37" width="311" height="83"/>
                                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>

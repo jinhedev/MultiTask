@@ -10,15 +10,16 @@ import UIKit
 import RealmSwift
 
 protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton, toSave item: Item)
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton?, toSave item: Item)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton?)
 }
 
-class ItemEditorViewController: BaseViewController, UITextViewDelegate {
+class ItemEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
 
     // MARK: - API
 
-    var item: Item?
+    var parentTask: Task?
+    var selectedItem: Item?
     var delegate: ItemEditorViewControllerDelegate?
     static let storyboard_id = String(describing: ItemEditorViewController.self)
 
@@ -32,16 +33,19 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate {
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
+        self.titleTextView.text.removeAll()
         self.delegate?.itemEditorViewController(self, didTapCancel: sender)
-        self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
         if !titleTextView.text.isEmpty {
-            let newItem = self.createNewItem(itemTitle: titleTextView.text)
-            self.delegate?.itemEditorViewController(self, didTapSave: sender, toSave: newItem)
-            self.dismiss(animated: true, completion: nil)
+            if self.selectedItem != nil {
+                self.realmManager?.updateObject(object: self.selectedItem!, keyedValues: [Item.titleKeyPath : self.titleTextView.text])
+            } else {
+                let newItem = self.createNewItem(itemTitle: titleTextView.text)
+                self.realmManager?.appendItem(newItem, into: self.parentTask!)
+            }
         }
     }
 
@@ -51,12 +55,12 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate {
     }
 
     private func setupView() {
-        if self.item == nil {
+        if self.selectedItem == nil {
             self.titleLabel.text = "Add a new item"
             self.titleTextView.text?.removeAll()
         } else {
             self.titleLabel.text = "Edit a item"
-            self.titleTextView.text = item?.title
+            self.titleTextView.text = selectedItem?.title
         }
         self.view.backgroundColor = Color.transparentBlack
         self.scrollView.backgroundColor = Color.clear
@@ -84,6 +88,34 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate {
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
     }
 
+    // MARK: - PersistentContainerDelegate
+
+    var realmManager: RealmManager?
+
+    private func setupPersistentContainerDelegate() {
+        realmManager = RealmManager()
+        realmManager!.delegate = self
+    }
+
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
+        // called when successfully updated an existing item
+        self.delegate?.itemEditorViewController(self, didTapSave: nil, toSave: self.selectedItem!)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+        // called when successfully appened a new item to task
+        if let newItem = objects.first as? Item {
+            self.delegate?.itemEditorViewController(self, didTapSave: nil, toSave: newItem)
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
     // MARK: - UITextViewDelegate
 
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -97,6 +129,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        self.setupPersistentContainerDelegate()
     }
 
     override func viewDidAppear(_ animated: Bool) {

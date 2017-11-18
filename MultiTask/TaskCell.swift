@@ -47,25 +47,23 @@ class TaskCell: BaseCollectionViewCell {
 
     private func configureCell(task: Task?) {
         if let task = task {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.titleLabel.text = task.title
-                if task.items.isEmpty {
-                    self.subtitleLabel.text = "No items found"
-                } else {
-                    self.subtitleLabel.text = task.items.last!.title
-                }
-                self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
-                if task.completed_at != nil {
-                    self.dateLabel.text = "Completed " + task.completed_at!.toRelativeDate()
-                    self.dateLabel.textColor = Color.metallicGold
-                } else if task.updated_at != nil {
-                    self.dateLabel.text = "Updated " + task.updated_at!.toRelativeDate()
-                    self.dateLabel.textColor = Color.mandarinOrange
-                } else {
-                    self.dateLabel.text = "Created " + task.created_at.toRelativeDate()
-                    self.dateLabel.textColor = Color.lightGray
-                }
-            })
+            self.titleLabel.text = task.title
+            if task.items.isEmpty {
+                self.subtitleLabel.text = "No items found"
+            } else {
+                self.subtitleLabel.text = task.items.last!.title
+            }
+            self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
+            if task.completed_at != nil {
+                self.dateLabel.text = "Completed " + task.completed_at!.toRelativeDate()
+                self.dateLabel.textColor = Color.metallicGold
+            } else if task.updated_at != nil {
+                self.dateLabel.text = "Updated " + task.updated_at!.toRelativeDate()
+                self.dateLabel.textColor = Color.mandarinOrange
+            } else {
+                self.dateLabel.text = "Created " + task.created_at.toRelativeDate()
+                self.dateLabel.textColor = Color.lightGray
+            }
         }
     }
 

@@ -48,23 +48,21 @@ class ItemCell: BaseTableViewCell {
 
     private func configureCell(item: Item?) {
         guard let item = item else { return }
-        UIView.animate(withDuration: 0.3) {
-            self.titleTextView.text = item.title
-            self.subtitleLabel.text = item.id
-            self.delegateLabel.text = item.delegate
-            if item.completed_at != nil {
-                self.titleTextView.textColor = Color.lightGray
-                self.dateLabel.textColor = Color.seaweedGreen
-                self.dateLabel.text = "Completed " + item.completed_at!.toRelativeDate()
-            } else if item.updated_at != nil {
-                self.titleTextView.textColor = Color.white
-                self.dateLabel.textColor = Color.mandarinOrange
-                self.dateLabel.text = "Updated " + item.updated_at!.toRelativeDate()
-            } else {
-                self.titleTextView.textColor = Color.white
-                self.dateLabel.textColor = Color.lightGray
-                self.dateLabel.text = "Created " + item.created_at.toRelativeDate()
-            }
+        self.titleTextView.text = item.title
+        self.subtitleLabel.text = item.id
+        self.delegateLabel.text = item.delegate
+        if item.completed_at != nil {
+            self.titleTextView.textColor = Color.lightGray
+            self.dateLabel.textColor = Color.seaweedGreen
+            self.dateLabel.text = "Completed " + item.completed_at!.toRelativeDate()
+        } else if item.updated_at != nil {
+            self.titleTextView.textColor = Color.white
+            self.dateLabel.textColor = Color.mandarinOrange
+            self.dateLabel.text = "Updated " + item.updated_at!.toRelativeDate()
+        } else {
+            self.titleTextView.textColor = Color.white
+            self.dateLabel.textColor = Color.lightGray
+            self.dateLabel.text = "Created " + item.created_at.toRelativeDate()
         }
     }
 

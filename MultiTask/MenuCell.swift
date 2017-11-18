@@ -24,9 +24,7 @@ class MenuCell: BaseCollectionViewCell {
 
     private func configureCell(menu: Menu?) {
         if let menu = menu {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.titleLabel.text = menu.title
-            })
+            self.titleLabel.text = menu.title
         }
     }
 

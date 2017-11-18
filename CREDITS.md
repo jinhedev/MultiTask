@@ -9,3 +9,4 @@
 - loading wheel by Roselin Christina.S from the Noun Project
 - cancel by Drishya from the Noun Project
 - edit by Karan from the Noun Project
+- spinner by Kirby Wu from the Noun Project

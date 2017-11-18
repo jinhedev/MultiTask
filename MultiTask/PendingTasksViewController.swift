@@ -43,65 +43,11 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     @IBOutlet weak var collectionView: UICollectionView!
 
-    /**
-     Reload the whole collectionView on a main thread.
-     - warning: Reloading the whole collectionView is expensive. Only use this method for the initial reload at the first time collectionView is set at viewDidLoad.
-     */
-    private func reloadCollectionView() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-
-    func deleteItemAtCollectionView(indexPath: [IndexPath]) {
-        self.collectionView.performBatchUpdates({
-            self.collectionView.deleteItems(at: indexPath)
-        }, completion: nil)
-    }
-
-    func insertItemsAtCollectionViewTopIndexPath() {
-        let topIndexPath = IndexPath(item: 0, section: 0)
-        self.collectionView.performBatchUpdates({
-            self.collectionView.insertItems(at: [topIndexPath])
-        }, completion: nil)
-    }
-
-    func updateRowAtCollectionView(indexPath: IndexPath) {
-        if let cell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
-            cell.task = pendingTasks?[indexPath.section][indexPath.item]
-            self.collectionView.performBatchUpdates({
-                self.collectionView.reloadItems(at: [indexPath])
-            }, completion: nil)
-        }
-    }
-
     private func setupCollectionView() {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
-    }
-
-    // MARK: - Notification
-
-    private func observeNotificationForTaskCompletion() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForCompletion(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
-    }
-
-    private func observeNotificationForTaskUpdate() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForUpdate(notification:)), name: Notification.Name(rawValue: NotificationKey.TaskUpdate), object: nil)
-    }
-
-    @objc func updateTaskForCompletion(notification: Notification) {
-        if let task = notification.userInfo?[NotificationKey.TaskCompletion] as? Task {
-            realmManager?.updateObject(object: task, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate(), Task.completedAtKeyPath : NSDate()])
-        }
-    }
-
-    @objc func updateTaskForUpdate(notification: Notification) {
-        if let task = notification.userInfo?[NotificationKey.TaskUpdate] as? Task {
-            realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
-        }
     }
 
     // MARK: - PersistentContainerDelegate
@@ -113,34 +59,40 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         realmManager!.delegate = self
     }
 
+    private func setupRealmNotificationsForCollectionView() {
+        notificationToken = self.pendingTasks!.first?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
 
-    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>) {
-        if self.pendingTasks == nil {
-            // for initial fetch only
-            self.pendingTasks = [Results<Task>]()
-            self.pendingTasks!.append(tasks)
-        } else {
-            // called at didUpdate
-            self.pendingTasks?.removeAll()
-            self.pendingTasks!.append(tasks)
-        }
-        self.reloadCollectionView()
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
+        guard let fetchedTasks = tasks else { return }
+        self.pendingTasks = [Results<Task>]()
+        self.pendingTasks!.append(fetchedTasks)
+        self.setupRealmNotificationsForCollectionView()
     }
 
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
-        if pendingTasks == nil {
-            realmManager?.fetchTasks(predicate: Task.pendingPredicate)
-        } else {
-            self.insertItemsAtCollectionViewTopIndexPath()
-        }
+        // TODO: implement this if needed
+        print(objects)
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
         // TODO: implement this if needed
-        realmManager?.fetchTasks(predicate: Task.pendingPredicate)
+        print(object)
     }
 
     // MARK: - Lifecycle
@@ -150,17 +102,10 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupCollectionView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
-        self.observeNotificationForTaskCompletion()
-        self.observeNotificationForTaskUpdate()
-        realmManager!.fetchTasks(predicate: Task.pendingPredicate)
+        realmManager!.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
         if let pathToSandbox = realmManager?.pathForContainer?.absoluteString {
             print(pathToSandbox)
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.reloadCollectionView()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -172,11 +117,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.PendingTaskCellToItemsViewController {
-            guard let itemsViewController = segue.destination as? ItemsViewController else {
-                print(trace(file: #file, function: #function, line: #line))
-                return
-            }
-            guard let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else {
+            guard let itemsViewController = segue.destination as? ItemsViewController, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else {
                 print(trace(file: #file, function: #function, line: #line))
                 return
             }

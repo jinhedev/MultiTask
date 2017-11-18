@@ -10,16 +10,18 @@ import UIKit
 import RealmSwift
 
 protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapSave button: UIButton, toSave task: Task)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapCancel button: UIButton)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?)
 }
 
-class TaskEditorViewController: BaseViewController, UITextViewDelegate {
+class TaskEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
 
     // MARK: - API
 
-    var task: Task?
-    var delegate: TaskEditorViewControllerDelegate?
+    var selectedTask: Task?
+    var selectedIndexPath: IndexPath?
+    weak var delegate: TaskEditorViewControllerDelegate?
     static let storyboard_id = String(describing: TaskEditorViewController.self)
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -32,14 +34,20 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
-        self.delegate?.taskEditorViewController(self, didTapCancel: sender)
+        self.delegate?.taskEditorViewController(self, didCancelTask: self.selectedTask)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
         if !titleTextView.text.isEmpty {
-            let newTask = self.createNewTask(taskTitle: titleTextView.text)
-            self.delegate?.taskEditorViewController(self, didTapSave: sender, toSave: newTask)
+            if self.selectedTask != nil {
+                // update the task
+                self.realmManager?.updateObject(object: self.selectedTask!, keyedValues: [Task.titleKeyPath : self.titleTextView.text])
+            } else {
+                // add a new task
+                let newTask = self.createNewTask(taskTitle: titleTextView.text)
+                self.realmManager?.addObjects(objects: [newTask])
+            }
         }
     }
 
@@ -49,12 +57,12 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
     }
 
     private func setupView() {
-        if self.task == nil {
+        if self.selectedTask == nil {
             self.titleLabel.text = "Add a new task"
             self.titleTextView.text?.removeAll()
         } else {
             self.titleLabel.text = "Edit a task"
-            self.titleTextView.text = task?.title
+            self.titleTextView.text = selectedTask?.title
         }
         self.containerView.backgroundColor = Color.clear
         self.containerView.clipsToBounds = true
@@ -89,11 +97,43 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate {
         }
     }
 
+    // MARK: - PersistentContainerDelegate
+
+    var realmManager: RealmManager?
+
+    private func setupPersistentContainerDelegate() {
+        realmManager = RealmManager()
+        realmManager!.delegate = self
+    }
+
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
+        if let task = self.selectedTask, let indexPath = self.selectedIndexPath {
+            self.delegate?.taskEditorViewController(self, didUpdateTask: task, at: indexPath)
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
+    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+        if let newTask = objects.first as? Task {
+            self.delegate?.taskEditorViewController(self, didAddTask: newTask)
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        self.setupPersistentContainerDelegate()
     }
 
     override func viewDidAppear(_ animated: Bool) {

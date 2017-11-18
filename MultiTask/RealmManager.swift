@@ -16,14 +16,14 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func persistentContainer(_ manager: RealmManager, didLogin: Bool)
     func persistentContainer(_ manager: RealmManager, didLogout: Bool)
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>)
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?)
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?)
     // create
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object])
     // update
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object)
     // delete
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object])
+    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?)
 }
 
 extension PersistentContainerDelegate {
@@ -31,14 +31,14 @@ extension PersistentContainerDelegate {
     func persistentContainer(_ manager: RealmManager, didLogin: Bool) {}
     func persistentContainer(_ manager: RealmManager, didLogout: Bool) {}
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>) {}
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {}
     // create
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {}
     // update
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {}
     // delete
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]) {}
+    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {}
 }
 
 var realm = try! Realm() // A realm instance for local persistent container
@@ -88,15 +88,15 @@ class RealmManager: NSObject {
 
     // MARK: - Fetch
 
-    func fetchTasks(predicate: NSPredicate) {
-        let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: Task.createdAtKeyPath, ascending: false)
+    func fetchTasks(predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
+        let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
         if !tasks.isEmpty {
             delegate?.persistentContainer(self, didFetchTasks: tasks)
         }
     }
 
-    func fetchItems(parentTaskId: String) {
-        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
+    func fetchItems(parentTaskId: String, sortedBy keyPath: String, ascending: Bool) {
+        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 
@@ -108,12 +108,11 @@ class RealmManager: NSObject {
     // MARK: - Delete
 
     func deleteObjects(objects: [Object]) {
-        let objectCopy = objects
         do {
             try realm.write {
                 realm.delete(objects)
             }
-            delegate?.persistentContainer(self, didDelete: objectCopy)
+            delegate?.persistentContainer(self, didDelete: objects)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }

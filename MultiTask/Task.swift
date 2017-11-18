@@ -12,14 +12,15 @@ import RealmSwift
 final class Task: Object {
 
     dynamic var id: String = ""
-    dynamic var title = ""
-    dynamic var is_completed = false
-    dynamic var created_at = NSDate()
+    dynamic var title: String = ""
+    dynamic var is_completed: Bool = false
+    dynamic var created_at: NSDate = NSDate()
     dynamic var updated_at: NSDate? = nil
     dynamic var expired_at: NSDate? = nil
     dynamic var completed_at: NSDate? = nil
 
     var items = List<Item>()
+    static let titleKeyPath = "title" // called in RealmManager for its updating 
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
     static let completedAtKeyPath = "completed_at" // called in RealmManager for its updating logic
@@ -33,9 +34,28 @@ final class Task: Object {
         return predicate
     }
 
-    static func getDescendingDateSortDescriptor() -> NSSortDescriptor {
-        let descriptor = NSSortDescriptor(key: "created_at", ascending: false)
-        return descriptor
+    /**
+     If all items in this task are marked completed, but this task itself is not marked completed, then it will return true; if only some items in this task are marked completed, but the task itself is marked completed, then it will return false. Nil will be return when task is already in sync when the current state of all of its items.
+     */
+    func shouldComplete() -> Bool? {
+        let itemsCount = self.items.count
+        let completedItems = self.items.filter { $0.is_completed == true }
+        let completedItemsCount = completedItems.count
+        if self.is_completed == true {
+            if completedItemsCount != itemsCount {
+                return false
+            } else {
+                // task itself is marked completed and all its embeded items are marked completed. All is good. Ignore.
+                return nil
+            }
+        } else {
+            if completedItemsCount == itemsCount {
+                return true
+            } else {
+                // task itself is marked not completed and only some of its embeded items are marked completed. All is good. Ignore.
+                return nil
+            }
+        }
     }
 
     // MARK: - Lifecycle

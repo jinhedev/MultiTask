@@ -64,6 +64,46 @@ extension UIImageView {
     
 }
 
+extension IndexPath {
+
+    static func fromRow(_ row: Int) -> IndexPath {
+        return IndexPath(row: row, section: 0)
+    }
+
+    static func fromItem(_ item: Int) -> IndexPath {
+        return IndexPath(item: item, section: 0)
+    }
+
+}
+
+// MARK: - UITableView
+
+extension UITableView {
+
+    func applyChanges(section: Int = 0, deletions: [Int], insertions: [Int], updates: [Int]) {
+        performBatchUpdates({
+            deleteRows(at: deletions.map(IndexPath.fromRow), with: UITableViewRowAnimation.automatic)
+            insertRows(at: insertions.map(IndexPath.fromRow), with: UITableViewRowAnimation.automatic)
+            reloadRows(at: updates.map(IndexPath.fromRow), with: UITableViewRowAnimation.automatic)
+        }, completion: nil)
+    }
+
+}
+
+// MARK: - UICollectionView
+
+extension UICollectionView {
+
+    func applyChanges(section: Int = 0, deletions: [Int], insertions: [Int], updates: [Int]) {
+        performBatchUpdates({
+            deleteItems(at: deletions.map(IndexPath.fromItem))
+            insertItems(at: insertions.map(IndexPath.fromItem))
+            reloadItems(at: updates.map(IndexPath.fromItem))
+        }, completion: nil)
+    }
+
+}
+
 
 
 

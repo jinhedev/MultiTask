@@ -17,13 +17,15 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - TaskEditorViewControllerDelegate
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapSave button: UIButton, toSave task: Task) {
-        viewController.dismiss(animated: true) {
-            self.tasksPageViewController?.pendingTasksViewController?.realmManager?.addObjects(objects: [task])
-        }
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
+        viewController.dismiss(animated: true, completion: nil)
     }
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didTapCancel button: UIButton) {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?) {
         viewController.dismiss(animated: true, completion: nil)
     }
 

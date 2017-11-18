@@ -29,6 +29,7 @@ struct Segue {
 // MARK: - Notification
 
 struct NotificationKey {
+    static let TaskPending = "TaskPending"
     static let TaskCompletion = "TaskCompletion"
     static let TaskUpdate = "TaskUpdate"
 }

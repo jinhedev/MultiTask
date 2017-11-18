@@ -13,8 +13,13 @@ class ItemCell: BaseTableViewCell {
 
     // MARK: - API
 
-    var item: Item? { didSet { configureCell(item: item) } }
+    var item: Item? {
+        didSet {
+            self.configureCell(item: item)
+        }
+    }
 
+    var selectedIndexPath: IndexPath?
     static let cell_id = String(describing: ItemCell.self)
     static let nibName = String(describing: ItemCell.self)
     @IBOutlet weak var containerView: UIView!
@@ -22,6 +27,7 @@ class ItemCell: BaseTableViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var delegateLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var dividerView: UIView!
 
     func animateForDeletion(color: Color) {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
@@ -70,8 +76,6 @@ class ItemCell: BaseTableViewCell {
         self.selectionStyle = .none
         self.contentView.backgroundColor = Color.inkBlack
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.clipsToBounds = true
-        self.containerView.layer.cornerRadius = 8
         self.subtitleLabel.textColor = Color.lightGray
         self.subtitleLabel.backgroundColor = Color.clear
         self.titleTextView.textColor = Color.white
@@ -82,6 +86,7 @@ class ItemCell: BaseTableViewCell {
         self.delegateLabel.textColor = Color.lightGray
         self.dateLabel.backgroundColor = Color.clear
         self.dateLabel.textColor = Color.lightGray
+        self.dividerView.backgroundColor = Color.darkGray
     }
 
     // MARK: - Lifecycle

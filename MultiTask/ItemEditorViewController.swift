@@ -10,9 +10,9 @@ import UIKit
 import RealmSwift
 
 protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton?, toSave item: Item)
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton?)
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item, at indexPath: IndexPath)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didCancelItem item: Item?, at indexPath: IndexPath?)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item, at indexPath: IndexPath?)
 }
 
 class ItemEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
@@ -22,7 +22,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     var parentTask: Task?
     var selectedItem: Item?
     var selectedIndexPath: IndexPath?
-    var delegate: ItemEditorViewControllerDelegate?
+    weak var delegate: ItemEditorViewControllerDelegate?
     static let storyboard_id = String(describing: ItemEditorViewController.self)
 
     @IBOutlet weak var scrollView: UIScrollView!
@@ -35,13 +35,13 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
-        self.titleTextView.text.removeAll()
-        self.delegate?.itemEditorViewController(self, didTapCancel: sender)
+        self.delegate?.itemEditorViewController(self, didCancelItem: self.selectedItem, at: self.selectedIndexPath)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
         if !titleTextView.text.isEmpty {
+            // if selectedItem is nil, that means this MVC is segued from the AddButton, else it is initiated with peek and pop
             if self.selectedItem != nil {
                 self.realmManager?.updateObject(object: self.selectedItem!, keyedValues: [Item.titleKeyPath : self.titleTextView.text])
             } else {
@@ -105,13 +105,18 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
         // called when successfully updated an existing item
-        self.delegate?.itemEditorViewController(self, didTapSave: nil, toSave: self.selectedItem!)
+        if let item = self.selectedItem, let indexPath = self.selectedIndexPath {
+            self.delegate?.itemEditorViewController(self, didUpdateItem: item, at: indexPath)
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
         // called when successfully appened a new item to task
         if let newItem = objects.first as? Item {
-            self.delegate?.itemEditorViewController(self, didAddItem: newItem)
+            self.delegate?.itemEditorViewController(self, didAddItem: newItem, at: nil)
         } else {
             print(trace(file: #file, function: #function, line: #line))
             self.dismiss(animated: true, completion: nil)
@@ -145,19 +150,3 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

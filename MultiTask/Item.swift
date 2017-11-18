@@ -11,10 +11,10 @@ import RealmSwift
 
 final class Item: Object {
 
-    dynamic var id = ""
-    dynamic var title = ""
-    dynamic var is_completed = false
-    dynamic var created_at = NSDate()
+    dynamic var id: String = ""
+    dynamic var title: String = ""
+    dynamic var is_completed: Bool = false
+    dynamic var created_at: NSDate = NSDate()
     dynamic var updated_at: NSDate? = nil
     dynamic var expired_at: NSDate? = nil
     dynamic var completed_at: NSDate? = nil
@@ -30,11 +30,6 @@ final class Item: Object {
     static func getTitlePredicate(value: String) -> NSPredicate {
         let predicate = NSPredicate(format: "title contains[c] %@", value)
         return predicate
-    }
-
-    static func getDescendingDateSortDescriptor() -> NSSortDescriptor {
-        let descriptor = NSSortDescriptor(key: "created_at", ascending: false)
-        return descriptor
     }
 
     override static func primaryKey() -> String? {

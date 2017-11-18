@@ -43,55 +43,11 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     @IBOutlet weak var collectionView: UICollectionView!
 
-    /**
-     Reload the whole collectionView on a main thread.
-     - warning: Reloading the whole collectionView is expensive. Only use this method for the initial reload at the first time collectionView is set at viewDidLoad.
-     */
-    private func reloadCollectionView() {
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
-    }
-
-    func deleteItemAtCollectionView(indexPath: [IndexPath]) {
-        self.collectionView.performBatchUpdates({
-            self.collectionView.deleteItems(at: indexPath)
-        }, completion: nil)
-    }
-
-    func insertItemsAtCollectionViewTopIndexPath() {
-        let topIndexPath = IndexPath(item: 0, section: 0)
-        self.collectionView.performBatchUpdates({
-            self.collectionView.insertItems(at: [topIndexPath])
-        }, completion: nil)
-    }
-
-    func updateRowAtCollectionView(indexPath: IndexPath) {
-        if let cell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
-            cell.task = completedTasks?[indexPath.section][indexPath.item]
-            self.collectionView.performBatchUpdates({
-                self.collectionView.reloadItems(at: [indexPath])
-            }, completion: nil)
-        }
-    }
-
     private func setupCollectionView() {
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
-    }
-
-    // MARK: - Notification
-
-    private func observeNotificationForTaskCompletion() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTaskForCompletion(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
-    }
-
-    func updateTaskForCompletion(notification: Notification) {
-        if let task = notification.userInfo?[NotificationKey.TaskCompletion] as? Task {
-            realmManager?.updateObject(object: task, keyedValues: [Task.isCompletedKeyPath : true])
-        }
     }
 
     // MARK: - PersistentContainerDelegate
@@ -103,49 +59,50 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         realmManager!.delegate = self
     }
 
+    private func setupRealmNotificationsForCollectionView() {
+        notificationToken = self.completedTasks!.first?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
 
-    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>) {
-        if self.completedTasks == nil {
-            // for initial fetch only
-            self.completedTasks = [Results<Task>]()
-            self.completedTasks!.append(tasks)
-        } else {
-            // called when task completed
-            self.completedTasks?.removeAll()
-            self.completedTasks?.append(tasks)
-        }
-        self.reloadCollectionView()
+    func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
+        guard let fetchedTasks = tasks else { return }
+        self.completedTasks = [Results<Task>]()
+        self.completedTasks!.append(fetchedTasks)
+        self.setupRealmNotificationsForCollectionView()
     }
 
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
-        if completedTasks == nil {
-            self.reloadCollectionView()
-        } else {
-            self.insertItemsAtCollectionViewTopIndexPath()
-        }
+        // TODO: implement this if needed
+        print(objects)
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-        realmManager?.fetchTasks(predicate: Task.completedPredicate)
+        // TODO: implement this if needed
+        print(object)
     }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupPersistentContainerDelegate()
         self.setupCollectionView()
         self.setupViewControllerPreviewingDelegate()
-        self.observeNotificationForTaskCompletion()
-        self.realmManager?.fetchTasks(predicate: Task.completedPredicate)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.reloadCollectionView()
+        self.setupPersistentContainerDelegate()
+        self.realmManager!.fetchTasks(predicate: Task.completedPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -157,11 +114,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.CompletedTaskCellToItemsViewController {
-            guard let itemsViewController = segue.destination as? ItemsViewController else {
-                print(trace(file: #file, function: #function, line: #line))
-                return
-            }
-            guard let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else {
+            guard let itemsViewController = segue.destination as? ItemsViewController, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else {
                 print(trace(file: #file, function: #function, line: #line))
                 return
             }

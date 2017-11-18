@@ -189,7 +189,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = self.collectionView.frame.width
-        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 // containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin (see TaskCell.xib for references)
+        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4 // containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
         if let task = self.completedTasks?[indexPath.section][indexPath.item] {
             let estimateSize = CGSize(width: cellWidth, height: cellHeight)
             let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15)], context: nil)

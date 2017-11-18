@@ -12,6 +12,7 @@ import RealmSwift
 protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
     func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton?, toSave item: Item)
     func itemEditorViewController(_ viewController: ItemEditorViewController, didTapCancel button: UIButton?)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item)
 }
 
 class ItemEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
@@ -20,6 +21,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     var parentTask: Task?
     var selectedItem: Item?
+    var selectedIndexPath: IndexPath?
     var delegate: ItemEditorViewControllerDelegate?
     static let storyboard_id = String(describing: ItemEditorViewController.self)
 
@@ -109,7 +111,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
         // called when successfully appened a new item to task
         if let newItem = objects.first as? Item {
-            self.delegate?.itemEditorViewController(self, didTapSave: nil, toSave: newItem)
+            self.delegate?.itemEditorViewController(self, didAddItem: newItem)
         } else {
             print(trace(file: #file, function: #function, line: #line))
             self.dismiss(animated: true, completion: nil)

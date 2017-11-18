@@ -28,6 +28,12 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         viewController.dismiss(animated: true, completion: nil)
     }
 
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item) {
+        viewController.dismiss(animated: true) {
+            self.insertRowsAtTableViewTopIndexPath()
+        }
+    }
+
     func itemEditorViewController(_ viewController: ItemEditorViewController, didTapSave button: UIButton?, toSave item: Item) {
         viewController.dismiss(animated: true) {
             self.reloadTableView()

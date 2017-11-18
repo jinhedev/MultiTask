@@ -13,7 +13,11 @@ class TaskCell: BaseCollectionViewCell {
 
     // MARK: - Public API
 
-    var task: Task? { didSet { self.configureCell(task: task) } }
+    var task: Task? {
+        didSet {
+            self.configureCell(task: task)
+        }
+    }
 
     static let cell_id = String(describing: TaskCell.self)
     static let nibName = String(describing: TaskCell.self)

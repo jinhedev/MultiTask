@@ -11,6 +11,7 @@ DerivedData/
 *.xccheckout
 *.xcscmblueprint
 *.cer
+*.xcuserstate
 
 ## Obj-C/Swift specific
 *.hmap

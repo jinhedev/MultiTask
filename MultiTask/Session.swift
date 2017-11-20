@@ -11,11 +11,11 @@ import RealmSwift
 
 final class Session: Object {
 
-    dynamic var id: String = ""
-    dynamic var access_token: String = ""
-    dynamic var created_at: NSDate = NSDate()
-    dynamic var updated_at: NSDate = NSDate()
-    dynamic var expire_at: NSDate = NSDate()
+    @objc dynamic var id: String = ""
+    @objc dynamic var access_token: String = ""
+    @objc dynamic var created_at: NSDate = NSDate()
+    @objc dynamic var updated_at: NSDate = NSDate()
+    @objc dynamic var expire_at: NSDate = NSDate()
 
     let user = LinkingObjects(fromType: User.self, property: "sessions")
 

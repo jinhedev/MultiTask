@@ -145,7 +145,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4 // containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
         if let task = self.completedTasks?[indexPath.section][indexPath.item] {
             let estimateSize = CGSize(width: cellWidth, height: cellHeight)
-            let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 15)], context: nil)
+            let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)], context: nil)
             return CGSize(width: cellWidth, height: estimatedFrame.height + cellHeight)
         }
         return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated height for titleLabel

@@ -32,7 +32,7 @@ class BaseViewController: UIViewController {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             try AVAudioSession.sharedInstance().setActive(true)
-            avaPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeWAVE)
+            avaPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileType.wav.rawValue)
             DispatchQueue.main.async {
                 guard let player = self.avaPlayer else { return }
                 player.play()

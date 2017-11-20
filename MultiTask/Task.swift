@@ -11,13 +11,13 @@ import RealmSwift
 
 final class Task: Object {
 
-    dynamic var id: String = ""
-    dynamic var title: String = ""
-    dynamic var is_completed: Bool = false
-    dynamic var created_at: NSDate = NSDate()
-    dynamic var updated_at: NSDate? = nil
-    dynamic var expired_at: NSDate? = nil
-    dynamic var completed_at: NSDate? = nil
+    @objc dynamic var id: String = ""
+    @objc dynamic var title: String = ""
+    @objc dynamic var is_completed: Bool = false
+    @objc dynamic var created_at: NSDate = NSDate()
+    @objc dynamic var updated_at: NSDate? = nil
+    @objc dynamic var expired_at: NSDate? = nil
+    @objc dynamic var completed_at: NSDate? = nil
 
     var items = List<Item>()
     static let titleKeyPath = "title" // called in RealmManager for its updating 

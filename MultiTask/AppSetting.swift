@@ -12,12 +12,12 @@ import RealmSwift
 /// AppSettings is a data class persisted locally to replace Swift's UserDefault.
 final class AppSetting: Object {
 
-    dynamic var id: String = ""
-    dynamic var isOnboardingCompleted: Bool = false
-    dynamic var systemVersion: String = ""
-    dynamic var theme: String = ""
-    dynamic var created_at: NSDate = NSDate()
-    dynamic var updated_at: NSDate = NSDate()
+    @objc dynamic var id: String = ""
+    @objc dynamic var isOnboardingCompleted: Bool = false
+    @objc dynamic var systemVersion: String = ""
+    @objc dynamic var theme: String = ""
+    @objc dynamic var created_at: NSDate = NSDate()
+    @objc dynamic var updated_at: NSDate = NSDate()
 
     static var dateKeyPath = "created_at" // called in RealmManager for its sorting logic
 

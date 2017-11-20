@@ -11,9 +11,9 @@ import RealmSwift
 
 final class User: Object {
 
-    dynamic var id = ""
-    dynamic var email = ""
-    dynamic var session: Session?
+    @objc dynamic var id = ""
+    @objc dynamic var email = ""
+    @objc dynamic var session: Session?
 
     var sessions = List<Session>()
 

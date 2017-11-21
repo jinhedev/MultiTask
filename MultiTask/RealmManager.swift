@@ -50,10 +50,6 @@ class RealmManager: NSObject {
 
     // MARK: - Database
 
-    func migrateDatabase() {
-        // TODO: implement this
-    }
-
     func purgeDatabase() {
         do {
             try realm.write {
@@ -105,7 +101,7 @@ class RealmManager: NSObject {
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 
-    // MARK: - Delete
+    // MARK: - Create
 
     func deleteObjects(objects: [Object]) {
         do {
@@ -156,30 +152,6 @@ class RealmManager: NSObject {
                 realm.add(object)
             }
             delegate?.persistentContainer(self, didUpdate: object)
-        } catch let err {
-            delegate?.persistentContainer(self, didErr: err)
-        }
-    }
-
-    func checkOrUpdateItemsForCompletion(in task: Task) {
-        let items = task.items
-        do {
-            try realm.write {
-                var n: Int = 0
-                for item in items {
-                    if item.is_completed == true {
-                        n += 1
-                    }
-                }
-                if items.count > 0 && n == items.count {
-                    task.is_completed = true
-                    realm.add(task)
-                } else {
-                    task.is_completed = false
-                    realm.add(task)
-                }
-            }
-            delegate?.persistentContainer(self, didUpdate: task)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }

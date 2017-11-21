@@ -58,13 +58,14 @@ class TaskCell: BaseCollectionViewCell {
                 self.subtitleLabel.text = task.items.last!.title
             }
             self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
-            if task.completed_at != nil {
-                self.dateLabel.text = "Completed " + task.completed_at!.toRelativeDate()
+            if task.is_completed == true {
+                self.dateLabel.text = "Completed " + task.updated_at!.toRelativeDate()
                 self.dateLabel.textColor = Color.metallicGold
             } else if task.updated_at != nil {
                 self.dateLabel.text = "Updated " + task.updated_at!.toRelativeDate()
                 self.dateLabel.textColor = Color.mandarinOrange
             } else {
+                // this includes the case of when is_completed == false
                 self.dateLabel.text = "Created " + task.created_at.toRelativeDate()
                 self.dateLabel.textColor = Color.lightGray
             }

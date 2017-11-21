@@ -17,13 +17,11 @@ final class Task: Object {
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
     @objc dynamic var expired_at: NSDate? = nil
-    @objc dynamic var completed_at: NSDate? = nil
 
     var items = List<Item>()
     static let titleKeyPath = "title" // called in RealmManager for its updating 
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
-    static let completedAtKeyPath = "completed_at" // called in RealmManager for its updating logic
     static let isCompletedKeyPath = "is_completed" // called in RealmManager for its updating logic
 
     static let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
@@ -73,7 +71,6 @@ final class Task: Object {
         self.created_at = NSDate()
         self.updated_at = nil
         self.expired_at = nil
-        self.completed_at = nil
     }
 
 }

@@ -17,19 +17,28 @@ final class Item: Object {
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
     @objc dynamic var expired_at: NSDate? = nil
-    @objc dynamic var completed_at: NSDate? = nil
     @objc dynamic var delegate: String = ""
     
     let task = LinkingObjects(fromType: Task.self, property: "items")
     static let titleKeyPath = "title" // called in RealmManager for updating
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
-    static let completedAtKeyPath = "completed_at" // called in RealmManager for its updating logic
     static let isCompletedKeyPath = "is_completed" // called in RealmManager for its updating logic
 
-    static func getTitlePredicate(value: String) -> NSPredicate {
-        let predicate = NSPredicate(format: "title contains[c] %@", value)
+    static func titlePredicate(by searchString: String) -> NSPredicate {
+        let predicate = NSPredicate(format: "title contains[c] %@", searchString)
         return predicate
+    }
+
+    /**
+     If task is already marked is_completed == true, this method will return false, so that the controller can toggle its completion state to pending if needed. If task is marked is_completed == false, this method will return true, so that the controller can toggle its completion state to completed if needed.
+     */
+    func shouldComplete() -> Bool {
+        if self.is_completed == true {
+            return false
+        } else {
+            return false
+        }
     }
 
     override static func primaryKey() -> String? {
@@ -44,7 +53,6 @@ final class Item: Object {
         self.created_at = NSDate()
         self.updated_at = nil
         self.expired_at = nil
-        self.completed_at = nil
         self.delegate = ""
     }
 

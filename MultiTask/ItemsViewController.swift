@@ -20,7 +20,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     lazy var apiClient: APIClientProtocol = APIClient()
     static let storyboard_id = String(describing: ItemsViewController.self)
 
-    // MARK: - ItemEditorContainerView && ItemEditorViewControllerDelegate
+    // MARK: - ItemEditorViewControllerDelegate
 
     var itemEditorViewController: ItemEditorViewController?
 
@@ -42,9 +42,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     // MARK: - UISearchController & UISearchResultsUpdating
 
-    let searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController!
 
     private func setupSearchController() {
+        self.searchController = UISearchController(searchResultsController: nil)
         self.searchController.searchBar.barStyle = .black
         self.searchController.searchResultsUpdater = self
         self.searchController.searchBar.tintColor = Color.mandarinOrange
@@ -59,7 +60,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         if let searchString = searchController.searchBar.text {
             if !searchString.isEmpty {
                 if let taskId = self.selectedTask?.id {
-                    realmManager?.fetchItems(parentTaskId: taskId, predicate: Item.getTitlePredicate(value: searchString))
+                    realmManager?.fetchItems(parentTaskId: taskId, predicate: Item.titlePredicate(by: searchString))
                 }
             } else {
                 if let taskId = self.selectedTask?.id {
@@ -128,28 +129,57 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         print(error.localizedDescription)
     }
 
+    func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
+        // FIXME: hacky solution for handling result from the searchController
+        // TODO: use a separate MVC to handle search logic, alternatively, dequeue the tableView with multiple section by the order of "This week", "Past Weeks"
+        if self.items != nil {
+            self.items?.removeAll()
+            guard let fetchedItems = items else { return }
+            self.items?.append(fetchedItems)
+            self.tableView.reloadData()
+        }
+    }
+
     func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
-        // delete an item from items may cause the parentTask to toggle its completion state to either completed or pending
-        // check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
+        // REMARK: delete an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
         guard let parentTask = self.selectedTask else { return }
         if parentTask.shouldComplete() == true {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.completedAtKeyPath : NSDate(), Task.updatedAtKeyPath : NSDate()])
+            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
+            self.postNotificationForTaskCompletion(completedTask: parentTask)
         } else if parentTask.shouldComplete() == false {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.completedAtKeyPath : NSNull(), Task.updatedAtKeyPath : NSDate()])
+            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
+            self.postNotificationForTaskPending(pendingTask: parentTask)
+        } else {
+            // having deleted an item doesn't cause the parentTask to change its completion state
         }
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-        // update an item from items may cause the parentTask to toggle its completion state to either completed or pending
-        // check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
+        // REMARK: update an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
         guard let parentTask = self.selectedTask else { return }
         if parentTask.shouldComplete() == true {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.completedAtKeyPath : NSDate(), Task.updatedAtKeyPath : NSDate()])
+            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
+            // post a notification to CompletedTasksViewController to execute a manual fetch if completedTasks is nil
+            self.postNotificationForTaskCompletion(completedTask: parentTask)
         } else if parentTask.shouldComplete() == false {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.completedAtKeyPath : NSNull(), Task.updatedAtKeyPath : NSDate()])
+            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
+            // post a notification to PendingTasksViewController to execute a manual fetch if pendingTasks is nil
+            self.postNotificationForTaskPending(pendingTask: parentTask)
         } else {
-            // parentTask's completion state is now in sync with its items now. Safe to ignore.
+            // having updated an item doesn't cause the parentTask to change its completion state
         }
+    }
+
+    // MARK: - Notifications
+
+    func postNotificationForTaskCompletion(completedTask: Task) {
+        let notification = Notification(name: Notification.Name(rawValue: NotificationKey.TaskCompletion), object: nil, userInfo: [NotificationKey.TaskCompletion : completedTask])
+        NotificationCenter.default.post(notification)
+    }
+
+    func postNotificationForTaskPending(pendingTask: Task) {
+        let notification = Notification(name: Notification.Name(rawValue: NotificationKey.TaskPending), object: nil, userInfo: [NotificationKey.TaskPending : pendingTask])
+        NotificationCenter.default.post(notification)
     }
 
     // MARK: - UINavigationBar
@@ -211,29 +241,28 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // user marks item for pending
         let pendingAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            // perform pending action
+            // REMARK: perform pending action may cause a completedTask to be transferred to PendingTasksViewController, however when pendingTasks in PendingTasksViewController is nil. It is not tracked by RealmNotification by default, so the UI may not be able to perform its update to show the task that has just been transferred.
+            // to fix this, perform a manual fetch on PendingTasksViewController to get everything kickstarted.
             if let itemToBePending = self.items?[indexPath.section][indexPath.row] {
-                self.realmManager?.updateObject(object: itemToBePending, keyedValues: [Item.isCompletedKeyPath : false, Item.completedAtKeyPath : NSNull(), Item.updatedAtKeyPath : NSDate()])
-                self.realmManager?.updateObject(object: self.selectedTask!, keyedValues: [Task.completedAtKeyPath : NSNull(), Task.updatedAtKeyPath : NSDate()])
+                self.realmManager?.updateObject(object: itemToBePending, keyedValues: [Item.isCompletedKeyPath : false, Item.updatedAtKeyPath : NSDate()])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
             }
             is_success(true)
         }
-        pendingAction.image = #imageLiteral(resourceName: "Spinner") // <<-- watch out for image literal
+        pendingAction.image = #imageLiteral(resourceName: "Code") // <<-- watch out for image literal
         pendingAction.backgroundColor = Color.mandarinOrange
         // user marks item for completion
         let doneAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            // perform complete action
+            // REMARK: when a item is marked completed, it may cause the parentTask to change its completion state to is_completed == true. However, if completedViewController has no completedTasks to keep track of by realmNotification, it will not update on its own! The same goes with pendingAction! To fix this issue, perform a manual fetch on CompletedTasksViewController to get everything kickstarted.
             if let itemToBeCompleted = self.items?[indexPath.section][indexPath.row] {
-                self.realmManager?.updateObject(object: itemToBeCompleted, keyedValues: [Item.isCompletedKeyPath : true, Item.completedAtKeyPath : NSDate(), Item.updatedAtKeyPath : NSDate()])
-                self.realmManager?.updateObject(object: self.selectedTask!, keyedValues: [Task.completedAtKeyPath : NSNull(), Task.updatedAtKeyPath : NSDate()]) // NSNull() doesn't seem to work
+                self.realmManager?.updateObject(object: itemToBeCompleted, keyedValues: [Item.isCompletedKeyPath : true, Item.updatedAtKeyPath : NSDate()])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
             }
             is_success(true)
         }
-        doneAction.image = #imageLiteral(resourceName: "Tick") // <<-- watch out for image literal
+        doneAction.image = #imageLiteral(resourceName: "Tick") // <<-- watch out for image literal. It's almost invisible.
         doneAction.backgroundColor = Color.seaweedGreen
         // if this cell has been completed, show pendingAction, if not, show doneAction
         if let is_completed = self.isItemCompleted(at: indexPath) {
@@ -253,8 +282,11 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: nil) { (action, view, is_success) in
-            // perform delete action
-            if let itemToBeDeleted = self.selectedTask?.items[indexPath.row] {
+            // FIXME: perform a delete action may cause its parent Task to changed its completion state to either complete or incomplete.
+            // TODO: If task should become complete, but CompletedTasksViewController's completedTasks == nil, then CompletedTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if completedTasks == nil, if so perform a manual fetch. If completedTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
+            // TODO: if task should become incomplete, but PendingTasksViewController's pendingTasks == nil, then PendingTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if pendingTasks == nil, if so perform a manual fetch. If pendingTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
+            // FIXME: delete action delete the indexPath.row - 1 row for some reason.
+            if let itemToBeDeleted = self.items?[indexPath.section][indexPath.row] {
                 self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
             } else {
                 print(trace(file: #file, function: #function, line: #line))

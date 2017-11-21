@@ -85,14 +85,16 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupRealmNotificationsForCollectionView()
     }
 
-    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
-        // TODO: implement this if needed
-        print(objects)
+    // MARK: - Notifications
+
+    func observeNotificationForTaskPending() {
+        NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskPending), object: nil)
     }
 
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-        // TODO: implement this if needed
-        print(object)
+    @objc func performInitialFetch(notification: Notification?) {
+        if self.pendingTasks == nil || self.pendingTasks?.isEmpty == true {
+            self.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+        }
     }
 
     // MARK: - Lifecycle
@@ -102,7 +104,8 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupCollectionView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
-        realmManager!.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+        self.observeNotificationForTaskPending()
+        self.performInitialFetch(notification: nil)
         if let pathToSandbox = realmManager?.pathForContainer?.absoluteString {
             print(pathToSandbox)
         }
@@ -145,7 +148,8 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = self.collectionView.frame.width
-        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4 // containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
+        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4
+        // REMARK: containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
         if let task = self.pendingTasks?[indexPath.section][indexPath.item] {
             let estimateSize = CGSize(width: cellWidth, height: cellHeight)
             let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)], context: nil)

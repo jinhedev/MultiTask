@@ -57,15 +57,16 @@ class ItemCell: BaseTableViewCell {
         self.titleTextView.text = item.title
         self.subtitleLabel.text = item.id
         self.delegateLabel.text = item.delegate
-        if item.completed_at != nil {
+        if item.is_completed == true {
             self.titleTextView.textColor = Color.lightGray
             self.dateLabel.textColor = Color.seaweedGreen
-            self.dateLabel.text = "Completed " + item.completed_at!.toRelativeDate()
+            self.dateLabel.text = "Completed " + item.updated_at!.toRelativeDate()
         } else if item.updated_at != nil {
             self.titleTextView.textColor = Color.white
             self.dateLabel.textColor = Color.mandarinOrange
             self.dateLabel.text = "Updated " + item.updated_at!.toRelativeDate()
         } else {
+            // this includes the case of when is_completed == false
             self.titleTextView.textColor = Color.white
             self.dateLabel.textColor = Color.lightGray
             self.dateLabel.text = "Created " + item.created_at.toRelativeDate()
@@ -98,9 +99,9 @@ class ItemCell: BaseTableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        titleTextView.text = nil
-        delegateLabel.text = nil
-        dateLabel.text = nil
+        self.titleTextView.text = nil
+        self.delegateLabel.text = nil
+        self.dateLabel.text = nil
     }
 
 }

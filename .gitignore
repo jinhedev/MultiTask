@@ -12,6 +12,7 @@ DerivedData/
 *.xcscmblueprint
 *.cer
 *.xcuserstate
+MultiTask.xcodeproj/project.xcworkspace/xcuserdata/rightmeow.xcuserdatad/UserInterfaceState.xcuserstate
 
 ## Obj-C/Swift specific
 *.hmap

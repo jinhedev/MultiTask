@@ -18,38 +18,6 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     static let storyboard_id = String(describing: PendingTasksViewController.self)
     let PAGE_INDEX = 0 // provides index data for parent pageViewController
 
-    // MARK: - UIViewControllerPreviewingDelegate
-
-    private func setupViewControllerPreviewingDelegate() {
-        self.registerForPreviewing(with: self, sourceView: self.collectionView)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
-        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
-        itemsViewController?.selectedTask = self.pendingTasks?[indexPath.section][indexPath.item]
-        // setting the peeking cell's animation
-        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
-            previewingContext.sourceRect = selectedCell.frame
-        }
-        return itemsViewController
-    }
-
-    // MARK: - UICollecitonView
-
-    @IBOutlet weak var collectionView: UICollectionView!
-
-    private func setupCollectionView() {
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.backgroundColor = Color.inkBlack
-        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
-    }
-
     // MARK: - PersistentContainerDelegate
 
     var realmManager: RealmManager?
@@ -97,6 +65,27 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         }
     }
 
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
+        itemsViewController?.selectedTask = self.pendingTasks?[indexPath.section][indexPath.item]
+        // setting the peeking cell's animation
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return itemsViewController
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -126,6 +115,17 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
             }
             itemsViewController.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]
         }
+    }
+
+    // MARK: - UICollecitonView
+
+    @IBOutlet weak var collectionView: UICollectionView!
+
+    private func setupCollectionView() {
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
     }
 
     // MARK: - UICollectionViewDelegate

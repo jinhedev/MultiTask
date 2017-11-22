@@ -185,22 +185,12 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     // MARK: - UINavigationBar
 
     private func setupNavigationBar() {
-        self.navigationItem.title?.removeAll()
+        guard let title = self.selectedTask?.title else { return }
+        self.navigationItem.title = title
     }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: Segue.ItemsViewControllerToItemEditorViewController, sender: self)
-    }
-
-    // MARK: - UITableView
-
-    @IBOutlet weak var tableView: UITableView!
-
-    private func setupTableView() {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.register(UINib(nibName: ItemCell.nibName, bundle: nil), forCellReuseIdentifier: ItemCell.cell_id)
-        self.tableView.backgroundColor = Color.inkBlack
     }
 
     // MARK: - Lifecycle
@@ -221,6 +211,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             itemEditorViewController?.delegate = self
             itemEditorViewController?.parentTask = self.selectedTask
         }
+    }
+
+    // MARK: - UITableView
+
+    @IBOutlet weak var tableView: UITableView!
+
+    private func setupTableView() {
+        self.tableView.backgroundColor = Color.inkBlack
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.register(UINib(nibName: ItemCell.nibName, bundle: nil), forCellReuseIdentifier: ItemCell.cell_id)
     }
 
     // MARK: - UITableViewDelegate
@@ -301,7 +302,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        return 56
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

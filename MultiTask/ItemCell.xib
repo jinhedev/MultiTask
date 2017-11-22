@@ -61,7 +61,7 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AnC-KY-4i7">
-                                <rect key="frame" x="16" y="149.5" width="242" height="1"/>
+                                <rect key="frame" x="0.0" y="149.5" width="258" height="1"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="038-30-3OQ"/>
@@ -71,7 +71,7 @@
                         <color key="backgroundColor" red="1" green="0.49803921569999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9TT-hU-Fuw" firstAttribute="top" secondItem="cKm-45-CUT" secondAttribute="top" constant="8" id="44V-YS-A8S"/>
-                            <constraint firstItem="AnC-KY-4i7" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="7uH-Xo-g7G"/>
+                            <constraint firstItem="AnC-KY-4i7" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" id="7uH-Xo-g7G"/>
                             <constraint firstItem="9TT-hU-Fuw" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="8R6-Tu-9Yk"/>
                             <constraint firstAttribute="bottom" secondItem="AnC-KY-4i7" secondAttribute="bottom" id="Di4-JE-vRj"/>
                             <constraint firstAttribute="trailing" secondItem="AnC-KY-4i7" secondAttribute="trailing" id="GqS-ES-9AI"/>

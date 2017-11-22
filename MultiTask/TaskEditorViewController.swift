@@ -70,6 +70,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
             self.titleLabel.text = "Edit a task"
             self.titleTextView.text = selectedTask?.title
         }
+        self.view.backgroundColor = Color.transparentBlack
         self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
         self.containerView.clipsToBounds = true

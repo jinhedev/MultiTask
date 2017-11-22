@@ -30,14 +30,22 @@ class ItemCell: BaseTableViewCell {
     @IBOutlet weak var dividerView: UIView!
 
     /**
-     Animate the background to indicate a cell's task is being marked as completed
+     Animate the background to indicate a cell is highlighted
      - parameter color: The backgroundColor of containerView animating into.
-     - warning: There is a bug in the gesture control when the user swipe from delete back to its original position, the tableView somehow thinks is being swiped from the left to right. Subsequently, animateForCompletion is triggered. This glitch may cause confusion to the user.
+     - warning: Do NOT use this animation for cell editing action. There is a bug in the gesture control when the user swipe from delete back to its original position, the tableView somehow thinks is being swiped from the left to right. Subsequently, animateForCompletion is triggered. This glitch may cause confusion to the user.
      */
     func animateForHighlight(isHighlighted: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-            self.containerView.backgroundColor = color
-        }, completion: nil)
+        if isHighlighted == true {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.mandarinOrange
+                self.dateLabel.textColor = Color.lightGray
+            }, completion: nil)
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.midNightBlack
+                self.configureCell(item: self.item)
+            }, completion: nil)
+        }
     }
 
     private func configureCell(item: Item?) {
@@ -78,6 +86,12 @@ class ItemCell: BaseTableViewCell {
         self.dividerView.backgroundColor = Color.darkGray
     }
 
+    private func resetDataForReuse() {
+        self.titleTextView.text?.removeAll()
+        self.delegateLabel.text?.removeAll()
+        self.dateLabel.text?.removeAll()
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -87,9 +101,7 @@ class ItemCell: BaseTableViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.titleTextView.text = nil
-        self.delegateLabel.text = nil
-        self.dateLabel.text = nil
+        self.resetDataForReuse()
     }
 
 }

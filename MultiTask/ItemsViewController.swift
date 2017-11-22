@@ -234,11 +234,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        guard let indexPath = indexPath, let cell = tableView.cellForRow(at: indexPath) as? ItemCell else { return }
-        cell.animateForDefault()
-    }
-
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // user marks item for pending
         let pendingAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in

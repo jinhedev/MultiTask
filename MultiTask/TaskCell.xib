@@ -30,7 +30,7 @@
                                 <rect key="frame" x="16" y="8" width="345" height="143"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sas-4I-tGq">
-                                        <rect key="frame" x="16" y="105" width="313" height="15"/>
+                                        <rect key="frame" x="16" y="105" width="78" height="15"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="UsM-lW-ZPv"/>
@@ -62,7 +62,7 @@
                                         </constraints>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmh-Md-RSS">
-                                        <rect key="frame" x="16" y="8" width="313" height="89"/>
+                                        <rect key="frame" x="16" y="8" width="61" height="89"/>
                                         <color key="backgroundColor" red="1" green="0.49803921569999998" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                         <nil key="textColor"/>
@@ -71,7 +71,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="Sas-4I-tGq" secondAttribute="trailing" constant="16" id="0La-Ev-Csr"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Sas-4I-tGq" secondAttribute="trailing" constant="16" id="0La-Ev-Csr"/>
                                     <constraint firstItem="Sas-4I-tGq" firstAttribute="top" secondItem="hmh-Md-RSS" secondAttribute="bottom" constant="8" id="0fB-EK-9T5"/>
                                     <constraint firstItem="hmh-Md-RSS" firstAttribute="leading" secondItem="tYf-km-5DM" secondAttribute="leading" constant="16" id="1Ay-MQ-s0n"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Byg-dO-88g" secondAttribute="trailing" constant="16" id="MIC-ZB-s5G"/>
@@ -79,7 +79,7 @@
                                     <constraint firstAttribute="bottom" secondItem="Byg-dO-88g" secondAttribute="bottom" constant="8" id="Ybt-fx-vCE"/>
                                     <constraint firstItem="hmh-Md-RSS" firstAttribute="top" secondItem="tYf-km-5DM" secondAttribute="top" constant="8" id="bt9-1S-n92"/>
                                     <constraint firstItem="Byg-dO-88g" firstAttribute="top" secondItem="Sas-4I-tGq" secondAttribute="bottom" id="dlm-Bi-kJc"/>
-                                    <constraint firstAttribute="trailing" secondItem="hmh-Md-RSS" secondAttribute="trailing" constant="16" id="pJ2-JV-SQ5"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hmh-Md-RSS" secondAttribute="trailing" constant="16" id="pJ2-JV-SQ5"/>
                                     <constraint firstItem="Sas-4I-tGq" firstAttribute="leading" secondItem="tYf-km-5DM" secondAttribute="leading" constant="16" id="vkQ-ah-Eju"/>
                                 </constraints>
                             </view>
@@ -103,6 +103,7 @@
             <size key="customSize" width="377" height="159"/>
             <connections>
                 <outlet property="containerView" destination="tYf-km-5DM" id="6Sg-yM-glO"/>
+                <outlet property="containerViewLeadingMargin" destination="2od-2B-WT6" id="GpB-AQ-CG9"/>
                 <outlet property="dateLabel" destination="ilO-rp-Mli" id="InH-uo-SK3"/>
                 <outlet property="statsLabel" destination="jyn-hj-W6e" id="AUX-sg-IDa"/>
                 <outlet property="subtitleLabel" destination="Sas-4I-tGq" id="cOl-iR-jRB"/>

@@ -32,7 +32,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
         viewController.dismiss(animated: true, completion: nil)
-
     }
 
     // MARK: - MenuBarContainerView
@@ -58,9 +57,14 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     // MARK: - UINavigationBar
 
     @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var editButton: UIBarButtonItem!
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: Segue.AddButtonToTaskEditorViewController, sender: self)
+    }
+
+    @IBAction func handleEdit(_ sender: UIBarButtonItem) {
+        print(123)
     }
 
     // MARK: - UISearchController & UISearchResultsUpdating

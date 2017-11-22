@@ -9,6 +9,10 @@
 import UIKit
 import RealmSwift
 
+protocol TaskCellProtocol: NSObjectProtocol {
+    func taskCell(_ taskCell: TaskCell) -> Bool
+}
+
 class TaskCell: BaseCollectionViewCell {
 
     // MARK: - Public API
@@ -19,6 +23,7 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
+    weak var delegate: TaskCellProtocol?
     static let cell_id = String(describing: TaskCell.self)
     static let nibName = String(describing: TaskCell.self)
     @IBOutlet weak var containerView: UIView!
@@ -26,12 +31,13 @@ class TaskCell: BaseCollectionViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
+    @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint!
 
-    func animateCell(isEditing: Bool) {
+    func animateForEditing(isEditing: Bool) {
         if isEditing {
             UIView.animate(withDuration: 0.3, animations: {
                 self.containerView.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
-                self.containerView.backgroundColor = Color.red
+                self.containerView.backgroundColor = Color.mandarinOrange
             })
         } else {
             UIView.animate(withDuration: 0.3, animations: {
@@ -41,10 +47,35 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
-    func animateBorderColor(_ view: UIView, duration: TimeInterval, color: Color) {
-        UIView.animate(withDuration: duration, delay: 0, options: [.allowUserInteraction, .curveEaseInOut], animations: {
-            view.layer.borderColor = color.cgColor
-        }, completion: nil)
+    func animateForSelect(isSelected: Bool) {
+        if isSelected {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.dateLabel.textColor = Color.lightGray
+                self.containerView.backgroundColor = Color.mandarinOrange
+                self.containerView.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
+            })
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.configureCell(task: self.task)
+                self.containerView.backgroundColor = Color.midNightBlack
+                self.containerView.transform = CGAffineTransform.identity
+            })
+        }
+
+    }
+
+    func animateForHighlight(isHighlighted: Bool) {
+        if isHighlighted == true {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.mandarinOrange
+                self.dateLabel.textColor = Color.lightGray
+            }, completion: nil)
+        } else {
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+                self.containerView.backgroundColor = Color.midNightBlack
+                self.configureCell(task: self.task)
+            }, completion: nil)
+        }
     }
 
     // MARK: - Private API

@@ -11,8 +11,14 @@ import RealmSwift
 
 protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
     func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?)
+}
+
+extension TaskEditorViewControllerDelegate {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {}
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {}
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {}
 }
 
 class TaskEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
@@ -34,7 +40,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.textViewDidEndEditing(titleTextView)
-        self.delegate?.taskEditorViewController(self, didCancelTask: self.selectedTask)
+        self.delegate?.taskEditorViewController(self, didCancelTask: self.selectedTask, at: nil)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
@@ -64,6 +70,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
             self.titleLabel.text = "Edit a task"
             self.titleTextView.text = selectedTask?.title
         }
+        self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
         self.containerView.clipsToBounds = true
         self.contentContainerView.backgroundColor = Color.inkBlack
@@ -121,7 +128,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
         if let newTask = objects.first as? Task {
-            self.delegate?.taskEditorViewController(self, didAddTask: newTask)
+            self.delegate?.taskEditorViewController(self, didAddTask: newTask, at: nil)
         } else {
             print(trace(file: #file, function: #function, line: #line))
             self.dismiss(animated: true, completion: nil)

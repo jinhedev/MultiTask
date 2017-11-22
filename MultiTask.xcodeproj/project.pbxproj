@@ -71,8 +71,6 @@
 		C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F43B891F4AFDE100F702DE /* icon.png */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
 		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
-		C5F748B51FAEC2DC004F2491 /* ErrorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B41FAEC2DC004F2491 /* ErrorCell.swift */; };
-		C5F748B71FAECBE4004F2491 /* ErrorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5F748B61FAECBE4004F2491 /* ErrorCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,8 +195,6 @@
 		C5F43B891F4AFDE100F702DE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
 		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
-		C5F748B41FAEC2DC004F2491 /* ErrorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCell.swift; sourceTree = "<group>"; };
-		C5F748B61FAECBE4004F2491 /* ErrorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ErrorCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -351,7 +347,6 @@
 				C56B29331FA2F59C0093BA32 /* AuthCell.xib */,
 				C5A0D7741FB67D8B002968F7 /* TaskCell.xib */,
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
-				C5F748B61FAECBE4004F2491 /* ErrorCell.xib */,
 				C543943E1FB5292C009EC104 /* MenuCell.xib */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
 			);
@@ -388,7 +383,6 @@
 				C56564C31FA05F30006EEE5E /* TaskCell.swift */,
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
 				C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */,
-				C5F748B41FAEC2DC004F2491 /* ErrorCell.swift */,
 				C56B29311FA2F3E40093BA32 /* AuthCell.swift */,
 				C54394401FB529C8009EC104 /* MenuCell.swift */,
 				C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */,
@@ -611,7 +605,6 @@
 				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
 				C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
-				C5F748B71FAECBE4004F2491 /* ErrorCell.xib in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
 				C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
@@ -708,7 +701,6 @@
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
 				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,
 				C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */,
-				C5F748B51FAEC2DC004F2491 /* ErrorCell.swift in Sources */,
 				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,
 				C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,

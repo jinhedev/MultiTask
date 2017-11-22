@@ -29,26 +29,14 @@ class ItemCell: BaseTableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dividerView: UIView!
 
-    func animateForDeletion(color: Color) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-            self.containerView.backgroundColor = Color.red
-        }, completion: nil)
-    }
-
     /**
      Animate the background to indicate a cell's task is being marked as completed
      - parameter color: The backgroundColor of containerView animating into.
      - warning: There is a bug in the gesture control when the user swipe from delete back to its original position, the tableView somehow thinks is being swiped from the left to right. Subsequently, animateForCompletion is triggered. This glitch may cause confusion to the user.
      */
-    func animateForCompletion(color: Color) {
+    func animateForHighlight(isHighlighted: Bool) {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-            self.containerView.backgroundColor = Color.seaweedGreen
-        }, completion: nil)
-    }
-
-    func animateForDefault() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-            self.containerView.backgroundColor = Color.midNightBlack
+            self.containerView.backgroundColor = color
         }, completion: nil)
     }
 

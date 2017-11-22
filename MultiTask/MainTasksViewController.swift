@@ -17,7 +17,7 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - TaskEditorViewControllerDelegate
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
         viewController.dismiss(animated: true) {
             // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
             if self.tasksPageViewController?.pendingTasksViewController?.pendingTasks == nil {
@@ -30,8 +30,9 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?) {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
         viewController.dismiss(animated: true, completion: nil)
+
     }
 
     // MARK: - MenuBarContainerView

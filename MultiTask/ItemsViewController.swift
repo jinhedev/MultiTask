@@ -182,17 +182,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: - UINavigationBar
-
-    private func setupNavigationBar() {
-        guard let title = self.selectedTask?.title else { return }
-        self.navigationItem.title = title
-    }
-
-    @IBAction func handleAdd(_ sender: UIBarButtonItem) {
-        self.performSegue(withIdentifier: Segue.ItemsViewControllerToItemEditorViewController, sender: self)
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -211,6 +200,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             itemEditorViewController?.delegate = self
             itemEditorViewController?.parentTask = self.selectedTask
         }
+    }
+
+    // MARK: - UINavigationBar
+
+    private func setupNavigationBar() {
+        guard let title = self.selectedTask?.title else { return }
+        self.navigationItem.title = title
+    }
+
+    @IBAction func handleAdd(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: Segue.ItemsViewControllerToItemEditorViewController, sender: self)
     }
 
     // MARK: - UITableView
@@ -333,3 +333,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

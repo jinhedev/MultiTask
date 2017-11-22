@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
+class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -65,25 +65,14 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         }
     }
 
-    // MARK: - UIViewControllerPreviewingDelegate
+    // MARK: - TaskEditorViewControllerDelegate
 
-    private func setupViewControllerPreviewingDelegate() {
-        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
+        viewController.dismiss(animated: true, completion: nil)
     }
 
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
-        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
-        itemsViewController?.selectedTask = self.pendingTasks?[indexPath.section][indexPath.item]
-        // setting the peeking cell's animation
-        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
-            previewingContext.sourceRect = selectedCell.frame
-        }
-        return itemsViewController
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
+        viewController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Lifecycle
@@ -115,6 +104,27 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
             }
             itemsViewController.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]
         }
+    }
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.present(viewControllerToCommit, animated: true, completion: nil)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let selectedIndexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
+        taskEditorViewController?.delegate = self
+        taskEditorViewController?.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]
+        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return taskEditorViewController
     }
 
     // MARK: - UICollecitonView

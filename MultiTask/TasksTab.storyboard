@@ -68,7 +68,7 @@
         <!--Task Editor View Controller-->
         <scene sceneID="UDi-eW-VHO">
             <objects>
-                <viewController modalPresentationStyle="overCurrentContext" id="Qb7-A2-IyR" customClass="TaskEditorViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TaskEditorViewController" modalPresentationStyle="overCurrentContext" id="Qb7-A2-IyR" customClass="TaskEditorViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Us-Qq-eur">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

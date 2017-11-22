@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -17,38 +17,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     var notificationToken: NotificationToken?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
-
-    // MARK: - UIViewControllerPreviewingDelegate
-
-    private func setupViewControllerPreviewingDelegate() {
-        self.registerForPreviewing(with: self, sourceView: self.collectionView)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
-        let itemsViewController = storyboard?.instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController
-        itemsViewController?.selectedTask = self.completedTasks?[indexPath.section][indexPath.item]
-        // setting the peeking cell's animation
-        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
-            previewingContext.sourceRect = selectedCell.frame
-        }
-        return itemsViewController
-    }
-
-    // MARK: - UICollectionView
-
-    @IBOutlet weak var collectionView: UICollectionView!
-
-    private func setupCollectionView() {
-        self.collectionView.dataSource = self
-        self.collectionView.delegate = self
-        self.collectionView.backgroundColor = Color.inkBlack
-        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
-    }
 
     // MARK: - PersistentContainerDelegate
 
@@ -97,6 +65,37 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         }
     }
 
+    // MARK: - TaskEditorViewControllerDelegate
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.present(viewControllerToCommit, animated: true, completion: nil)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let selectedIndexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
+        taskEditorViewController?.delegate = self
+        taskEditorViewController?.selectedTask = self.completedTasks?[selectedIndexPath.section][selectedIndexPath.item]
+        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return taskEditorViewController
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -123,6 +122,17 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
             }
             itemsViewController.selectedTask = self.completedTasks?[selectedIndexPath.section][selectedIndexPath.item]
         }
+    }
+
+    // MARK: - UICollectionView
+
+    @IBOutlet weak var collectionView: UICollectionView!
+
+    private func setupCollectionView() {
+        self.collectionView.dataSource = self
+        self.collectionView.delegate = self
+        self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
     }
 
     // MARK: - UICollectionViewDelegate

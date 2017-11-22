@@ -66,6 +66,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
         self.view.backgroundColor = Color.transparentBlack
         self.scrollView.backgroundColor = Color.clear
+        self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
         self.contentContainerView.backgroundColor = Color.inkBlack
         self.contentContainerView.layer.borderColor = Color.midNightBlack.cgColor

@@ -10,10 +10,6 @@
 		C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50974351F4EA986007C6EAA /* WebServiceManager.swift */; };
 		C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */; };
 		C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */; };
-		C53C3EBF1FBA0EED0064DDB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */; };
-		C53C3EC11FBA0EED0064DDB4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */; };
-		C53C3EC31FBA0EED0064DDB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */; };
-		C53C3EC61FBA0EED0064DDB4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */; };
 		C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */; };
 		C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */; };
 		C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5409B371FA50758004BAF4F /* ItemCell.xib */; };
@@ -133,13 +129,6 @@
 		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
 		C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MultiTask.entitlements; path = MultiTask/MultiTask.entitlements; sourceTree = "<group>"; };
 		C53C3EA81FBA0CFF0064DDB4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MultiTask macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C53C3EC51FBA0EED0064DDB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		C53C3EC71FBA0EED0064DDB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C53C3EC81FBA0EED0064DDB4 /* MultiTask_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MultiTask_macOS.entitlements; sourceTree = "<group>"; };
 		C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeTab.storyboard; sourceTree = "<group>"; };
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
 		C5409B371FA50758004BAF4F /* ItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
@@ -202,13 +191,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C53C3EB91FBA0EED0064DDB4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C55E265F1F40DC17001743E4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -249,19 +231,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C53C3EBD1FBA0EED0064DDB4 /* MultiTask macOS */ = {
-			isa = PBXGroup;
-			children = (
-				C53C3EBE1FBA0EED0064DDB4 /* AppDelegate.swift */,
-				C53C3EC01FBA0EED0064DDB4 /* ViewController.swift */,
-				C53C3EC21FBA0EED0064DDB4 /* Assets.xcassets */,
-				C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */,
-				C53C3EC71FBA0EED0064DDB4 /* Info.plist */,
-				C53C3EC81FBA0EED0064DDB4 /* MultiTask_macOS.entitlements */,
-			);
-			path = "MultiTask macOS";
-			sourceTree = "<group>";
-		};
 		C55E26631F40DC17001743E4 /* MultiTaskUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,7 +257,6 @@
 				C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */,
 				C5A9A8DB1F3C2CCB00601CFF /* Shared */,
 				C5A9A8A21F3BB06C00601CFF /* MultiTask iOS */,
-				C53C3EBD1FBA0EED0064DDB4 /* MultiTask macOS */,
 				C53C3EA71FBA0CFF0064DDB4 /* Frameworks */,
 				C5A9A8A11F3BB06C00601CFF /* Products */,
 			);
@@ -300,7 +268,6 @@
 				C5A9A8A01F3BB06C00601CFF /* MultiTask.app */,
 				C55E26621F40DC17001743E4 /* MultiTaskUITests.xctest */,
 				C55E26721F40F100001743E4 /* MultiTaskTests.xctest */,
-				C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -437,23 +404,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C53C3EBB1FBA0EED0064DDB4 /* MultiTask macOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C53C3EC91FBA0EED0064DDB4 /* Build configuration list for PBXNativeTarget "MultiTask macOS" */;
-			buildPhases = (
-				C53C3EB81FBA0EED0064DDB4 /* Sources */,
-				C53C3EB91FBA0EED0064DDB4 /* Frameworks */,
-				C53C3EBA1FBA0EED0064DDB4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "MultiTask macOS";
-			productName = "MultiTask macOS";
-			productReference = C53C3EBC1FBA0EED0064DDB4 /* MultiTask macOS.app */;
-			productType = "com.apple.product-type.application";
-		};
 		C55E26611F40DC17001743E4 /* MultiTaskUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */;
@@ -522,11 +472,6 @@
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Duckensburg;
 				TargetAttributes = {
-					C53C3EBB1FBA0EED0064DDB4 = {
-						CreatedOnToolsVersion = 9.1;
-						DevelopmentTeam = ZLUJC28Y9H;
-						ProvisioningStyle = Automatic;
-					};
 					C55E26611F40DC17001743E4 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = ZLUJC28Y9H;
@@ -568,7 +513,6 @@
 			projectRoot = "";
 			targets = (
 				C5A9A89F1F3BB06C00601CFF /* MultiTask */,
-				C53C3EBB1FBA0EED0064DDB4 /* MultiTask macOS */,
 				C55E26611F40DC17001743E4 /* MultiTaskUITests */,
 				C55E26711F40F100001743E4 /* MultiTaskTests */,
 			);
@@ -576,15 +520,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C53C3EBA1FBA0EED0064DDB4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C53C3EC31FBA0EED0064DDB4 /* Assets.xcassets in Resources */,
-				C53C3EC61FBA0EED0064DDB4 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C55E26601F40DC17001743E4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -654,15 +589,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C53C3EB81FBA0EED0064DDB4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C53C3EC11FBA0EED0064DDB4 /* ViewController.swift in Sources */,
-				C53C3EBF1FBA0EED0064DDB4 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C55E265E1F40DC17001743E4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -740,14 +666,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C53C3EC41FBA0EED0064DDB4 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C53C3EC51FBA0EED0064DDB4 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C5A9A8A91F3BB06C00601CFF /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -767,62 +685,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C53C3ECA1FBA0EED0064DDB4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "MultiTask macOS/MultiTask_macOS.entitlements";
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = ZLUJC28Y9H;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "Duckensburg.MultiTask-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Debug;
-		};
-		C53C3ECB1FBA0EED0064DDB4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_ENTITLEMENTS = "MultiTask macOS/MultiTask_macOS.entitlements";
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = ZLUJC28Y9H;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "MultiTask macOS/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				PRODUCT_BUNDLE_IDENTIFIER = "Duckensburg.MultiTask-macOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 4.0;
-			};
-			name = Release;
-		};
 		C55E266A1F40DC17001743E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1047,15 +909,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C53C3EC91FBA0EED0064DDB4 /* Build configuration list for PBXNativeTarget "MultiTask macOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C53C3ECA1FBA0EED0064DDB4 /* Debug */,
-				C53C3ECB1FBA0EED0064DDB4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C55E26691F40DC17001743E4 /* Build configuration list for PBXNativeTarget "MultiTaskUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

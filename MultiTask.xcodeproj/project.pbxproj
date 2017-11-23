@@ -36,6 +36,8 @@
 		C56B29321FA2F3E40093BA32 /* AuthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B29311FA2F3E40093BA32 /* AuthCell.swift */; };
 		C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56B29331FA2F59C0093BA32 /* AuthCell.xib */; };
 		C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */; };
+		C5780C4B1FC5D50D0087BE86 /* StatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5780C4A1FC5D50D0087BE86 /* StatsCell.swift */; };
+		C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5780C4C1FC5D7080087BE86 /* StatsCell.xib */; };
 		C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A0D7741FB67D8B002968F7 /* TaskCell.xib */; };
 		C5A0D7771FB7885E002968F7 /* TasksPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D7761FB7885E002968F7 /* TasksPageViewController.swift */; };
 		C5A0D7791FB78BC8002968F7 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */; };
@@ -162,6 +164,8 @@
 		C56B29311FA2F3E40093BA32 /* AuthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCell.swift; sourceTree = "<group>"; };
 		C56B29331FA2F59C0093BA32 /* AuthCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthCell.xib; sourceTree = "<group>"; };
 		C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksViewController.swift; sourceTree = "<group>"; };
+		C5780C4A1FC5D50D0087BE86 /* StatsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCell.swift; sourceTree = "<group>"; };
+		C5780C4C1FC5D7080087BE86 /* StatsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsCell.xib; sourceTree = "<group>"; };
 		C5A0D7741FB67D8B002968F7 /* TaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
 		C5A0D7761FB7885E002968F7 /* TasksPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksPageViewController.swift; sourceTree = "<group>"; };
 		C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
@@ -349,6 +353,7 @@
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
 				C543943E1FB5292C009EC104 /* MenuCell.xib */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
+				C5780C4C1FC5D7080087BE86 /* StatsCell.xib */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 				C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */,
 				C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */,
 				C5F748B21FAE8B86004F2491 /* TransitionManager.swift */,
+				C5780C4A1FC5D50D0087BE86 /* StatsCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -602,6 +608,7 @@
 				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
 				C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */,
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
+				C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */,
 				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
 				C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
@@ -711,6 +718,7 @@
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,
 				C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */,
 				C5A0D7771FB7885E002968F7 /* TasksPageViewController.swift in Sources */,
+				C5780C4B1FC5D50D0087BE86 /* StatsCell.swift in Sources */,
 				C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */,
 				C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */,
 			);

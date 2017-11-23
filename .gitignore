@@ -11,8 +11,9 @@ DerivedData/
 *.xccheckout
 *.xcscmblueprint
 *.cer
+*.mobileprovision
+xcuserdata
 *.xcuserstate
-MultiTask.xcodeproj/project.xcworkspace/xcuserdata/rightmeow.xcuserdatad/
 
 ## Obj-C/Swift specific
 *.hmap
@@ -20,12 +21,15 @@ MultiTask.xcodeproj/project.xcworkspace/xcuserdata/rightmeow.xcuserdatad/
 *.dSYM.zip
 *.dSYM
 
+# OS X
+.DS_Store
+
 # Carthage
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
 
-Carthage/Build
+Carthage
 
 # fastlane
 #

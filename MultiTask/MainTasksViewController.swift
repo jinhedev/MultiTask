@@ -9,11 +9,18 @@
 import UIKit
 import RealmSwift
 
+protocol MainTasksViewControllerProtocol: NSObjectProtocol {
+    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapCancel button: UIBarButtonItem)
+    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapDelete button: UIBarButtonItem)
+    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem)
+}
+
 class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
     static let storyboard_id = String(describing: MainTasksViewController.self)
+    weak var delegate: MainTasksViewControllerProtocol?
 
     // MARK: - TaskEditorViewControllerDelegate
 
@@ -63,8 +70,12 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         self.performSegue(withIdentifier: Segue.AddButtonToTaskEditorViewController, sender: self)
     }
 
+    private func setupEditButton() {
+        editButton = editButtonItem
+    }
+
     @IBAction func handleEdit(_ sender: UIBarButtonItem) {
-        print(123)
+        self.delegate?.mainTasksViewControllerProtocol(self, didTapEdit: sender)
     }
 
     // MARK: - UISearchController & UISearchResultsUpdating

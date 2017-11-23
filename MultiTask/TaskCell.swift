@@ -9,10 +9,6 @@
 import UIKit
 import RealmSwift
 
-protocol TaskCellProtocol: NSObjectProtocol {
-    func taskCell(_ taskCell: TaskCell) -> Bool
-}
-
 class TaskCell: BaseCollectionViewCell {
 
     // MARK: - Public API
@@ -23,15 +19,26 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
-    weak var delegate: TaskCellProtocol?
     static let cell_id = String(describing: TaskCell.self)
     static let nibName = String(describing: TaskCell.self)
+
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var checkmarkImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
-    @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint!
+    @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint! // increase its constant when in editing mode to give space for checkmarImageView
+
+    var editing: Bool = false {
+        didSet {
+            self.containerViewLeadingMargin.constant = 22 + 16 // width of checkmarkImageView + some space
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                self.checkmarkImageView.isHidden = !self.editing
+                self.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
 
     func animateForEditing(isEditing: Bool) {
         if isEditing {
@@ -78,6 +85,14 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
+    override var isSelected: Bool {
+        didSet {
+            if editing {
+                self.checkmarkImageView.backgroundColor = isSelected ? Color.mandarinOrange : Color.clear
+            }
+        }
+    }
+
     // MARK: - Private API
 
     private func configureCell(task: Task?) {
@@ -114,6 +129,12 @@ class TaskCell: BaseCollectionViewCell {
     }
 
     private func setupCell() {
+        self.checkmarkImageView.layer.cornerRadius = 11
+        self.checkmarkImageView.clipsToBounds = true
+        self.checkmarkImageView.layer.borderColor = Color.lightGray.cgColor
+        self.checkmarkImageView.layer.borderWidth = 2
+        self.checkmarkImageView.backgroundColor = Color.clear
+        self.checkmarkImageView.isHidden = true
         self.containerView.backgroundColor = Color.midNightBlack
         self.containerView.layer.cornerRadius = 8
         self.containerView.layer.borderColor = Color.clear.cgColor

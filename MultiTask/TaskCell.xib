@@ -68,6 +68,14 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ao6-Dx-SDY">
+                                        <rect key="frame" x="0.0" y="60.5" width="22" height="22"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="22" id="3Aw-ko-QYr"/>
+                                            <constraint firstAttribute="height" constant="22" id="DD5-pf-mtQ"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -80,6 +88,7 @@
                                     <constraint firstItem="hmh-Md-RSS" firstAttribute="top" secondItem="tYf-km-5DM" secondAttribute="top" constant="8" id="bt9-1S-n92"/>
                                     <constraint firstItem="Byg-dO-88g" firstAttribute="top" secondItem="Sas-4I-tGq" secondAttribute="bottom" id="dlm-Bi-kJc"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hmh-Md-RSS" secondAttribute="trailing" constant="16" id="pJ2-JV-SQ5"/>
+                                    <constraint firstItem="ao6-Dx-SDY" firstAttribute="centerY" secondItem="tYf-km-5DM" secondAttribute="centerY" id="uu4-si-rbC"/>
                                     <constraint firstItem="Sas-4I-tGq" firstAttribute="leading" secondItem="tYf-km-5DM" secondAttribute="leading" constant="16" id="vkQ-ah-Eju"/>
                                 </constraints>
                             </view>
@@ -87,6 +96,7 @@
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="tYf-km-5DM" secondAttribute="bottom" constant="8" id="0Kn-ps-QMp"/>
                             <constraint firstItem="tYf-km-5DM" firstAttribute="leading" secondItem="2xG-0n-HQE" secondAttribute="leading" constant="16" id="2od-2B-WT6"/>
+                            <constraint firstItem="ao6-Dx-SDY" firstAttribute="leading" secondItem="2xG-0n-HQE" secondAttribute="leading" constant="16" id="OtA-Ra-cYj"/>
                             <constraint firstAttribute="trailing" secondItem="tYf-km-5DM" secondAttribute="trailing" constant="16" id="cKI-3d-ElN"/>
                             <constraint firstItem="tYf-km-5DM" firstAttribute="top" secondItem="2xG-0n-HQE" secondAttribute="top" constant="8" id="l3v-WQ-yoi"/>
                         </constraints>
@@ -102,6 +112,7 @@
             <viewLayoutGuide key="safeArea" id="WZ9-RW-NrC"/>
             <size key="customSize" width="377" height="159"/>
             <connections>
+                <outlet property="checkmarkImageView" destination="ao6-Dx-SDY" id="r1d-3T-Kq6"/>
                 <outlet property="containerView" destination="tYf-km-5DM" id="6Sg-yM-glO"/>
                 <outlet property="containerViewLeadingMargin" destination="2od-2B-WT6" id="GpB-AQ-CG9"/>
                 <outlet property="dateLabel" destination="ilO-rp-Mli" id="InH-uo-SK3"/>

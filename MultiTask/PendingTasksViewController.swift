@@ -61,13 +61,9 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
-        // REMARK: exit editing mode for mainTasksViewController, menuBarViewController, tasksPageViewController, PendingTasksViewController and CompletedTasksViewController
         if self.isEditing == true {
+            // exit edit mode
             self.isEditing = false
-            self.tasksPageViewController?.completedTasksViewController?.isEditing = false
-            self.tasksPageViewController?.mainTasksViewController?.isEditing = false
-            self.tasksPageViewController?.mainTasksViewController?.menuBarViewController?.isEditing = false
-            self.tasksPageViewController?.isEditing = false
         }
     }
 
@@ -80,7 +76,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - MainTasksViewControllerDelegate
 
     override func setEditing(_ editing: Bool, animated: Bool) {
-        // FIXME: when in editing mode and scrolling very fast, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
+        // FIXME: when scrolling very fast in edit mode, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
         super.setEditing(editing, animated: animated)
         self.collectionView?.allowsMultipleSelection = editing
         guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
@@ -177,7 +173,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
             previewingContext.sourceRect = selectedCell.frame
         }
-        return taskEditorViewController
+        return self.isEditing ? nil : taskEditorViewController
     }
 
     // MARK: - UICollecitonView
@@ -195,8 +191,9 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if !isEditing {
+        if self.isEditing == false {
             self.performSegue(withIdentifier: Segue.PendingTaskCellToItemsViewController, sender: self)
+        } else {
             if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
                 selectedCell.isSelected = true
             }

@@ -17,17 +17,13 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     static let storyboard_id = String(describing: TasksPageViewController.self)
 
-    private func getViewController(withIdentifier identifier: String, in storyboard: String) -> BaseViewController {
-        return UIStoryboard(name: storyboard, bundle: nil).instantiateViewController(withIdentifier: identifier) as! BaseViewController
-    }
-
     private func setupPageViewController() {
         let storyboard = UIStoryboard(name: "TasksTab", bundle: nil)
         pendingTasksViewController = storyboard.instantiateViewController(withIdentifier: PendingTasksViewController.storyboard_id) as? PendingTasksViewController
         completedTasksViewController = storyboard.instantiateViewController(withIdentifier: CompletedTasksViewController.storyboard_id) as? CompletedTasksViewController
-        pages = [pendingTasksViewController!, completedTasksViewController!]
         pendingTasksViewController?.tasksPageViewController = self
         completedTasksViewController?.tasksPageViewController = self
+        pages = [pendingTasksViewController!, completedTasksViewController!]
         self.dataSource = self
         self.delegate = self
         if let firstViewController = pages.first {
@@ -60,7 +56,6 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        print(scrollView.contentOffset.x)
-
     }
 
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -131,7 +126,8 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         if viewController.isKind(of: CompletedTasksViewController.self) {
-            return getViewController(withIdentifier: PendingTasksViewController.storyboard_id, in: "TasksTab")
+            return self.pendingTasksViewController
+            //return getViewController(withIdentifier: PendingTasksViewController.storyboard_id, in: "TasksTab")
         } else if viewController.isKind(of: PendingTasksViewController.self) {
             return nil
         }
@@ -140,7 +136,8 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         if viewController.isKind(of: PendingTasksViewController.self) {
-            return getViewController(withIdentifier: CompletedTasksViewController.storyboard_id, in: "TasksTab")
+            return self.completedTasksViewController
+            //return getViewController(withIdentifier: CompletedTasksViewController.storyboard_id, in: "TasksTab")
         } else if viewController.isKind(of: CompletedTasksViewController.self) {
             return nil
         }

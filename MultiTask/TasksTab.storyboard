@@ -13,7 +13,7 @@
         <!--Tasks-->
         <scene sceneID="hgm-Wn-b8p">
             <objects>
-                <viewController id="dsH-gt-lIU" customClass="MainTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainTasksViewController" id="dsH-gt-lIU" customClass="MainTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VbP-0c-mNB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -252,7 +252,7 @@
         <!--Tasks Page View Controller-->
         <scene sceneID="CdY-5U-W0U">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="cfL-Th-EVs" customClass="TasksPageViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController"/>
+                <pageViewController storyboardIdentifier="TasksPageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="cfL-Th-EVs" customClass="TasksPageViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lMH-QY-F7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2676" y="-477"/>
@@ -282,7 +282,7 @@
         <!--Menu Bar View Controller-->
         <scene sceneID="wRw-Pk-kdM">
             <objects>
-                <viewController id="bSN-m0-CI0" customClass="MenuBarViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MenuBarViewController" id="bSN-m0-CI0" customClass="MenuBarViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1b6-Mk-SGo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

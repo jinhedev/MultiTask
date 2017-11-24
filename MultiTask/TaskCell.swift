@@ -63,7 +63,7 @@ class TaskCell: BaseCollectionViewCell {
     }
 
     func animateForSelectMode() {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
             self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 1.03, y: 1.03) : CGAffineTransform.identity
             self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor
             self.containerView.layer.borderWidth = self.isSelected ? 1 : 0

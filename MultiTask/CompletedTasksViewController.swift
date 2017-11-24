@@ -61,13 +61,9 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
-        // REMARK: exit editing mode for mainTasksViewController, menuBarViewController, tasksPageViewController, PendingTasksViewController and CompletedTasksViewController
         if self.isEditing == true {
+            // exit edit mode
             self.isEditing = false
-            self.tasksPageViewController?.pendingTasksViewController?.isEditing = false
-            self.tasksPageViewController?.mainTasksViewController?.isEditing = false
-            self.tasksPageViewController?.mainTasksViewController?.menuBarViewController?.isEditing = false
-            self.tasksPageViewController?.isEditing = false
         }
     }
 
@@ -132,7 +128,9 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.present(viewControllerToCommit, animated: true, completion: nil)
+        if self.isEditing == false {
+            self.present(viewControllerToCommit, animated: true, completion: nil)
+        }
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -143,7 +141,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
             previewingContext.sourceRect = selectedCell.frame
         }
-        return taskEditorViewController
+        return self.isEditing ? nil : taskEditorViewController
     }
 
     // MARK: - Lifecycle
@@ -180,6 +178,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     @IBOutlet weak var collectionView: UICollectionView!
 
     private func setupCollectionView() {
+        self.isEditing = false
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
@@ -189,7 +188,13 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: Segue.CompletedTaskCellToItemsViewController, sender: self)
+        if self.isEditing == false {
+            self.performSegue(withIdentifier: Segue.CompletedTaskCellToItemsViewController, sender: self)
+        } else {
+            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+                selectedCell.isSelected = true
+            }
+        }
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

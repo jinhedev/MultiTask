@@ -10,3 +10,4 @@
 - code by Joshua McDonald from the Noun Project
 - List by viraj from the Noun Project
 - Lock by Viktor Vorobyev from the Noun Project
+- Trash by Popular from the Noun Project

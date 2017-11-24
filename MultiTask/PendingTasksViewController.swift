@@ -9,12 +9,13 @@
 import UIKit
 import RealmSwift
 
-class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate {
+class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, MainTasksViewControllerDelegate {
 
     // MARK: - API
 
     var pendingTasks: [Results<Task>]?
     var notificationToken: NotificationToken?
+    weak var tasksPageViewController: TasksPageViewController?
     static let storyboard_id = String(describing: PendingTasksViewController.self)
     let PAGE_INDEX = 0 // provides index data for parent pageViewController
 
@@ -42,6 +43,12 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         })
     }
 
+    @objc func performInitialFetch(notification: Notification?) {
+        if self.pendingTasks == nil || self.pendingTasks?.isEmpty == true {
+            self.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+        }
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
@@ -53,16 +60,58 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupRealmNotificationsForCollectionView()
     }
 
+    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
+        // REMARK: exit editing mode for mainTasksViewController, menuBarViewController, tasksPageViewController, PendingTasksViewController and CompletedTasksViewController
+        if self.isEditing == true {
+            self.isEditing = false
+            self.tasksPageViewController?.completedTasksViewController?.isEditing = false
+            self.tasksPageViewController?.mainTasksViewController?.isEditing = false
+            self.tasksPageViewController?.mainTasksViewController?.menuBarViewController?.isEditing = false
+            self.tasksPageViewController?.isEditing = false
+        }
+    }
+
     // MARK: - Notifications
 
-    func observeNotificationForTaskPending() {
+    func observeNotificationForTaskPendingFetch() {
         NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskPending), object: nil)
     }
 
-    @objc func performInitialFetch(notification: Notification?) {
-        if self.pendingTasks == nil || self.pendingTasks?.isEmpty == true {
-            self.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+    // MARK: - MainTasksViewControllerDelegate
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        // FIXME: when in editing mode and scrolling very fast, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
+        super.setEditing(editing, animated: animated)
+        self.collectionView?.allowsMultipleSelection = editing
+        guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
+        for indexPath in indexPaths {
+            self.collectionView?.deselectItem(at: indexPath, animated: false)
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? TaskCell {
+                cell.editing = editing
+            }
         }
+    }
+
+    private func setupMainTasksViewControllerDelegate() {
+        self.tasksPageViewController?.mainTasksViewController?.pendingTasksDelegate = self
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
+        if self.isEditing == true {
+            guard let tasks = self.pendingTasks else { return }
+            var tasksToBeDeleted = [Task]()
+            if let indexPaths = self.collectionView.indexPathsForSelectedItems {
+                for indexPath in indexPaths {
+                    let taskToBeDeleted = tasks[indexPath.section][indexPath.item]
+                    tasksToBeDeleted.append(taskToBeDeleted)
+                }
+                self.realmManager?.deleteObjects(objects: tasksToBeDeleted)
+            }
+        }
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool) {
+        self.isEditing = isEnabled
     }
 
     // MARK: - TaskEditorViewControllerDelegate
@@ -82,7 +131,9 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupCollectionView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
-        self.observeNotificationForTaskPending()
+        self.observeNotificationForTaskPendingFetch()
+        self.setupMainTasksViewControllerDelegate()
+        // initial fetch
         self.performInitialFetch(notification: nil)
         if let pathToSandbox = realmManager?.pathForContainer?.absoluteString {
             print(pathToSandbox)
@@ -113,7 +164,9 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.present(viewControllerToCommit, animated: true, completion: nil)
+        if self.isEditing == false {
+            self.present(viewControllerToCommit, animated: true, completion: nil)
+        }
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -132,6 +185,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     @IBOutlet weak var collectionView: UICollectionView!
 
     private func setupCollectionView() {
+        self.isEditing = false
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
@@ -141,7 +195,12 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: Segue.PendingTaskCellToItemsViewController, sender: self)
+        if !isEditing {
+            self.performSegue(withIdentifier: Segue.PendingTaskCellToItemsViewController, sender: self)
+            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+                selectedCell.isSelected = true
+            }
+        }
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -184,24 +243,8 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         }
         let task = pendingTasks?[indexPath.section][indexPath.item]
         pendingTaskCell.task = task
+        pendingTaskCell.editing = isEditing
         return pendingTaskCell
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

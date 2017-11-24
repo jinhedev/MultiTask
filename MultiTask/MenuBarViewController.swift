@@ -16,7 +16,7 @@ extension MenuBarViewControllerDelegate {
     func numberOfMenus(in menuBarViewController: MenuBarViewController) -> Int { return 0 }
 }
 
-class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, MainTasksViewControllerDelegate {
 
     // MARK: - API
 
@@ -49,6 +49,36 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
         }, completion: nil)
     }
 
+    // MARK: - MainTasksViewControllerDelegate
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.collectionView.allowsSelection = !editing
+        self.indicatorBar.backgroundColor = editing ? Color.clear : Color.mandarinOrange
+    }
+
+    private func setupMainTasksViewControllerDelegate() {
+        self.mainTasksViewController?.menuBarDelegate = self
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool) {
+        self.isEditing = isEnabled
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
+        self.isEditing = false
+    }
+
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.setupCollectionView()
+        self.setupCollectionViewFlowLayout()
+        self.setupIndicatorBar()
+        self.setupMainTasksViewControllerDelegate()
+    }
+
     // MARK: - UICollectionView
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -61,15 +91,6 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
         // initial selected state for the first cell
         let selectedIndexPath = IndexPath(item: 0, section: 0)
         self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.left)
-    }
-
-    // MARK: - Lifecycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.setupCollectionView()
-        self.setupCollectionViewFlowLayout()
-        self.setupIndicatorBar()
     }
 
     // MARK: - UICollectionViewDelegate

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIScrollViewDelegate, UIPageViewControllerDelegate {
+class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIScrollViewDelegate, UIPageViewControllerDelegate, MainTasksViewControllerDelegate {
 
     var pendingTasksViewController: PendingTasksViewController?
     var completedTasksViewController: CompletedTasksViewController?
-    var mainTasksViewController: MainTasksViewController?
+    weak var mainTasksViewController: MainTasksViewController?
     var pages: [BaseViewController]!
 
     static let storyboard_id = String(describing: TasksPageViewController.self)
@@ -26,6 +26,8 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
         pendingTasksViewController = storyboard.instantiateViewController(withIdentifier: PendingTasksViewController.storyboard_id) as? PendingTasksViewController
         completedTasksViewController = storyboard.instantiateViewController(withIdentifier: CompletedTasksViewController.storyboard_id) as? CompletedTasksViewController
         pages = [pendingTasksViewController!, completedTasksViewController!]
+        pendingTasksViewController?.tasksPageViewController = self
+        completedTasksViewController?.tasksPageViewController = self
         self.dataSource = self
         self.delegate = self
         if let firstViewController = pages.first {
@@ -78,12 +80,32 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
         }
     }
 
+    // MARK: - MainTasksViewControllerDelegate
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.dataSource = editing ? nil : self // disable and enable page scrolling
+    }
+
+    private func setupMainTasksViewControllerDelegate() {
+        self.mainTasksViewController?.tasksPageDelegate = self
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
+        self.isEditing = false
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool) {
+        self.isEditing = isEnabled
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupPageViewController()
         self.setupScrollViewDelegate()
+        self.setupMainTasksViewControllerDelegate()
     }
 
     // MARK: - UIPageViewControllerDelegate

@@ -9,10 +9,9 @@
 import UIKit
 import RealmSwift
 
-protocol MainTasksViewControllerProtocol: NSObjectProtocol {
-    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapCancel button: UIBarButtonItem)
-    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapDelete button: UIBarButtonItem)
-    func mainTasksViewControllerProtocol(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem)
+protocol MainTasksViewControllerDelegate: NSObjectProtocol {
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool)
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
 }
 
 class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
@@ -20,7 +19,17 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     // MARK: - API
 
     static let storyboard_id = String(describing: MainTasksViewController.self)
-    weak var delegate: MainTasksViewControllerProtocol?
+    weak var menuBarDelegate: MainTasksViewControllerDelegate?
+    weak var tasksPageDelegate: MainTasksViewControllerDelegate?
+    weak var pendingTasksDelegate: MainTasksViewControllerDelegate?
+    weak var completedTasksDelegate: MainTasksViewControllerDelegate?
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.addButton.isEnabled = !editing
+        self.navigationItem.leftBarButtonItem = editing ? self.cancelButton : nil
+        self.editButton.image = editing ? #imageLiteral(resourceName: "Trash") : #imageLiteral(resourceName: "List") // <<-- image literal
+    }
 
     // MARK: - TaskEditorViewControllerDelegate
 
@@ -65,17 +74,44 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     @IBOutlet weak var addButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
+    lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
+        return button
+    }()
+
+    private func setupNavigationBar() {
+        self.isEditing = false
+    }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: Segue.AddButtonToTaskEditorViewController, sender: self)
     }
 
-    private func setupEditButton() {
-        editButton = editButtonItem
+    @IBAction func handleEdit(_ sender: UIBarButtonItem) {
+        if self.isEditing == true {
+            // if already in editMode, first commit trash and then exit editMode
+            self.isEditing = false
+            self.menuBarDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+            self.tasksPageDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+            self.completedTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+        } else {
+            // if not in editMode, enter editMode
+            self.isEditing = true
+            self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
+            self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
+            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
+            self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
+        }
     }
 
-    @IBAction func handleEdit(_ sender: UIBarButtonItem) {
-        self.delegate?.mainTasksViewControllerProtocol(self, didTapEdit: sender)
+    @objc func handleCancel(_ sender: UIBarButtonItem) {
+        // exit editing mode
+        self.isEditing = false
+        self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+        self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+        self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+        self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
     }
 
     // MARK: - UISearchController & UISearchResultsUpdating
@@ -114,6 +150,7 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         super.viewDidLoad()
         self.setupTasksContainerView()
         self.setupMenuBarContainerView()
+        self.setupNavigationBar()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

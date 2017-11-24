@@ -9,12 +9,13 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, MainTasksViewControllerDelegate {
 
     // MARK: - API
 
     var completedTasks: [Results<Task>]?
     var notificationToken: NotificationToken?
+    weak var tasksPageViewController: TasksPageViewController?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
 
@@ -42,6 +43,12 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         })
     }
 
+    @objc func performInitialFetch(notification: Notification?) {
+        if self.completedTasks == nil || self.completedTasks?.isEmpty == true {
+            self.realmManager?.fetchTasks(predicate: Task.completedPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+        }
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
@@ -53,15 +60,58 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         self.setupRealmNotificationsForCollectionView()
     }
 
-    // Notifications
+    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
+        // REMARK: exit editing mode for mainTasksViewController, menuBarViewController, tasksPageViewController, PendingTasksViewController and CompletedTasksViewController
+        if self.isEditing == true {
+            self.isEditing = false
+            self.tasksPageViewController?.pendingTasksViewController?.isEditing = false
+            self.tasksPageViewController?.mainTasksViewController?.isEditing = false
+            self.tasksPageViewController?.mainTasksViewController?.menuBarViewController?.isEditing = false
+            self.tasksPageViewController?.isEditing = false
+        }
+    }
+
+    // MARK: - Notifications
 
     func observeNotificationForTaskCompletion() {
         NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
     }
 
-    @objc func performInitialFetch(notification: Notification?) {
-        if self.completedTasks == nil || self.completedTasks?.isEmpty == true {
-            self.realmManager?.fetchTasks(predicate: Task.completedPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+    // MARK: - MainTasksViewControllerDelegate
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        // FIXME: when in editing mode and scrolling very fast, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
+        super.setEditing(editing, animated: animated)
+        self.collectionView?.allowsMultipleSelection = editing
+        guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
+        for indexPath in indexPaths {
+            self.collectionView?.deselectItem(at: indexPath, animated: false)
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? TaskCell {
+                cell.editing = editing
+            }
+        }
+    }
+
+    private func setupMainTasksViewControllerDelegate() {
+        self.tasksPageViewController?.mainTasksViewController?.completedTasksDelegate = self
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool) {
+        self.isEditing = isEnabled
+    }
+
+    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
+        if self.isEditing == true {
+            guard let tasks = self.completedTasks else { return }
+            var tasksToBeDeleted = [Task]()
+            if let indexPaths = self.collectionView.indexPathsForSelectedItems {
+                for indexPath in indexPaths {
+                    let taskToBeDeleted = tasks[indexPath.section][indexPath.item]
+                    tasksToBeDeleted.append(taskToBeDeleted)
+                }
+                self.realmManager?.deleteObjects(objects: tasksToBeDeleted)
+            }
         }
     }
 
@@ -104,6 +154,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()
+        self.setupMainTasksViewControllerDelegate()
         self.performInitialFetch(notification: nil)
     }
 

@@ -18,6 +18,11 @@
 		C54394431FB55E69009EC104 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */; };
 		C54394471FB56DDA009EC104 /* MenuBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54394461FB56DDA009EC104 /* MenuBarViewController.swift */; };
 		C54394491FB56E90009EC104 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54394481FB56E90009EC104 /* Menu.swift */; };
+		C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = C549CCC11FC7EBFE0039D0D5 /* Cartfile */; };
+		C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */ = {isa = PBXBuildFile; fileRef = C549CCC31FC7EC1C0039D0D5 /* Cartfile.resolved */; };
+		C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */ = {isa = PBXBuildFile; fileRef = C549CCC51FC7EC2B0039D0D5 /* CREDITS.md */; };
+		C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = C549CCC71FC7EC300039D0D5 /* LICENSE.md */; };
+		C549CCCA1FC7EC370039D0D5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C549CCC91FC7EC360039D0D5 /* README.md */; };
 		C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B6A1E1F69165900ABC572 /* AppSetting.swift */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
@@ -127,7 +132,6 @@
 		C50974351F4EA986007C6EAA /* WebServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceManager.swift; sourceTree = "<group>"; };
 		C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
-		C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = MultiTask.entitlements; path = MultiTask/MultiTask.entitlements; sourceTree = "<group>"; };
 		C53C3EA81FBA0CFF0064DDB4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeTab.storyboard; sourceTree = "<group>"; };
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
@@ -137,6 +141,11 @@
 		C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		C54394461FB56DDA009EC104 /* MenuBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarViewController.swift; sourceTree = "<group>"; };
 		C54394481FB56E90009EC104 /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
+		C549CCC11FC7EBFE0039D0D5 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		C549CCC31FC7EC1C0039D0D5 /* Cartfile.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
+		C549CCC51FC7EC2B0039D0D5 /* CREDITS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CREDITS.md; sourceTree = "<group>"; };
+		C549CCC71FC7EC300039D0D5 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		C549CCC91FC7EC360039D0D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C54B6A1E1F69165900ABC572 /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -254,7 +263,11 @@
 		C5A9A8971F3BB06C00601CFF = {
 			isa = PBXGroup;
 			children = (
-				C53C3EA11FBA0B350064DDB4 /* MultiTask.entitlements */,
+				C549CCC11FC7EBFE0039D0D5 /* Cartfile */,
+				C549CCC31FC7EC1C0039D0D5 /* Cartfile.resolved */,
+				C549CCC51FC7EC2B0039D0D5 /* CREDITS.md */,
+				C549CCC71FC7EC300039D0D5 /* LICENSE.md */,
+				C549CCC91FC7EC360039D0D5 /* README.md */,
 				C5A9A8DB1F3C2CCB00601CFF /* Shared */,
 				C5A9A8A21F3BB06C00601CFF /* MultiTask iOS */,
 				C53C3EA71FBA0CFF0064DDB4 /* Frameworks */,
@@ -539,14 +552,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5A9A8B01F3BB06C00601CFF /* LaunchScreen.storyboard in Resources */,
+				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
 				C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */,
+				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
+				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
 				C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */,
 				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
 				C5A0D7751FB67D8B002968F7 /* TaskCell.xib in Resources */,
+				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
+				C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
 				C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
@@ -697,7 +715,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = MultiTask;
 			};
@@ -715,7 +733,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = MultiTask;
 			};
@@ -735,7 +753,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiTask.app/MultiTask";
 			};
@@ -755,7 +773,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTaskTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MultiTask.app/MultiTask";
 			};
@@ -875,7 +893,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -900,7 +918,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

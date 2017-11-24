@@ -32,6 +32,8 @@ struct NotificationKey {
     static let TaskPending = "TaskPending"
     static let TaskCompletion = "TaskCompletion"
     static let TaskUpdate = "TaskUpdate"
+    static let CollectionViewEditingMode = "CollectionViewEditingMode"
+    static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
 }
 
 // MARK: - Color

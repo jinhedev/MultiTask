@@ -68,14 +68,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ao6-Dx-SDY">
-                                        <rect key="frame" x="0.0" y="60.5" width="22" height="22"/>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="22" id="3Aw-ko-QYr"/>
-                                            <constraint firstAttribute="height" constant="22" id="DD5-pf-mtQ"/>
-                                        </constraints>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -88,17 +80,25 @@
                                     <constraint firstItem="hmh-Md-RSS" firstAttribute="top" secondItem="tYf-km-5DM" secondAttribute="top" constant="8" id="bt9-1S-n92"/>
                                     <constraint firstItem="Byg-dO-88g" firstAttribute="top" secondItem="Sas-4I-tGq" secondAttribute="bottom" id="dlm-Bi-kJc"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hmh-Md-RSS" secondAttribute="trailing" constant="16" id="pJ2-JV-SQ5"/>
-                                    <constraint firstItem="ao6-Dx-SDY" firstAttribute="centerY" secondItem="tYf-km-5DM" secondAttribute="centerY" id="uu4-si-rbC"/>
                                     <constraint firstItem="Sas-4I-tGq" firstAttribute="leading" secondItem="tYf-km-5DM" secondAttribute="leading" constant="16" id="vkQ-ah-Eju"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ao6-Dx-SDY">
+                                <rect key="frame" x="16" y="68" width="22" height="22"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="22" id="5r0-nV-TYR"/>
+                                    <constraint firstAttribute="height" constant="22" id="v8f-M8-0fB"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="tYf-km-5DM" secondAttribute="bottom" constant="8" id="0Kn-ps-QMp"/>
                             <constraint firstItem="tYf-km-5DM" firstAttribute="leading" secondItem="2xG-0n-HQE" secondAttribute="leading" constant="16" id="2od-2B-WT6"/>
-                            <constraint firstItem="ao6-Dx-SDY" firstAttribute="leading" secondItem="2xG-0n-HQE" secondAttribute="leading" constant="16" id="OtA-Ra-cYj"/>
+                            <constraint firstItem="ao6-Dx-SDY" firstAttribute="leading" secondItem="2xG-0n-HQE" secondAttribute="leading" constant="16" id="QlU-Hh-MBq"/>
                             <constraint firstAttribute="trailing" secondItem="tYf-km-5DM" secondAttribute="trailing" constant="16" id="cKI-3d-ElN"/>
                             <constraint firstItem="tYf-km-5DM" firstAttribute="top" secondItem="2xG-0n-HQE" secondAttribute="top" constant="8" id="l3v-WQ-yoi"/>
+                            <constraint firstItem="ao6-Dx-SDY" firstAttribute="centerY" secondItem="2xG-0n-HQE" secondAttribute="centerY" id="wq9-4n-3FL"/>
                         </constraints>
                     </view>
                 </subviews>

@@ -11,7 +11,7 @@ import RealmSwift
 
 class TaskCell: BaseCollectionViewCell {
 
-    // MARK: - Public API
+    // MARK: - API
 
     var task: Task? {
         didSet {
@@ -32,68 +32,44 @@ class TaskCell: BaseCollectionViewCell {
 
     var editing: Bool = false {
         didSet {
-            self.containerViewLeadingMargin.constant = 22 + 16 // width of checkmarkImageView + some space
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
-                self.checkmarkImageView.isHidden = !self.editing
-                self.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-
-    func animateForEditing(isEditing: Bool) {
-        if isEditing {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.containerView.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
-                self.containerView.backgroundColor = Color.mandarinOrange
-            })
-        } else {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.containerView.transform = CGAffineTransform.identity
-                self.containerView.backgroundColor = Color.midNightBlack
-            })
-        }
-    }
-
-    func animateForSelect(isSelected: Bool) {
-        if isSelected {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.dateLabel.textColor = Color.lightGray
-                self.containerView.backgroundColor = Color.mandarinOrange
-                self.containerView.transform = CGAffineTransform.init(scaleX: 1.1, y: 1.1)
-            })
-        } else {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.configureCell(task: self.task)
-                self.containerView.backgroundColor = Color.midNightBlack
-                self.containerView.transform = CGAffineTransform.identity
-            })
-        }
-
-    }
-
-    func animateForHighlight(isHighlighted: Bool) {
-        if isHighlighted == true {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-                self.containerView.backgroundColor = Color.mandarinOrange
-                self.dateLabel.textColor = Color.lightGray
-            }, completion: nil)
-        } else {
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
-                self.containerView.backgroundColor = Color.midNightBlack
-                self.configureCell(task: self.task)
-            }, completion: nil)
+            self.animateForEditMode(isEnabled: editing)
         }
     }
 
     override var isSelected: Bool {
         didSet {
-            if editing {
-                self.checkmarkImageView.backgroundColor = isSelected ? Color.mandarinOrange : Color.clear
+            if editing == true {
+                self.animateForSelectMode()
             }
         }
     }
 
-    // MARK: - Private API
+    func animateForEditMode(isEnabled: Bool) {
+        // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.
+        if isEnabled == true {
+            self.containerViewLeadingMargin.constant = isEnabled ? (16 + 22 + 16) : 16
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                self.layoutIfNeeded()
+            }) { (completed) in
+                self.checkmarkImageView.isHidden = isEnabled ? false : true
+            }
+        } else {
+            self.checkmarkImageView.isHidden = isEnabled ? false : true
+            self.containerViewLeadingMargin.constant = isEnabled ? (16 + 22 + 16) : 16
+            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                self.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
+    func animateForSelectMode() {
+        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction], animations: {
+            self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 1.03, y: 1.03) : CGAffineTransform.identity
+            self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor
+            self.containerView.layer.borderWidth = self.isSelected ? 1 : 0
+            self.checkmarkImageView.backgroundColor = self.isSelected ? Color.roseScarlet : Color.clear
+        }, completion: nil)
+    }
 
     private func configureCell(task: Task?) {
         if let task = task {
@@ -131,8 +107,8 @@ class TaskCell: BaseCollectionViewCell {
     private func setupCell() {
         self.checkmarkImageView.layer.cornerRadius = 11
         self.checkmarkImageView.clipsToBounds = true
-        self.checkmarkImageView.layer.borderColor = Color.lightGray.cgColor
-        self.checkmarkImageView.layer.borderWidth = 2
+        self.checkmarkImageView.layer.borderColor = Color.white.cgColor
+        self.checkmarkImageView.layer.borderWidth = 1
         self.checkmarkImageView.backgroundColor = Color.clear
         self.checkmarkImageView.isHidden = true
         self.containerView.backgroundColor = Color.midNightBlack
@@ -173,17 +149,5 @@ class TaskCell: BaseCollectionViewCell {
         super.prepareForReuse()
         self.resetDataForReuse()
     }
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

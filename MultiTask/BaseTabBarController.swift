@@ -10,6 +10,8 @@ import UIKit
 
 class BaseTabBarController: UITabBarController {
 
+    // MARK: - API
+
     private func setupTabBar() {
         self.tabBar.barTintColor = Color.inkBlack
         self.tabBar.isTranslucent = false
@@ -18,9 +20,11 @@ class BaseTabBarController: UITabBarController {
         self.tabBar.layer.shadowColor = Color.black.cgColor
     }
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTabBar()
+        self.setupTabBar()
     }
 
 }

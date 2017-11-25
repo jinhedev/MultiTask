@@ -288,8 +288,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             }
             is_success(true)
         }
-        deleteAction.image = #imageLiteral(resourceName: "Delete") // <<-- watch out for image literal
-        deleteAction.backgroundColor = Color.roseScarlet // <<-- hacky
+        deleteAction.image = #imageLiteral(resourceName: "Trash") // <<-- watch out for image literal
+        deleteAction.backgroundColor = Color.roseScarlet
         let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [deleteAction])
         swipeActionConfigurations.performsFirstActionWithFullSwipe = false
         return swipeActionConfigurations

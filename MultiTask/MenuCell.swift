@@ -30,7 +30,6 @@ class MenuCell: BaseCollectionViewCell {
 
     private func setupCell() {
         self.containerView.backgroundColor = Color.inkBlack
-        self.titleLabel.text?.removeAll()
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.lightGray
     }

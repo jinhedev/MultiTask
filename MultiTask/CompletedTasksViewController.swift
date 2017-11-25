@@ -14,7 +14,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     // MARK: - API
 
     var completedTasks: [Results<Task>]?
-    var notificationToken: NotificationToken?
     weak var tasksPageViewController: TasksPageViewController?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
@@ -22,6 +21,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     // MARK: - PersistentContainerDelegate
 
     var realmManager: RealmManager?
+    var notificationToken: NotificationToken?
 
     private func setupPersistentContainerDelegate() {
         realmManager = RealmManager()
@@ -202,7 +202,8 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.zero
+        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        return insets
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

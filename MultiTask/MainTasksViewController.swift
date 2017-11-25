@@ -146,6 +146,10 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - Lifecycle
 
+    func test() {
+        print("test")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupTasksContainerView()

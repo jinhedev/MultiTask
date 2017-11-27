@@ -75,6 +75,8 @@
 		C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */; };
 		C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */; };
 		C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */; };
+		C5EFB6C81FCC803300A064E3 /* SearchBarAppearanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EFB6C71FCC803300A064E3 /* SearchBarAppearanceTest.swift */; };
+		C5EFB6CA1FCC806400A064E3 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EFB6C91FCC806400A064E3 /* BaseTestCase.swift */; };
 		C5F43B8A1F4AFDE100F702DE /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C5F43B891F4AFDE100F702DE /* icon.png */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
 		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
@@ -202,6 +204,8 @@
 		C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
+		C5EFB6C71FCC803300A064E3 /* SearchBarAppearanceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarAppearanceTest.swift; sourceTree = "<group>"; };
+		C5EFB6C91FCC806400A064E3 /* BaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTestCase.swift; sourceTree = "<group>"; };
 		C5F43B891F4AFDE100F702DE /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
 		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */,
+				C5EFB6C71FCC803300A064E3 /* SearchBarAppearanceTest.swift */,
+				C5EFB6C91FCC806400A064E3 /* BaseTestCase.swift */,
 				C55E26661F40DC17001743E4 /* Info.plist */,
 			);
 			path = MultiTaskUITests;
@@ -625,6 +631,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C55E266D1F40DE02001743E4 /* SnapshotHelper.swift in Sources */,
+				C5EFB6CA1FCC806400A064E3 /* BaseTestCase.swift in Sources */,
+				C5EFB6C81FCC803300A064E3 /* SearchBarAppearanceTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

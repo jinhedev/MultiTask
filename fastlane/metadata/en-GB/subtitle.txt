@@ -1,1 +1,0 @@
-A minimalist's to-do list app

@@ -28,11 +28,11 @@ class ItemCell: BaseTableViewCell {
     @IBOutlet weak var delegateLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dividerView: UIView!
-
+    
     /**
      Animate the background to indicate a cell is highlighted
      - parameter color: The backgroundColor of containerView animating into.
-     - warning: Do NOT use this animation for cell editing action. There is a bug in the gesture control when the user swipe from delete back to its original position, the tableView somehow thinks is being swiped from the left to right. Subsequently, animateForCompletion is triggered. This glitch may cause confusion to the user.
+     - warning: Do NOT use this animation for cell editing action. There is a bug in the gesture control when the user swipe from delete back to its original position, the tableView somehow thinks is being swiped from the left to right. Subsequently, as animateForCompletion is triggered. This glitch may cause confusion to the user.
      */
     func animateForHighlight(isHighlighted: Bool) {
         if isHighlighted == true {

@@ -80,7 +80,7 @@ class CompletedTaskCell: BaseCollectionViewCell {
             self.statsLabel.text = String(describing: self.calculateCountForCompletedItems(items: task.items)) + "/" + String(describing: task.items.count)
             if task.is_completed == true {
                 self.dateLabel.text = "Completed " + task.updated_at!.toRelativeDate()
-                self.dateLabel.textColor = Color.metallicGold
+                self.dateLabel.textColor = Color.seaweedGreen
             } else if task.updated_at != nil {
                 self.dateLabel.text = "Updated " + task.updated_at!.toRelativeDate()
                 self.dateLabel.textColor = Color.mandarinOrange

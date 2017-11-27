@@ -14,6 +14,7 @@ class BaseTabBarController: UITabBarController {
 
     private func setupTabBar() {
         self.tabBar.barTintColor = Color.inkBlack
+        self.tabBar.tintColor = Color.mandarinOrange
         self.tabBar.isTranslucent = false
         self.tabBar.layer.shadowOpacity = 0.5
         self.tabBar.layer.shadowRadius = 3.0

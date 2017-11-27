@@ -14,15 +14,18 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     // MARK: - API
 
+    var realmManager: RealmManager?
     var selectedTask: Task?
     var items: [Results<Item>]?
     var notificationToken: NotificationToken?
+    var itemEditorViewController: ItemEditorViewController?
+    var searchController: UISearchController!
+    @IBOutlet weak var tableView: UITableView!
+
     lazy var apiClient: APIClientProtocol = APIClient()
     static let storyboard_id = String(describing: ItemsViewController.self)
 
     // MARK: - ItemEditorViewControllerDelegate
-
-    var itemEditorViewController: ItemEditorViewController?
 
     func itemEditorViewController(_ viewController: ItemEditorViewController, didCancelItem item: Item?, at indexPath: IndexPath?) {
         viewController.dismiss(animated: true, completion: nil)
@@ -41,8 +44,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - UISearchController & UISearchResultsUpdating
-
-    var searchController: UISearchController!
 
     private func setupSearchController() {
         self.searchController = UISearchController(searchResultsController: nil)
@@ -96,15 +97,13 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     // MARK: - PersistentContainerDelegate
 
-    var realmManager: RealmManager?
-
     private func setupPersistentContainerDelegate() {
         realmManager = RealmManager()
         realmManager!.delegate = self
     }
 
     private func setupItemsForTableViewWithParentTask() {
-        guard let unwrappedItems = self.selectedTask?.items.sorted(byKeyPath: Item.createdAtKeyPath, ascending: false) else { return }
+        guard let unwrappedItems = self.selectedTask?.items.sorted(byKeyPath: Item.createdAtKeyPath, ascending: false).sorted(byKeyPath: Item.isCompletedKeyPath, ascending: true) else { return }
         self.items = [Results<Item>]()
         self.items!.append(unwrappedItems)
         self.setupRealmNotificationsForTableView()
@@ -214,8 +213,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     // MARK: - UITableView
-
-    @IBOutlet weak var tableView: UITableView!
 
     private func setupTableView() {
         self.tableView.backgroundColor = Color.inkBlack

@@ -74,6 +74,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
         self.containerView.clipsToBounds = true
+        self.contentContainerView.enableParallaxMotion(magnitude: 16)
         self.contentContainerView.backgroundColor = Color.inkBlack
         self.contentContainerView.layer.borderColor = Color.midNightBlack.cgColor
         self.contentContainerView.layer.borderWidth = 3

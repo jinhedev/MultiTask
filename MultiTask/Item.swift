@@ -30,6 +30,11 @@ final class Item: Object {
         return predicate
     }
 
+    static func isCompletedPredicate(isCompleted: Bool) -> NSPredicate {
+        let predicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: isCompleted))
+        return predicate
+    }
+
     /**
      If task is already marked is_completed == true, this method will return false, so that the controller can toggle its completion state to pending if needed. If task is marked is_completed == false, this method will return true, so that the controller can toggle its completion state to completed if needed.
      */

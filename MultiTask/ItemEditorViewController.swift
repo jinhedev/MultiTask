@@ -68,6 +68,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.scrollView.backgroundColor = Color.clear
         self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
+        self.contentContainerView.enableParallaxMotion(magnitude: 16)
         self.contentContainerView.backgroundColor = Color.inkBlack
         self.contentContainerView.layer.borderColor = Color.midNightBlack.cgColor
         self.contentContainerView.layer.borderWidth = 3

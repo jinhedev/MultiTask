@@ -19,8 +19,10 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     // MARK: - API
 
+    var realmManager: RealmManager?
     var parentTask: Task?
     var selectedItem: Item?
+    
     var selectedIndexPath: IndexPath?
     weak var delegate: ItemEditorViewControllerDelegate?
     static let storyboard_id = String(describing: ItemEditorViewController.self)
@@ -93,8 +95,6 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     }
 
     // MARK: - PersistentContainerDelegate
-
-    var realmManager: RealmManager?
 
     private func setupPersistentContainerDelegate() {
         realmManager = RealmManager()

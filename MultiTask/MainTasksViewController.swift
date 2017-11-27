@@ -23,6 +23,20 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     weak var tasksPageDelegate: MainTasksViewControllerDelegate?
     weak var pendingTasksDelegate: MainTasksViewControllerDelegate?
     weak var completedTasksDelegate: MainTasksViewControllerDelegate?
+    var menuBarViewController: MenuBarViewController?
+    var tasksPageViewController: TasksPageViewController? // tasksPageViewController contains PendingTasksViewController and CompletedTasksViewController
+    let searchController = UISearchController(searchResultsController: nil)
+    lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
+        return button
+    }()
+    let popTransitionAnimator = PopTransitionAnimator()
+    let refreshControl = UIRefreshControl()
+
+    @IBOutlet weak var menuBarContainerView: UIView!
+    @IBOutlet weak var tasksContainerView: UIView! // tasksContainerView contains tasksPageViewController
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var editButton: UIBarButtonItem!
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
@@ -52,32 +66,17 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - MenuBarContainerView
 
-    @IBOutlet weak var menuBarContainerView: UIView!
-
-    var menuBarViewController: MenuBarViewController?
-
     private func setupMenuBarContainerView() {
         self.menuBarContainerView.backgroundColor = Color.clear
     }
 
     // MARK: - TasksContainerView
 
-    @IBOutlet weak var tasksContainerView: UIView! // tasksContainerView contains tasksPageViewController
-
-    var tasksPageViewController: TasksPageViewController? // tasksPageViewController contains PendingTasksViewController and CompletedTasksViewController
-
     private func setupTasksContainerView() {
         self.tasksContainerView.backgroundColor = Color.clear
     }
 
     // MARK: - UINavigationBar
-
-    @IBOutlet weak var addButton: UIBarButtonItem!
-    @IBOutlet weak var editButton: UIBarButtonItem!
-    lazy var cancelButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
-        return button
-    }()
 
     private func setupNavigationBar() {
         self.isEditing = false
@@ -116,8 +115,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - UISearchController & UISearchResultsUpdating
 
-    let searchController = UISearchController(searchResultsController: nil)
-
     private func setupSearchController() {
         // FIXME: problem with searchController being overlaid by MenuBarViewController
         searchController.searchResultsUpdater = self
@@ -137,8 +134,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     }
 
     // MARK: - UIRefreshControl
-
-    let refreshControl = UIRefreshControl()
 
     private func setupRefreshControl() {
         refreshControl.tintColor = Color.lightGray
@@ -175,8 +170,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     }
 
     // MARK: - UIViewControllerTransitioningDelegate
-
-    let popTransitionAnimator = PopTransitionAnimator()
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if let addButtonView = self.addButton.value(forKey: "view") as? UIView {

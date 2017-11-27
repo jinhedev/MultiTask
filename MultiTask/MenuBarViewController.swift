@@ -23,11 +23,13 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
     static let storyboard_id = String(describing: MenuBarViewController.self)
     var menus = [Menu(title: "Pending"), Menu(title: "Completed")]
     var mainTasksViewController: MainTasksViewController?
-
-    // MARK: - Horizontal indicator bar
-
     var indicatorBarLeftAnchor: NSLayoutConstraint?
     var indicatorBar: UIView!
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
+    // MARK: - Horizontal indicator bar
 
     func setupIndicatorBar() {
         indicatorBar = UIView()
@@ -81,8 +83,6 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
 
     // MARK: - UICollectionView
 
-    @IBOutlet weak var collectionView: UICollectionView!
-
     private func setupCollectionView() {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
@@ -106,8 +106,6 @@ class MenuBarViewController: BaseViewController, UICollectionViewDelegate, UICol
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
-
-    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     private func setupCollectionViewFlowLayout() {
         self.collectionViewFlowLayout.minimumLineSpacing = 0

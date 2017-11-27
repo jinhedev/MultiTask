@@ -10,11 +10,12 @@ import UIKit
 
 class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIScrollViewDelegate, UIPageViewControllerDelegate, MainTasksViewControllerDelegate {
 
+    // MARK: - API
+
     var pendingTasksViewController: PendingTasksViewController?
     var completedTasksViewController: CompletedTasksViewController?
     weak var mainTasksViewController: MainTasksViewController?
     var pages: [BaseViewController]!
-
     static let storyboard_id = String(describing: TasksPageViewController.self)
 
     private func setupPageViewController() {

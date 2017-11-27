@@ -18,8 +18,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     var selectedTask: Task?
     var items: [Results<Item>]?
     var notificationToken: NotificationToken?
+
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
+    
     @IBOutlet weak var tableView: UITableView!
 
     lazy var apiClient: APIClientProtocol = APIClient()

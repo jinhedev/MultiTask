@@ -25,7 +25,9 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     // MARK: - API
 
+    var realmManager: RealmManager?
     var selectedTask: Task?
+
     var selectedIndexPath: IndexPath?
     weak var delegate: TaskEditorViewControllerDelegate?
     static let storyboard_id = String(describing: TaskEditorViewController.self)
@@ -107,8 +109,6 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     }
 
     // MARK: - PersistentContainerDelegate
-
-    var realmManager: RealmManager?
 
     private func setupPersistentContainerDelegate() {
         realmManager = RealmManager()

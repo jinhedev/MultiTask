@@ -14,14 +14,18 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     // MARK: - API
 
     var completedTasks: [Results<Task>]?
-    weak var tasksPageViewController: TasksPageViewController?
-    static let storyboard_id = String(describing: CompletedTasksViewController.self)
-    let PAGE_INDEX = 1 // provides index data for parent pageViewController
-
-    // MARK: - PersistentContainerDelegate
-
     var realmManager: RealmManager?
     var notificationToken: NotificationToken?
+
+    weak var tasksPageViewController: TasksPageViewController?
+    let PAGE_INDEX = 1 // provides index data for parent pageViewController
+    static let storyboard_id = String(describing: CompletedTasksViewController.self)
+
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var collectionViewMosaicLayout: UICollectionViewMosaicLayout!
+
+    // MARK: - PersistentContainerDelegate
 
     private func setupPersistentContainerDelegate() {
         realmManager = RealmManager()
@@ -175,8 +179,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     // MARK: - UICollectionView
 
-    @IBOutlet weak var collectionView: UICollectionView!
-
     private func setupCollectionView() {
         self.isEditing = false
         self.collectionView.dataSource = self
@@ -198,8 +200,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout
-
-    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -227,8 +227,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     // MARK: - UICollectionViewDelegateMosaicLayout
-
-    @IBOutlet weak var collectionViewMosaicLayout: UICollectionViewMosaicLayout!
 
     private func setupCollectionViewDelegateMosaicLayout() {
         collectionViewMosaicLayout.numberOfColumns = 0

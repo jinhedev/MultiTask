@@ -15,6 +15,8 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
     var items: [Item]?
     static let storyboard_id = String(describing: SearchResultsViewController.self)
 
+    @IBOutlet weak var tableView: UITableView!
+
     // MARK: - UISearchResultsUpdating
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -35,8 +37,6 @@ class SearchResultsViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     // MARK: - UITableView
-
-    @IBOutlet weak var tableView: UITableView!
 
     private func setupTableView() {
         self.view.backgroundColor = Color.clear

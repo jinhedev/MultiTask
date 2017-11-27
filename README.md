@@ -1,6 +1,6 @@
 # MultiTask
 
-_This is a todo app for iOS. MultiTask focuses on providing its, err..., todo list service with or without the dependency of Internet._
+_This is a todo app for iOS. MultiTask focuses on providing its, err..., todo list service. It also serves as a case study for iOS development in general. This project covers topics from UI, Persistent Storage, Architecture, Continuous Integration, UnitTest & UITest to a few other miscelanueous items such as Fabric._
 
 Download on the [App Store](https://itunes.apple.com/us/app/multitask/id1271187729?ls=1&mt=8).
 
@@ -16,7 +16,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The latest Xcode and the Swift 3+.
+The latest Xcode and the Swift 4+.
 
 ### Build Instructions
 

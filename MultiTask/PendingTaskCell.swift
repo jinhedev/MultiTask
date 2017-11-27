@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class TaskCell: BaseCollectionViewCell {
+class PendingTaskCell: BaseCollectionViewCell {
 
     // MARK: - API
 
@@ -19,8 +19,8 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
-    static let cell_id = String(describing: TaskCell.self)
-    static let nibName = String(describing: TaskCell.self)
+    static let cell_id = String(describing: PendingTaskCell.self)
+    static let nibName = String(describing: PendingTaskCell.self)
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView!
@@ -32,7 +32,7 @@ class TaskCell: BaseCollectionViewCell {
 
     var editing: Bool = false {
         didSet {
-            self.animateForEditMode(isEnabled: editing)
+            self.animateForEditMode()
         }
     }
 
@@ -44,19 +44,19 @@ class TaskCell: BaseCollectionViewCell {
         }
     }
 
-    func animateForEditMode(isEnabled: Bool) {
+    func animateForEditMode() {
         // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.
-        if isEnabled == true {
-            self.containerViewLeadingMargin.constant = isEnabled ? (16 + 22 + 16) : 16
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+        if self.editing == true {
+            self.containerViewLeadingMargin.constant = self.editing ? (16 + 22 + 16) : 16
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }) { (completed) in
-                self.checkmarkImageView.isHidden = isEnabled ? false : true
+                self.checkmarkImageView.isHidden = self.editing ? false : true
             }
         } else {
-            self.checkmarkImageView.isHidden = isEnabled ? false : true
-            self.containerViewLeadingMargin.constant = isEnabled ? (16 + 22 + 16) : 16
-            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+            self.checkmarkImageView.isHidden = self.editing ? false : true
+            self.containerViewLeadingMargin.constant = self.editing ? (16 + 22 + 16) : 16
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }, completion: nil)
         }

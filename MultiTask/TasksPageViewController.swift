@@ -55,6 +55,7 @@ class TasksPageViewController: UIPageViewController, UIPageViewControllerDataSou
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        print(self.view.frame.width)
 //        print(scrollView.contentOffset.x)
     }
 

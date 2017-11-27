@@ -82,7 +82,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
         for indexPath in indexPaths {
             self.collectionView?.deselectItem(at: indexPath, animated: false)
-            if let cell = self.collectionView?.cellForItem(at: indexPath) as? TaskCell {
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? PendingTaskCell {
                 cell.editing = editing
             }
         }
@@ -170,7 +170,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
         taskEditorViewController?.delegate = self
         taskEditorViewController?.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]
-        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
+        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? PendingTaskCell {
             previewingContext.sourceRect = selectedCell.frame
         }
         return self.isEditing ? nil : taskEditorViewController
@@ -185,7 +185,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
-        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
+        self.collectionView.register(UINib(nibName: PendingTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: PendingTaskCell.cell_id)
     }
 
     // MARK: - UICollectionViewDelegate
@@ -194,7 +194,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         if self.isEditing == false {
             self.performSegue(withIdentifier: Segue.PendingTaskCellToItemsViewController, sender: self)
         } else {
-            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
                 selectedCell.isSelected = true
             }
         }
@@ -205,7 +205,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         return insets
     }
 
@@ -215,14 +215,13 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = self.collectionView.frame.width
-        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4
-        // REMARK: containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
+        let cellHeight: CGFloat = 8 + 16 + (0) + 8 + 15 + 15 + 16 + 8
+        // REMARK: containerViewTopMargin + titleLabelTopMargin + (titleLabelHeight) + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin (see TaskCell.xib for references)
         if let task = self.pendingTasks?[indexPath.section][indexPath.item] {
-            let estimateSize = CGSize(width: cellWidth, height: cellHeight)
-            let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)], context: nil)
-            return CGSize(width: cellWidth, height: estimatedFrame.height + cellHeight)
+            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: cellWidth - 32 - 32) // (the container's leading margin to View's leading == 16) + (titleLabel's leading margin to container's leading == 16), same for the trailling
+            return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
         }
-        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated height for titleLabel
+        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated minimum height for titleLabel when none is provided
     }
 
     // MARK: - UICollectionViewDataSource
@@ -236,7 +235,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let pendingTaskCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: TaskCell.cell_id, for: indexPath) as? TaskCell else {
+        guard let pendingTaskCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: PendingTaskCell.cell_id, for: indexPath) as? PendingTaskCell else {
             return BaseCollectionViewCell()
         }
         let task = pendingTasks?[indexPath.section][indexPath.item]

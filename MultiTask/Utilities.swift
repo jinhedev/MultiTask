@@ -34,11 +34,11 @@ extension NSDate {
         let month = 30 * day
         let year = 365 * day
         if secondsAgo < minute {
-            return "\(secondsAgo) seconds ago"
+            return "\(secondsAgo) sec ago"
         } else if secondsAgo < hour {
-            return "\(secondsAgo / minute) minutes ago"
+            return "\(secondsAgo / minute) mins ago"
         } else if secondsAgo < day {
-            return "\(secondsAgo / hour) hours ago"
+            return "\(secondsAgo / hour) hrs ago"
         } else if secondsAgo < week {
             return "\(secondsAgo / day) days ago"
         } else if secondsAgo < month {
@@ -46,7 +46,7 @@ extension NSDate {
         } else if secondsAgo < year {
             return "\(secondsAgo / month) months ago"
         }
-        return "\(secondsAgo / year) years ago"
+        return "\(secondsAgo / year) yrs ago"
     }
 
 }
@@ -100,6 +100,18 @@ extension UICollectionView {
             insertItems(at: insertions.map(IndexPath.fromItem))
             reloadItems(at: updates.map(IndexPath.fromItem))
         }, completion: nil)
+    }
+
+}
+
+// MARK: - NSString
+
+extension String {
+
+    func heightForText(systemFont size: CGFloat, width: CGFloat) -> CGFloat {
+        let font = UIFont.systemFont(ofSize: size)
+        let rect = NSString(string: self).boundingRect(with: CGSize(width: width, height: CGFloat(MAXFLOAT)), options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : font], context: nil)
+        return ceil(rect.height)
     }
 
 }

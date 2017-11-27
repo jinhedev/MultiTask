@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, MainTasksViewControllerDelegate {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, MainTasksViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegateMosaicLayout {
 
     // MARK: - API
 
@@ -83,7 +83,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
         for indexPath in indexPaths {
             self.collectionView?.deselectItem(at: indexPath, animated: false)
-            if let cell = self.collectionView?.cellForItem(at: indexPath) as? TaskCell {
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? CompletedTaskCell {
                 cell.editing = editing
             }
         }
@@ -138,7 +138,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
         taskEditorViewController?.delegate = self
         taskEditorViewController?.selectedTask = self.completedTasks?[selectedIndexPath.section][selectedIndexPath.item]
-        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? TaskCell {
+        if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? CompletedTaskCell {
             previewingContext.sourceRect = selectedCell.frame
         }
         return self.isEditing ? nil : taskEditorViewController
@@ -182,7 +182,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
-        self.collectionView.register(UINib(nibName: TaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: TaskCell.cell_id)
+        self.collectionView.register(UINib(nibName: CompletedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: CompletedTaskCell.cell_id)
     }
 
     // MARK: - UICollectionViewDelegate
@@ -191,7 +191,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         if self.isEditing == false {
             self.performSegue(withIdentifier: Segue.CompletedTaskCellToItemsViewController, sender: self)
         } else {
-            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? TaskCell {
+            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
                 selectedCell.isSelected = true
             }
         }
@@ -202,24 +202,47 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         return insets
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
+        return 16
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = self.collectionView.frame.width
-        let cellHeight: CGFloat = 8 + 8 + 8 + 15 + 15 + 8 + 8 + 4
-        // REMARK: containerViewTopMargin + titleLabelTopMargin + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin + errorOffset (see TaskCell.xib for references)
+        let cellWidth = (self.collectionView.frame.width / 2) - 16 - 8 // cell leading & cell trailling space to offset (collectionView.insets + interItemSpacing)
+        let cellHeight: CGFloat = 16 + (0) + 8 + 15 + 15 + 15 + 16
+        // REMARK: titleLabelTopMargin + (titleLabelHeight) + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + statsLabelHeight + statsLabelBottomMargin (see CompletedTaskCell.xib for references)
         if let task = self.completedTasks?[indexPath.section][indexPath.item] {
-            let estimateSize = CGSize(width: cellWidth, height: cellHeight)
-            let estimatedFrame = NSString(string: task.title).boundingRect(with: estimateSize, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)], context: nil)
-            return CGSize(width: cellWidth, height: estimatedFrame.height + cellHeight)
+            let estimatedWidthForTitle = cellWidth - 16 - 16
+            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: estimatedWidthForTitle) // titleLabel's leading and trailling margin to container's leading & trailling == 16 * 2
+            return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
         }
-        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated height for titleLabel
+        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated minimum height for titleLabel
+    }
+
+    // MARK: - UICollectionViewDelegateMosaicLayout
+
+    @IBOutlet weak var collectionViewMosaicLayout: UICollectionViewMosaicLayout!
+
+    private func setupCollectionViewDelegateMosaicLayout() {
+        collectionViewMosaicLayout.numberOfColumns = 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, heightForItemAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let cellWidth = self.collectionView.frame.width / 2 - 16 - 8 // cell leading & cell trailling space to offset (collectionView.insets + interItemSpacing)
+        let cellHeight: CGFloat = 16 + (0) + 8 + 15 + 15 + 15 + 16 // without titleLabel's height
+        if let task = self.completedTasks?[indexPath.section][indexPath.item] {
+            let estimatedWidthForTitle = cellWidth - 16 - 16
+            let estimatedHeightForTitle = task.title.heightForText(systemFont: 15, width: estimatedWidthForTitle)
+            return cellHeight + estimatedHeightForTitle
+        }
+        return cellHeight + 44
     }
 
     // MARK: - UICollectionViewDataSource
@@ -233,11 +256,11 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let completedTaskCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: TaskCell.cell_id, for: indexPath) as? TaskCell else {
+        guard let completedTaskCell = self.collectionView.dequeueReusableCell(withReuseIdentifier: CompletedTaskCell.cell_id, for: indexPath) as? CompletedTaskCell else {
             return BaseCollectionViewCell()
         }
         let task = completedTasks?[indexPath.section][indexPath.item]
-        completedTaskCell.task = task
+        completedTaskCell.completedTask = task
         return completedTaskCell
     }
 

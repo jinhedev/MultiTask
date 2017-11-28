@@ -141,7 +141,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
+    func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {
         // REMARK: delete an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
         guard let parentTask = self.selectedTask else { return }
         if parentTask.shouldComplete() == true {
@@ -281,7 +281,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             // REMARK: If task should become complete, but CompletedTasksViewController's completedTasks == nil, then CompletedTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if completedTasks == nil, if so perform a manual fetch. If completedTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
             // REMARK: if task should become incomplete, but PendingTasksViewController's pendingTasks == nil, then PendingTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if pendingTasks == nil, if so perform a manual fetch. If pendingTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
             if let itemToBeDeleted = self.items?[indexPath.section][indexPath.row] {
-                self.realmManager?.deleteObjects(objects: [itemToBeDeleted])
+                self.realmManager?.deleteItems(items: [itemToBeDeleted])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
             }

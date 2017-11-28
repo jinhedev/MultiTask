@@ -64,7 +64,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         self.setupRealmNotificationsForCollectionView()
     }
 
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {
+    func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {
         if self.isEditing == true {
             // exit edit mode
             self.isEditing = false
@@ -110,7 +110,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
                     let taskToBeDeleted = tasks[indexPath.section][indexPath.item]
                     tasksToBeDeleted.append(taskToBeDeleted)
                 }
-                self.realmManager?.deleteObjects(objects: tasksToBeDeleted)
+                self.realmManager?.deleteTasks(tasks: tasksToBeDeleted)
             }
         }
     }

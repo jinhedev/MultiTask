@@ -19,17 +19,6 @@ class PendingTaskCell: BaseCollectionViewCell {
         }
     }
 
-    static let cell_id = String(describing: PendingTaskCell.self)
-    static let nibName = String(describing: PendingTaskCell.self)
-
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var checkmarkImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var statsLabel: UILabel!
-    @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint! // increase its constant when in editing mode to give space for checkmarImageView
-
     var editing: Bool = false {
         didSet {
             self.animateForEditMode()
@@ -43,6 +32,17 @@ class PendingTaskCell: BaseCollectionViewCell {
             }
         }
     }
+
+    static let cell_id = String(describing: PendingTaskCell.self)
+    static let nibName = String(describing: PendingTaskCell.self)
+
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var checkmarkImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var statsLabel: UILabel!
+    @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint! // increase its constant when in editing mode to give space for checkmarImageView
 
     func animateForEditMode() {
         // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.

@@ -22,6 +22,7 @@ class ItemCell: BaseTableViewCell {
     var selectedIndexPath: IndexPath?
     static let cell_id = String(describing: ItemCell.self)
     static let nibName = String(describing: ItemCell.self)
+    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var subtitleLabel: UILabel!

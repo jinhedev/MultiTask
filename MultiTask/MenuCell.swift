@@ -12,9 +12,22 @@ class MenuCell: BaseCollectionViewCell {
 
     // MARK: - API
 
+    override var isHighlighted: Bool {
+        didSet {
+            self.titleLabel.textColor = isHighlighted ? UIColor.white : Color.lightGray
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            self.titleLabel.textColor = isSelected ? UIColor.white : Color.lightGray
+        }
+    }
+
     var menu: Menu? { didSet { self.configureCell(menu: menu) } }
     static let cell_id = String(describing: MenuCell.self)
     static let nibName = String(describing: MenuCell.self)
+
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
 
@@ -32,18 +45,6 @@ class MenuCell: BaseCollectionViewCell {
         self.containerView.backgroundColor = Color.inkBlack
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.lightGray
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            self.titleLabel.textColor = isHighlighted ? UIColor.white : Color.lightGray
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
-            self.titleLabel.textColor = isSelected ? UIColor.white : Color.lightGray
-        }
     }
 
     // MARK: - Lifecycle

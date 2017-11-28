@@ -11,9 +11,46 @@ import XCTest
 
 class CompletedTasksViewControllerTests: XCTestCase {
 
-    // MARK: - Lifecycle
+    // MARK: - Mocks
 
     var sut: CompletedTasksViewController!
+
+    // MARK: - Tests
+
+    func testPersistentContainerDelegateReference() {
+        XCTAssertTrue(sut.realmManager!.delegate === sut, "incorrect pointer to location.")
+    }
+
+    func testUICollectionViewDelegateReference() {
+        XCTAssertTrue(sut.collectionView.delegate === sut, "incorrect pointer to location.")
+    }
+
+    func testUICollectionViewDataSourceReference() {
+        XCTAssertTrue(sut.collectionView.dataSource === sut, "incorrect pointer to location.")
+    }
+
+    func testUICollectionViewDelegateFlowLayoutReference() {
+        XCTAssertTrue(sut.collectionView.collectionViewLayout === sut.collectionViewFlowLayout, "incorrect pointer to location.")
+    }
+
+    func testNotificationTokenForNil() {
+        if sut.completedTasks != nil {
+            XCTAssertNotNil(sut.notificationToken, "If pendingTasks != nil, token must be instantiated.")
+        } else {
+            XCTAssertNil(sut.notificationToken, "If pendingTasks == nil, token must be nil too.")
+        }
+    }
+
+    // MARK: - Setups
+
+    func testSetupsForNil() {
+        XCTAssertNotNil(sut.collectionView, "collectionView must not be nil")
+        XCTAssertNotNil(sut.collectionView.delegate, "collectionView.delegate must not be nil")
+        XCTAssertNotNil(sut.collectionView.dataSource, "collectionView.dataSource must not be nil")
+        XCTAssertNotNil(sut.realmManager, "realmManager must not be nil")
+        XCTAssertNotNil(sut.collectionViewFlowLayout, "collectionViewFlowLayout must not be nil")
+        XCTAssertEqual(sut.PAGE_INDEX, 1) // completed must be second on the right
+    }
 
     override func setUp() {
         super.setUp()
@@ -23,6 +60,7 @@ class CompletedTasksViewControllerTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        self.sut = nil
     }
 
 }

@@ -19,16 +19,6 @@ class CompletedTaskCell: BaseCollectionViewCell {
         }
     }
 
-    static let cell_id = String(describing: CompletedTaskCell.self)
-    static let nibName = String(describing: CompletedTaskCell.self)
-    
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var statsLabel: UILabel!
-    @IBOutlet weak var checkmarkImageView: UIImageView!
-
     var editing: Bool = false {
         didSet {
             self.animateForEditMode()
@@ -40,6 +30,16 @@ class CompletedTaskCell: BaseCollectionViewCell {
             self.animateForSelectMode()
         }
     }
+
+    static let cell_id = String(describing: CompletedTaskCell.self)
+    static let nibName = String(describing: CompletedTaskCell.self)
+    
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var statsLabel: UILabel!
+    @IBOutlet weak var checkmarkImageView: UIImageView!
 
     func animateForEditMode() {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {

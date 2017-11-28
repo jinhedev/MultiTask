@@ -19,11 +19,11 @@ class SearchResultCell: BaseTableViewCell {
         }
     }
 
-    @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
-
     static let cell_id = String(describing: SearchResultCell.self)
     static let nibName = String(describing: SearchResultCell.self)
+
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
 
     private func configureCell(item: Item?) {
         // TODO: implement this

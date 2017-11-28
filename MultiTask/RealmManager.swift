@@ -23,7 +23,8 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     // update
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object)
     // delete
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?)
+    func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?)
+    func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?)
 }
 
 extension PersistentContainerDelegate {
@@ -38,7 +39,8 @@ extension PersistentContainerDelegate {
     // update
     func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {}
     // delete
-    func persistentContainer(_ manager: RealmManager, didDelete objects: [Object]?) {}
+    func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {}
+    func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {}
 }
 
 var realm = try! Realm() // A realm instance for local persistent container
@@ -101,14 +103,25 @@ class RealmManager: NSObject {
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 
-    // MARK: - Create
+    // MARK: - Delete
 
-    func deleteObjects(objects: [Object]) {
+    func deleteTasks(tasks: [Task]) {
         do {
             try realm.write {
-                realm.delete(objects)
+                realm.delete(tasks)
             }
-            delegate?.persistentContainer(self, didDelete: objects)
+            delegate?.persistentContainer(self, didDeleteTasks: tasks)
+        } catch let err {
+            delegate?.persistentContainer(self, didErr: err)
+        }
+    }
+
+    func deleteItems(items: [Item]) {
+        do {
+            try realm.write {
+                realm.delete(items)
+            }
+            delegate?.persistentContainer(self, didDeleteItems: items)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }

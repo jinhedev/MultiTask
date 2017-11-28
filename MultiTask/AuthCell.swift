@@ -24,6 +24,7 @@ class AuthCell: BaseCollectionViewCell {
     weak var delegate: AuthCellDelegate?
     static let cell_id = String(describing: AuthCell.self)
     static let nibName = String(describing: AuthCell.self)
+
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var infoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!

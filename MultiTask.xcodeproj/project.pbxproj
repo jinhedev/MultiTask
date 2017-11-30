@@ -28,8 +28,10 @@
 		C549CCCE1FC8EE960039D0D5 /* CompletedTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */; };
 		C549CCD01FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C549CCCF1FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift */; };
 		C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B6A1E1F69165900ABC572 /* AppSetting.swift */; };
-		C54CEF771FCFE98400AF0B7B /* ClickOn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF761FCFE98300AF0B7B /* ClickOn.mp3 */; };
-		C54CEF791FCFE99B00AF0B7B /* ClickOff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF781FCFE99B00AF0B7B /* ClickOff.mp3 */; };
+		C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF801FD06EA700AF0B7B /* Notification.wav */; };
+		C54CEF831FD06EAE00AF0B7B /* Tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF821FD06EAE00AF0B7B /* Tap.wav */; };
+		C54CEF851FD06EB900AF0B7B /* Click.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF841FD06EB900AF0B7B /* Click.wav */; };
+		C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF861FD06EC100AF0B7B /* Bing.wav */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
@@ -159,8 +161,10 @@
 		C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CompletedTaskCell.xib; sourceTree = "<group>"; };
 		C549CCCF1FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewMosaicLayout.swift; sourceTree = "<group>"; };
 		C54B6A1E1F69165900ABC572 /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
-		C54CEF761FCFE98300AF0B7B /* ClickOn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ClickOn.mp3; sourceTree = "<group>"; };
-		C54CEF781FCFE99B00AF0B7B /* ClickOff.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ClickOff.mp3; sourceTree = "<group>"; };
+		C54CEF801FD06EA700AF0B7B /* Notification.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Notification.wav; sourceTree = "<group>"; };
+		C54CEF821FD06EAE00AF0B7B /* Tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Tap.wav; sourceTree = "<group>"; };
+		C54CEF841FD06EB900AF0B7B /* Click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Click.wav; sourceTree = "<group>"; };
+		C54CEF861FD06EC100AF0B7B /* Bing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Bing.wav; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -360,8 +364,10 @@
 		C5A9A8BB1F3BC08300601CFF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C54CEF761FCFE98300AF0B7B /* ClickOn.mp3 */,
-				C54CEF781FCFE99B00AF0B7B /* ClickOff.mp3 */,
+				C54CEF861FD06EC100AF0B7B /* Bing.wav */,
+				C54CEF841FD06EB900AF0B7B /* Click.wav */,
+				C54CEF821FD06EAE00AF0B7B /* Tap.wav */,
+				C54CEF801FD06EA700AF0B7B /* Notification.wav */,
 				C5A9A8AC1F3BB06C00601CFF /* Assets.xcassets */,
 				C5A9A8B11F3BB06C00601CFF /* Info.plist */,
 			);
@@ -579,21 +585,23 @@
 				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
+				C54CEF831FD06EAE00AF0B7B /* Tap.wav in Resources */,
 				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
 				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
-				C54CEF791FCFE99B00AF0B7B /* ClickOff.mp3 in Resources */,
 				C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */,
+				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
 				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
 				C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */,
+				C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
-				C54CEF771FCFE98400AF0B7B /* ClickOn.mp3 in Resources */,
 				C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */,
 				C549CCCE1FC8EE960039D0D5 /* CompletedTaskCell.xib in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
+				C54CEF851FD06EB900AF0B7B /* Click.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

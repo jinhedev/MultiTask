@@ -15,11 +15,10 @@ protocol SoundEffectDelegate: NSObjectProtocol {
 }
 
 enum SoundEffect: String {
-    case ClickOn
-    case ClickOff
-    case Swipe
-    case Delete
-    case Trash
+    case Bing
+    case Tap
+    case Click
+    case Notification
 }
 
 class SoundEffectManager: NSObject {
@@ -28,12 +27,13 @@ class SoundEffectManager: NSObject {
     var player: AVAudioPlayer?
 
     func play(soundEffect: SoundEffect) {
-        if let url = Bundle.main.url(forResource: soundEffect.rawValue, withExtension: "mp3") {
+        if let url = Bundle.main.url(forResource: soundEffect.rawValue, withExtension: "wav") {
             do {
                 let sound = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
                 self.player = sound
                 sound.numberOfLoops = 1
                 sound.prepareToPlay()
+                sound.volume = 0.75
                 sound.play()
                 self.delegate?.soundEffect(self, didPlaySoundEffect: soundEffect, player: player!)
             } catch let err {

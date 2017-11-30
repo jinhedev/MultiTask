@@ -218,12 +218,12 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         let cellWidth = (self.collectionView.frame.width / 2) - 16 - 8 // cell leading & cell trailling space to offset (collectionView.insets + interItemSpacing)
         let cellHeight: CGFloat = 16 + (0) + 8 + 15 + 15 + 15 + 16
         // REMARK: titleLabelTopMargin + (titleLabelHeight) + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + statsLabelHeight + statsLabelBottomMargin (see CompletedTaskCell.xib for references)
-        if let task = self.completedTasks?[indexPath.section][indexPath.item] {
-            let estimatedWidthForTitle = cellWidth - 16 - 16
-            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: estimatedWidthForTitle) // titleLabel's leading and trailling margin to container's leading & trailling == 16 * 2
-            return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
-        }
-        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated minimum height for titleLabel
+//        if let task = self.completedTasks?[indexPath.section][indexPath.item] {
+//            let estimatedWidthForTitle = cellWidth - 16 - 16
+//            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: estimatedWidthForTitle) // titleLabel's leading and trailling margin to container's leading & trailling == 16 * 2
+//            return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
+//        }
+        return CGSize(width: cellWidth, height: cellHeight + 22) // 44 is the estimated minimum height for titleLabel
     }
 
     // MARK: - UICollectionViewDelegateMosaicLayout

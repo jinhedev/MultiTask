@@ -40,7 +40,8 @@ class SoundEffectManager: NSObject {
                 self.delegate?.soundEffect(self, didErr: err)
             }
         } else {
-            print("Incorrect name to asset.")
+            print("When modifying asset files in the project directory, please match their name by the SoundEffect enum to avoid crash.")
+            fatalError("Incorrect name to .wav asset.")
         }
     }
 

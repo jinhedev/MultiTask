@@ -61,7 +61,7 @@ extension UIImageView {
             self.alpha = 1
         }, completion: nil)
     }
-    
+
 }
 
 extension IndexPath {
@@ -134,24 +134,13 @@ extension UIView {
 
 }
 
+// MARK: - NSURL + Document
 
+extension URL {
 
+    static func inDocumentDirectory(fileName: String) -> URL {
+        let dir = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
+        return URL(fileURLWithPath: dir, isDirectory: true).appendingPathComponent(fileName)
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

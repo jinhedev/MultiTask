@@ -10,14 +10,17 @@ import UIKit
 import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PersistentContainerDelegate {
 
     var window: UIWindow?
     var realmManager: RealmManager?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        setupPersistentContainerDelegate()
+        // APNS
         setupRemoteNotification()
+        // Realm
+        setupRealm()
+        setupPersistentContainerDelegate()
         if realmManager?.isOnboardingCompleted == true {
             print("fetch app settings and setup themes and other environment objects")
         } else {
@@ -71,9 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler()
     }
 
-}
-
-extension AppDelegate: PersistentContainerDelegate {
+    // MARK: - PersistentContainerDelegate
 
     func setupPersistentContainerDelegate() {
         realmManager = RealmManager()
@@ -85,24 +86,3 @@ extension AppDelegate: PersistentContainerDelegate {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -134,7 +134,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.setupMainTasksViewControllerDelegate()
         // initial fetch
         self.performInitialFetch(notification: nil)
-        if let pathToSandbox = realmManager?.pathForContainer?.absoluteString {
+        if let pathToSandbox = RealmManager.pathForDefaultContainer?.absoluteString {
             print(pathToSandbox)
         }
     }

@@ -15,6 +15,12 @@ import Foundation
     typealias Color = NSColor
 #endif
 
+// MARK: - App Configs
+
+struct Configuration {
+    static let appId = Bundle.main.bundleIdentifier!
+}
+
 // MARK: - Segue IDs
 
 struct Segue {

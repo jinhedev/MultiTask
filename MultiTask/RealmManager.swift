@@ -43,12 +43,19 @@ extension PersistentContainerDelegate {
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {}
 }
 
-var realm = try! Realm() // A realm instance for local persistent container
+var realm: Realm!
+
+func setupRealm() {
+    let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, AppSetting.self, Session.self, User.self])
+    realm = try! Realm(configuration: config)
+}
 
 class RealmManager: NSObject {
 
     weak var delegate: PersistentContainerDelegate?
-    var pathForContainer: URL? { return Realm.Configuration.defaultConfiguration.fileURL }
+    static var pathForDefaultContainer: URL? { return Realm.Configuration.defaultConfiguration.fileURL }
+    static var pathForStaticContainer: URL? { return URL.inDocumentDirectory(fileName: "static.realm") }
+    static var pathForSafeContainer: URL? { return URL.inDocumentDirectory(fileName: "safe.realm") }
 
     // MARK: - Database
 

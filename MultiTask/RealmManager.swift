@@ -115,7 +115,14 @@ class RealmManager: NSObject {
     func deleteTasks(tasks: [Task]) {
         do {
             try realm.write {
-                realm.delete(tasks)
+                for task in tasks {
+                    if !task.items.isEmpty {
+                        realm.delete(task.items)
+                        realm.delete(task)
+                    } else {
+                        realm.delete(task)
+                    }
+                }
             }
             delegate?.persistentContainer(self, didDeleteTasks: tasks)
         } catch let err {

@@ -10,11 +10,12 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate {
 
     // MARK: - API
 
     var realmManager: RealmManager?
+    var soundEffectManager: SoundEffectManager?
     var selectedTask: Task?
     var items: [Results<Item>]?
     var notificationToken: NotificationToken?
@@ -26,6 +27,21 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     lazy var apiClient: APIClientProtocol = APIClient()
     static let storyboard_id = String(describing: ItemsViewController.self)
+
+    // MARK: - SoundEffectDelegate
+
+    func setupSoundEffectDelegate() {
+        soundEffectManager = SoundEffectManager()
+        soundEffectManager!.delegate = self
+    }
+
+    func soundEffect(_ manager: SoundEffectManager, didPlaySoundEffect soundEffect: SoundEffect, player: AVAudioPlayer) {
+        // Implement this if needed
+    }
+
+    func soundEffect(_ manager: SoundEffectManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
 
     // MARK: - ItemEditorViewControllerDelegate
 
@@ -190,6 +206,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupNavigationBar()
         self.setupTableView()
         self.setupSearchController()
+        self.setupSoundEffectDelegate()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.setupItemsForTableViewWithParentTask()
@@ -244,6 +261,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
                 print(trace(file: #file, function: #function, line: #line))
             }
             is_success(true)
+            // sound effect
+            self.soundEffectManager?.play(soundEffect: SoundEffect.ClickOff)
         }
         pendingAction.image = #imageLiteral(resourceName: "Code") // <<-- watch out for image literal
         pendingAction.backgroundColor = Color.mandarinOrange
@@ -256,6 +275,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
                 print(trace(file: #file, function: #function, line: #line))
             }
             is_success(true)
+            // sound effect
+            self.soundEffectManager?.play(soundEffect: SoundEffect.ClickOn)
         }
         doneAction.image = #imageLiteral(resourceName: "Tick") // <<-- watch out for image literal. It's almost invisible.
         doneAction.backgroundColor = Color.seaweedGreen
@@ -286,6 +307,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
                 print(trace(file: #file, function: #function, line: #line))
             }
             is_success(true)
+            // sound effect
+            self.soundEffectManager?.play(soundEffect: SoundEffect.ClickOff)
         }
         deleteAction.image = #imageLiteral(resourceName: "Trash") // <<-- watch out for image literal
         deleteAction.backgroundColor = Color.roseScarlet

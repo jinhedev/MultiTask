@@ -1,9 +1,11 @@
 # MultiTask
 
-_This is a todo app for iOS. MultiTask serves as a template case study for iOS development in general. This project will cover topics  of the following:_
-- _Custom UI, UX (CollectionView, TableView, ScrollView, Sound Effect, Onboarding, App Theme, etc.)_
+_MultiTask is a todo list app that serves as a template case study for iOS development in general. It also the open source component of a . This project will cover topics of the following:_
+- _Custom UI, UX (CollectionView, TableView, ScrollView, Sound Effect, On-boarding, App Themes, etc.)_
+- _Push Notifications (APNS)_
+- _RESTful (Rails API)_
 - _Persistence (Realm, UserDefaults, Keychain)_
-- _Architecture (Inheritance, ViewController Containment, Protocol)_
+- _Architectural (Object Orientated Programming, ViewController Containment, Protocol, Key Value Observing)_
 - _Continuous Integration (Fastlane)_
 - _Test (UnitTest, UITest)_
 - _Logging (Fabric)_
@@ -22,7 +24,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-The latest Xcode and the Swift 4+.
+Swift 4+.
 
 ### Build Instructions
 

@@ -1,6 +1,12 @@
 # MultiTask
 
-_This is a todo app for iOS. MultiTask focuses on providing its, err..., todo list service. It also serves as a case study for iOS development in general. This project covers topics from UI, Persistent Storage, Architecture, Continuous Integration, UnitTest & UITest to a few other miscelanueous items such as Fabric._
+_This is a todo app for iOS. MultiTask serves as a template case study for iOS development in general. This project will cover topics  of the following:_
+- _Custom UI, UX (CollectionView, TableView, ScrollView, Sound Effect, Onboarding, App Theme, etc.)_
+- _Persistence (Realm, UserDefaults, Keychain)_
+- _Architecture (Inheritance, ViewController Containment, Protocol)_
+- _Continuous Integration (Fastlane)_
+- _Test (UnitTest, UITest)_
+- _Logging (Fabric)_
 
 Download on the [App Store](https://itunes.apple.com/us/app/multitask/id1271187729?ls=1&mt=8).
 

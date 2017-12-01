@@ -29,9 +29,10 @@
 		C549CCD01FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C549CCCF1FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift */; };
 		C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54B6A1E1F69165900ABC572 /* AppSetting.swift */; };
 		C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF801FD06EA700AF0B7B /* Notification.wav */; };
-		C54CEF831FD06EAE00AF0B7B /* Tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF821FD06EAE00AF0B7B /* Tap.wav */; };
 		C54CEF851FD06EB900AF0B7B /* Click.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF841FD06EB900AF0B7B /* Click.wav */; };
 		C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF861FD06EC100AF0B7B /* Bing.wav */; };
+		C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF881FD0EFD000AF0B7B /* Tap.wav */; };
+		C54CEF8B1FD0F2BF00AF0B7B /* Coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
@@ -71,7 +72,6 @@
 		C5B412A81FBE665D006CFDA6 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
 		C5B412A91FBE665D006CFDA6 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; };
 		C5B412B11FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */; };
-		C5B412B31FBEA3FE006CFDA6 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B21FBEA3FE006CFDA6 /* APIClient.swift */; };
 		C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E1566C1F484473006247C4 /* OnboardingViewController.swift */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
@@ -162,9 +162,10 @@
 		C549CCCF1FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewMosaicLayout.swift; sourceTree = "<group>"; };
 		C54B6A1E1F69165900ABC572 /* AppSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		C54CEF801FD06EA700AF0B7B /* Notification.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Notification.wav; sourceTree = "<group>"; };
-		C54CEF821FD06EAE00AF0B7B /* Tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Tap.wav; sourceTree = "<group>"; };
 		C54CEF841FD06EB900AF0B7B /* Click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Click.wav; sourceTree = "<group>"; };
 		C54CEF861FD06EC100AF0B7B /* Bing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Bing.wav; sourceTree = "<group>"; };
+		C54CEF881FD0EFD000AF0B7B /* Tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Tap.wav; sourceTree = "<group>"; };
+		C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Coin.wav; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -204,7 +205,6 @@
 		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewControllerTests.swift; sourceTree = "<group>"; };
-		C5B412B21FBEA3FE006CFDA6 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		C5E1566C1F484473006247C4 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -365,8 +365,9 @@
 			isa = PBXGroup;
 			children = (
 				C54CEF861FD06EC100AF0B7B /* Bing.wav */,
+				C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */,
+				C54CEF881FD0EFD000AF0B7B /* Tap.wav */,
 				C54CEF841FD06EB900AF0B7B /* Click.wav */,
-				C54CEF821FD06EAE00AF0B7B /* Tap.wav */,
 				C54CEF801FD06EA700AF0B7B /* Notification.wav */,
 				C5A9A8AC1F3BB06C00601CFF /* Assets.xcassets */,
 				C5A9A8B11F3BB06C00601CFF /* Info.plist */,
@@ -377,7 +378,6 @@
 		C5A9A8BC1F3BC08D00601CFF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				C5B412B21FBEA3FE006CFDA6 /* APIClient.swift */,
 				C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */,
 				C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */,
 				C50974351F4EA986007C6EAA /* WebServiceManager.swift */,
@@ -584,8 +584,8 @@
 				C5A9A8B01F3BB06C00601CFF /* LaunchScreen.storyboard in Resources */,
 				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
+				C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */,
 				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
-				C54CEF831FD06EAE00AF0B7B /* Tap.wav in Resources */,
 				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
 				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
@@ -598,6 +598,7 @@
 				C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */,
 				C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
+				C54CEF8B1FD0F2BF00AF0B7B /* Coin.wav in Resources */,
 				C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */,
 				C549CCCE1FC8EE960039D0D5 /* CompletedTaskCell.xib in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
@@ -666,7 +667,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C56B29321FA2F3E40093BA32 /* AuthCell.swift in Sources */,
-				C5B412B31FBEA3FE006CFDA6 /* APIClient.swift in Sources */,
 				C54394471FB56DDA009EC104 /* MenuBarViewController.swift in Sources */,
 				C5A9A8C31F3BD51000601CFF /* ItemsViewController.swift in Sources */,
 				C54394411FB529C8009EC104 /* MenuCell.swift in Sources */,

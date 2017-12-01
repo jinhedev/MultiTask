@@ -18,9 +18,14 @@ enum SoundEffect: String {
     case Bing
     case Tap
     case Click
+    case Coin
     case Notification
 }
 
+/**
+ SoundEffectManager handles and play custom sound assets in protocol orientated way.
+ - remark: To use this class, make sure to set its delegate and conform to the SoundEffectDelegate methods.
+ */
 class SoundEffectManager: NSObject {
 
     weak var delegate: SoundEffectDelegate?
@@ -31,9 +36,9 @@ class SoundEffectManager: NSObject {
             do {
                 let sound = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
                 self.player = sound
-                sound.numberOfLoops = 1
+                sound.numberOfLoops = 0 // play once
                 sound.prepareToPlay()
-                sound.volume = 0.75
+                sound.volume = 0.93
                 sound.play()
                 self.delegate?.soundEffect(self, didPlaySoundEffect: soundEffect, player: player!)
             } catch let err {

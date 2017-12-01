@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate {
 
     // MARK: - API
 
@@ -22,11 +22,9 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
-    
-    @IBOutlet weak var tableView: UITableView!
-
-    lazy var apiClient: APIClientProtocol = APIClient()
     static let storyboard_id = String(describing: ItemsViewController.self)
+
+    @IBOutlet weak var tableView: UITableView!
 
     // MARK: - ItemEditorViewControllerDelegate
 
@@ -98,6 +96,21 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         return itemEditorViewController
     }
 
+    // MARK: - SoundEffectDelegate
+
+    private func setupSoundEffectDelegate() {
+        self.soundEffectManager = SoundEffectManager()
+        self.soundEffectManager!.delegate = self
+    }
+
+    func soundEffect(_ manager: SoundEffectManager, didPlaySoundEffect soundEffect: SoundEffect, player: AVAudioPlayer) {
+        // implement this if needed
+    }
+
+    func soundEffect(_ manager: SoundEffectManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+
     // MARK: - PersistentContainerDelegate
 
     private func setupPersistentContainerDelegate() {
@@ -148,6 +161,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         if parentTask.shouldComplete() == true {
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
             self.postNotificationForTaskCompletion(completedTask: parentTask)
+            // play sound effect
+            self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
         } else if parentTask.shouldComplete() == false {
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
             self.postNotificationForTaskPending(pendingTask: parentTask)
@@ -163,6 +178,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
             // post a notification to CompletedTasksViewController to execute a manual fetch if completedTasks is nil
             self.postNotificationForTaskCompletion(completedTask: parentTask)
+            // play sound effect
+            self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
         } else if parentTask.shouldComplete() == false {
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
             // post a notification to PendingTasksViewController to execute a manual fetch if pendingTasks is nil
@@ -191,6 +208,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupNavigationBar()
         self.setupTableView()
         self.setupSearchController()
+        self.setupSoundEffectDelegate()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.setupItemsForTableViewWithParentTask()
@@ -327,17 +345,3 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

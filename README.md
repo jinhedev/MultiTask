@@ -16,7 +16,7 @@ Download on the [App Store](https://itunes.apple.com/us/app/multitask/id12711877
 ----------------
 
 I encourage you to participate in this open source project. I love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contributions. Please read the Swift style guide at https://github.com/raywenderlich/swift-style-guide. Except I use 4-space indentation instead of 2.
-- Bugs: File a new bug / Existing bugs (No, I haven't set them up yet.)
+- Bugs: File a new bug / Existing bugs (No, I haven't set them up yet.)"
 
 ## Getting Started
 

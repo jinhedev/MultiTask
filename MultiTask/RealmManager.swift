@@ -95,9 +95,7 @@ class RealmManager: NSObject {
 
     func fetchTasks(predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
         let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
-        if !tasks.isEmpty {
-            delegate?.persistentContainer(self, didFetchTasks: tasks)
-        }
+        delegate?.persistentContainer(self, didFetchTasks: tasks)
     }
 
     func fetchItems(parentTaskId: String, sortedBy keyPath: String, ascending: Bool) {

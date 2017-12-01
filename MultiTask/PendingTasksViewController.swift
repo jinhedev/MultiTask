@@ -57,10 +57,14 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
-        guard let fetchedTasks = tasks else { return }
-        self.pendingTasks = [Results<Task>]()
-        self.pendingTasks!.append(fetchedTasks)
-        self.setupRealmNotificationsForCollectionView()
+        if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
+            self.pendingTasks = [Results<Task>]()
+            self.pendingTasks!.append(fetchedTasks)
+            self.setupRealmNotificationsForCollectionView()
+        } else {
+            // TODO: empty data! present some tips and hints to make the UI more interesting.
+            
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {

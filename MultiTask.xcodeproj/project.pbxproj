@@ -33,6 +33,8 @@
 		C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF861FD06EC100AF0B7B /* Bing.wav */; };
 		C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF881FD0EFD000AF0B7B /* Tap.wav */; };
 		C54CEF8B1FD0F2BF00AF0B7B /* Coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */; };
+		C54DA6B71FD1B1A50071C3D6 /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54DA6B61FD1B1A50071C3D6 /* EmptyView.swift */; };
+		C54DA6B91FD1B2170071C3D6 /* EmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C54DA6B81FD1B2170071C3D6 /* EmptyView.xib */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
@@ -166,6 +168,8 @@
 		C54CEF861FD06EC100AF0B7B /* Bing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Bing.wav; sourceTree = "<group>"; };
 		C54CEF881FD0EFD000AF0B7B /* Tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Tap.wav; sourceTree = "<group>"; };
 		C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Coin.wav; sourceTree = "<group>"; };
+		C54DA6B61FD1B1A50071C3D6 /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
+		C54DA6B81FD1B2170071C3D6 /* EmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyView.xib; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -357,6 +361,7 @@
 				C543943E1FB5292C009EC104 /* MenuCell.xib */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
 				C5780C4C1FC5D7080087BE86 /* StatsCell.xib */,
+				C54DA6B81FD1B2170071C3D6 /* EmptyView.xib */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 		C5A9A8BD1F3BC09500601CFF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C54DA6B61FD1B1A50071C3D6 /* EmptyView.swift */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C549CCCB1FC8EE630039D0D5 /* CompletedTaskCell.swift */,
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
@@ -592,6 +598,7 @@
 				C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */,
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
 				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
+				C54DA6B91FD1B2170071C3D6 /* EmptyView.xib in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
@@ -686,6 +693,7 @@
 				C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */,
 				C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */,
 				C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */,
+				C54DA6B71FD1B1A50071C3D6 /* EmptyView.swift in Sources */,
 				C5A9A8D81F3C1E7300601CFF /* User.swift in Sources */,
 				C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */,
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,

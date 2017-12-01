@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="EmptyView" customModule="MultiTask" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="377" height="439"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PvS-b5-FPq">
+                    <rect key="frame" x="0.0" y="0.0" width="377" height="439"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="D5i-bm-RA6">
+                            <rect key="frame" x="123" y="122.5" width="132" height="194.5"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Sn6-Pv-MDL">
+                                    <rect key="frame" x="22" y="0.0" width="88" height="120"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9jw-fA-5lx">
+                                            <rect key="frame" x="0.0" y="0.0" width="88" height="88"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="88" id="Eqn-4p-tlU"/>
+                                                <constraint firstAttribute="width" constant="88" id="grt-6A-gdQ"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titileLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XdI-Pz-AC2">
+                                            <rect key="frame" x="2" y="96" width="84.5" height="24"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jPS-6g-VGv">
+                                    <rect key="frame" x="0.0" y="136" width="132" height="58.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JhF-gw-mgN">
+                                            <rect key="frame" x="17" y="0.0" width="98.5" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5V-7N-o2W">
+                                            <rect key="frame" x="0.0" y="28.5" width="132" height="30"/>
+                                            <color key="backgroundColor" red="0.93725490570000003" green="0.34901961679999999" blue="0.1921568662" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="132" id="ext-4g-aZi"/>
+                                            </constraints>
+                                            <state key="normal" title="suggestionButton">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="handleSuggestion:" destination="iN0-l3-epB" eventType="touchUpInside" id="0Ls-KL-0F3"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="D5i-bm-RA6" firstAttribute="centerY" secondItem="PvS-b5-FPq" secondAttribute="centerY" id="CiF-o4-S5a"/>
+                        <constraint firstItem="D5i-bm-RA6" firstAttribute="centerX" secondItem="PvS-b5-FPq" secondAttribute="centerX" id="OGE-EJ-mzV"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="PvS-b5-FPq" secondAttribute="trailing" id="6lG-Kj-L4s"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="PvS-b5-FPq" secondAttribute="bottom" id="AWI-5g-Aru"/>
+                <constraint firstItem="PvS-b5-FPq" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Xdh-UP-wJc"/>
+                <constraint firstItem="PvS-b5-FPq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vqm-TL-UTM"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="containerView" destination="PvS-b5-FPq" id="eKe-UQ-XGX"/>
+                <outlet property="subtitleLabel" destination="JhF-gw-mgN" id="kcv-Xd-vha"/>
+                <outlet property="suggestionButton" destination="U5V-7N-o2W" id="sJp-Ui-ddn"/>
+                <outlet property="tipsImageView" destination="9jw-fA-5lx" id="oiZ-yO-JmA"/>
+                <outlet property="titleLabel" destination="XdI-Pz-AC2" id="PVO-oj-uKz"/>
+            </connections>
+            <point key="canvasLocation" x="26.5" y="-61.5"/>
+        </view>
+    </objects>
+</document>

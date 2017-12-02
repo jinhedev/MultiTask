@@ -19,7 +19,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="377" height="439"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="D5i-bm-RA6">
-                            <rect key="frame" x="123" y="122.5" width="132" height="194.5"/>
+                            <rect key="frame" x="123" y="115.5" width="132" height="208.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Sn6-Pv-MDL">
                                     <rect key="frame" x="22" y="0.0" width="88" height="120"/>
@@ -41,7 +41,7 @@
                                     </subviews>
                                 </stackView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jPS-6g-VGv">
-                                    <rect key="frame" x="0.0" y="136" width="132" height="58.5"/>
+                                    <rect key="frame" x="0.0" y="136" width="132" height="72.5"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JhF-gw-mgN">
                                             <rect key="frame" x="17" y="0.0" width="98.5" height="20.5"/>
@@ -50,9 +50,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5V-7N-o2W">
-                                            <rect key="frame" x="0.0" y="28.5" width="132" height="30"/>
+                                            <rect key="frame" x="0.0" y="28.5" width="132" height="44"/>
                                             <color key="backgroundColor" red="0.93725490570000003" green="0.34901961679999999" blue="0.1921568662" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="height" constant="44" id="8pQ-Wo-1wS"/>
                                                 <constraint firstAttribute="width" constant="132" id="ext-4g-aZi"/>
                                             </constraints>
                                             <state key="normal" title="suggestionButton">
@@ -88,6 +89,7 @@
                 <outlet property="containerView" destination="PvS-b5-FPq" id="eKe-UQ-XGX"/>
                 <outlet property="subtitleLabel" destination="JhF-gw-mgN" id="kcv-Xd-vha"/>
                 <outlet property="suggestionButton" destination="U5V-7N-o2W" id="sJp-Ui-ddn"/>
+                <outlet property="suggestionButtonHeightConstraint" destination="8pQ-Wo-1wS" id="ESy-V9-ROz"/>
                 <outlet property="tipsImageView" destination="9jw-fA-5lx" id="oiZ-yO-JmA"/>
                 <outlet property="titleLabel" destination="XdI-Pz-AC2" id="PVO-oj-uKz"/>
             </connections>

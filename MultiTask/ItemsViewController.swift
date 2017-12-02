@@ -22,6 +22,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
+    var emptyView: EmptyView?
     static let storyboard_id = String(describing: ItemsViewController.self)
 
     @IBOutlet weak var tableView: UITableView!
@@ -37,6 +38,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             // update the parent task's updated_at
             guard let task = self.selectedTask else { return }
             self.realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
+            self.emptyView?.isHidden = true
         }
     }
 
@@ -96,6 +98,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         return itemEditorViewController
     }
 
+    // MARK: - EmptyView
+
+    private func setupEmptyView() {
+        if let view = UINib(nibName: EmptyView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? EmptyView {
+            self.emptyView = view
+            self.emptyView!.type = EmptyViewType.items
+            self.tableView.backgroundView = self.emptyView
+            self.emptyView!.isHidden = true
+        }
+    }
+
     // MARK: - SoundEffectDelegate
 
     private func setupSoundEffectDelegate() {
@@ -123,6 +136,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.items = [Results<Item>]()
         self.items!.append(unwrappedItems)
         self.setupRealmNotificationsForTableView()
+        self.emptyView?.isHidden = unwrappedItems.isEmpty ? false : true
     }
 
     private func setupRealmNotificationsForTableView() {
@@ -152,6 +166,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             guard let fetchedItems = items else { return }
             self.items?.append(fetchedItems)
             self.tableView.reloadData()
+            self.emptyView?.isHidden = self.items!.isEmpty ? false : true
         }
     }
 
@@ -207,6 +222,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         self.setupNavigationBar()
         self.setupTableView()
+        self.setupEmptyView()
         self.setupSearchController()
         self.setupSoundEffectDelegate()
         self.setupViewControllerPreviewingDelegate()

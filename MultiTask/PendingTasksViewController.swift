@@ -19,6 +19,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     weak var tasksPageViewController: TasksPageViewController?
     let PAGE_INDEX = 0 // provides index data for parent pageViewController
+    var emptyView: EmptyView?
     static let storyboard_id = String(describing: PendingTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -58,12 +59,12 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
         if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
+            self.emptyView?.isHidden = true
             self.pendingTasks = [Results<Task>]()
             self.pendingTasks!.append(fetchedTasks)
             self.setupRealmNotificationsForCollectionView()
         } else {
-            // TODO: empty data! present some tips and hints to make the UI more interesting.
-            
+            self.emptyView?.isHidden = false
         }
     }
 
@@ -127,11 +128,23 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         viewController.dismiss(animated: true, completion: nil)
     }
 
+    // MARK: - EmptyView
+
+    private func setupEmptyView() {
+        if let view = UINib(nibName: EmptyView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? EmptyView {
+            self.emptyView = view
+            self.emptyView!.type = EmptyViewType.pendingTasks
+            self.collectionView.backgroundView = self.emptyView
+            self.emptyView!.isHidden = true
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.setupEmptyView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskPendingFetch()

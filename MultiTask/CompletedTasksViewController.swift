@@ -19,6 +19,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     weak var tasksPageViewController: TasksPageViewController?
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
+    var emptyView: EmptyView?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -58,10 +59,14 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
-        guard let fetchedTasks = tasks else { return }
-        self.completedTasks = [Results<Task>]()
-        self.completedTasks!.append(fetchedTasks)
-        self.setupRealmNotificationsForCollectionView()
+        if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
+            self.emptyView?.isHidden = true
+            self.completedTasks = [Results<Task>]()
+            self.completedTasks!.append(fetchedTasks)
+            self.setupRealmNotificationsForCollectionView()
+        } else {
+            self.emptyView?.isHidden = false
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {
@@ -125,6 +130,17 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         viewController.dismiss(animated: true, completion: nil)
     }
 
+    // MARK: - EmptyView
+
+    private func setupEmptyView() {
+        if let view = UINib(nibName: EmptyView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? EmptyView {
+            self.emptyView = view
+            self.emptyView!.type = EmptyViewType.completedTasks
+            self.collectionView.backgroundView = self.emptyView
+            self.emptyView!.isHidden = true
+        }
+    }
+
     // MARK: - UIViewControllerPreviewingDelegate
 
     private func setupViewControllerPreviewingDelegate() {
@@ -153,6 +169,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.setupEmptyView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()

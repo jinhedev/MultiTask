@@ -26,6 +26,7 @@ final class Task: Object {
 
     static let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
     static let completedPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
+    static let noEmptyItemsPredicate = NSPredicate(format: "items >= %@", 1)
 
     static func getTitlePredicate(value: String) -> NSPredicate {
         let predicate = NSPredicate(format: "title contains[c] %@", value)

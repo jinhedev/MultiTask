@@ -18,6 +18,21 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - API
 
+    lazy var addButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Plus"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleAdd(_:)))
+        return button
+    }()
+
+    lazy var trashButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash(_:)))
+        return button
+    }()
+
+    lazy var editButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit(_:)))
+        return button
+    }()
+
     static let storyboard_id = String(describing: MainTasksViewController.self)
     weak var menuBarDelegate: MainTasksViewControllerDelegate?
     weak var tasksPageDelegate: MainTasksViewControllerDelegate?
@@ -26,23 +41,22 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     var menuBarViewController: MenuBarViewController?
     var tasksPageViewController: TasksPageViewController? // tasksPageViewController contains PendingTasksViewController and CompletedTasksViewController
     let searchController = UISearchController(searchResultsController: nil)
-    lazy var cancelButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
-        return button
-    }()
+
     let popTransitionAnimator = PopTransitionAnimator()
     let refreshControl = UIRefreshControl()
 
     @IBOutlet weak var menuBarContainerView: UIView!
     @IBOutlet weak var tasksContainerView: UIView! // tasksContainerView contains tasksPageViewController
-    @IBOutlet weak var addButton: UIBarButtonItem!
-    @IBOutlet weak var editButton: UIBarButtonItem!
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
-        self.navigationItem.leftBarButtonItem = editing ? self.cancelButton : nil
-        self.editButton.image = editing ? #imageLiteral(resourceName: "Trash") : #imageLiteral(resourceName: "List") // <<-- image literal
+        if editing {
+            self.navigationItem.rightBarButtonItems?.append(trashButton)
+        } else {
+            self.navigationItem.rightBarButtonItems?.remove(at: 1)
+        }
+        self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
     }
 
     // MARK: - TaskEditorViewControllerDelegate
@@ -80,13 +94,16 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     private func setupNavigationBar() {
         self.isEditing = false
+        // setup barButtons after the isEditting is set, otherwise setEditing get called.
+        self.navigationItem.rightBarButtonItems = [addButton]
+        self.navigationItem.leftBarButtonItems = [editButton]
     }
 
-    @IBAction func handleAdd(_ sender: UIBarButtonItem) {
+    @objc func handleAdd(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: Segue.AddButtonToTaskEditorViewController, sender: self)
     }
 
-    @IBAction func handleEdit(_ sender: UIBarButtonItem) {
+    @objc func handleTrash(_ sender: UIBarButtonItem) {
         if self.isEditing == true {
             // if already in editMode, first commit trash and then exit editMode
             self.isEditing = false
@@ -94,6 +111,17 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
             self.tasksPageDelegate?.collectionViewEditMode(self, didTapTrash: sender)
             self.pendingTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
             self.completedTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+        }
+    }
+
+    @objc func handleEdit(_ sender: UIBarButtonItem) {
+        if self.isEditing == true {
+            // if already in editMode, exit editMode
+            self.isEditing = false
+            self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+            self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+            self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
         } else {
             // if not in editMode, enter editMode
             self.isEditing = true
@@ -102,15 +130,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
             self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
             self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
         }
-    }
-
-    @objc func handleCancel(_ sender: UIBarButtonItem) {
-        // exit editing mode
-        self.isEditing = false
-        self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-        self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-        self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-        self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
     }
 
     // MARK: - UISearchController & UISearchResultsUpdating

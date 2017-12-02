@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -48,23 +47,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Un2-CH-2LP"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Tasks" id="gC8-og-jR3">
-                        <rightBarButtonItems>
-                            <barButtonItem image="Plus" landscapeImage="Plus" largeContentSizeImage="Plus" id="oYD-2Z-rIe">
-                                <connections>
-                                    <action selector="handleAdd:" destination="dsH-gt-lIU" id="hHy-QN-AbR"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="List" landscapeImage="List" largeContentSizeImage="List" id="bG9-kv-p5f">
-                                <connections>
-                                    <action selector="handleEdit:" destination="dsH-gt-lIU" id="0tU-Sj-st5"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Tasks" id="gC8-og-jR3"/>
                     <connections>
-                        <outlet property="addButton" destination="oYD-2Z-rIe" id="Pb6-15-T3v"/>
-                        <outlet property="editButton" destination="bG9-kv-p5f" id="KWr-4J-LXR"/>
                         <outlet property="menuBarContainerView" destination="Ua8-gK-niy" id="Rif-53-Dqd"/>
                         <outlet property="tasksContainerView" destination="Krh-gR-vv0" id="KaT-zc-x3e"/>
                         <segue destination="Qb7-A2-IyR" kind="presentation" identifier="AddButtonToTaskEditorViewController" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="qXS-1W-mkt"/>
@@ -563,7 +547,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="List" width="50" height="50"/>
         <image name="Plus" width="50" height="50"/>
         <image name="Starfish" width="50" height="50"/>
     </resources>

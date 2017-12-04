@@ -41,12 +41,12 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     @IBOutlet weak var saveButton: UIButton!
 
     @IBAction func handleCancel(_ sender: UIButton) {
-        self.textViewDidEndEditing(titleTextView)
+        self.titleTextView.resignFirstResponder()
         self.delegate?.taskEditorViewController(self, didCancelTask: self.selectedTask, at: nil)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
-        self.textViewDidEndEditing(titleTextView)
+        self.titleTextView.resignFirstResponder()
         if !titleTextView.text.isEmpty {
             if self.selectedTask != nil {
                 // update the task
@@ -88,6 +88,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.backgroundColor = Color.midNightBlack
         self.titleTextView.layer.cornerRadius = 8
         self.titleTextView.clipsToBounds = true
+        self.titleTextView.delegate = self
         self.cancelButton.backgroundColor = Color.midNightBlack
         self.cancelButton.layer.cornerRadius = 8
         self.cancelButton.clipsToBounds = true
@@ -96,16 +97,16 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.backgroundColor = Color.seaweedGreen
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.clipsToBounds = true
+        self.saveButton.setTitleColor(Color.darkGray, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.setTitle("Save", for: UIControlState.normal)
+        self.saveButton.isEnabled = false
     }
 
     // MARK: - UITextViewDelegate
 
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.isFirstResponder {
-            textView.resignFirstResponder()
-        }
+    func textViewDidChange(_ textView: UITextView) {
+        self.saveButton.isEnabled = textView.text.count > 2 ? true : false
     }
 
     // MARK: - PersistentContainerDelegate

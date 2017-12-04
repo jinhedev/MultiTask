@@ -36,12 +36,12 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     @IBOutlet weak var saveButton: UIButton!
 
     @IBAction func handleCancel(_ sender: UIButton) {
-        self.textViewDidEndEditing(titleTextView)
+        self.titleTextView.resignFirstResponder()
         self.delegate?.itemEditorViewController(self, didCancelItem: self.selectedItem, at: self.selectedIndexPath)
     }
 
     @IBAction func handleSave(_ sender: UIButton) {
-        self.textViewDidEndEditing(titleTextView)
+        self.titleTextView.resignFirstResponder()
         if !titleTextView.text.isEmpty {
             // if selectedItem is nil, that means this MVC is segued from the AddButton, else it is initiated with peek and pop
             if self.selectedItem != nil {
@@ -82,7 +82,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.textColor = Color.white
         self.titleTextView.layer.cornerRadius = 8
         self.titleTextView.clipsToBounds = true
-        self.titleTextView.becomeFirstResponder()
+        self.titleTextView.delegate = self
         self.titleTextView.tintColor = Color.mandarinOrange
         self.cancelButton.setTitle("Cancel", for: UIControlState.normal)
         self.cancelButton.layer.cornerRadius = 8
@@ -91,7 +91,9 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.setTitle("Save", for: UIControlState.normal)
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.backgroundColor = Color.seaweedGreen
+        self.saveButton.setTitleColor(Color.darkGray, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
+        self.saveButton.isEnabled = false
     }
 
     // MARK: - PersistentContainerDelegate
@@ -127,10 +129,8 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     // MARK: - UITextViewDelegate
 
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.isFirstResponder {
-            textView.resignFirstResponder()
-        }
+    func textViewDidChange(_ textView: UITextView) {
+        self.saveButton.isEnabled = textView.text.count > 2 ? true : false
     }
 
     // MARK: - Lifecycle

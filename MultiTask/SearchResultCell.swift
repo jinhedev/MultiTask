@@ -26,7 +26,10 @@ class SearchResultCell: BaseTableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
 
     private func configureCell(item: Item?) {
-        // TODO: implement this
+        if let item = item {
+            self.titleLabel.text = item.title
+            self.titleLabel.textColor = item.is_completed ? Color.seaweedGreen : Color.white
+        }
     }
 
     private func setupCell() {

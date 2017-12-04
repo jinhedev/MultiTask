@@ -19,7 +19,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     weak var tasksPageViewController: TasksPageViewController?
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
-    var emptyView: EmptyView?
+    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -60,12 +60,12 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
         if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
-            self.emptyView?.isHidden = true
+            self.placeholderBackgroundView?.isHidden = true
             self.completedTasks = [Results<Task>]()
             self.completedTasks!.append(fetchedTasks)
             self.setupRealmNotificationsForCollectionView()
         } else {
-            self.emptyView?.isHidden = false
+            self.placeholderBackgroundView?.isHidden = false
         }
     }
 
@@ -133,11 +133,11 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     // MARK: - EmptyView
 
     private func setupEmptyView() {
-        if let view = UINib(nibName: EmptyView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? EmptyView {
-            self.emptyView = view
-            self.emptyView!.type = EmptyViewType.completedTasks
-            self.collectionView.backgroundView = self.emptyView
-            self.emptyView!.isHidden = true
+        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+            self.placeholderBackgroundView = view
+            self.placeholderBackgroundView!.type = PlaceholderType.completedTasks
+            self.collectionView.backgroundView = self.placeholderBackgroundView
+            self.placeholderBackgroundView!.isHidden = true
         }
     }
 

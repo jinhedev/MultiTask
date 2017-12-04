@@ -1,5 +1,5 @@
 //
-//  TipsView.swift
+//  PlaceholderBackgroundView.swift
 //  MultiTask
 //
 //  Created by rightmeow on 12/1/17.
@@ -8,20 +8,21 @@
 
 import UIKit
 
-enum EmptyViewType {
+enum PlaceholderType {
     case pendingTasks
     case completedTasks
     case items
+    case emptyResults
     case error
 }
 
 /**
- EmptyView displays suggestions when no data is rendered on a normal viewController. It's a filler UI element.
+ PlaceholderBackgroundView displays suggestions when no data is rendered on a normal viewController. It's a filler UI element.
  - remark: Make sure to set the type property during the instantiation process.
  */
-class EmptyView: UIView {
+class PlaceholderBackgroundView: UIView {
 
-    var type: EmptyViewType? {
+    var type: PlaceholderType? {
         didSet {
             guard let type = type else { return }
             switch type {
@@ -41,6 +42,11 @@ class EmptyView: UIView {
                 self.titleLabel.text = "To begin, add an item"
                 self.subtitleLabel.text = "\"An item is like a sub-task\""
                 self.suggestionButton.isHidden = true
+            case .emptyResults:
+                self.tipsImageView.isHidden = true
+                self.titleLabel.isHidden = true
+                self.subtitleLabel.text = "No results found"
+                self.suggestionButton.isHidden = true
             case .error:
                 self.tipsImageView.image = #imageLiteral(resourceName: "DeadEmoji") // <<-- image literal
                 self.titleLabel.text = "Error"
@@ -50,7 +56,7 @@ class EmptyView: UIView {
         }
     }
 
-    static let nibName = String(describing: EmptyView.self)
+    static let nibName = String(describing: PlaceholderBackgroundView.self)
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var tipsImageView: UIImageView!

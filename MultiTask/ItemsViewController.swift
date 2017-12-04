@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate {
 
     // MARK: - API
 
@@ -22,7 +22,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
-    var emptyView: EmptyView?
+    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: ItemsViewController.self)
 
     @IBOutlet weak var tableView: UITableView!
@@ -38,7 +38,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             // update the parent task's updated_at
             guard let task = self.selectedTask else { return }
             self.realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
-            self.emptyView?.isHidden = true
+            self.placeholderBackgroundView?.isHidden = true
         }
     }
 
@@ -46,32 +46,20 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - UISearchController & UISearchResultsUpdating
+    // MARK: - UISearchController
 
     private func setupSearchController() {
-        self.searchController = UISearchController(searchResultsController: nil)
+        guard let searchResultsViewController = self.storyboard?.instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }
+        self.searchController = UISearchController(searchResultsController: searchResultsViewController)
+        searchResultsViewController.selectedTask = self.selectedTask
+        self.searchController.searchResultsUpdater = searchResultsViewController
         self.searchController.searchBar.barStyle = .black
-        self.searchController.searchResultsUpdater = self
         self.searchController.searchBar.tintColor = Color.mandarinOrange
         self.searchController.dimsBackgroundDuringPresentation = true
         self.searchController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
         self.definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
-    }
-
-    func updateSearchResults(for searchController: UISearchController) {
-        if let searchString = searchController.searchBar.text {
-            if !searchString.isEmpty {
-                if let taskId = self.selectedTask?.id {
-                    realmManager?.fetchItems(parentTaskId: taskId, predicate: Item.titlePredicate(by: searchString))
-                }
-            } else {
-                if let taskId = self.selectedTask?.id {
-                    realmManager?.fetchItems(parentTaskId: taskId, sortedBy: Item.createdAtKeyPath, ascending: false)
-                }
-            }
-        }
     }
 
     // MARK: - UIViewControllerPreviewingDelegate
@@ -101,11 +89,11 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     // MARK: - EmptyView
 
     private func setupEmptyView() {
-        if let view = UINib(nibName: EmptyView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? EmptyView {
-            self.emptyView = view
-            self.emptyView!.type = EmptyViewType.items
-            self.tableView.backgroundView = self.emptyView
-            self.emptyView!.isHidden = true
+        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+            self.placeholderBackgroundView = view
+            self.placeholderBackgroundView!.type = PlaceholderType.items
+            self.tableView.backgroundView = self.placeholderBackgroundView
+            self.placeholderBackgroundView!.isHidden = true
         }
     }
 
@@ -136,7 +124,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.items = [Results<Item>]()
         self.items!.append(unwrappedItems)
         self.setupRealmNotificationsForTableView()
-        self.emptyView?.isHidden = unwrappedItems.isEmpty ? false : true
+        self.placeholderBackgroundView?.isHidden = unwrappedItems.isEmpty ? false : true
     }
 
     private func setupRealmNotificationsForTableView() {
@@ -159,14 +147,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
-        // FIXME: hacky solution for handling result from the searchController
-        // TODO: use a separate MVC to handle search logic, alternatively, dequeue the tableView with multiple section by the order of "This week", "Past Weeks"
-        if self.items != nil {
-            self.items?.removeAll()
-            guard let fetchedItems = items else { return }
-            self.items?.append(fetchedItems)
-            self.tableView.reloadData()
-            self.emptyView?.isHidden = self.items!.isEmpty ? false : true
+        if let fetchedItems = items, !fetchedItems.isEmpty {
+            self.placeholderBackgroundView?.isHidden = true
+        } else {
+            self.placeholderBackgroundView?.isHidden = true
         }
     }
 

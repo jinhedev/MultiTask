@@ -28,6 +28,7 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         return button
     }()
 
+    /// editButton can be toggled to become a cancel button when in edit mode
     lazy var editButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit(_:)))
         return button
@@ -52,9 +53,10 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
         if editing {
-            self.navigationItem.rightBarButtonItems?.append(trashButton)
+//            self.navigationItem.rightBarButtonItems?.append(trashButton)
+            self.navigationItem.leftBarButtonItem = trashButton
         } else {
-            self.navigationItem.rightBarButtonItems?.remove(at: 1)
+            self.navigationItem.leftBarButtonItem = nil
         }
         self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
     }
@@ -95,8 +97,8 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     private func setupNavigationBar() {
         self.isEditing = false
         // setup barButtons after the isEditting is set, otherwise setEditing get called.
-        self.navigationItem.rightBarButtonItems = [addButton]
-        self.navigationItem.leftBarButtonItems = [editButton]
+        self.navigationItem.rightBarButtonItems = [addButton, editButton]
+//        self.navigationItem.leftBarButtonItems = [editButton]
     }
 
     @objc func handleAdd(_ sender: UIBarButtonItem) {

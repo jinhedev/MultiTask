@@ -428,7 +428,7 @@
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="oC0-HW-wRQ"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert" returnKeyType="done"/>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
                                                             </textView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="JHt-uX-3ss">
                                                                 <rect key="frame" x="0.0" y="120" width="311" height="44"/>

@@ -340,12 +340,13 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     // MARK: - UITableViewDataSource
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let itemCell = self.tableView.dequeueReusableCell(withIdentifier: ItemCell.cell_id, for: indexPath) as? ItemCell else {
+        if let itemCell = self.tableView.dequeueReusableCell(withIdentifier: ItemCell.cell_id, for: indexPath) as? ItemCell {
+            let item = items?[indexPath.section][indexPath.row]
+            itemCell.item = item
+            return itemCell
+        } else {
             return BaseTableViewCell()
         }
-        let item = items?[indexPath.section][indexPath.row]
-        itemCell.item = item
-        return itemCell
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

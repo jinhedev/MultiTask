@@ -10,8 +10,13 @@ import UIKit
 
 class BaseTableViewCell: UITableViewCell {
 
+    private func setupCell() {
+        self.backgroundColor = Color.inkBlack
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.setupCell()
     }
 
     override func prepareForReuse() {

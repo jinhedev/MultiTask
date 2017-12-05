@@ -17,7 +17,6 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     var searchResultsItems: [Results<Item>]?
     var realmManager: RealmManager?
 
-    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: SearchResultsViewController.self)
 
     @IBOutlet weak var tableView: UITableView!
@@ -27,7 +26,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     func updateSearchResults(for searchController: UISearchController) {
         if let searchString = searchController.searchBar.text {
             // REMARK: It is not meaningful to execute search with just 1 or 2 provided characters in a UX persepective, most importantly, adding this case to filter out 2 characters improves server's workload as well. i.e. Facebook, Reddit, etc.
-            self.placeholderBackgroundView?.isHidden = true
+            self.tableView.backgroundView?.isHidden = true
             if !searchString.isEmpty {
                 if searchString.count > 2 {
                     guard let parentTask = self.selectedTask else { return }
@@ -53,12 +52,14 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
         if let fetchedItems = items, !fetchedItems.isEmpty {
-            self.placeholderBackgroundView?.isHidden = true
+            self.tableView.backgroundView?.isHidden = true
             if self.searchResultsItems != nil {
                 self.searchResultsItems!.removeAll()
             } else {
@@ -69,18 +70,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
         } else {
             self.searchResultsItems?.removeAll()
             self.tableView.reloadData()
-            self.placeholderBackgroundView?.isHidden = false
-        }
-    }
-
-    // MARK: - EmptyView
-
-    private func setupPlaceholderBackgroundView() {
-        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
-            self.placeholderBackgroundView = view
-            self.placeholderBackgroundView!.type = PlaceholderType.emptyResults
-            self.tableView.backgroundView = self.placeholderBackgroundView
-            self.placeholderBackgroundView!.isHidden = true
+            self.tableView.backgroundView?.isHidden = false
         }
     }
 
@@ -107,7 +97,6 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
         super.viewDidLoad()
         self.setupTableView()
         self.setupViewControllerPreviewingDelegate()
-        self.setupPlaceholderBackgroundView()
         self.setupPersistentContainerDelegate()
     }
 
@@ -144,6 +133,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
         self.tableView.dataSource = self
         self.tableView.backgroundColor = Color.transparentBlack
         self.tableView.register(UINib(nibName: SearchResultCell.nibName, bundle: nil), forCellReuseIdentifier: SearchResultCell.cell_id)
+        self.tableView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.emptyResults)
     }
 
     // MARK: - UITableViewDelegate

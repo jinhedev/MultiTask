@@ -53,7 +53,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
         if editing {
-//            self.navigationItem.rightBarButtonItems?.append(trashButton)
             self.navigationItem.leftBarButtonItem = trashButton
         } else {
             self.navigationItem.leftBarButtonItem = nil
@@ -98,7 +97,6 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         self.isEditing = false
         // setup barButtons after the isEditting is set, otherwise setEditing get called.
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
-//        self.navigationItem.leftBarButtonItems = [editButton]
     }
 
     @objc func handleAdd(_ sender: UIBarButtonItem) {

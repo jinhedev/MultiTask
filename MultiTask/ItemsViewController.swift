@@ -22,7 +22,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
-    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: ItemsViewController.self)
 
     @IBOutlet weak var tableView: UITableView!
@@ -38,7 +37,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             // update the parent task's updated_at
             guard let task = self.selectedTask else { return }
             self.realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
-            self.placeholderBackgroundView?.isHidden = true
+            self.tableView.backgroundView?.isHidden = true
         }
     }
 
@@ -86,17 +85,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         return itemEditorViewController
     }
 
-    // MARK: - EmptyView
-
-    private func setupEmptyView() {
-        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
-            self.placeholderBackgroundView = view
-            self.placeholderBackgroundView!.type = PlaceholderType.items
-            self.tableView.backgroundView = self.placeholderBackgroundView
-            self.placeholderBackgroundView!.isHidden = true
-        }
-    }
-
     // MARK: - SoundEffectDelegate
 
     private func setupSoundEffectDelegate() {
@@ -109,7 +97,9 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func soundEffect(_ manager: SoundEffectManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     // MARK: - PersistentContainerDelegate
@@ -124,7 +114,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.items = [Results<Item>]()
         self.items!.append(unwrappedItems)
         self.setupRealmNotificationsForTableView()
-        self.placeholderBackgroundView?.isHidden = unwrappedItems.isEmpty ? false : true
+        self.tableView.backgroundView?.isHidden = unwrappedItems.isEmpty ? false : true
     }
 
     private func setupRealmNotificationsForTableView() {
@@ -143,14 +133,16 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
         if let fetchedItems = items, !fetchedItems.isEmpty {
-            self.placeholderBackgroundView?.isHidden = true
+            self.tableView.backgroundView?.isHidden = true
         } else {
-            self.placeholderBackgroundView?.isHidden = true
+            self.tableView.backgroundView?.isHidden = true
         }
     }
 
@@ -206,7 +198,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         self.setupNavigationBar()
         self.setupTableView()
-        self.setupEmptyView()
         self.setupSearchController()
         self.setupSoundEffectDelegate()
         self.setupViewControllerPreviewingDelegate()
@@ -240,6 +231,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.register(UINib(nibName: ItemCell.nibName, bundle: nil), forCellReuseIdentifier: ItemCell.cell_id)
+        self.tableView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.items)
     }
 
     // MARK: - UITableViewDelegate

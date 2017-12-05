@@ -19,7 +19,6 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
 
     weak var tasksPageViewController: TasksPageViewController?
     let PAGE_INDEX = 0 // provides index data for parent pageViewController
-    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: PendingTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -54,17 +53,19 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.tasksPageViewController?.mainTasksViewController?.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
         if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
-            self.placeholderBackgroundView?.isHidden = true
+            self.collectionView.backgroundView?.isHidden = true
             self.pendingTasks = [Results<Task>]()
             self.pendingTasks!.append(fetchedTasks)
             self.setupRealmNotificationsForCollectionView()
         } else {
-            self.placeholderBackgroundView?.isHidden = false
+            self.collectionView.backgroundView?.isHidden = false
         }
     }
 
@@ -128,23 +129,11 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - EmptyView
-
-    private func setupEmptyView() {
-        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
-            self.placeholderBackgroundView = view
-            self.placeholderBackgroundView!.type = PlaceholderType.pendingTasks
-            self.collectionView.backgroundView = self.placeholderBackgroundView
-            self.placeholderBackgroundView!.isHidden = true
-        }
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-        self.setupEmptyView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskPendingFetch()
@@ -204,6 +193,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: PendingTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: PendingTaskCell.cell_id)
+        self.collectionView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.pendingTasks)
     }
 
     // MARK: - UICollectionViewDelegate

@@ -48,17 +48,14 @@ class WebServiceManager: NSObject {
 
     weak var delegate: WebServiceDelegate?
 
+    private func appendEndpointToBaseUrl(endpoint: String, baseUrl: String) -> String {
+        let completeUrl = baseUrl + endpoint
+        return completeUrl
+    }
+
     // MARK: - Get
 
-    func fetchUsers(endpoint: WebServiceConfigurations.endpoint) {
-
-    }
-
-    func fetchPosts() {
-
-    }
-
-    func fetchComments() {
+    func fetch(endpoint: String) {
 
     }
 
@@ -78,19 +75,11 @@ class WebServiceManager: NSObject {
 
 struct WebServiceConfigurations {
 
-    private static let baseURL = "52.14.43.212"
-    static private let realmPath = "multitask"
-    static let remoteServerURL = URL(string: "realm://\(baseURL):9080/~/\(realmPath)")!
-    static let syncAuthURL = URL(string: "http://\(baseURL): 9080")!
+    private static let baseUrl = "52.14.43.212"
 
     struct endpoint {
         static let frontpage = "/posts/frontpage"
         static let usersub = "/posts/usersub"
-    }
-
-    static func configureURL(endpoint: String) -> String {
-        let url = WebServiceConfigurations.baseURL + endpoint
-        return url
     }
 
 }

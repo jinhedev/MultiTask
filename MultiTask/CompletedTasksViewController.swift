@@ -16,10 +16,9 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     var completedTasks: [Results<Task>]?
     var realmManager: RealmManager?
     var notificationToken: NotificationToken?
-
+    
     weak var tasksPageViewController: TasksPageViewController?
     let PAGE_INDEX = 1 // provides index data for parent pageViewController
-    var placeholderBackgroundView: PlaceholderBackgroundView?
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -55,17 +54,19 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.tasksPageViewController?.mainTasksViewController?.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
         if let fetchedTasks = tasks, !fetchedTasks.isEmpty {
-            self.placeholderBackgroundView?.isHidden = true
+            self.collectionView.backgroundView?.isHidden = true
             self.completedTasks = [Results<Task>]()
             self.completedTasks!.append(fetchedTasks)
             self.setupRealmNotificationsForCollectionView()
         } else {
-            self.placeholderBackgroundView?.isHidden = false
+            self.collectionView.backgroundView?.isHidden = false
         }
     }
 
@@ -130,17 +131,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - EmptyView
-
-    private func setupEmptyView() {
-        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
-            self.placeholderBackgroundView = view
-            self.placeholderBackgroundView!.type = PlaceholderType.completedTasks
-            self.collectionView.backgroundView = self.placeholderBackgroundView
-            self.placeholderBackgroundView!.isHidden = true
-        }
-    }
-
     // MARK: - UIViewControllerPreviewingDelegate
 
     private func setupViewControllerPreviewingDelegate() {
@@ -169,7 +159,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupCollectionView()
-        self.setupEmptyView()
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()
@@ -202,6 +191,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         self.collectionView.delegate = self
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: CompletedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: CompletedTaskCell.cell_id)
+        self.collectionView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.completedTasks)
     }
 
     // MARK: - UICollectionViewDelegate

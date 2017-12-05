@@ -38,6 +38,7 @@ class BaseNavigationController: UINavigationController {
     }
 
     private func setupNavigationBar() {
+        self.navigationBar.barStyle = .black
         self.navigationBar.barTintColor = Color.midNightBlack
         self.navigationBar.tintColor = Color.mandarinOrange
         self.navigationBar.isTranslucent = false

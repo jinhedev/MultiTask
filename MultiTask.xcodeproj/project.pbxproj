@@ -10,7 +10,7 @@
 		C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50974351F4EA986007C6EAA /* WebServiceManager.swift */; };
 		C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */; };
 		C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */; };
-		C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */; };
+		C53C3EF51FBA47850064DDB4 /* BranchTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* BranchTab.storyboard */; };
 		C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */; };
 		C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5409B371FA50758004BAF4F /* ItemCell.xib */; };
 		C5418DF31FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5418DF21FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift */; };
@@ -35,6 +35,7 @@
 		C54CEF8B1FD0F2BF00AF0B7B /* Coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */; };
 		C54DA6B71FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */; };
 		C54DA6B91FD1B2170071C3D6 /* PlaceholderBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */; };
+		C55E140B1FD7484400C46BED /* BranchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140A1FD7484400C46BED /* BranchesViewController.swift */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
@@ -145,7 +146,7 @@
 		C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
 		C53C3EA81FBA0CFF0064DDB4 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = HomeTab.storyboard; sourceTree = "<group>"; };
+		C53C3EF41FBA47850064DDB4 /* BranchTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BranchTab.storyboard; sourceTree = "<group>"; };
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
 		C5409B371FA50758004BAF4F /* ItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
 		C5418DF21FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 		C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Coin.wav; sourceTree = "<group>"; };
 		C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderBackgroundView.swift; sourceTree = "<group>"; };
 		C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaceholderBackgroundView.xib; sourceTree = "<group>"; };
+		C55E140A1FD7484400C46BED /* BranchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchesViewController.swift; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */,
 				C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */,
 				C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */,
+				C55E140A1FD7484400C46BED /* BranchesViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -350,10 +353,10 @@
 		C5A9A8BA1F3BC07B00601CFF /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
 				C5A9A8AE1F3BB06C00601CFF /* LaunchScreen.storyboard */,
+				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
 				C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */,
-				C53C3EF41FBA47850064DDB4 /* HomeTab.storyboard */,
+				C53C3EF41FBA47850064DDB4 /* BranchTab.storyboard */,
 				C56B29331FA2F59C0093BA32 /* AuthCell.xib */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */,
@@ -597,7 +600,7 @@
 				C543943F1FB5292C009EC104 /* MenuCell.xib in Resources */,
 				C5780C4D1FC5D7080087BE86 /* StatsCell.xib in Resources */,
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
-				C53C3EF51FBA47850064DDB4 /* HomeTab.storyboard in Resources */,
+				C53C3EF51FBA47850064DDB4 /* BranchTab.storyboard in Resources */,
 				C54DA6B91FD1B2170071C3D6 /* PlaceholderBackgroundView.xib in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
@@ -691,6 +694,7 @@
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
 				C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */,
 				C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */,
+				C55E140B1FD7484400C46BED /* BranchesViewController.swift in Sources */,
 				C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */,
 				C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */,
 				C54DA6B71FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift in Sources */,

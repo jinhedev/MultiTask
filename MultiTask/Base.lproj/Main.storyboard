@@ -23,6 +23,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="b3A-Kq-BQF" kind="relationship" relationship="viewControllers" id="NR9-mu-3bO"/>
+                        <segue destination="tHN-5A-HlK" kind="relationship" relationship="viewControllers" id="lWg-d7-1wM"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -37,18 +38,21 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oYP-x6-4sH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="213" y="124"/>
+            <point key="canvasLocation" x="213" y="325"/>
         </scene>
-        <!--HomeTab-->
+        <!--BranchTab-->
         <scene sceneID="j6M-Fl-CtX">
             <objects>
-                <viewControllerPlaceholder storyboardName="HomeTab" id="tHN-5A-HlK" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="BranchTab" id="tHN-5A-HlK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Branch" image="Branch" landscapeImage="Branch" largeContentSizeImage="Branch" id="8kw-5H-Wnm"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wby-ct-DHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="212" y="225"/>
+            <point key="canvasLocation" x="214" y="555"/>
         </scene>
     </scenes>
     <resources>
+        <image name="Branch" width="50" height="50"/>
         <image name="Starfish" width="50" height="50"/>
     </resources>
 </document>

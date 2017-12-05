@@ -34,6 +34,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var contentContainerView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleTextView: UITextView!
@@ -65,13 +66,6 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     }
 
     private func setupView() {
-        if self.selectedTask == nil {
-            self.titleLabel.text = "Add a new task"
-            self.titleTextView.text?.removeAll()
-        } else {
-            self.titleLabel.text = "Edit a task"
-            self.titleTextView.text = selectedTask?.title
-        }
         self.view.backgroundColor = Color.transparentBlack
         self.scrollView.delaysContentTouches = false
         self.containerView.backgroundColor = Color.clear
@@ -84,7 +78,12 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.contentContainerView.clipsToBounds = true
         self.titleLabel.textColor = Color.lightGray
         self.titleLabel.backgroundColor = Color.clear
+        self.titleLabel.isHidden = false
+        self.titleLabel.text = self.selectedTask == nil ? "Add a new task" : "Edit a task"
+        self.subtitleLabel.textColor = Color.lightGray
+        self.subtitleLabel.backgroundColor = Color.clear
         self.titleTextView.tintColor = Color.mandarinOrange
+        self.titleTextView.text = self.selectedTask == nil ? "" : selectedTask!.title
         self.titleTextView.backgroundColor = Color.midNightBlack
         self.titleTextView.layer.cornerRadius = 8
         self.titleTextView.clipsToBounds = true
@@ -101,6 +100,11 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.setTitle("Save", for: UIControlState.normal)
         self.saveButton.isEnabled = false
+        if self.selectedTask == nil {
+            self.subtitleLabel.isHidden = true
+        } else {
+            self.subtitleLabel.text = "ID. " + selectedTask!.id
+        }
     }
 
     // MARK: - UITextViewDelegate

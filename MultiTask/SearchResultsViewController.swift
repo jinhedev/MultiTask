@@ -171,20 +171,3 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

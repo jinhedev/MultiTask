@@ -1,7 +1,7 @@
 # MultiTask
 
 _MultiTask is a todo list app that serves as a template case study for iOS development in general. It is also the open source component of another iOS to-do list client. This project will cover topics of the following (Features marked with ** are currently still in discussion):_
-- _Custom UI, UX (CollectionView, TableView, ScrollView, Sound Effect, On-boarding, App Themes, etc.)_
+- _Custom UI, UX (Search, Sound Effect, On-boarding, App Themes, ViewControllers, etc.)_
 - _Push Notifications (APNS)_
 - _RESTful (** Rails API)_
 - _Persistence (Realm, UserDefaults, Keychain)_

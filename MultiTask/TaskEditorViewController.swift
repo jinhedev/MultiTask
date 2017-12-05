@@ -97,7 +97,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.backgroundColor = Color.seaweedGreen
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.clipsToBounds = true
-        self.saveButton.setTitleColor(Color.darkGray, for: UIControlState.disabled)
+        self.saveButton.setTitleColor(Color.inkBlack, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.setTitle("Save", for: UIControlState.normal)
         self.saveButton.isEnabled = false

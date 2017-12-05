@@ -91,7 +91,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.setTitle("Save", for: UIControlState.normal)
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.backgroundColor = Color.seaweedGreen
-        self.saveButton.setTitleColor(Color.darkGray, for: UIControlState.disabled)
+        self.saveButton.setTitleColor(Color.inkBlack, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.isEnabled = false
     }

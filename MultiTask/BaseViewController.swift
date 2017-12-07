@@ -13,7 +13,7 @@ class BaseViewController: UIViewController {
 
     // MARK: - API
 
-    func initPlaceholderBackgroundView(type: PlaceholderType) -> UIView? {
+    func initPlaceholderBackgroundView(type: PlaceholderType) -> PlaceholderBackgroundView? {
         if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
             view.type = type
             view.isHidden = true

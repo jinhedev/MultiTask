@@ -9,12 +9,7 @@
 import UIKit
 import RealmSwift
 
-protocol MainTasksViewControllerDelegate: NSObjectProtocol {
-    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool)
-    func collectionViewEditMode(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
-}
-
-class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
+class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchResultsUpdating, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -35,22 +30,21 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     }()
 
     static let storyboard_id = String(describing: MainTasksViewController.self)
-    weak var menuBarDelegate: MainTasksViewControllerDelegate?
-    weak var tasksPageDelegate: MainTasksViewControllerDelegate?
-    weak var pendingTasksDelegate: MainTasksViewControllerDelegate?
-    weak var completedTasksDelegate: MainTasksViewControllerDelegate?
-    var menuBarViewController: MenuBarViewController?
-    var tasksPageViewController: TasksPageViewController? // tasksPageViewController contains PendingTasksViewController and CompletedTasksViewController
     let searchController = UISearchController(searchResultsController: nil)
-
     let popTransitionAnimator = PopTransitionAnimator()
-    let refreshControl = UIRefreshControl()
 
-    @IBOutlet weak var menuBarContainerView: UIView!
-    @IBOutlet weak var tasksContainerView: UIView! // tasksContainerView contains tasksPageViewController
+    @IBOutlet weak var menuBarView: MenuBarView!
+    @IBOutlet weak var mainCollectionViewFlowLayout: UICollectionViewFlowLayout!
+    @IBOutlet weak var mainCollectionView: UICollectionView!
+
+    func scrollToIndex(menuIndex: Int) {
+        let indexPath = IndexPath(item: menuIndex, section: 0)
+        self.mainCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
+    }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        self.mainCollectionView.allowsSelection = !editing
         self.addButton.isEnabled = !editing
         if editing {
             self.navigationItem.leftBarButtonItem = trashButton
@@ -62,14 +56,14 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
 
     // MARK: - TaskEditorViewControllerDelegate
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true) {
-            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
-            if self.tasksPageViewController?.pendingTasksViewController?.pendingTasks == nil {
-                self.tasksPageViewController?.pendingTasksViewController?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
-            }
-        }
-    }
+//    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
+//        viewController.dismiss(animated: true) {
+//            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
+//            if self.tasksPageViewController?.pendingTasksViewController?.pendingTasks == nil {
+//                self.tasksPageViewController?.pendingTasksViewController?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+//            }
+//        }
+//    }
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
         viewController.dismiss(animated: true, completion: nil)
@@ -79,19 +73,7 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - MenuBarContainerView
-
-    private func setupMenuBarContainerView() {
-        self.menuBarContainerView.backgroundColor = Color.clear
-    }
-
-    // MARK: - TasksContainerView
-
-    private func setupTasksContainerView() {
-        self.tasksContainerView.backgroundColor = Color.clear
-    }
-
-    // MARK: - UINavigationBar
+    // MARK: - NavigationBar
 
     private func setupNavigationBar() {
         self.isEditing = false
@@ -107,10 +89,7 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         if self.isEditing == true {
             // if already in editMode, first commit trash and then exit editMode
             self.isEditing = false
-            self.menuBarDelegate?.collectionViewEditMode(self, didTapTrash: sender)
-            self.tasksPageDelegate?.collectionViewEditMode(self, didTapTrash: sender)
-            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
-            self.completedTasksDelegate?.collectionViewEditMode(self, didTapTrash: sender)
+            self.menuBarView?.isEditing = false
         }
     }
 
@@ -118,21 +97,16 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         if self.isEditing == true {
             // if already in editMode, exit editMode
             self.isEditing = false
-            self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-            self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
-            self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: false)
+            self.menuBarView?.isEditing = false
         } else {
             // if not in editMode, enter editMode
             self.isEditing = true
-            self.menuBarDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
-            self.tasksPageDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
-            self.pendingTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
-            self.completedTasksDelegate?.collectionViewEditMode(self, didTapEdit: sender, editMode: true)
+            self.menuBarView?.isEditing = true
+            self.menuBarView?.isEditing = true
         }
     }
 
-    // MARK: - UISearchController & UISearchResultsUpdating
+    // MARK: - SearchController & SearchResultsUpdating
 
     private func setupSearchController() {
         // FIXME: problem with searchController being overlaid by MenuBarViewController
@@ -152,43 +126,96 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
         }
     }
 
-    // MARK: - UIRefreshControl
+    // MARK: - MenuBarView
 
-    private func setupRefreshControl() {
-        refreshControl.tintColor = Color.lightGray
+    private func setupMenuBarView() {
+        self.menuBarView.mainTasksViewController = self
     }
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupTasksContainerView()
-        self.setupMenuBarContainerView()
         self.setupNavigationBar()
+        self.setupCollectionView()
+        self.setupMenuBarView()
+        self.setupCollectionViewFlowLayout()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.MenuBarContainerViewToMenuBarViewController {
-            menuBarViewController = segue.destination as? MenuBarViewController
-            menuBarViewController?.mainTasksViewController = self
-        } else if segue.identifier == Segue.AddButtonToTaskEditorViewController {
+        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
             if let taskEditorViewController = segue.destination as? TaskEditorViewController {
                 taskEditorViewController.delegate = self
             }
-        } else if segue.identifier == Segue.TasksContainerViewToPageViewController {
-            tasksPageViewController = segue.destination as? TasksPageViewController
-            tasksPageViewController?.mainTasksViewController = self
         }
     }
+
+    // MARK: - CollectionView
+
+    private func setupCollectionView() {
+        self.mainCollectionView.isPagingEnabled = true
+        self.mainCollectionView.backgroundColor = Color.inkBlack
+        self.mainCollectionView.dataSource = self
+        self.mainCollectionView.delegate = self
+        self.mainCollectionView.register(UINib(nibName: MainTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainTaskCell.cell_id)
+    }
+
+    // MARK: - ScrollViewDelegate
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.menuBarView.scrollIndicatorViewHeightConstraint.constant = scrollView.contentOffset.x / 2
+    }
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let selectedIndexItem = targetContentOffset.pointee.x / self.mainCollectionView.frame.width
+        let selectedIndexPath = IndexPath(item: Int(selectedIndexItem), section: 0)
+        self.menuBarView.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.left)
+    }
+
+    // MARK: - CollectionViewDelegate
+
+
+
+    // MARK: - CollectionViewDataSource
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let mainTaskCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainTaskCell.cell_id, for: indexPath) as? MainTaskCell else {
+            return BaseCollectionViewCell()
+        }
+        return mainTaskCell
+    }
+
+    // MARK: - CollectionViewDelegateFlowLayout
+
+    private func setupCollectionViewFlowLayout() {
+        self.mainCollectionViewFlowLayout.scrollDirection = .horizontal
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellSize = CGSize(width: self.mainCollectionView.frame.width, height: self.mainCollectionView.frame.height)
+        return cellSize
+    }
+
+    // MARK: - ViewControllerTransitioningDelegate
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { (context) in
-            self.tasksContainerView.alpha = (size.width > size.height) ? 0.25 : 0.55
+//            self.tasksContainerView.alpha = (size.width > size.height) ? 0.25 : 0.55
         }, completion: nil)
     }
-
-    // MARK: - UIViewControllerTransitioningDelegate
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if let addButtonView = self.addButton.value(forKey: "view") as? UIView {
@@ -208,11 +235,3 @@ class MainTasksViewController: BaseViewController, UISearchResultsUpdating, UIVi
     }
 
 }
-
-
-
-
-
-
-
-

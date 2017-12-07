@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, MainTasksViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegateMosaicLayout {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegateMosaicLayout {
 
     // MARK: - API
 
@@ -17,8 +17,6 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     var realmManager: RealmManager?
     var notificationToken: NotificationToken?
     
-    weak var tasksPageViewController: TasksPageViewController?
-    let PAGE_INDEX = 1 // provides index data for parent pageViewController
     static let storyboard_id = String(describing: CompletedTasksViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
@@ -54,9 +52,9 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        if let navigationController = self.tasksPageViewController?.mainTasksViewController?.navigationController as? BaseNavigationController {
-            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
-        }
+//        if let navigationController = self.tasksPageViewController?.mainTasksViewController?.navigationController as? BaseNavigationController {
+//            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+//        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
@@ -100,7 +98,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     }
 
     private func setupMainTasksViewControllerDelegate() {
-        self.tasksPageViewController?.mainTasksViewController?.completedTasksDelegate = self
+//        self.tasksPageViewController?.mainTasksViewController?.completedTasksDelegate = self
     }
 
     func collectionViewEditMode(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, editMode isEnabled: Bool) {

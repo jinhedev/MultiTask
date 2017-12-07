@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MenuCell: BaseCollectionViewCell {
+class MenuBarCell: BaseCollectionViewCell {
 
     // MARK: - API
 
@@ -25,8 +25,8 @@ class MenuCell: BaseCollectionViewCell {
     }
 
     var menu: Menu? { didSet { self.configureCell(menu: menu) } }
-    static let cell_id = String(describing: MenuCell.self)
-    static let nibName = String(describing: MenuCell.self)
+    static let cell_id = String(describing: MenuBarCell.self)
+    static let nibName = String(describing: MenuBarCell.self)
 
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!

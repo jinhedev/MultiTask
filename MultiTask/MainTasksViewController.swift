@@ -62,6 +62,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
     }
 
+    @objc func enableEditingMode() {
+        self.isEditing = true
+    }
+
     // MARK: - NavigationBar
 
     private func setupNavigationBar() {
@@ -128,6 +132,12 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         viewController.dismiss(animated: true, completion: nil)
     }
 
+    // MARK: - Notifications
+
+    func observeNotificationForEditingMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -136,6 +146,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.setupCollectionView()
         self.setupMenuBarView()
         self.setupCollectionViewFlowLayout()
+        self.observeNotificationForEditingMode()
     }
 
     // MARK: - CollectionView

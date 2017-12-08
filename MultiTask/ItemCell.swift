@@ -25,7 +25,6 @@ class ItemCell: BaseTableViewCell {
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleTextView: UITextView!
-    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var delegateLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dividerView: UIView!
@@ -52,7 +51,6 @@ class ItemCell: BaseTableViewCell {
     private func configureCell(item: Item?) {
         guard let item = item else { return }
         self.titleTextView.text = item.title
-        self.subtitleLabel.text = item.id
         self.delegateLabel.text = item.delegate
         if item.is_completed == true {
             self.titleTextView.textColor = Color.lightGray
@@ -74,8 +72,6 @@ class ItemCell: BaseTableViewCell {
         self.selectionStyle = .none
         self.contentView.backgroundColor = Color.inkBlack
         self.containerView.backgroundColor = Color.midNightBlack
-        self.subtitleLabel.textColor = Color.lightGray
-        self.subtitleLabel.backgroundColor = Color.clear
         self.titleTextView.textColor = Color.white
         self.titleTextView.tintColor = Color.miamiBlue
         self.titleTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)

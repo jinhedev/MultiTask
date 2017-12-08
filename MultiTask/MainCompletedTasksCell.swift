@@ -47,6 +47,10 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         }
     }
 
+    @objc func enableEditingMode() {
+        self.isEditing = true
+    }
+
     // MARK: - PersistentContainerDelegate
 
     private func setupPersistentContainerDelegate() {
@@ -131,6 +135,10 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskCompletion), object: nil)
     }
 
+    func observeNotificationForEditingMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -140,6 +148,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         self.setupCollectionViewFlowLayout()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()
+        self.observeNotificationForEditingMode()
         self.performInitialFetch(notification: nil)
     }
 

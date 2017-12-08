@@ -287,10 +287,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MEz-Un-xWo">
-                                                <rect key="frame" x="16" y="48" width="343" height="196"/>
+                                                <rect key="frame" x="16" y="48" width="343" height="226"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="IR1-K4-jTH">
-                                                        <rect key="frame" x="16" y="16" width="311" height="164"/>
+                                                        <rect key="frame" x="16" y="16" width="311" height="194"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nhe-gI-h5h">
                                                                 <rect key="frame" x="0.0" y="0.0" width="311" height="21"/>
@@ -302,8 +302,18 @@
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9zJ-Tk-ACf">
+                                                                <rect key="frame" x="0.0" y="37" width="311" height="22"/>
+                                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="22" id="WmC-SI-2eK"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" text="titleTextView" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xlL-kq-M6y">
-                                                                <rect key="frame" x="0.0" y="37" width="311" height="67"/>
+                                                                <rect key="frame" x="0.0" y="75" width="311" height="59"/>
                                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="oC0-HW-wRQ"/>
@@ -312,7 +322,7 @@
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
                                                             </textView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="JHt-uX-3ss">
-                                                                <rect key="frame" x="0.0" y="120" width="311" height="44"/>
+                                                                <rect key="frame" x="0.0" y="150" width="311" height="44"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2TM-3o-Rxc">
                                                                         <rect key="frame" x="0.0" y="0.0" width="147.5" height="44"/>
@@ -340,6 +350,7 @@
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstItem="xlL-kq-M6y" firstAttribute="width" secondItem="IR1-K4-jTH" secondAttribute="width" id="csI-kv-1A8"/>
+                                                            <constraint firstItem="9zJ-Tk-ACf" firstAttribute="width" secondItem="IR1-K4-jTH" secondAttribute="width" id="exk-2b-Waq"/>
                                                             <constraint firstItem="JHt-uX-3ss" firstAttribute="width" secondItem="IR1-K4-jTH" secondAttribute="width" id="fJ0-vk-oHo"/>
                                                             <constraint firstItem="nhe-gI-h5h" firstAttribute="width" secondItem="IR1-K4-jTH" secondAttribute="width" id="y7S-tI-lh5"/>
                                                         </constraints>
@@ -348,7 +359,7 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstItem="IR1-K4-jTH" firstAttribute="leading" secondItem="MEz-Un-xWo" secondAttribute="leading" constant="16" id="1jn-W0-3GQ"/>
-                                                    <constraint firstAttribute="height" constant="196" id="5ay-Qs-z2t"/>
+                                                    <constraint firstAttribute="height" constant="226" id="5ay-Qs-z2t"/>
                                                     <constraint firstItem="IR1-K4-jTH" firstAttribute="top" secondItem="MEz-Un-xWo" secondAttribute="top" constant="16" id="Dgl-OY-f7Z"/>
                                                     <constraint firstAttribute="bottom" secondItem="IR1-K4-jTH" secondAttribute="bottom" constant="16" id="RPN-Z0-T9H"/>
                                                     <constraint firstAttribute="trailing" secondItem="IR1-K4-jTH" secondAttribute="trailing" constant="16" id="TxL-v6-rYY"/>
@@ -388,6 +399,7 @@
                         <outlet property="contentContainerView" destination="MEz-Un-xWo" id="fqE-lf-czA"/>
                         <outlet property="saveButton" destination="2u7-1D-B8c" id="ygN-Z8-jlv"/>
                         <outlet property="scrollView" destination="ilk-Gh-8oi" id="Icw-DO-7Yb"/>
+                        <outlet property="subtitleLabel" destination="9zJ-Tk-ACf" id="mvi-ej-bnv"/>
                         <outlet property="titleLabel" destination="nhe-gI-h5h" id="PzY-SM-3qr"/>
                         <outlet property="titleTextView" destination="xlL-kq-M6y" id="c1O-ag-3Av"/>
                     </connections>

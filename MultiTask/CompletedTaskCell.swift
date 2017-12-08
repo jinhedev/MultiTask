@@ -39,6 +39,7 @@ class CompletedTaskCell: BaseCollectionViewCell {
         }
     }
 
+    var longPressGestureRecognizer: UILongPressGestureRecognizer?
     static let cell_id = String(describing: CompletedTaskCell.self)
     static let nibName = String(describing: CompletedTaskCell.self)
     
@@ -136,11 +137,28 @@ class CompletedTaskCell: BaseCollectionViewCell {
         self.statsLabel.text?.removeAll()
     }
 
+    // MARK: - UILongPressGesture
+
+    private func setupLongPressGestureRecognizer() {
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationForTaskEditing(gestureRecognizer:)))
+        self.longPressGestureRecognizer!.allowableMovement = 22
+        self.longPressGestureRecognizer!.minimumPressDuration = 3
+        self.containerView.addGestureRecognizer(self.longPressGestureRecognizer!)
+    }
+
+    @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
+        if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 3 {
+            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil, userInfo: [NotificationKey.CollectionViewEditingMode : true])
+            NotificationCenter.default.post(notification)
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setupCell()
+        self.setupLongPressGestureRecognizer()
     }
 
     override func prepareForReuse() {

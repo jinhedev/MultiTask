@@ -42,6 +42,10 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         self.collectionView.isScrollEnabled = !isEditing
     }
 
+    @objc func enableEditingMode() {
+        self.isEditing = true
+    }
+
     // MARK: - MainTasksViewControllerDelegate
 
     private func setupMainTasksViewControllerDelegate() {
@@ -56,6 +60,12 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         self.isEditing = false
     }
 
+    // MARK: - Notifications
+
+    func observeNotificationForEditingMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+    }
+
     // MARK: - Lifecycle
 
     required init?(coder aDecoder: NSCoder) {
@@ -64,6 +74,7 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         self.setupView()
         self.setupCollectionView()
         self.setupCollectionViewFlowLayout()
+        self.observeNotificationForEditingMode()
     }
 
     // MARK: - View

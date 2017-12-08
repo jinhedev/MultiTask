@@ -65,6 +65,7 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Sas-4I-tGq" secondAttribute="trailing" constant="16" id="0La-Ev-Csr"/>
                                     <constraint firstItem="Sas-4I-tGq" firstAttribute="top" secondItem="hmh-Md-RSS" secondAttribute="bottom" constant="8" id="0fB-EK-9T5"/>

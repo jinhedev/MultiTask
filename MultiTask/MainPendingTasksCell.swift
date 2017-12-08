@@ -48,6 +48,10 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         }
     }
 
+    @objc func enableEditingMode() {
+        self.isEditing = true
+    }
+
     // MARK: - MainTasksViewControllerDelegate
 
     private func setupMainTasksViewControllerDelegate() {
@@ -132,6 +136,10 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.TaskPending), object: nil)
     }
 
+    func observeNotificationForEditingMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -141,6 +149,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         self.setupCollectionViewFlowLayout()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskPendingFetch()
+        self.observeNotificationForEditingMode()
         // initial fetch
         self.performInitialFetch(notification: nil)
         if let pathToSandbox = RealmManager.pathForDefaultContainer?.absoluteString {

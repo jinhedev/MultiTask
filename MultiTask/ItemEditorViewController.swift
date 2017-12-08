@@ -31,6 +31,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var contentContainerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var saveButton: UIButton!
@@ -59,13 +60,6 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     }
 
     private func setupView() {
-        if self.selectedItem == nil {
-            self.titleLabel.text = "Add a new item"
-            self.titleTextView.text?.removeAll()
-        } else {
-            self.titleLabel.text = "Edit a item"
-            self.titleTextView.text = selectedItem?.title
-        }
         self.view.backgroundColor = Color.transparentBlack
         self.scrollView.backgroundColor = Color.clear
         self.scrollView.delaysContentTouches = false
@@ -78,12 +72,16 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.contentContainerView.clipsToBounds = true
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
+        self.titleLabel.text = self.selectedItem == nil ? "Add a new item" : "Edit an item"
+        self.subtitleLabel.backgroundColor = Color.clear
+        self.subtitleLabel.textColor = Color.lightGray
         self.titleTextView.backgroundColor = Color.midNightBlack
         self.titleTextView.textColor = Color.white
         self.titleTextView.layer.cornerRadius = 8
         self.titleTextView.clipsToBounds = true
         self.titleTextView.delegate = self
         self.titleTextView.tintColor = Color.mandarinOrange
+        self.titleTextView.text = self.selectedItem == nil ? "" : selectedItem!.title
         self.cancelButton.setTitle("Cancel", for: UIControlState.normal)
         self.cancelButton.layer.cornerRadius = 8
         self.cancelButton.backgroundColor = Color.midNightBlack
@@ -94,6 +92,11 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.saveButton.setTitleColor(Color.inkBlack, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.isEnabled = false
+        if self.selectedItem == nil {
+            self.subtitleLabel.isHidden = true
+        } else {
+            self.subtitleLabel.text = "ID. " + selectedItem!.id
+        }
     }
 
     // MARK: - PersistentContainerDelegate

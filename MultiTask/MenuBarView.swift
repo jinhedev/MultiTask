@@ -8,18 +8,23 @@
 
 import UIKit
 
-class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MainTasksViewControllerDelegate {
 
     // MARK: - API
 
     var isEditing: Bool = false {
         didSet {
-            self.toggleEditMode()
+            self.setEditing()
+        }
+    }
+
+    weak var mainTasksViewController: MainTasksViewController? {
+        didSet {
+            self.setupMainTasksViewControllerDelegate()
         }
     }
 
     var menus = [Menu(title: "Pending"), Menu(title: "Completed")]
-    weak var mainTasksViewController: MainTasksViewController?
     static let nibName = String(describing: MenuBarView.self)
 
     @IBOutlet weak var view: UIView!
@@ -30,9 +35,25 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     @IBOutlet weak var scrollIndicatorViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollIndicatorViewHeightConstraint: NSLayoutConstraint!
 
-    private func toggleEditMode() {
+    private func setEditing() {
+        // FIXME: when scrolling very fast in edit mode, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
         self.collectionView.allowsSelection = !isEditing
-        self.scrollIndicatorView.backgroundColor = isEditing ? Color.clear : Color.darkGray
+        self.scrollIndicatorView.backgroundColor = isEditing ? Color.darkGray : Color.mandarinOrange
+        self.collectionView.isScrollEnabled = !isEditing
+    }
+
+    // MARK: - MainTasksViewControllerDelegate
+
+    private func setupMainTasksViewControllerDelegate() {
+        self.mainTasksViewController?.delegateForMenuBarView = self
+    }
+
+    func mainTasksViewController(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, isEditing: Bool) {
+        self.isEditing = isEditing
+    }
+
+    func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
+        self.isEditing = false
     }
 
     // MARK: - Lifecycle

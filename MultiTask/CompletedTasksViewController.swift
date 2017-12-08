@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegateMosaicLayout {
+class CompletedTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDelegateMosaicLayout {
 
     // MARK: - API
 
@@ -92,7 +92,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
         for indexPath in indexPaths {
             self.collectionView?.deselectItem(at: indexPath, animated: false)
             if let cell = self.collectionView?.cellForItem(at: indexPath) as? CompletedTaskCell {
-                cell.editing = editing
+                cell.isEditing = editing
             }
         }
     }
@@ -144,7 +144,7 @@ class CompletedTasksViewController: BaseViewController, PersistentContainerDeleg
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let selectedIndexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
         let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
-        taskEditorViewController?.delegate = self
+//        taskEditorViewController?.delegate = self
         taskEditorViewController?.selectedTask = self.completedTasks?[selectedIndexPath.section][selectedIndexPath.item]
         if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? CompletedTaskCell {
             previewingContext.sourceRect = selectedCell.frame

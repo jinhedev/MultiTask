@@ -9,7 +9,12 @@
 import UIKit
 import RealmSwift
 
-class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchResultsUpdating, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
+protocol MainTasksViewControllerDelegate: NSObjectProtocol {
+    func mainTasksViewController(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, isEditing: Bool)
+    func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
+}
+
+class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -29,9 +34,14 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
         return button
     }()
 
+    weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
+    weak var delegateForPendingTasksCell: MainTasksViewControllerDelegate? // set in MainPendingTasksCell
+    weak var delegateForCompletedTasksCell: MainTasksViewControllerDelegate? // set in MainCompletedTasksCell
+
     static let storyboard_id = String(describing: MainTasksViewController.self)
     let searchController = UISearchController(searchResultsController: nil)
     let popTransitionAnimator = PopTransitionAnimator()
+    let navigationItemTitles = ["Pending, Completed"]
 
     @IBOutlet weak var menuBarView: MenuBarView!
     @IBOutlet weak var mainCollectionViewFlowLayout: UICollectionViewFlowLayout!
@@ -44,33 +54,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        self.mainCollectionView.allowsSelection = !editing
+        self.mainCollectionView.isScrollEnabled = !editing
         self.addButton.isEnabled = !editing
-        if editing {
-            self.navigationItem.leftBarButtonItem = trashButton
-        } else {
-            self.navigationItem.leftBarButtonItem = nil
-        }
+        self.navigationItem.leftBarButtonItem = editing ? trashButton : nil
         self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
-    }
-
-    // MARK: - TaskEditorViewControllerDelegate
-
-//    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
-//        viewController.dismiss(animated: true) {
-//            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
-//            if self.tasksPageViewController?.pendingTasksViewController?.pendingTasks == nil {
-//                self.tasksPageViewController?.pendingTasksViewController?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
-//            }
-//        }
-//    }
-
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - NavigationBar
@@ -89,40 +76,28 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
         if self.isEditing == true {
             // if already in editMode, first commit trash and then exit editMode
             self.isEditing = false
-            self.menuBarView?.isEditing = false
+            self.delegateForMenuBarView?.mainTasksViewController(self, didTapTrash: sender)
+            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapTrash: sender)
+            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapTrash: sender)
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
         }
     }
 
     @objc func handleEdit(_ sender: UIBarButtonItem) {
+        // toggling edit mode
         if self.isEditing == true {
             // if already in editMode, exit editMode
             self.isEditing = false
-            self.menuBarView?.isEditing = false
+            self.delegateForMenuBarView?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
+            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
+            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
         } else {
             // if not in editMode, enter editMode
             self.isEditing = true
-            self.menuBarView?.isEditing = true
-            self.menuBarView?.isEditing = true
-        }
-    }
-
-    // MARK: - SearchController & SearchResultsUpdating
-
-    private func setupSearchController() {
-        // FIXME: problem with searchController being overlaid by MenuBarViewController
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.tintColor = Color.white
-        searchController.dimsBackgroundDuringPresentation = true
-        searchController.searchBar.keyboardAppearance = UIKeyboardAppearance.dark
-        searchController.searchBar.placeholder = "Search"
-        self.definesPresentationContext = true
-        navigationItem.searchController = searchController
-    }
-
-    func updateSearchResults(for searchController: UISearchController) {
-        if let searchString = searchController.searchBar.text {
-            // TODO: implement this
-            print(searchString)
+            self.delegateForMenuBarView?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
+            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
+            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
         }
     }
 
@@ -130,6 +105,20 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
 
     private func setupMenuBarView() {
         self.menuBarView.mainTasksViewController = self
+    }
+
+    // MARK: - TaskEditorViewControllerDelegate
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
+        viewController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Lifecycle
@@ -142,14 +131,6 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
         self.setupCollectionViewFlowLayout()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
-            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
-                taskEditorViewController.delegate = self
-            }
-        }
-    }
-
     // MARK: - CollectionView
 
     private func setupCollectionView() {
@@ -157,16 +138,26 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
         self.mainCollectionView.backgroundColor = Color.inkBlack
         self.mainCollectionView.dataSource = self
         self.mainCollectionView.delegate = self
-        self.mainCollectionView.register(UINib(nibName: MainTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainTaskCell.cell_id)
+        self.mainCollectionView.register(UINib(nibName: MainPendingTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainPendingTasksCell.cell_id)
+        self.mainCollectionView.register(UINib(nibName: MainCompletedTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainCompletedTasksCell.cell_id)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
+            if let 
+        }
     }
 
     // MARK: - ScrollViewDelegate
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.menuBarView.scrollIndicatorViewHeightConstraint.constant = scrollView.contentOffset.x / 2
+        // synchronising the scrolling position between menuBarView and the mainTasksCollectionView
+        self.menuBarView.scrollIndicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 2
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        // select a collectionView item in menuBarView when scroll ends dragging
         let selectedIndexItem = targetContentOffset.pointee.x / self.mainCollectionView.frame.width
         let selectedIndexPath = IndexPath(item: Int(selectedIndexItem), section: 0)
         self.menuBarView.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.left)
@@ -174,7 +165,9 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
 
     // MARK: - CollectionViewDelegate
 
-
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // ignore
+    }
 
     // MARK: - CollectionViewDataSource
 
@@ -187,10 +180,21 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let mainTaskCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainTaskCell.cell_id, for: indexPath) as? MainTaskCell else {
+        if indexPath.item == 0 {
+            guard let mainPendingTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainPendingTasksCell.cell_id, for: indexPath) as? MainPendingTasksCell else {
+                return BaseCollectionViewCell()
+            }
+            mainPendingTasksCell.mainTasksViewController = self
+            return mainPendingTasksCell
+        } else if indexPath.item == 1 {
+            guard let mainCompletedTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainCompletedTasksCell.cell_id, for: indexPath) as? MainCompletedTasksCell else {
+                return BaseCollectionViewCell()
+            }
+            mainCompletedTasksCell.mainTasksViewController = self
+            return mainCompletedTasksCell
+        } else {
             return BaseCollectionViewCell()
         }
-        return mainTaskCell
     }
 
     // MARK: - CollectionViewDelegateFlowLayout
@@ -213,7 +217,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDelegate, UIC
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { (context) in
-//            self.tasksContainerView.alpha = (size.width > size.height) ? 0.25 : 0.55
+            self.mainCollectionView.alpha = (size.width > size.height) ? 0.25 : 0.55
         }, completion: nil)
     }
 

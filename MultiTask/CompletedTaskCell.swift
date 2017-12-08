@@ -19,7 +19,7 @@ class CompletedTaskCell: BaseCollectionViewCell {
         }
     }
 
-    var editing: Bool = false {
+    var isEditing: Bool = false {
         didSet {
             self.animateForEditMode()
         }
@@ -43,20 +43,18 @@ class CompletedTaskCell: BaseCollectionViewCell {
 
     func animateForEditMode() {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
-            self.checkmarkImageView.isHidden = self.editing ? false : true
-            self.containerView.transform = self.editing ? CGAffineTransform.init(scaleX: 0.94, y: 0.94) : CGAffineTransform.identity
+            self.checkmarkImageView.isHidden = self.isEditing ? false : true
+            self.containerView.transform = self.isEditing ? CGAffineTransform.init(scaleX: 0.94, y: 0.94) : CGAffineTransform.identity
         }, completion: nil)
     }
 
     func animateForSelectMode() {
-        if editing == true {
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
-                self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 0.97, y: 0.97) : CGAffineTransform.init(scaleX: 0.94, y: 0.94)
-                self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor
-                self.containerView.layer.borderWidth = self.isSelected ? 1 : 0
-                self.checkmarkImageView.backgroundColor = self.isSelected ? Color.roseScarlet : Color.inkBlack
-            }, completion: nil)
-        }
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
+            self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 0.97, y: 0.97) : CGAffineTransform.init(scaleX: 0.94, y: 0.94)
+            self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor
+            self.containerView.layer.borderWidth = self.isSelected ? 1 : 0
+            self.checkmarkImageView.backgroundColor = self.isSelected ? Color.roseScarlet : Color.inkBlack
+        }, completion: nil)
     }
 
     private func calculateCountForCompletedItems(items: List<Item>) -> Int {

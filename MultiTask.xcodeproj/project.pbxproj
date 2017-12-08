@@ -37,8 +37,8 @@
 		C55E140B1FD7484400C46BED /* BranchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140A1FD7484400C46BED /* BranchesViewController.swift */; };
 		C55E140D1FD7D89800C46BED /* MenuBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55E140C1FD7D89800C46BED /* MenuBarView.xib */; };
 		C55E140F1FD7D96C00C46BED /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140E1FD7D96C00C46BED /* MenuBarView.swift */; };
-		C55E14111FD8597F00C46BED /* MainTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E14101FD8597F00C46BED /* MainTaskCell.swift */; };
-		C55E14351FD8987800C46BED /* MainTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55E14341FD8987800C46BED /* MainTaskCell.xib */; };
+		C55E14111FD8597F00C46BED /* MainCompletedTasksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E14101FD8597F00C46BED /* MainCompletedTasksCell.swift */; };
+		C55E14351FD8987800C46BED /* MainCompletedTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */; };
 		C55E264C1F3F1296001743E4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264B1F3F1296001743E4 /* libz.tbd */; };
 		C55E264E1F3F12A5001743E4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */; };
 		C55E26581F404249001743E4 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
@@ -75,6 +75,8 @@
 		C5B412A81FBE665D006CFDA6 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26561F404249001743E4 /* Realm.framework */; };
 		C5B412A91FBE665D006CFDA6 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C55E26571F404249001743E4 /* RealmSwift.framework */; };
 		C5B412B11FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */; };
+		C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */; };
+		C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */; };
 		C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E1566C1F484473006247C4 /* OnboardingViewController.swift */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
@@ -173,8 +175,8 @@
 		C55E140A1FD7484400C46BED /* BranchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchesViewController.swift; sourceTree = "<group>"; };
 		C55E140C1FD7D89800C46BED /* MenuBarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuBarView.xib; sourceTree = "<group>"; };
 		C55E140E1FD7D96C00C46BED /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
-		C55E14101FD8597F00C46BED /* MainTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTaskCell.swift; sourceTree = "<group>"; };
-		C55E14341FD8987800C46BED /* MainTaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTaskCell.xib; sourceTree = "<group>"; };
+		C55E14101FD8597F00C46BED /* MainCompletedTasksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCompletedTasksCell.swift; sourceTree = "<group>"; };
+		C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainCompletedTasksCell.xib; sourceTree = "<group>"; };
 		C55E264B1F3F1296001743E4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C55E264D1F3F12A5001743E4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		C55E26561F404249001743E4 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
@@ -211,6 +213,8 @@
 		C5A9A8DC1F3C2CF100601CFF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewControllerTests.swift; sourceTree = "<group>"; };
+		C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPendingTasksCell.swift; sourceTree = "<group>"; };
+		C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainPendingTasksCell.xib; sourceTree = "<group>"; };
 		C5E1566C1F484473006247C4 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -271,7 +275,8 @@
 			children = (
 				C56B29331FA2F59C0093BA32 /* AuthCell.xib */,
 				C55E140C1FD7D89800C46BED /* MenuBarView.xib */,
-				C55E14341FD8987800C46BED /* MainTaskCell.xib */,
+				C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */,
+				C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */,
 				C543943E1FB5292C009EC104 /* MenuBarCell.xib */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */,
@@ -409,7 +414,8 @@
 			children = (
 				C55E140E1FD7D96C00C46BED /* MenuBarView.swift */,
 				C54394401FB529C8009EC104 /* MenuBarCell.swift */,
-				C55E14101FD8597F00C46BED /* MainTaskCell.swift */,
+				C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */,
+				C55E14101FD8597F00C46BED /* MainCompletedTasksCell.swift */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C549CCCB1FC8EE630039D0D5 /* CompletedTaskCell.swift */,
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
@@ -608,11 +614,12 @@
 				C543943F1FB5292C009EC104 /* MenuBarCell.xib in Resources */,
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
 				C53C3EF51FBA47850064DDB4 /* BranchTab.storyboard in Resources */,
+				C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */,
 				C54DA6B91FD1B2170071C3D6 /* PlaceholderBackgroundView.xib in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
-				C55E14351FD8987800C46BED /* MainTaskCell.xib in Resources */,
+				C55E14351FD8987800C46BED /* MainCompletedTasksCell.xib in Resources */,
 				C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */,
 				C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
@@ -698,6 +705,7 @@
 				C5A9A8B81F3BB76B00601CFF /* Utilities.swift in Sources */,
 				C56564C51FA05F30006EEE5E /* PendingTaskCell.swift in Sources */,
 				C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */,
+				C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */,
 				C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */,
 				C549CCCC1FC8EE630039D0D5 /* CompletedTaskCell.swift in Sources */,
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
@@ -708,7 +716,7 @@
 				C5A9A8DA1F3C1F5300601CFF /* Session.swift in Sources */,
 				C54DA6B71FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift in Sources */,
 				C5A9A8D81F3C1E7300601CFF /* User.swift in Sources */,
-				C55E14111FD8597F00C46BED /* MainTaskCell.swift in Sources */,
+				C55E14111FD8597F00C46BED /* MainCompletedTasksCell.swift in Sources */,
 				C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */,
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
 				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,

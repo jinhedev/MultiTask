@@ -15,12 +15,6 @@ protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
     func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?)
 }
 
-extension TaskEditorViewControllerDelegate {
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {}
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {}
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {}
-}
-
 class TaskEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
 
     // MARK: - API

@@ -19,7 +19,7 @@ class PendingTaskCell: BaseCollectionViewCell {
         }
     }
 
-    var editing: Bool = false {
+    var isEditing: Bool = false {
         didSet {
             self.animateForEditMode()
         }
@@ -27,7 +27,7 @@ class PendingTaskCell: BaseCollectionViewCell {
 
     override var isSelected: Bool {
         didSet {
-            if editing == true {
+            if isEditing == true {
                 self.animateForSelectMode()
             }
         }
@@ -46,16 +46,16 @@ class PendingTaskCell: BaseCollectionViewCell {
 
     func animateForEditMode() {
         // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.
-        if self.editing == true {
-            self.containerViewLeadingMargin.constant = self.editing ? (16 + 22 + 16) : 16
+        if self.isEditing == true {
+            self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
             UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }) { (completed) in
-                self.checkmarkImageView.isHidden = self.editing ? false : true
+                self.checkmarkImageView.isHidden = self.isEditing ? false : true
             }
         } else {
-            self.checkmarkImageView.isHidden = self.editing ? false : true
-            self.containerViewLeadingMargin.constant = self.editing ? (16 + 22 + 16) : 16
+            self.checkmarkImageView.isHidden = self.isEditing ? false : true
+            self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
             UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }, completion: nil)

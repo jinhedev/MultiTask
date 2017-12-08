@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate, TaskEditorViewControllerDelegate {
+class PendingTasksViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UIViewControllerPreviewingDelegate {
 
     // MARK: - API
 
@@ -90,7 +90,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         for indexPath in indexPaths {
             self.collectionView?.deselectItem(at: indexPath, animated: false)
             if let cell = self.collectionView?.cellForItem(at: indexPath) as? PendingTaskCell {
-                cell.editing = editing
+                cell.isEditing = editing
             }
         }
     }
@@ -110,6 +110,8 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
                 }
                 self.realmManager?.deleteTasks(tasks: tasksToBeDeleted)
             }
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
         }
     }
 
@@ -175,7 +177,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let selectedIndexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
         let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
-        taskEditorViewController?.delegate = self
+//        taskEditorViewController?.delegate = self
         taskEditorViewController?.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]
         if let selectedCell = self.collectionView.cellForItem(at: selectedIndexPath) as? PendingTaskCell {
             previewingContext.sourceRect = selectedCell.frame
@@ -244,7 +246,7 @@ class PendingTasksViewController: BaseViewController, PersistentContainerDelegat
         }
         let task = pendingTasks?[indexPath.section][indexPath.item]
         pendingTaskCell.task = task
-        pendingTaskCell.editing = isEditing
+        pendingTaskCell.isEditing = isEditing
         return pendingTaskCell
     }
 

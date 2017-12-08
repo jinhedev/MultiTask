@@ -202,7 +202,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9n5-EA-lYa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2676" y="-1325.4872563718143"/>
+            <point key="canvasLocation" x="2631" y="-1657"/>
         </scene>
         <!--Items-->
         <scene sceneID="taI-hQ-hYa">
@@ -248,7 +248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oKI-Ae-VT6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4685.6000000000004" y="-405.24737631184411"/>
+            <point key="canvasLocation" x="2630" y="-750"/>
         </scene>
         <!--Tasks-->
         <scene sceneID="iKN-MD-4NR">
@@ -271,92 +271,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oiO-Tz-TW7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="750" y="-749"/>
-        </scene>
-        <!--Pending Tasks View Controller-->
-        <scene sceneID="ygp-l5-hwN">
-            <objects>
-                <viewController storyboardIdentifier="PendingTasksViewController" id="2wH-8a-RPp" customClass="PendingTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5CQ-8d-8i8">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nDK-zE-hF6">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="b7R-HW-qGI">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outlet property="dataSource" destination="2wH-8a-RPp" id="lLb-7S-g3e"/>
-                                    <outlet property="delegate" destination="2wH-8a-RPp" id="33E-ba-RTw"/>
-                                </connections>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="nDK-zE-hF6" firstAttribute="top" secondItem="niw-Nh-EEq" secondAttribute="top" id="Nca-84-uEQ"/>
-                            <constraint firstItem="nDK-zE-hF6" firstAttribute="leading" secondItem="niw-Nh-EEq" secondAttribute="leading" id="SC7-0u-Out"/>
-                            <constraint firstItem="niw-Nh-EEq" firstAttribute="bottom" secondItem="nDK-zE-hF6" secondAttribute="bottom" id="g1m-6a-Tyn"/>
-                            <constraint firstItem="niw-Nh-EEq" firstAttribute="trailing" secondItem="nDK-zE-hF6" secondAttribute="trailing" id="yY7-9S-Y8Z"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="niw-Nh-EEq"/>
-                    </view>
-                    <connections>
-                        <outlet property="collectionView" destination="nDK-zE-hF6" id="xPF-FP-oHM"/>
-                        <outlet property="collectionViewFlowLayout" destination="b7R-HW-qGI" id="qhD-6h-jRJ"/>
-                        <segue destination="4U5-QD-6XH" kind="show" identifier="PendingTaskCellToItemsViewController" id="AEp-jo-Cf1"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Epw-88-Fe7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3681" y="-859"/>
-        </scene>
-        <!--Completed Tasks View Controller-->
-        <scene sceneID="Sbt-6O-1Z9">
-            <objects>
-                <viewController storyboardIdentifier="CompletedTasksViewController" id="Nxl-yP-lk6" customClass="CompletedTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ilZ-RK-Buy">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="eRh-tg-jV6">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zEY-8K-gmO">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                                <connections>
-                                    <outlet property="dataSource" destination="Nxl-yP-lk6" id="nw9-so-jgR"/>
-                                    <outlet property="delegate" destination="Nxl-yP-lk6" id="KDd-05-kTT"/>
-                                </connections>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="wFs-Uc-VOg" firstAttribute="trailing" secondItem="eRh-tg-jV6" secondAttribute="trailing" id="5Rr-xk-xcH"/>
-                            <constraint firstItem="wFs-Uc-VOg" firstAttribute="bottom" secondItem="eRh-tg-jV6" secondAttribute="bottom" id="9dE-1i-aSC"/>
-                            <constraint firstItem="eRh-tg-jV6" firstAttribute="leading" secondItem="wFs-Uc-VOg" secondAttribute="leading" id="Shg-dR-6NZ"/>
-                            <constraint firstItem="eRh-tg-jV6" firstAttribute="top" secondItem="wFs-Uc-VOg" secondAttribute="top" id="aPJ-82-7Wa"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="wFs-Uc-VOg"/>
-                    </view>
-                    <connections>
-                        <outlet property="collectionView" destination="eRh-tg-jV6" id="dtu-Lh-WHH"/>
-                        <outlet property="collectionViewFlowLayout" destination="zEY-8K-gmO" id="pZ9-K4-zNs"/>
-                        <segue destination="4U5-QD-6XH" kind="show" identifier="CompletedTaskCellToItemsViewController" id="3iy-CS-klH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Uz0-zH-RoH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3681" y="-170"/>
         </scene>
         <!--Item Editor View Controller-->
         <scene sceneID="BXu-m1-X3x">
@@ -480,7 +394,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mke-u5-qkL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5769" y="-405"/>
+            <point key="canvasLocation" x="3711" y="-751"/>
         </scene>
         <!--Search Results View Controller-->
         <scene sceneID="TGc-Cj-TdJ">
@@ -510,14 +424,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A2b-76-FRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4686" y="-1110"/>
+            <point key="canvasLocation" x="3710" y="-1657"/>
         </scene>
     </scenes>
     <resources>
         <image name="Plus" width="50" height="50"/>
         <image name="Starfish" width="50" height="50"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="AEp-jo-Cf1"/>
-    </inferredMetricsTieBreakers>
 </document>

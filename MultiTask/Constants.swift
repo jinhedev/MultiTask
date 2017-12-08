@@ -24,11 +24,7 @@ struct Configuration {
 // MARK: - Segue IDs
 
 struct Segue {
-    static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
-    static let CompletedTaskCellToItemsViewController = "CompletedTaskCellToItemsViewController"
-    static let MenuBarContainerViewToMenuBarViewController = "MenuBarContainerViewToMenuBarViewController"
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
-    static let TasksContainerViewToPageViewController = "TasksContainerViewToPageViewController"
     static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
 }
 

@@ -76,7 +76,9 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.mainTasksViewController?.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
@@ -155,6 +157,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
     // MARK: - CollectionView
 
     private func setupCollectionView() {
+        self.collectionView.indicatorStyle = .white
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.dataSource = self
@@ -164,6 +167,18 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
 
     // MARK: - UICollectionViewDelegate
 
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
+            highlightedCell.isHighlighted = true
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
+            highlightedCell.isHighlighted = false
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.isEditing == false {
             if let itemsViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first {
@@ -171,7 +186,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
                 self.mainTasksViewController?.navigationController?.pushViewController(itemsViewController, animated: true)
             }
         } else {
-            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
+            if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
                 selectedCell.isSelected = true
             }
         }

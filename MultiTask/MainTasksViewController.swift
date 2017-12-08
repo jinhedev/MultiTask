@@ -34,6 +34,8 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         return button
     }()
 
+    var mainPendingTasksCell: MainPendingTasksCell?
+    var mainCompletedTasksCell: MainCompletedTasksCell?
     weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
     weak var delegateForPendingTasksCell: MainTasksViewControllerDelegate? // set in MainPendingTasksCell
     weak var delegateForCompletedTasksCell: MainTasksViewControllerDelegate? // set in MainCompletedTasksCell
@@ -75,10 +77,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     @objc func handleTrash(_ sender: UIBarButtonItem) {
         if self.isEditing == true {
             // if already in editMode, first commit trash and then exit editMode
-            self.isEditing = false
             self.delegateForMenuBarView?.mainTasksViewController(self, didTapTrash: sender)
             self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapTrash: sender)
             self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapTrash: sender)
+            self.isEditing = false
         } else {
             print(trace(file: #file, function: #function, line: #line))
         }
@@ -110,7 +112,12 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     // MARK: - TaskEditorViewControllerDelegate
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true, completion: nil)
+        viewController.dismiss(animated: true) {
+            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
+            if self.mainPendingTasksCell?.pendingTasks == nil {
+                self.mainPendingTasksCell?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+            }
+        }
     }
 
     func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
@@ -145,7 +152,9 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == Segue.AddButtonToTaskEditorViewController {
-            if let 
+            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
+                taskEditorViewController.delegate = self
+            }
         }
     }
 
@@ -184,12 +193,14 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
             guard let mainPendingTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainPendingTasksCell.cell_id, for: indexPath) as? MainPendingTasksCell else {
                 return BaseCollectionViewCell()
             }
+            self.mainPendingTasksCell = mainPendingTasksCell
             mainPendingTasksCell.mainTasksViewController = self
             return mainPendingTasksCell
         } else if indexPath.item == 1 {
             guard let mainCompletedTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainCompletedTasksCell.cell_id, for: indexPath) as? MainCompletedTasksCell else {
                 return BaseCollectionViewCell()
             }
+            self.mainCompletedTasksCell = mainCompletedTasksCell
             mainCompletedTasksCell.mainTasksViewController = self
             return mainCompletedTasksCell
         } else {

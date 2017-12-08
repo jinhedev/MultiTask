@@ -19,15 +19,23 @@ class CompletedTaskCell: BaseCollectionViewCell {
         }
     }
 
+    override var isHighlighted: Bool {
+        didSet {
+            self.setHightlighted()
+        }
+    }
+
     var isEditing: Bool = false {
         didSet {
-            self.animateForEditMode()
+            self.setEditing()
         }
     }
 
     override var isSelected: Bool {
         didSet {
-            self.animateForSelectMode()
+            if isEditing == true {
+                self.setSelected()
+            }
         }
     }
 
@@ -41,14 +49,18 @@ class CompletedTaskCell: BaseCollectionViewCell {
     @IBOutlet weak var statsLabel: UILabel!
     @IBOutlet weak var checkmarkImageView: UIImageView!
 
-    func animateForEditMode() {
-        UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
+    private func setHightlighted() {
+        self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
+    }
+
+    func setEditing() {
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
             self.checkmarkImageView.isHidden = self.isEditing ? false : true
             self.containerView.transform = self.isEditing ? CGAffineTransform.init(scaleX: 0.94, y: 0.94) : CGAffineTransform.identity
         }, completion: nil)
     }
 
-    func animateForSelectMode() {
+    func setSelected() {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
             self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 0.97, y: 0.97) : CGAffineTransform.init(scaleX: 0.94, y: 0.94)
             self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor

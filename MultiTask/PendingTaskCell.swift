@@ -19,16 +19,22 @@ class PendingTaskCell: BaseCollectionViewCell {
         }
     }
 
+    override var isHighlighted: Bool {
+        didSet {
+            self.setHightlighted()
+        }
+    }
+
     var isEditing: Bool = false {
         didSet {
-            self.animateForEditMode()
+            self.setEditing()
         }
     }
 
     override var isSelected: Bool {
         didSet {
             if isEditing == true {
-                self.animateForSelectMode()
+                self.setSelected()
             }
         }
     }
@@ -44,11 +50,15 @@ class PendingTaskCell: BaseCollectionViewCell {
     @IBOutlet weak var statsLabel: UILabel!
     @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint! // increase its constant when in editing mode to give space for checkmarImageView
 
-    func animateForEditMode() {
+    private func setHightlighted() {
+        self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
+    }
+
+    private func setEditing() {
         // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.
         if self.isEditing == true {
             self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
                 self.layoutIfNeeded()
             }) { (completed) in
                 self.checkmarkImageView.isHidden = self.isEditing ? false : true
@@ -56,13 +66,13 @@ class PendingTaskCell: BaseCollectionViewCell {
         } else {
             self.checkmarkImageView.isHidden = self.isEditing ? false : true
             self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
-            UIView.animate(withDuration: 0.15, delay: 0, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
                 self.layoutIfNeeded()
             }, completion: nil)
         }
     }
 
-    func animateForSelectMode() {
+    private func setSelected() {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
             self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 1.03, y: 1.03) : CGAffineTransform.identity
             self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor

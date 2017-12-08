@@ -49,12 +49,8 @@
 		C55E26751F40F100001743E4 /* PendingTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E26741F40F100001743E4 /* PendingTasksViewControllerTests.swift */; };
 		C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */; };
 		C56564C51FA05F30006EEE5E /* PendingTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */; };
-		C56B29321FA2F3E40093BA32 /* AuthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56B29311FA2F3E40093BA32 /* AuthCell.swift */; };
-		C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C56B29331FA2F59C0093BA32 /* AuthCell.xib */; };
 		C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */; };
 		C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */; };
-		C5A0D7791FB78BC8002968F7 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */; };
-		C5A0D77B1FB78BD8002968F7 /* CompletedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D77A1FB78BD8002968F7 /* CompletedTasksViewController.swift */; };
 		C5A0D77D1FB7DF98002968F7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */; };
 		C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */; };
 		C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A9A8A31F3BB06C00601CFF /* AppDelegate.swift */; };
@@ -77,7 +73,6 @@
 		C5B412B11FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */; };
 		C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */; };
 		C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */; };
-		C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E1566C1F484473006247C4 /* OnboardingViewController.swift */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
 		C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */; };
@@ -189,12 +184,8 @@
 		C55E26761F40F100001743E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransitionAnimator.swift; sourceTree = "<group>"; };
 		C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTaskCell.swift; sourceTree = "<group>"; };
-		C56B29311FA2F3E40093BA32 /* AuthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCell.swift; sourceTree = "<group>"; };
-		C56B29331FA2F59C0093BA32 /* AuthCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AuthCell.xib; sourceTree = "<group>"; };
 		C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksViewController.swift; sourceTree = "<group>"; };
 		C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTaskCell.xib; sourceTree = "<group>"; };
-		C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
-		C5A0D77A1FB78BD8002968F7 /* CompletedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewController.swift; sourceTree = "<group>"; };
 		C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C5A9A8A01F3BB06C00601CFF /* MultiTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,7 +206,6 @@
 		C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewControllerTests.swift; sourceTree = "<group>"; };
 		C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPendingTasksCell.swift; sourceTree = "<group>"; };
 		C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainPendingTasksCell.xib; sourceTree = "<group>"; };
-		C5E1566C1F484473006247C4 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -273,10 +263,9 @@
 		C55E14361FD89A2800C46BED /* Xib */ = {
 			isa = PBXGroup;
 			children = (
-				C56B29331FA2F59C0093BA32 /* AuthCell.xib */,
 				C55E140C1FD7D89800C46BED /* MenuBarView.xib */,
-				C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */,
 				C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */,
+				C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */,
 				C543943E1FB5292C009EC104 /* MenuBarCell.xib */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */,
@@ -353,10 +342,7 @@
 		C5A9A8B91F3BC06800601CFF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C5E1566C1F484473006247C4 /* OnboardingViewController.swift */,
 				C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */,
-				C5A0D7781FB78BC8002968F7 /* PendingTasksViewController.swift */,
-				C5A0D77A1FB78BD8002968F7 /* CompletedTasksViewController.swift */,
 				C5A9A8C21F3BD51000601CFF /* ItemsViewController.swift */,
 				C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */,
 				C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */,
@@ -418,9 +404,8 @@
 				C55E14101FD8597F00C46BED /* MainCompletedTasksCell.swift */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C549CCCB1FC8EE630039D0D5 /* CompletedTaskCell.swift */,
-				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
 				C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */,
-				C56B29311FA2F3E40093BA32 /* AuthCell.swift */,
+				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
 				C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */,
 				C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */,
 				C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */,
@@ -608,7 +593,6 @@
 				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */,
-				C56B29341FA2F59C0093BA32 /* AuthCell.xib in Resources */,
 				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
 				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuBarCell.xib in Resources */,
@@ -692,19 +676,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C56B29321FA2F3E40093BA32 /* AuthCell.swift in Sources */,
 				C5A9A8C31F3BD51000601CFF /* ItemsViewController.swift in Sources */,
 				C54394411FB529C8009EC104 /* MenuBarCell.swift in Sources */,
 				C5A0D77D1FB7DF98002968F7 /* BaseViewController.swift in Sources */,
 				C54394431FB55E69009EC104 /* BaseCollectionViewCell.swift in Sources */,
-				C5A0D7791FB78BC8002968F7 /* PendingTasksViewController.swift in Sources */,
 				C549CCD01FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift in Sources */,
 				C5A9A8A41F3BB06C00601CFF /* AppDelegate.swift in Sources */,
 				C55E140F1FD7D96C00C46BED /* MenuBarView.swift in Sources */,
 				C5418DF31FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift in Sources */,
 				C5A9A8B81F3BB76B00601CFF /* Utilities.swift in Sources */,
 				C56564C51FA05F30006EEE5E /* PendingTaskCell.swift in Sources */,
-				C5E1566D1F484473006247C4 /* OnboardingViewController.swift in Sources */,
 				C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */,
 				C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */,
 				C549CCCC1FC8EE630039D0D5 /* CompletedTaskCell.swift in Sources */,
@@ -726,7 +707,6 @@
 				C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,
 				C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */,
-				C5A0D77B1FB78BD8002968F7 /* CompletedTasksViewController.swift in Sources */,
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
 				C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */,
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,

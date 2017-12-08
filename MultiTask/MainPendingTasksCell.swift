@@ -79,7 +79,6 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     private func setupPersistentContainerDelegate() {
         self.realmManager = RealmManager()
         self.realmManager!.delegate = self
-        print(realmManager?.delegate)
     }
 
     private func setupRealmNotificationsForCollectionView() {
@@ -98,7 +97,9 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     }
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
+        if let navigationController = self.mainTasksViewController?.navigationController as? BaseNavigationController {
+            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
+        }
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {
@@ -112,7 +113,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {
+    func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {
         if self.isEditing == true {
             // exit edit mode
             self.isEditing = false
@@ -161,6 +162,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     // MARK: - CollectionView
 
     private func setupCollectionView() {
+        self.collectionView.indicatorStyle = .white
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.dataSource = self
@@ -169,6 +171,18 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     }
 
     // MARK: - UICollectionViewDelegate
+
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
+            highlightedCell.isHighlighted = true
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
+            highlightedCell.isHighlighted = false
+        }
+    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.isEditing == false {

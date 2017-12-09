@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             print("go to onboarding")
         }
+        UITableViewCell.appearance().backgroundColor = .clear
         return true
     }
 

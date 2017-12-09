@@ -70,6 +70,7 @@ class ItemCell: BaseTableViewCell {
 
     private func setupCell() {
         self.selectionStyle = .none
+        self.backgroundColor = Color.inkBlack
         self.contentView.backgroundColor = Color.inkBlack
         self.containerView.backgroundColor = Color.midNightBlack
         self.titleTextView.textColor = Color.white

@@ -229,6 +229,10 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupTaskHeaderViewDelegate()
     }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.ItemsViewControllerToItemEditorViewController {
             itemEditorViewController = segue.destination as? ItemEditorViewController
@@ -249,7 +253,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     }
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        if let navController = self.navigationController {
+        if let navController = self.navigationController as? BaseNavigationController {
             navController.pushViewController(viewControllerToCommit, animated: true)
         }
     }

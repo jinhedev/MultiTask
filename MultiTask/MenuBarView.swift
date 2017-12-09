@@ -96,8 +96,8 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         self.collectionView.backgroundColor = Color.red
         self.collectionView.register(UINib(nibName: MenuBarCell.nibName, bundle: nil), forCellWithReuseIdentifier: MenuBarCell.cell_id)
         // initial selected state for the first cell
-        let selectedIndexPath = IndexPath(item: 0, section: 0)
-        self.collectionView.selectItem(at: selectedIndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.top)
+        let initialSelectedIndexPath = IndexPath(item: 0, section: 0)
+        self.collectionView.selectItem(at: initialSelectedIndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.top)
     }
 
     // MARK: - CollectionViewDelegate

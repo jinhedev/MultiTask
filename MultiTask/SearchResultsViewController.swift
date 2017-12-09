@@ -109,6 +109,10 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
         self.tableView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.emptyResults)
     }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     // MARK: - UITableViewDelegate
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

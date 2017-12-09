@@ -48,6 +48,7 @@ class TaskHeaderView: UIView {
     }
 
     private func setupView() {
+        self.backgroundColor = Color.inkBlack
         self.addSubview(view)
         self.view.frame = self.bounds
         self.view.backgroundColor = Color.inkBlack
@@ -63,6 +64,7 @@ class TaskHeaderView: UIView {
         self.dateLabel.textColor = Color.lightGray
         self.statsLabel.backgroundColor = Color.clear
         self.statsLabel.textColor = Color.lightGray
+        self.editButton.enableParallaxMotion(magnitude: 14)
         self.editButton.backgroundColor = Color.midNightBlack
         self.editButton.tintColor = Color.mandarinOrange
         self.editButton.contentMode = .scaleAspectFill

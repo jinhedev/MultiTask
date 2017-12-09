@@ -148,6 +148,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.observeNotificationForEditingMode()
     }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     // MARK: - CollectionView
 
     private func setupCollectionView() {

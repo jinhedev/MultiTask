@@ -142,4 +142,9 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.resignFirstResponder()
     }
 
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
+
 }

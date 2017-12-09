@@ -76,13 +76,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnG-Zz-b5w">
-                                                <rect key="frame" x="16" y="16" width="343" height="220"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="220"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="eBp-4x-3Iy">
-                                                        <rect key="frame" x="16" y="16" width="311" height="188"/>
+                                                        <rect key="frame" x="16" y="16" width="343" height="188"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="awy-k7-N3j">
-                                                                <rect key="frame" x="0.0" y="0.0" width="311" height="21"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="21"/>
                                                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="21" id="hVk-nT-sqn"/>
@@ -92,7 +92,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="subtitleLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIR-HE-Y7Z">
-                                                                <rect key="frame" x="0.0" y="37" width="311" height="22"/>
+                                                                <rect key="frame" x="0.0" y="37" width="343" height="22"/>
                                                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="VPc-P1-4eU"/>
@@ -102,7 +102,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" text="taskTitleTextView" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FPF-XE-Q7Q">
-                                                                <rect key="frame" x="0.0" y="75" width="311" height="53"/>
+                                                                <rect key="frame" x="0.0" y="75" width="343" height="53"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="iHf-RM-R3F"/>
@@ -112,7 +112,7 @@
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
                                                             </textView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G2I-78-Vgk">
-                                                                <rect key="frame" x="0.0" y="144" width="311" height="44"/>
+                                                                <rect key="frame" x="0.0" y="144" width="343" height="44"/>
                                                                 <color key="backgroundColor" red="0.44705882349999998" green="0.56078431370000004" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                                 <state key="normal" title="Save">
@@ -146,9 +146,9 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="wnG-Zz-b5w" secondAttribute="trailing" constant="16" id="J8E-Oc-KdT"/>
-                                            <constraint firstItem="wnG-Zz-b5w" firstAttribute="top" secondItem="khB-Pl-5KY" secondAttribute="top" constant="16" id="aRi-T2-plk"/>
-                                            <constraint firstItem="wnG-Zz-b5w" firstAttribute="leading" secondItem="khB-Pl-5KY" secondAttribute="leading" constant="16" id="mO2-su-3f9"/>
+                                            <constraint firstAttribute="trailing" secondItem="wnG-Zz-b5w" secondAttribute="trailing" id="J8E-Oc-KdT"/>
+                                            <constraint firstItem="wnG-Zz-b5w" firstAttribute="top" secondItem="khB-Pl-5KY" secondAttribute="top" id="aRi-T2-plk"/>
+                                            <constraint firstItem="wnG-Zz-b5w" firstAttribute="leading" secondItem="khB-Pl-5KY" secondAttribute="leading" id="mO2-su-3f9"/>
                                         </constraints>
                                     </view>
                                 </subviews>

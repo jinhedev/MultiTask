@@ -100,7 +100,8 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
 
     private func setupTableView() {
         self.view.backgroundColor = Color.clear
-        self.tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        self.tableView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        self.tableView.keyboardDismissMode = .interactive
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.backgroundColor = Color.transparentBlack

@@ -115,8 +115,9 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     // MARK: - TaskEditorViewControllerDelegate
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true) {
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
+        if let navigationController = viewController.navigationController {
+            navigationController.popViewController(animated: true)
             // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
             if self.mainPendingTasksCell?.pendingTasks == nil {
                 self.mainPendingTasksCell?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
@@ -124,12 +125,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         }
     }
 
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task, at indexPath: IndexPath) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didCancelTask task: Task?, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true, completion: nil)
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task) {
+        if let navigationController = viewController.navigationController {
+            navigationController.popViewController(animated: true)
+        }
     }
 
     // MARK: - Notifications

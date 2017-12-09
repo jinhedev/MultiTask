@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import RealmSwift
 
-class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate {
+class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UIViewControllerPreviewingDelegate, PersistentContainerDelegate, ItemEditorViewControllerDelegate, SoundEffectDelegate, TaskHeaderViewDelegate, TaskEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -24,16 +24,16 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     var searchController: UISearchController!
     static let storyboard_id = String(describing: ItemsViewController.self)
 
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var taskHeaderView: TaskHeaderView!
+    @IBOutlet weak var tashHeaderViewHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: - ItemEditorViewControllerDelegate
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didCancelItem item: Item?, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true) {
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.popViewController(animated: true)
             // update the parent task's updated_at
             guard let task = self.selectedTask else { return }
             self.realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
@@ -41,14 +41,17 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item, at indexPath: IndexPath) {
-        viewController.dismiss(animated: true, completion: nil)
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.popViewController(animated: true)
+        }
     }
 
     // MARK: - UISearchController
 
     private func setupSearchController() {
         guard let searchResultsViewController = self.storyboard?.instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }
+        searchResultsViewController.itemsViewController = self
         self.searchController = UISearchController(searchResultsController: searchResultsViewController)
         searchResultsViewController.selectedTask = self.selectedTask
         self.searchController.searchResultsUpdater = searchResultsViewController
@@ -59,30 +62,6 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
-    }
-
-    // MARK: - UIViewControllerPreviewingDelegate
-
-    private func setupViewControllerPreviewingDelegate() {
-        self.registerForPreviewing(with: self, sourceView: self.tableView)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.present(viewControllerToCommit, animated: true, completion: nil)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
-        let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
-        itemEditorViewController?.delegate = self
-        itemEditorViewController?.parentTask = self.selectedTask
-        itemEditorViewController?.selectedIndexPath = indexPath
-        itemEditorViewController?.selectedItem = items?[indexPath.section][indexPath.row]
-        // setting the peeking cell's animation
-        if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
-            previewingContext.sourceRect = selectedCell.frame
-        }
-        return itemEditorViewController
     }
 
     // MARK: - SoundEffectDelegate
@@ -180,6 +159,45 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
+    // MARK: - TaskHeaderViewDelegate
+
+    private func setupTaskHeaderViewDelegate() {
+        self.taskHeaderView.delegate = self
+    }
+
+    private func setupTaskHeaderView() {
+        self.taskHeaderView.selectedTask = self.selectedTask
+        // calculate the total height for the headerView
+        let viewHeight: CGFloat = 16 + 16 + (0) + 8 + 15 + 15 + 15 + 16 + 16 // containerViewTopMargin, titleLabelTopMargin, titleLabelHeight, titleLabelBottomMargin, subtitleLabelHeight, dateLabelHeight, statsLabelHeight, statsLabelBottomMargin, containerViewBottomMargin
+        let titleWidth: CGFloat = self.view.frame.width - 16 - 16 - 16 - 16
+        if let task = self.selectedTask {
+            let estimatedHeightForTitle = task.title.heightForText(systemFont: 15, width: titleWidth)
+            self.tashHeaderViewHeightLayoutConstraint.constant = viewHeight + estimatedHeightForTitle
+            UIView.animate(withDuration: 0.15, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
+    func taskHeaderView(_ view: TaskHeaderView, didTapEdit button: UIButton) {
+        // push to task editor
+        self.performSegue(withIdentifier: Segue.EditButtonToTaskEditorViewController, sender: self)
+    }
+
+    // MARK: - TaskEditorViewControllerDelegate
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
+        // ignore
+    }
+
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task) {
+        if let navigationViewController = self.navigationController as? BaseNavigationController {
+            navigationViewController.popToViewController(self, animated: true)
+            // update taskHeaderView's data
+            self.taskHeaderView.selectedTask = task
+        }
+    }
+
     // MARK: - Notifications
 
     func postNotificationForTaskCompletion(completedTask: Task) {
@@ -203,6 +221,8 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.setupItemsForTableViewWithParentTask()
+        self.setupTaskHeaderView()
+        self.setupTaskHeaderViewDelegate()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -210,14 +230,43 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             itemEditorViewController = segue.destination as? ItemEditorViewController
             itemEditorViewController?.delegate = self
             itemEditorViewController?.parentTask = self.selectedTask
+        } else if segue.identifier == Segue.EditButtonToTaskEditorViewController {
+            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
+                taskEditorViewController.selectedTask = self.selectedTask
+                taskEditorViewController.delegate = self
+            }
         }
     }
 
-    // MARK: - UINavigationBar
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.tableView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let navController = self.navigationController {
+            navController.pushViewController(viewControllerToCommit, animated: true)
+        }
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
+        let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
+        itemEditorViewController?.delegate = self
+        itemEditorViewController?.parentTask = self.selectedTask
+        itemEditorViewController?.selectedItem = items?[indexPath.section][indexPath.row]
+        // setting the peeking cell's animation
+        if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return itemEditorViewController
+    }
+
+    // MARK: - NavigationBar
 
     private func setupNavigationBar() {
-        guard let title = self.selectedTask?.title else { return }
-        self.navigationItem.title = title
+        self.navigationItem.title?.removeAll()
     }
 
     @IBAction func handleAdd(_ sender: UIBarButtonItem) {

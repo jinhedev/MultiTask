@@ -226,7 +226,8 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         let cellHeight: CGFloat = 8 + 16 + (0) + 8 + 15 + 15 + 16 + 8
         // REMARK: containerViewTopMargin + titleLabelTopMargin + (titleLabelHeight) + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin (see TaskCell.xib for references)
         if let task = self.pendingTasks?[indexPath.section][indexPath.item] {
-            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: cellWidth - 32 - 32) // (the container's leading margin to View's leading == 16) + (titleLabel's leading margin to container's leading == 16), same for the trailling
+            let titleWidth: CGFloat = cellWidth - 16 - 16 - 16 - 16
+            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: titleWidth) // (the container's leading margin to View's leading == 16) + (titleLabel's leading margin to container's leading == 16), same for the trailling
             return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
         }
         return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated minimum height for titleLabel when none is provided

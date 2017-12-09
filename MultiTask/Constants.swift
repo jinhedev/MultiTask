@@ -25,6 +25,8 @@ struct Configuration {
 
 struct Segue {
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
+    static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
+    static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
     static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
 }
 

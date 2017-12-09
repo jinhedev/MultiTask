@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, UIViewControllerPreviewingDelegate, ItemEditorViewControllerDelegate {
+class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, PersistentContainerDelegate, ItemEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -17,6 +17,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     var searchResultsItems: [Results<Item>]?
     var realmManager: RealmManager?
 
+    weak var itemsViewController: ItemsViewController?
     static let storyboard_id = String(describing: SearchResultsViewController.self)
 
     @IBOutlet weak var tableView: UITableView!
@@ -76,16 +77,12 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
 
     // MARK: - ItemEditorViewControllerDelegate
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didCancelItem item: Item?, at indexPath: IndexPath?) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item, at indexPath: IndexPath?) {
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item) {
         // this viewController does not handle adding new items
         viewController.dismiss(animated: true, completion: nil)
     }
 
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item, at indexPath: IndexPath) {
+    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item) {
         viewController.dismiss(animated: true, completion: {
             self.tableView.reloadData()
         })
@@ -96,32 +93,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupTableView()
-        self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
-    }
-
-    // MARK: - UIViewControllerPreviewingDelegate
-
-    private func setupViewControllerPreviewingDelegate() {
-        self.registerForPreviewing(with: self, sourceView: self.tableView)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        self.present(viewControllerToCommit, animated: true, completion: nil)
-    }
-
-    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
-        let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
-        itemEditorViewController?.delegate = self
-        itemEditorViewController?.parentTask = self.selectedTask
-        itemEditorViewController?.selectedIndexPath = indexPath
-        itemEditorViewController?.selectedItem = searchResultsItems?[indexPath.section][indexPath.row]
-        // setting the peeking cell's animation
-        if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
-            previewingContext.sourceRect = selectedCell.frame
-        }
-        return itemEditorViewController
     }
 
     // MARK: - UITableView
@@ -147,7 +119,15 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: scroll the itemsViewController to the selected item
+        if let selectedItem = self.searchResultsItems?[indexPath.section][indexPath.item] {
+            guard let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController else { return }
+            itemEditorViewController.delegate = self
+            itemEditorViewController.parentTask = self.selectedTask
+            itemEditorViewController.selectedItem = selectedItem
+            if let navController = self.itemsViewController?.navigationController as? BaseNavigationController {
+                navController.pushViewController(itemEditorViewController, animated: true)
+            }
+        }
     }
 
     // MARK: - UITableViewDataSource

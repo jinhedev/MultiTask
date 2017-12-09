@@ -154,12 +154,12 @@ class PendingTaskCell: BaseCollectionViewCell {
     private func setupLongPressGestureRecognizer() {
         self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationForTaskEditing(gestureRecognizer:)))
         self.longPressGestureRecognizer!.allowableMovement = 22
-        self.longPressGestureRecognizer!.minimumPressDuration = 3
+        self.longPressGestureRecognizer!.minimumPressDuration = 1.3
         self.containerView.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
 
     @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
-        if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 3 {
+        if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
             let notification = Notification(name: Notification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil, userInfo: [NotificationKey.CollectionViewEditingMode : true])
             NotificationCenter.default.post(notification)
         }

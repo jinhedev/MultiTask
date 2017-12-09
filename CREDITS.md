@@ -10,3 +10,4 @@
 - List by viraj from the Noun Project
 - Lock by Viktor Vorobyev from the Noun Project
 - Trash by Popular from the Noun Project
+- edit by Fantastic from the Noun Project

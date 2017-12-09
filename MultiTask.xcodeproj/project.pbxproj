@@ -73,6 +73,8 @@
 		C5B412B11FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */; };
 		C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */; };
 		C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */; };
+		C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D038751FDAF7940010085B /* TaskHeaderView.swift */; };
+		C5D038781FDAF7B60010085B /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D038771FDAF7B60010085B /* TaskHeaderView.xib */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
 		C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */; };
@@ -206,6 +208,8 @@
 		C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewControllerTests.swift; sourceTree = "<group>"; };
 		C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPendingTasksCell.swift; sourceTree = "<group>"; };
 		C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainPendingTasksCell.xib; sourceTree = "<group>"; };
+		C5D038751FDAF7940010085B /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
+		C5D038771FDAF7B60010085B /* TaskHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -269,6 +273,7 @@
 				C543943E1FB5292C009EC104 /* MenuBarCell.xib */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C549CCCD1FC8EE960039D0D5 /* CompletedTaskCell.xib */,
+				C5D038771FDAF7B60010085B /* TaskHeaderView.xib */,
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
 				C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */,
@@ -404,6 +409,7 @@
 				C55E14101FD8597F00C46BED /* MainCompletedTasksCell.swift */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C549CCCB1FC8EE630039D0D5 /* CompletedTaskCell.swift */,
+				C5D038751FDAF7940010085B /* TaskHeaderView.swift */,
 				C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */,
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
 				C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */,
@@ -600,6 +606,7 @@
 				C53C3EF51FBA47850064DDB4 /* BranchTab.storyboard in Resources */,
 				C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */,
 				C54DA6B91FD1B2170071C3D6 /* PlaceholderBackgroundView.xib in Resources */,
+				C5D038781FDAF7B60010085B /* TaskHeaderView.xib in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
@@ -704,6 +711,7 @@
 				C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */,
 				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,
 				C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */,
+				C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */,
 				C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,
 				C5A9A8DD1F3C2CF100601CFF /* Constants.swift in Sources */,

@@ -128,6 +128,9 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {
         // REMARK: delete an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
         guard let parentTask = self.selectedTask else { return }
+        self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : parentTask.shouldComplete(), Task.updatedAtKeyPath : NSDate()])
+
+
         if parentTask.shouldComplete() == true {
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
             self.postNotificationForTaskCompletion(completedTask: parentTask)
@@ -137,25 +140,27 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
             self.postNotificationForTaskPending(pendingTask: parentTask)
         } else {
-            // having deleted an item doesn't cause the parentTask to change its completion state
+            // parentTask.shouldComplete() == nil
+            // having updated an item doesn't cause the parentTask to change its completion state
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
-        // REMARK: update an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
-        guard let parentTask = self.selectedTask else { return }
-        if parentTask.shouldComplete() == true {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
-            // post a notification to CompletedTasksViewController to execute a manual fetch if completedTasks is nil
-            self.postNotificationForTaskCompletion(completedTask: parentTask)
-            // play sound effect
-            self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
-        } else if parentTask.shouldComplete() == false {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
-            // post a notification to PendingTasksViewController to execute a manual fetch if pendingTasks is nil
-            self.postNotificationForTaskPending(pendingTask: parentTask)
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
+        // REMARK: updating an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
+        if let updatedTask = object as? Task {
+            // update the header
+            self.taskHeaderView.selectedTask = updatedTask
+        } else if let _ = object as? Item {
+            guard let parentTask = self.selectedTask else { return }
+            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : parentTask.shouldComplete(), Task.updatedAtKeyPath : NSDate()])
+            if parentTask.shouldComplete() == true {
+                self.postNotificationForTaskCompletion(completedTask: parentTask) // notify MainCompletedTasksCell
+                self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
+            } else {
+                self.postNotificationForTaskPending(pendingTask: parentTask) // notify MainPendingTasksCell
+            }
         } else {
-            // having updated an item doesn't cause the parentTask to change its completion state
+            // don't know what object it is, ignore, for now...
         }
     }
 
@@ -236,10 +241,12 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.ItemsViewControllerToItemEditorViewController {
             itemEditorViewController = segue.destination as? ItemEditorViewController
+            itemEditorViewController?.hidesBottomBarWhenPushed = true
             itemEditorViewController?.delegate = self
             itemEditorViewController?.parentTask = self.selectedTask
         } else if segue.identifier == Segue.EditButtonToTaskEditorViewController {
             if let taskEditorViewController = segue.destination as? TaskEditorViewController {
+                taskEditorViewController.hidesBottomBarWhenPushed = true
                 taskEditorViewController.selectedTask = self.selectedTask
                 taskEditorViewController.delegate = self
             }
@@ -254,6 +261,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
 
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         if let navController = self.navigationController as? BaseNavigationController {
+            viewControllerToCommit.hidesBottomBarWhenPushed = true
             navController.pushViewController(viewControllerToCommit, animated: true)
         }
     }

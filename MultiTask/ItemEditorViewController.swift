@@ -95,7 +95,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
         // called when successfully updated an existing item
         if let item = self.selectedItem {
             self.delegate?.itemEditorViewController(self, didUpdateItem: item)
@@ -107,7 +107,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object]) {
         // called when successfully appened a new item to task
         if let newItem = objects.first as? Item {
             self.delegate?.itemEditorViewController(self, didAddItem: newItem)

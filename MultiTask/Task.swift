@@ -33,27 +33,14 @@ final class Task: Object {
         return predicate
     }
 
-    /**
-     If all items in this task are marked completed, but this task itself is not marked completed, then it will return true; if only some items in this task are marked completed, but the task itself is marked completed, then it will return false. Nil will be return when task is already in sync when the current state of all of its items.
-     */
-    func shouldComplete() -> Bool? {
+    func shouldComplete() -> Bool {
         let itemsCount = self.items.count
         let completedItems = self.items.filter { $0.is_completed == true }
         let completedItemsCount = completedItems.count
-        if self.is_completed == true {
-            if completedItemsCount != itemsCount {
-                return false
-            } else {
-                // task itself is marked completed and all its embeded items are marked completed. All is good. Ignore.
-                return nil
-            }
+        if completedItemsCount == itemsCount && itemsCount > 0 {
+            return true
         } else {
-            if completedItemsCount == itemsCount {
-                return true
-            } else {
-                // task itself is marked not completed and only some of its embeded items are marked completed. All is good. Ignore.
-                return nil
-            }
+            return false
         }
     }
 

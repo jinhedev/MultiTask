@@ -102,7 +102,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
         if let task = self.selectedTask {
             self.delegate?.taskEditorViewController(self, didUpdateTask: task)
         } else {
@@ -113,7 +113,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
     }
 
-    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {
+    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object]) {
         if let newTask = objects.first as? Task {
             self.delegate?.taskEditorViewController(self, didAddTask: newTask)
         } else {
@@ -145,6 +145,5 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
 
 }

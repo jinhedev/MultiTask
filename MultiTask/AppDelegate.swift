@@ -19,14 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // APNS
         setupRemoteNotification()
         // Realm
-        setupRealm()
+        setupRealm() // see RealmManager
         setupPersistentContainerDelegate()
         if realmManager?.isOnboardingCompleted == true {
             print("fetch app settings and setup themes and other environment objects")
         } else {
             print("go to onboarding")
         }
-        UITableViewCell.appearance().backgroundColor = .clear
+        self.setupAppearance()
         return true
     }
 
@@ -84,6 +84,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
+    }
+
+    // MARK: - UIAppearance
+
+    func setupAppearance() {
+        UITableViewCell.appearance().backgroundColor = .clear
     }
 
 }

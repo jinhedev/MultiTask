@@ -13,32 +13,38 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     // error
     func persistentContainer(_ manager: RealmManager, didErr error: Error)
     // auth
-    func persistentContainer(_ manager: RealmManager, didLogin: Bool)
-    func persistentContainer(_ manager: RealmManager, didLogout: Bool)
+    func didRegister(_ manager: RealmManager, user: User)
+    func didLogin(_ manager: RealmManager, user: User)
+    func didLogout(_ manager: RealmManager, user: User)
     // fetch
+    func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?)
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?)
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?)
     // create
-    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object])
+    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object])
     // update
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object)
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object)
     // delete
+    func didPurgeDatabase(_ manager: RealmManager)
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?)
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?)
 }
 
 extension PersistentContainerDelegate {
     // auth
-    func persistentContainer(_ manager: RealmManager, didLogin: Bool) {}
-    func persistentContainer(_ manager: RealmManager, didLogout: Bool) {}
+    func didRegister(_ manager: RealmManager, user: User) {}
+    func didLogin(_ manager: RealmManager, user: User) {}
+    func didLogout(_ manager: RealmManager, user: User) {}
     // fetch
+    func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {}
     // create
-    func persistentContainer(_ manager: RealmManager, didAdd objects: [Object]) {}
+    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object]) {}
     // update
-    func persistentContainer(_ manager: RealmManager, didUpdate object: Object) {}
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {}
     // delete
+    func didPurgeDatabase(_ manager: RealmManager) {}
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {}
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {}
 }
@@ -64,6 +70,7 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.deleteAll()
             }
+            delegate?.didPurgeDatabase(self)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }
@@ -82,13 +89,19 @@ class RealmManager: NSObject {
 
     // MARK: - Authentication
 
-    func login(user: String, pass: String) {
-        delegate?.persistentContainer(self, didLogin: true)
+    func register(newUser: User) {
+        // TODO: implement this
+        delegate?.didRegister(self, user: newUser)
     }
 
-    func logout() {
-        purgeDatabase()
-        delegate?.persistentContainer(self, didLogout: true)
+    func login(existingUser: User, pass: String) {
+        // TODO: implement this
+        delegate?.didLogin(self, user: existingUser)
+    }
+
+    func logout(existingUser: User) {
+        // TODO: implement this
+        delegate?.didLogout(self, user: existingUser)
     }
 
     // MARK: - Fetch
@@ -146,7 +159,7 @@ class RealmManager: NSObject {
             try realm.write {
                 realm.add(objects, update: true)
             }
-            delegate?.persistentContainer(self, didAdd: objects)
+            delegate?.persistentContainer(self, didAddObjects: objects)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }
@@ -162,7 +175,7 @@ class RealmManager: NSObject {
                 parentTask.items.append(item)
                 realm.add(parentTask)
             }
-            delegate?.persistentContainer(self, didAdd: [item])
+            delegate?.persistentContainer(self, didAddObjects: [item])
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }
@@ -174,9 +187,9 @@ class RealmManager: NSObject {
         do {
             try realm.write {
                 object.setValuesForKeys(keyedValues)
-                realm.add(object)
+                realm.add(object, update: true)
             }
-            delegate?.persistentContainer(self, didUpdate: object)
+            delegate?.persistentContainer(self, didUpdateObject: object)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }

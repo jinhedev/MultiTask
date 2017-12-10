@@ -14,7 +14,7 @@ protocol MainTasksViewControllerDelegate: NSObjectProtocol {
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
 }
 
-class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate {
+class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate, UITabBarControllerDelegate {
 
     // MARK: - API
 
@@ -142,6 +142,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupNavigationBar()
+        self.setupUITabBarControllerDelegate()
         self.setupCollectionView()
         self.setupMenuBarView()
         self.setupCollectionViewFlowLayout()
@@ -150,6 +151,29 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+
+    // MARK: - UITabBarControllerDelegate
+
+    private func setupUITabBarControllerDelegate() {
+        if let baseTabBarController = self.tabBarController as? BaseTabBarController {
+            baseTabBarController.delegate = self
+        }
+    }
+
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let selectedIndex = tabBarController.viewControllers?.index(of: viewController) {
+            if selectedIndex == 0 {
+                let topIndexPath = IndexPath(item: 0, section: 0)
+                if self.menuBarView.selectedIndexPath?.item == 0 {
+                    // you are looking at the mainPendingCell
+                    self.mainPendingTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                } else {
+                    // looking at the mainCompletedCell
+                    self.mainCompletedTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                }
+            }
+        }
     }
 
     // MARK: - CollectionView
@@ -184,6 +208,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         let selectedIndexItem = targetContentOffset.pointee.x / self.mainCollectionView.frame.width
         let selectedIndexPath = IndexPath(item: Int(selectedIndexItem), section: 0)
         self.menuBarView.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.left)
+        self.menuBarView.selectedIndexPath = selectedIndexPath
     }
 
     // MARK: - CollectionViewDelegate

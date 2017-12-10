@@ -25,6 +25,7 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     }
 
     var menus = [Menu(title: "Pending"), Menu(title: "Completed")]
+    var selectedIndexPath: IndexPath?
     static let nibName = String(describing: MenuBarView.self)
 
     @IBOutlet weak var view: UIView!
@@ -98,12 +99,14 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         // initial selected state for the first cell
         let initialSelectedIndexPath = IndexPath(item: 0, section: 0)
         self.collectionView.selectItem(at: initialSelectedIndexPath, animated: false, scrollPosition: UICollectionViewScrollPosition.top)
+        self.selectedIndexPath = initialSelectedIndexPath // initial selectedIndexPath
     }
 
     // MARK: - CollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.mainTasksViewController?.scrollToIndex(menuIndex: indexPath.item)
+        self.selectedIndexPath = indexPath
     }
 
     // MARK: - CollectionViewDataSource

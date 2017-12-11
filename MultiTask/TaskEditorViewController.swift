@@ -79,7 +79,7 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         if self.selectedTask == nil {
             self.subtitleLabel.isHidden = true
         } else {
-            self.subtitleLabel.text = "ID. " + selectedTask!.id
+            self.subtitleLabel.text = "Hash. " + selectedTask!.id
         }
     }
 

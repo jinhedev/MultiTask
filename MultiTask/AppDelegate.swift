@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 import UserNotifications
 
 @UIApplicationMain
@@ -21,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Realm
         setupRealm() // see RealmManager
         setupPersistentContainerDelegate()
+        performInitialFetch()
         if realmManager?.isOnboardingCompleted == true {
             print("fetch app settings and setup themes and other environment objects")
         } else {
@@ -82,8 +84,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         realmManager!.delegate = self
     }
 
+    func performInitialFetch() {
+        self.realmManager?.fetchExistingUsers()
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUsers = users else { return }
+        if fetchedUsers.isEmpty {
+            let newUser = User(email: "")
+            self.realmManager!.register(newUser: newUser)
+        } else {
+            // user does exist in local machine, safely ignore.
+        }
+    }
+
+    func didRegister(_ manager: RealmManager, user: User) {
+        // new user is now register. All is good. Safely ignore.
     }
 
     // MARK: - UIAppearance

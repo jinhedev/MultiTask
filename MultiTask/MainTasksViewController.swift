@@ -167,10 +167,16 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
                 let topIndexPath = IndexPath(item: 0, section: 0)
                 if self.menuBarView.selectedIndexPath?.item == 0 {
                     // you are looking at the mainPendingCell
-                    self.mainPendingTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                    guard let tasks = self.mainPendingTasksCell?.pendingTasks else { return }
+                    if !tasks.isEmpty {
+                        self.mainPendingTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                    }
                 } else {
                     // looking at the mainCompletedCell
-                    self.mainCompletedTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                    guard let tasks = self.mainCompletedTasksCell?.completedTasks else { return }
+                    if !tasks.isEmpty {
+                        self.mainCompletedTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
+                    }
                 }
             }
         }

@@ -42,9 +42,9 @@ class TaskHeaderView: UIView {
     private func configureView() {
         guard let task = self.selectedTask else { return }
         self.titleLabel.text = task.title
-        self.subtitleLabel.text = "ID: " + task.id
-        self.dateLabel.text = "Created: " + task.created_at.toRelativeDate()
-        self.statsLabel.text = task.updated_at != nil ? "Updated: \(task.updated_at!.toRelativeDate())" : "Updated: nil"
+        self.subtitleLabel.text = "Hash. " + task.id
+        self.dateLabel.text = "Created. " + task.created_at.toRelativeDate()
+        self.statsLabel.text = task.updated_at != nil ? "Updated. \(task.updated_at!.toRelativeDate())" : "Updated. nil"
     }
 
     private func setupView() {

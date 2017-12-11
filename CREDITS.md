@@ -11,3 +11,8 @@
 - Lock by Viktor Vorobyev from the Noun Project
 - Trash by Popular from the Noun Project
 - edit by Fantastic from the Noun Project
+- storage by Nirbhay from the Noun Project
+- Theming by Felix E. from the Noun Project
+- degree by Guru from the Noun Project
+- support by Maxim Kulikov from the Noun Project
+- Kanban Board by Vignesh Nandha Kumar from the Noun Project

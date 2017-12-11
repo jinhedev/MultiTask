@@ -114,6 +114,16 @@ extension String {
         return ceil(rect.height)
     }
 
+    static func random(length: Int) -> String {
+        let letters = "abcdefghjklmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345789"
+        let randomLength = UInt32(letters.count)
+        let randomString: String = (0 ..< length).reduce(String()) { accum, _ in
+            let randomOffset = arc4random_uniform(randomLength)
+            let randomIndex = letters.index(letters.startIndex, offsetBy: Int(randomOffset))
+            return accum.appending(String(letters[randomIndex]))
+        }
+        return randomString
+    }
 }
 
 // MARK: - UIView
@@ -143,4 +153,17 @@ extension URL {
         return URL(fileURLWithPath: dir, isDirectory: true).appendingPathComponent(fileName)
     }
 
+}
+
+// MARK: - NSBundle
+
+extension Bundle {
+
+    var releaseVersionNumber: String? {
+        return infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    
+    var buildVersionNumber: String? {
+        return infoDictionary?["CFBundleVersion"] as? String
+    }
 }

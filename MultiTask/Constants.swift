@@ -25,9 +25,14 @@ struct Configuration {
 
 struct Segue {
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
+    static let AvatarButtonToSettingsViewController = "AvatarButtonToSettingsViewController"
     static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
     static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
     static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
+    static let ProfileCellToWebsViewController = "ProfileCellToWebsViewController"
+    static let AgreementCellToWebsViewController = "AgreementCellToWebsViewController"
+    static let SupportCellToWebsViewController = "SupportCellToWebsViewController"
+    static let BugCellToWebsViewController = "BugCellToWebsViewController"
 }
 
 // MARK: - Notification
@@ -38,6 +43,17 @@ struct NotificationKey {
     static let TaskUpdate = "TaskUpdate"
     static let CollectionViewEditingMode = "CollectionViewEditingMode"
     static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
+}
+
+// MARK: - Web URL String
+
+struct ExternalWebServiceUrlString {
+    static let Trello = "https://trello.com/b/8fgpP9ZL/multitask-ios-client"
+    static let TrelloApp = ""
+    static let FAQ = "https://www.reddit.com/r/StarfishApp/"
+    static let FAQRedditApp = ""
+    static let Terms = "https://github.com/jinhedev/MultiTask/blob/develop/LICENSE.md"
+    static let Test = "https://www.apple.com"
 }
 
 // MARK: - Color

@@ -23,6 +23,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="b3A-Kq-BQF" kind="relationship" relationship="viewControllers" id="NR9-mu-3bO"/>
+                        <segue destination="tHN-5A-HlK" kind="relationship" relationship="viewControllers" id="tzg-bS-fGG"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
@@ -39,11 +40,11 @@
             </objects>
             <point key="canvasLocation" x="213" y="325"/>
         </scene>
-        <!--BranchTab-->
+        <!--StashTab-->
         <scene sceneID="j6M-Fl-CtX">
             <objects>
-                <viewControllerPlaceholder storyboardName="BranchTab" id="tHN-5A-HlK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Branch" image="Branch" landscapeImage="Branch" largeContentSizeImage="Branch" id="8kw-5H-Wnm"/>
+                <viewControllerPlaceholder storyboardName="StashTab" id="tHN-5A-HlK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Stash" image="Folder" landscapeImage="Folder" largeContentSizeImage="Folder" id="8kw-5H-Wnm"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wby-ct-DHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -51,7 +52,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Branch" width="50" height="50"/>
+        <image name="Folder" width="50" height="50"/>
         <image name="Starfish" width="50" height="50"/>
     </resources>
 </document>

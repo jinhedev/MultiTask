@@ -6,7 +6,7 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "profile.pdf",
+      "filename" : "RubberDuck.pdf",
       "scale" : "2x"
     },
     {
@@ -19,7 +19,6 @@
     "author" : "xcode"
   },
   "properties" : {
-    "template-rendering-intent" : "template",
     "preserves-vector-representation" : true
   }
 }

@@ -78,7 +78,7 @@ class ItemEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         if self.selectedItem == nil {
             self.subtitleLabel.isHidden = true
         } else {
-            self.subtitleLabel.text = "ID. " + selectedItem!.id
+            self.subtitleLabel.text = "Hash. " + selectedItem!.id
         }
     }
 

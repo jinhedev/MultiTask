@@ -18,6 +18,7 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func didLogout(_ manager: RealmManager, user: User)
     // fetch
     func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?)
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?)
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?)
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?)
     // create
@@ -37,6 +38,7 @@ extension PersistentContainerDelegate {
     func didLogout(_ manager: RealmManager, user: User) {}
     // fetch
     func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?) {}
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {}
     // create
@@ -90,8 +92,14 @@ class RealmManager: NSObject {
     // MARK: - Authentication
 
     func register(newUser: User) {
-        // TODO: implement this
-        delegate?.didRegister(self, user: newUser)
+        do {
+            try realm.write {
+                realm.add(newUser, update: true)
+            }
+            delegate?.didRegister(self, user: newUser)
+        } catch let err {
+            delegate?.persistentContainer(self, didErr: err)
+        }
     }
 
     func login(existingUser: User, pass: String) {
@@ -105,6 +113,11 @@ class RealmManager: NSObject {
     }
 
     // MARK: - Fetch
+
+    func fetchExistingUsers() {
+        let users = realm.objects(User.self)
+        delegate?.persistentContainer(self, didFetchUsers: users)
+    }
 
     func fetchTasks(predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
         let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)

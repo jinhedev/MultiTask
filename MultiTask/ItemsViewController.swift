@@ -47,7 +47,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    // MARK: - UISearchController
+    // MARK: - UISearchControllerDelegate
 
     private func setupSearchController() {
         guard let searchResultsViewController = self.storyboard?.instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }

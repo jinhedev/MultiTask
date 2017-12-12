@@ -116,57 +116,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Settings" id="Lwo-Hf-2wb">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="MAw-fB-xkN">
-                                        <rect key="frame" x="0.0" y="203.5" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MAw-fB-xkN" id="aJ9-cv-kAY">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="iny-jQ-ayX">
-                                                    <rect key="frame" x="16" y="11" width="122" height="22"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Theme" translatesAutoresizingMaskIntoConstraints="NO" id="fEd-xU-goX">
-                                                            <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="22" id="9ox-21-TDA"/>
-                                                                <constraint firstAttribute="width" constant="22" id="LPi-Di-qV3"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark Theme" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcL-3H-YM2">
-                                                            <rect key="frame" x="38" y="0.0" width="84" height="22"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hzl-9R-EIL">
-                                                    <rect key="frame" x="310" y="7" width="51" height="31"/>
-                                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <color key="onTintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <connections>
-                                                        <action selector="handleThemeSwitch:" destination="5Gg-9Y-dOm" eventType="valueChanged" id="h15-V7-puU"/>
-                                                    </connections>
-                                                </switch>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="hzl-9R-EIL" firstAttribute="centerY" secondItem="aJ9-cv-kAY" secondAttribute="centerY" id="Aha-c1-QJd"/>
-                                                <constraint firstItem="iny-jQ-ayX" firstAttribute="leading" secondItem="aJ9-cv-kAY" secondAttribute="leading" constant="16" id="QbP-kg-whv"/>
-                                                <constraint firstItem="iny-jQ-ayX" firstAttribute="centerY" secondItem="aJ9-cv-kAY" secondAttribute="centerY" id="UKq-t5-fsZ"/>
-                                                <constraint firstItem="hzl-9R-EIL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iny-jQ-ayX" secondAttribute="trailing" constant="16" id="VPf-AA-nDi"/>
-                                                <constraint firstAttribute="trailing" secondItem="hzl-9R-EIL" secondAttribute="trailing" constant="16" id="xBl-Y7-396"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="About" id="PnV-Qp-dRQ">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="v4k-Ix-uJ1">
-                                        <rect key="frame" x="0.0" y="303.5" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="203.5" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="v4k-Ix-uJ1" id="SSI-iC-OVk">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -206,7 +159,7 @@
                             <tableViewSection headerTitle="Support" footerTitle="You are using MultiTask 2.5.0" id="O4o-om-jB6">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="OF5-Uy-Q7a">
-                                        <rect key="frame" x="0.0" y="411" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="311" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OF5-Uy-Q7a" id="hYO-oQ-d9E">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -242,7 +195,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="6fC-Hc-T6e">
-                                        <rect key="frame" x="0.0" y="455" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="355" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6fC-Hc-T6e" id="mpG-Sb-BLy">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -297,13 +250,9 @@
                         <outlet property="bugImageView" destination="sv2-H9-oAf" id="JSq-gc-Gzs"/>
                         <outlet property="bugLabel" destination="cD9-NC-VQ3" id="4a9-nE-kZ0"/>
                         <outlet property="profileCell" destination="ArY-ny-W7N" id="TeT-Rl-Pnu"/>
-                        <outlet property="settingsCell" destination="MAw-fB-xkN" id="HMQ-JR-am5"/>
                         <outlet property="supportCell" destination="OF5-Uy-Q7a" id="pbB-tY-ZUa"/>
                         <outlet property="supportImageView" destination="hJn-as-G5y" id="BAg-GZ-Qaj"/>
                         <outlet property="supportLabel" destination="iPv-Ik-gvk" id="EmH-ej-o9u"/>
-                        <outlet property="themeImageView" destination="fEd-xU-goX" id="Fjy-OH-tfq"/>
-                        <outlet property="themeSwitch" destination="hzl-9R-EIL" id="nc2-Jv-qWB"/>
-                        <outlet property="themeTitleLabel" destination="tcL-3H-YM2" id="VTn-Ct-1yU"/>
                         <outlet property="userIdLabel" destination="LcM-Wj-eTn" id="Pfq-09-tbW"/>
                         <outlet property="userStatusLabel" destination="OfO-pI-fvw" id="zRO-k9-1UD"/>
                     </connections>
@@ -427,7 +376,6 @@
         <image name="Constract" width="50" height="50"/>
         <image name="Folder" width="50" height="50"/>
         <image name="Reddit" width="50" height="50"/>
-        <image name="Theme" width="50" height="50"/>
         <image name="Trello" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>

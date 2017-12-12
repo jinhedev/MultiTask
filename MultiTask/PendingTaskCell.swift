@@ -160,7 +160,7 @@ class PendingTaskCell: BaseCollectionViewCell {
 
     @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
         if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
-            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil, userInfo: [NotificationKey.CollectionViewEditingMode : true])
+            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.PendingTaskCellEditingMode), object: nil, userInfo: [NotificationKey.PendingTaskCellEditingMode : true])
             NotificationCenter.default.post(notification)
         }
     }

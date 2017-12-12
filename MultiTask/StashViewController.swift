@@ -9,9 +9,19 @@
 import UIKit
 import RealmSwift
 
-class StashViewController: BaseViewController, PersistentContainerDelegate {
+class StashViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     // MARK: - API
+
+    lazy var editButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit(_:)))
+        return button
+    }()
+
+    lazy var popButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash(_:)))
+        return button
+    }()
 
     var realmManager: RealmManager?
 
@@ -81,7 +91,60 @@ class StashViewController: BaseViewController, PersistentContainerDelegate {
     // MARK: - CollectionView
 
     private func setupCollectionView() {
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.register(UINib(nibName: StashedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: StashedTaskCell.cell_id)
+    }
+
+    // MARK: - UICollectionViewDelegateFlowLayout
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        let insets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        return insets
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let cellWidth = self.collectionView.frame.width
+        let cellHeight: CGFloat = 8 + 16 + 22 + 8 + 15 + 16 + 8
+        return CGSize(width: cellWidth, height: cellHeight)
+    }
+
+    // MARK: - UICollectionViewDelegate
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        //
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        //
+    }
+
+    // MARK: - UICollectionViewDataSource
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: StashedTaskCell.cell_id, for: indexPath) as? StashedTaskCell {
+            return cell
+        } else {
+            return BaseCollectionViewCell()
+        }
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
     }
 
 }

@@ -41,7 +41,9 @@ struct NotificationKey {
     static let TaskPending = "TaskPending"
     static let TaskCompletion = "TaskCompletion"
     static let TaskUpdate = "TaskUpdate"
-    static let CollectionViewEditingMode = "CollectionViewEditingMode"
+    static let PendingTaskCellEditingMode = "PendingTaskCellEditingMode"
+    static let CompletedTaskCellEditingMode = "CompletedTaskCellEditingMode"
+    static let StashedTaskCellEditingMode = "StashedTaskCellEditingMode"
     static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
 }
 

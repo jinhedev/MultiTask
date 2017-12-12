@@ -137,7 +137,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     }
 
     func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.PendingTaskCellEditingMode), object: nil)
     }
 
     // MARK: - Lifecycle
@@ -164,16 +164,16 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
     // MARK: - BaseCollectionViewCell
 
     private func setupCell() {
-        self.backgroundColor = Color.inkBlack
         self.isEditing = false
     }
 
-    // MARK: - CollectionView
+    // MARK: - UICollectionView
 
     private func setupCollectionView() {
         self.collectionView.indicatorStyle = .white
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.scrollsToTop = true
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
         self.collectionView.register(UINib(nibName: PendingTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: PendingTaskCell.cell_id)

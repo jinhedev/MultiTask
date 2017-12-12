@@ -136,7 +136,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
     }
 
     func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CollectionViewEditingMode), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CompletedTaskCellEditingMode), object: nil)
     }
 
     // MARK: - Lifecycle
@@ -159,7 +159,6 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
     // MARK: - BaseCollectionViewCell
 
     private func setupCell() {
-        self.backgroundColor = Color.inkBlack
         self.isEditing = false
     }
 
@@ -171,6 +170,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
+        self.collectionView.scrollsToTop = true
         self.collectionView.register(UINib(nibName: CompletedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: CompletedTaskCell.cell_id)
     }
 

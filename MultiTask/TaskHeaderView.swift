@@ -27,7 +27,7 @@ class TaskHeaderView: UIView {
 
     @IBOutlet var view: UIView!
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
@@ -41,7 +41,7 @@ class TaskHeaderView: UIView {
 
     private func configureView() {
         guard let task = self.selectedTask else { return }
-        self.titleLabel.text = task.title
+        self.titleTextView.text = task.title
         self.subtitleLabel.text = "Hash. " + task.id
         self.dateLabel.text = "Created. " + task.created_at.toRelativeDate()
         self.statsLabel.text = task.updated_at != nil ? "Updated. \(task.updated_at!.toRelativeDate())" : "Updated. nil"
@@ -56,8 +56,10 @@ class TaskHeaderView: UIView {
         self.containerView.layer.cornerRadius = 8
         self.containerView.layer.borderColor = Color.lightGray.cgColor
         self.containerView.layer.borderWidth = 1
-        self.titleLabel.backgroundColor = Color.clear
-        self.titleLabel.textColor = Color.white
+        self.titleTextView.backgroundColor = Color.clear
+        self.titleTextView.contentInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)
+        self.titleTextView.textColor = Color.white
+        self.titleTextView.indicatorStyle = .white
         self.subtitleLabel.backgroundColor = Color.clear
         self.subtitleLabel.textColor = Color.lightGray
         self.dateLabel.backgroundColor = Color.clear

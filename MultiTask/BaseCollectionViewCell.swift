@@ -10,8 +10,14 @@ import UIKit
 
 class BaseCollectionViewCell: UICollectionViewCell {
 
+    private func setupCell() {
+        self.backgroundColor = Color.inkBlack
+        self.contentView.backgroundColor = Color.clear
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.setupCell()
     }
 
     override func prepareForReuse() {

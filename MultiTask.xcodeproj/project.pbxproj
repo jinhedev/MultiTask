@@ -14,6 +14,8 @@
 		C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */; };
 		C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5409B371FA50758004BAF4F /* ItemCell.xib */; };
 		C5418DF31FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5418DF21FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift */; };
+		C5421FAC1FDFC999009E78C4 /* StashedTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5421FAB1FDFC999009E78C4 /* StashedTaskCell.swift */; };
+		C5421FAE1FDFCB29009E78C4 /* StashedTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5421FAD1FDFCB29009E78C4 /* StashedTaskCell.xib */; };
 		C543943F1FB5292C009EC104 /* MenuBarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C543943E1FB5292C009EC104 /* MenuBarCell.xib */; };
 		C54394411FB529C8009EC104 /* MenuBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54394401FB529C8009EC104 /* MenuBarCell.swift */; };
 		C54394431FB55E69009EC104 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */; };
@@ -52,6 +54,7 @@
 		C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */; };
 		C59C36F71FDD14A300FA86CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C36F61FDD14A300FA86CF /* SettingsViewController.swift */; };
 		C59C36FD1FDE298700FA86CF /* WebsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C36FC1FDE298700FA86CF /* WebsViewController.swift */; };
+		C59C36FF1FDF5E0700FA86CF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C36FE1FDF5E0700FA86CF /* Theme.swift */; };
 		C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */; };
 		C5A0D77D1FB7DF98002968F7 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */; };
 		C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */; };
@@ -151,6 +154,8 @@
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
 		C5409B371FA50758004BAF4F /* ItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemCell.xib; sourceTree = "<group>"; };
 		C5418DF21FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewWaterfallLayout.swift; sourceTree = "<group>"; };
+		C5421FAB1FDFC999009E78C4 /* StashedTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StashedTaskCell.swift; sourceTree = "<group>"; };
+		C5421FAD1FDFCB29009E78C4 /* StashedTaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StashedTaskCell.xib; sourceTree = "<group>"; };
 		C543943E1FB5292C009EC104 /* MenuBarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuBarCell.xib; sourceTree = "<group>"; };
 		C54394401FB529C8009EC104 /* MenuBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarCell.swift; sourceTree = "<group>"; };
 		C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -191,6 +196,7 @@
 		C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksViewController.swift; sourceTree = "<group>"; };
 		C59C36F61FDD14A300FA86CF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C59C36FC1FDE298700FA86CF /* WebsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsViewController.swift; sourceTree = "<group>"; };
+		C59C36FE1FDF5E0700FA86CF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingTaskCell.xib; sourceTree = "<group>"; };
 		C5A0D77C1FB7DF98002968F7 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -280,6 +286,7 @@
 				C5D038771FDAF7B60010085B /* TaskHeaderView.xib */,
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
+				C5421FAD1FDFCB29009E78C4 /* StashedTaskCell.xib */,
 				C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */,
 			);
 			name = Xib;
@@ -418,6 +425,7 @@
 				C5D038751FDAF7940010085B /* TaskHeaderView.swift */,
 				C5A9A8DE1F3DAFED00601CFF /* ItemCell.swift */,
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
+				C5421FAB1FDFC999009E78C4 /* StashedTaskCell.swift */,
 				C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */,
 				C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */,
 				C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */,
@@ -438,6 +446,7 @@
 				C5A9A8D51F3BE85800601CFF /* Item.swift */,
 				C54B6A1E1F69165900ABC572 /* AppSetting.swift */,
 				C54394481FB56E90009EC104 /* Menu.swift */,
+				C59C36FE1FDF5E0700FA86CF /* Theme.swift */,
 			);
 			name = Models;
 			path = MultiTask;
@@ -606,6 +615,7 @@
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */,
 				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
+				C5421FAE1FDFCB29009E78C4 /* StashedTaskCell.xib in Resources */,
 				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuBarCell.xib in Resources */,
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
@@ -725,10 +735,12 @@
 				C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */,
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,
 				C59C36FD1FDE298700FA86CF /* WebsViewController.swift in Sources */,
+				C59C36FF1FDF5E0700FA86CF /* Theme.swift in Sources */,
 				C5A545121F4ABE7B0007DC1E /* NotificationManager.swift in Sources */,
 				C59C36F71FDD14A300FA86CF /* SettingsViewController.swift in Sources */,
 				C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */,
 				C5A9A8DF1F3DAFED00601CFF /* ItemCell.swift in Sources */,
+				C5421FAC1FDFC999009E78C4 /* StashedTaskCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

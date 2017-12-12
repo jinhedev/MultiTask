@@ -18,17 +18,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // APNS
-        setupRemoteNotification()
+        self.setupRemoteNotification()
         // Realm
         setupRealm() // see RealmManager
-        setupPersistentContainerDelegate()
-        performInitialFetch()
-        if realmManager?.isOnboardingCompleted == true {
+        self.setupPersistentContainerDelegate()
+        self.performInitialFetch()
+        if self.realmManager?.isOnboardingCompleted == true {
             print("fetch app settings and setup themes and other environment objects")
         } else {
             print("go to onboarding")
         }
         self.setupAppearance()
+        self.applyCurrentTheme()
         return true
     }
 
@@ -110,6 +111,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func setupAppearance() {
         UITableViewCell.appearance().backgroundColor = .clear
+    }
+
+    func applyCurrentTheme() {
+        Theme.current.apply()
     }
 
 }

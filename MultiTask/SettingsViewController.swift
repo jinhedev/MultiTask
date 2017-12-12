@@ -24,11 +24,6 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
     @IBOutlet weak var userIdLabel: UILabel!
     @IBOutlet weak var userStatusLabel: UILabel!
 
-    @IBOutlet weak var settingsCell: UITableViewCell!
-    @IBOutlet weak var themeImageView: UIImageView!
-    @IBOutlet weak var themeTitleLabel: UILabel!
-    @IBOutlet weak var themeSwitch: UISwitch!
-
     @IBOutlet weak var agreementCell: UITableViewCell!
     @IBOutlet weak var agreementImageView: UIImageView!
     @IBOutlet weak var agreementLabel: UILabel!
@@ -42,7 +37,9 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
     @IBOutlet weak var bugLabel: UILabel!
 
     @IBAction func handleThemeSwitch(_ sender: UISwitch) {
-        print(123)
+        if let selectedTheme = Theme(rawValue: sender.isOn.hashValue) {
+            selectedTheme.apply()
+        }
     }
 
     // MARK: - PersistentContainerDelegate
@@ -124,14 +121,6 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
         self.userIdLabel.textColor = Color.white
         self.userStatusLabel.backgroundColor = Color.clear
         self.userStatusLabel.textColor = Color.lightGray
-        // settings section
-        self.settingsCell.backgroundColor = Color.midNightBlack
-        self.themeImageView.backgroundColor = Color.clear
-        self.themeImageView.tintColor = Color.lightGray
-        self.themeTitleLabel.backgroundColor = Color.clear
-        self.themeTitleLabel.textColor = Color.white
-        self.themeSwitch.backgroundColor = Color.clear
-        self.themeSwitch.onTintColor = Color.seaweedGreen
         // about section
         self.agreementCell.backgroundColor = Color.midNightBlack
         self.agreementImageView.backgroundColor = Color.clear
@@ -162,7 +151,7 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == 3 ? 60 : 0
+        return section == 2 ? 60 : 0
     }
 
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
@@ -182,18 +171,13 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
             if indexPath.row == 0 {
                 // profileCell
                 // TODO: implement segue
-//                self.performSegue(withIdentifier: Segue.ProfileCellToWebsViewController, sender: self)
             }
         } else if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                // this is the themeCell, no need for dependency injection
-            }
-        } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 // agreementCell
                 self.performSegue(withIdentifier: Segue.AgreementCellToWebsViewController, sender: self)
             }
-        } else if indexPath.section == 3 {
+        } else if indexPath.section == 2 {
             if indexPath.row == 0 {
                 // supportCell
                 self.performSegue(withIdentifier: Segue.SupportCellToWebsViewController, sender: self)
@@ -210,10 +194,8 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
         if section == 0 {
             return "User"
         } else if section == 1 {
-            return "Settings"
-        } else if section == 2 {
             return "About"
-        } else if section == 3 {
+        } else if section == 2 {
             return "Support"
         } else {
             return nil
@@ -221,7 +203,7 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
     }
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == 3 {
+        if section == 2 {
             guard let appVersion = Bundle.main.releaseVersionNumber else { return nil }
             guard let buildVersion = Bundle.main.buildVersionNumber else { return nil }
             return "You are using MultiTask \(appVersion).\(buildVersion)"

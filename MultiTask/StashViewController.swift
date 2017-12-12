@@ -14,12 +14,12 @@ class StashViewController: BaseViewController, PersistentContainerDelegate, UICo
     // MARK: - API
 
     lazy var editButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit(_:)))
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit))
         return button
     }()
 
     lazy var popButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash(_:)))
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash))
         return button
     }()
 
@@ -46,6 +46,14 @@ class StashViewController: BaseViewController, PersistentContainerDelegate, UICo
 
     @objc func handleAvatar() {
         self.performSegue(withIdentifier: Segue.AvatarButtonToSettingsViewController, sender: self)
+    }
+
+    @objc func handleEdit() {
+
+    }
+
+    @objc func handleTrash() {
+
     }
 
     private func setupNavigationBar() {

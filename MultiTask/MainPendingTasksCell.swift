@@ -140,6 +140,16 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.PendingTaskCellEditingMode), object: nil)
     }
 
+    // MARK: - PlaceholderBackgroundView
+
+    private func setupBackgroundView() {
+        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+            view.type = PlaceholderType.pendingTasks
+            view.isHidden = true
+            self.collectionView.backgroundView = view
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -150,6 +160,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskPendingFetch()
         self.observeNotificationForEditingMode()
+        self.setupBackgroundView()
         // initial fetch
         self.performInitialFetch(notification: nil)
         if let pathToSandbox = RealmManager.pathForDefaultContainer?.absoluteString {

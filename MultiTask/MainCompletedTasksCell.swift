@@ -139,6 +139,16 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CompletedTaskCellEditingMode), object: nil)
     }
 
+    // MARK: - PlaceholderBackgroundView
+
+    private func setupBackgroundView() {
+        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+            view.type = PlaceholderType.completedTasks
+            view.isHidden = true
+            self.collectionView.backgroundView = view
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func awakeFromNib() {
@@ -149,6 +159,7 @@ class MainCompletedTasksCell: BaseCollectionViewCell, UICollectionViewDelegate, 
         self.setupPersistentContainerDelegate()
         self.observeNotificationForTaskCompletion()
         self.observeNotificationForEditingMode()
+        self.setupBackgroundView()
         self.performInitialFetch(notification: nil)
     }
 

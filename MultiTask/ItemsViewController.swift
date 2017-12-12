@@ -174,7 +174,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
         self.taskHeaderView.selectedTask = self.selectedTask
         // calculate the total height for the headerView
         let viewHeight: CGFloat = 16 + 16 + (0) + 8 + 15 + 15 + 15 + 16 + 16 // containerViewTopMargin, titleLabelTopMargin, titleLabelHeight, titleLabelBottomMargin, subtitleLabelHeight, dateLabelHeight, statsLabelHeight, statsLabelBottomMargin, containerViewBottomMargin
-        let titleWidth: CGFloat = self.view.frame.width - 16 - 16 - 16 - 16 - 16
+        let titleWidth: CGFloat = self.view.frame.width - 16 - 16 - 16 - 16
         if let task = self.selectedTask {
             var estimatedHeightForTitle = task.title.heightForText(systemFont: 15, width: titleWidth)
             // FIXME: Must override the estimatedHeight! because when estimatedHeight is too big, the whole screen will be covered by the header and currently there is no way to scroll to see the content hidden below, for now.

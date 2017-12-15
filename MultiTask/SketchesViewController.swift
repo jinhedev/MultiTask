@@ -68,6 +68,10 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     private func setupNavigationBar() {
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.navigationBar.prefersLargeTitles = true
+            navController.navigationItem.largeTitleDisplayMode = .always
+        }
     }
 
     // MARK: - PersistentContainerDelegate

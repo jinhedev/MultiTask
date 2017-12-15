@@ -111,6 +111,15 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
     }
 
+    /// This method is to override the navigationBar's displayMode to circumvent an internal bug introduced by Apple's iOS 11. Call this method at viewDidAppear.
+    /// - Remark: 15 Dec 2017 - Nope this mthod does NOT fix the bug
+    private func updateNavigationBar() {
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.navigationBar.prefersLargeTitles = true
+            navController.navigationItem.largeTitleDisplayMode = .always
+        }
+    }
+
     @objc func handleAvatar() {
         self.performSegue(withIdentifier: Segue.AvatarButtonToSettingsViewController, sender: self)
     }
@@ -191,6 +200,11 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
         self.realmManager?.fetchExistingUsers()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateNavigationBar()
     }
 
     override func didReceiveMemoryWarning() {

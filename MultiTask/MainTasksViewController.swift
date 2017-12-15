@@ -71,8 +71,13 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         super.setEditing(editing, animated: animated)
         self.mainCollectionView.isScrollEnabled = !editing
         self.addButton.isEnabled = !editing
-        self.navigationItem.leftBarButtonItem = editing ? trashButton : nil
+        self.avatarButton.isEnabled = !editing
         self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
+        if editing {
+            self.navigationItem.leftBarButtonItems?.append(trashButton)
+        } else {
+            self.navigationItem.leftBarButtonItems?.remove(at: 1)
+        }
     }
 
     @objc func enableEditingMode() {

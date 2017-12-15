@@ -57,6 +57,7 @@
 		C54E52FD1FE4389E0071E504 /* UITableView+IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E52FC1FE4389E0071E504 /* UITableView+IndexPath.swift */; };
 		C54E52FF1FE438D40071E504 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E52FE1FE438D40071E504 /* Error.swift */; };
 		C54E53011FE4436D0071E504 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C54E53001FE4436D0071E504 /* Settings.storyboard */; };
+		C54E53031FE4494C0071E504 /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C54E53021FE4494C0071E504 /* Search.storyboard */; };
 		C55E140B1FD7484400C46BED /* SketchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140A1FD7484400C46BED /* SketchesViewController.swift */; };
 		C55E140D1FD7D89800C46BED /* MenuBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C55E140C1FD7D89800C46BED /* MenuBarView.xib */; };
 		C55E140F1FD7D96C00C46BED /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140E1FD7D96C00C46BED /* MenuBarView.swift */; };
@@ -203,6 +204,7 @@
 		C54E52FC1FE4389E0071E504 /* UITableView+IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+IndexPath.swift"; sourceTree = "<group>"; };
 		C54E52FE1FE438D40071E504 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		C54E53001FE4436D0071E504 /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		C54E53021FE4494C0071E504 /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
 		C55E140A1FD7484400C46BED /* SketchesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchesViewController.swift; sourceTree = "<group>"; };
 		C55E140C1FD7D89800C46BED /* MenuBarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuBarView.xib; sourceTree = "<group>"; };
 		C55E140E1FD7D96C00C46BED /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 			children = (
 				C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */,
 				C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */,
+				C54E53021FE4494C0071E504 /* Search.storyboard */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -848,6 +851,7 @@
 				C54E53011FE4436D0071E504 /* Settings.storyboard in Resources */,
 				C55E140D1FD7D89800C46BED /* MenuBarView.xib in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
+				C54E53031FE4494C0071E504 /* Search.storyboard in Resources */,
 				C54CEF851FD06EB900AF0B7B /* Click.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

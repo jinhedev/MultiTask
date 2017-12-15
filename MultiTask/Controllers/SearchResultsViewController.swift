@@ -125,7 +125,7 @@ class SearchResultsViewController: BaseViewController, UITableViewDelegate, UITa
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedItem = self.searchResultsItems?[indexPath.section][indexPath.item] {
-            guard let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController else { return }
+            guard let itemEditorViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController else { return }
             itemEditorViewController.delegate = self
             itemEditorViewController.parentTask = self.selectedTask
             itemEditorViewController.selectedItem = selectedItem

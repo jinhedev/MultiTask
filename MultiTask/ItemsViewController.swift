@@ -50,7 +50,7 @@ class ItemsViewController: BaseViewController, UITableViewDelegate, UITableViewD
     // MARK: - UISearchControllerDelegate
 
     private func setupSearchController() {
-        guard let searchResultsViewController = self.storyboard?.instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }
+        guard let searchResultsViewController = UIStoryboard(name: "Search", bundle: nil).instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }
         searchResultsViewController.itemsViewController = self
         self.searchController = UISearchController(searchResultsController: searchResultsViewController)
         searchResultsViewController.selectedTask = self.selectedTask

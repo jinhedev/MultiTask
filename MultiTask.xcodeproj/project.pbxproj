@@ -303,12 +303,13 @@
 		C54E52E71FE435CA0071E504 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C5A9A8D71F3C1E7300601CFF /* User.swift */,
+				C54E52E81FE4362C0071E504 /* AppConfigurations.swift */,
+				C54394481FB56E90009EC104 /* Menu.swift */,
+				C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */,
+				C54E52EA1FE4365D0071E504 /* Segue.swift */,
 				C5A9A8D91F3C1F5300601CFF /* Session.swift */,
 				C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */,
-				C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */,
-				C54E52E81FE4362C0071E504 /* AppConfigurations.swift */,
-				C54E52EA1FE4365D0071E504 /* Segue.swift */,
+				C5A9A8D71F3C1E7300601CFF /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -340,7 +341,6 @@
 			children = (
 				C5A9A8D11F3BD87700601CFF /* Task.swift */,
 				C5A9A8D51F3BE85800601CFF /* Item.swift */,
-				C54394481FB56E90009EC104 /* Menu.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -356,10 +356,6 @@
 				C55E14341FD8987800C46BED /* MainCompletedTasksCell.xib */,
 				C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */,
 				C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */,
-				C54394401FB529C8009EC104 /* MenuBarCell.swift */,
-				C543943E1FB5292C009EC104 /* MenuBarCell.xib */,
-				C55E140E1FD7D96C00C46BED /* MenuBarView.swift */,
-				C55E140C1FD7D89800C46BED /* MenuBarView.xib */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C5D038751FDAF7940010085B /* TaskHeaderView.swift */,
@@ -601,6 +597,10 @@
 				C54394421FB55E69009EC104 /* BaseCollectionViewCell.swift */,
 				C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */,
 				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
+				C54394401FB529C8009EC104 /* MenuBarCell.swift */,
+				C543943E1FB5292C009EC104 /* MenuBarCell.xib */,
+				C55E140E1FD7D96C00C46BED /* MenuBarView.swift */,
+				C55E140C1FD7D89800C46BED /* MenuBarView.xib */,
 				C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */,
 				C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */,
 				C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */,

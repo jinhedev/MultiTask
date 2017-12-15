@@ -84,6 +84,7 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     private func setupView() {
         self.addSubview(view)
         self.view.frame = self.bounds
+        self.view.backgroundColor = Color.inkBlack
         self.containerView.backgroundColor = Color.inkBlack
         self.scrollIndicatorView.backgroundColor = Color.mandarinOrange
         self.scrollIndicatorView.layer.cornerRadius = self.scrollIndicatorViewHeightConstraint.constant / 2

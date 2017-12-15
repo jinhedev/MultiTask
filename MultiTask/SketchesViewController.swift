@@ -88,7 +88,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
         guard let fetchedUsers = users else { return }
         if !fetchedUsers.isEmpty {
-            self.avatarButton.setImage(#imageLiteral(resourceName: "RubberDuck"), for: UIControlState.normal)
+            self.avatarButton.setImage(#imageLiteral(resourceName: "Avatar"), for: UIControlState.normal)
         }
     }
 

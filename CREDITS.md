@@ -17,3 +17,4 @@
 - support by Maxim Kulikov from the Noun Project
 - Kanban Board by Vignesh Nandha Kumar from the Noun Project
 - For something that is hard to define in words
+- profile by Icon Master from the Noun Project

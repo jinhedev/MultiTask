@@ -55,7 +55,7 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
 
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
         if let existingUser = users?.first {
-            self.avatarImageView.image = #imageLiteral(resourceName: "RubberDuck") // <<-- image literal
+            self.avatarImageView.image = #imageLiteral(resourceName: "Avatar") // <<-- image literal
             self.userIdLabel.text = "ID. " + existingUser.id
             self.userStatusLabel.text = "Local User"
         } else {

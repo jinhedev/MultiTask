@@ -40,11 +40,11 @@
             </objects>
             <point key="canvasLocation" x="213" y="325"/>
         </scene>
-        <!--StashTab-->
+        <!--SketchTab-->
         <scene sceneID="j6M-Fl-CtX">
             <objects>
-                <viewControllerPlaceholder storyboardName="StashTab" id="tHN-5A-HlK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Stash" image="Folder" landscapeImage="Folder" largeContentSizeImage="Folder" id="8kw-5H-Wnm"/>
+                <viewControllerPlaceholder storyboardName="SketchTab" id="tHN-5A-HlK" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Sketch" image="Cubes" landscapeImage="Cubes" largeContentSizeImage="Cubes" id="8kw-5H-Wnm"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wby-ct-DHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -52,7 +52,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Folder" width="50" height="50"/>
+        <image name="Cubes" width="50" height="50"/>
         <image name="Starfish" width="50" height="50"/>
     </resources>
 </document>

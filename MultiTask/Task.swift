@@ -19,6 +19,7 @@ final class Task: Object {
     @objc dynamic var expired_at: NSDate? = nil
 
     var items = List<Item>()
+    let user = LinkingObjects(fromType: User.self, property: "tasks")
     static let titleKeyPath = "title" // called in RealmManager for its updating 
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic

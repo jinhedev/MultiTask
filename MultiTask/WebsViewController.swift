@@ -15,6 +15,8 @@ class WebsViewController: BaseViewController, WKUIDelegate {
 
     var url: String? = "https://google.com"
 
+    static let storyboard_id = String(describing: WebsViewController.self)
+
     @IBOutlet weak var webView: WKWebView!
 
     private func loadWebSite() {

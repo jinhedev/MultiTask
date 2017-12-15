@@ -12,6 +12,7 @@ enum PlaceholderType {
     case pendingTasks
     case completedTasks
     case items
+    case sketches
     case emptyResults
     case error
 }
@@ -41,6 +42,11 @@ class PlaceholderBackgroundView: UIView {
                 self.tipsImageView.image = #imageLiteral(resourceName: "Sunfish") // <<-- image literal
                 self.titleLabel.text = "To begin, add an item"
                 self.subtitleLabel.text = "\"An item is like a sub-task\""
+                self.suggestionButton.isHidden = true
+            case .sketches:
+                self.tipsImageView.image = #imageLiteral(resourceName: "RubberDuck") // <<-- image literal
+                self.titleLabel.text = "Use sketches"
+                self.subtitleLabel.text = "For something that is hard to define in words"
                 self.suggestionButton.isHidden = true
             case .emptyResults:
                 self.tipsImageView.isHidden = true

@@ -1,8 +1,8 @@
 //
-//  Constants.swift
+//  Colors.swift
 //  MultiTask
 //
-//  Created by rightmeow on 8/9/17.
+//  Created by rightmeow on 12/15/17.
 //  Copyright © 2017 Duckensburg. All rights reserved.
 //
 
@@ -14,49 +14,6 @@ import Foundation
     import AppKit
     typealias Color = NSColor
 #endif
-
-// MARK: - App Configs
-
-struct Configuration {
-    static let appId = Bundle.main.bundleIdentifier!
-}
-
-// MARK: - Segue IDs
-
-struct Segue {
-    static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
-    static let AvatarButtonToSettingsViewController = "AvatarButtonToSettingsViewController"
-    static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
-    static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
-    static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
-    static let ProfileCellToWebsViewController = "ProfileCellToWebsViewController"
-    static let AgreementCellToWebsViewController = "AgreementCellToWebsViewController"
-    static let SupportCellToWebsViewController = "SupportCellToWebsViewController"
-    static let BugCellToWebsViewController = "BugCellToWebsViewController"
-}
-
-// MARK: - Notification
-
-struct NotificationKey {
-    static let TaskPending = "TaskPending"
-    static let TaskCompletion = "TaskCompletion"
-    static let TaskUpdate = "TaskUpdate"
-    static let PendingTaskCellEditingMode = "PendingTaskCellEditingMode"
-    static let CompletedTaskCellEditingMode = "CompletedTaskCellEditingMode"
-    static let StashedTaskCellEditingMode = "StashedTaskCellEditingMode"
-    static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
-}
-
-// MARK: - Web URL String
-
-struct ExternalWebServiceUrlString {
-    static let Trello = "https://trello.com/b/8fgpP9ZL/multitask-ios-client"
-    static let TrelloApp = ""
-    static let FAQ = "https://www.reddit.com/r/StarfishApp/"
-    static let FAQRedditApp = ""
-    static let Terms = "https://github.com/jinhedev/MultiTask/blob/develop/LICENSE.md"
-    static let Test = "https://www.apple.com"
-}
 
 // MARK: - Color
 
@@ -75,23 +32,3 @@ extension Color {
     static var lightBlue: Color { return #colorLiteral(red: 0.9098039216, green: 0.9254901961, blue: 0.9450980392, alpha: 1) }
     static var miamiBlue: Color { return #colorLiteral(red: 0, green: 0.5254901961, blue: 0.9764705882, alpha: 1) }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

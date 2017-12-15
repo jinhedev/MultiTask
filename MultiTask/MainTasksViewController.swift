@@ -14,9 +14,21 @@ protocol MainTasksViewControllerDelegate: NSObjectProtocol {
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
 }
 
-class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, TaskEditorViewControllerDelegate, UITabBarControllerDelegate {
+class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, PersistentContainerDelegate, TaskEditorViewControllerDelegate, UITabBarControllerDelegate {
 
     // MARK: - API
+
+    lazy var avatarButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button.setImage(#imageLiteral(resourceName: "DeadEmoji"), for: UIControlState.normal)
+        button.layer.cornerRadius = 15
+        button.clipsToBounds = true
+        button.contentMode = .scaleAspectFill
+        button.layer.borderColor = Color.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(handleAvatar), for: UIControlEvents.touchUpInside)
+        return button
+    }()
 
     lazy var addButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Plus"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleAdd(_:)))
@@ -34,6 +46,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         return button
     }()
 
+    var realmManager: RealmManager?
     var mainPendingTasksCell: MainPendingTasksCell?
     var mainCompletedTasksCell: MainCompletedTasksCell?
     weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
@@ -66,12 +79,35 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.isEditing = true
     }
 
+    // MARK: - PersistentContainerDelegate
+
+    private func setupPersistentContainerDelegate() {
+        self.realmManager = RealmManager()
+        self.realmManager!.delegate = self
+    }
+
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUsers = users else { return }
+        if !fetchedUsers.isEmpty {
+            self.avatarButton.setImage(#imageLiteral(resourceName: "RubberDuck"), for: UIControlState.normal)
+        }
+    }
+
     // MARK: - NavigationBar
 
     private func setupNavigationBar() {
         self.isEditing = false
         // setup barButtons after the isEditting is set, otherwise setEditing get called.
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
+        self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
+    }
+
+    @objc func handleAvatar() {
+        self.performSegue(withIdentifier: Segue.AvatarButtonToSettingsViewController, sender: self)
     }
 
     @objc func handleAdd(_ sender: UIBarButtonItem) {
@@ -147,11 +183,22 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.setupCollectionView()
         self.setupMenuBarView()
         self.setupCollectionViewFlowLayout()
+        self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
+        self.realmManager?.fetchExistingUsers()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
+            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
+                taskEditorViewController.delegate = self
+            }
+        }
     }
 
     // MARK: - UITabBarControllerDelegate
@@ -192,15 +239,6 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.mainCollectionView.delegate = self
         self.mainCollectionView.register(UINib(nibName: MainPendingTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainPendingTasksCell.cell_id)
         self.mainCollectionView.register(UINib(nibName: MainCompletedTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainCompletedTasksCell.cell_id)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
-            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
-                taskEditorViewController.delegate = self
-            }
-        }
     }
 
     // MARK: - ScrollViewDelegate

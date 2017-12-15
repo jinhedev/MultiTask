@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jsd-EW-L96">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Sketch-->
+        <scene sceneID="dHE-In-b36">
+            <objects>
+                <viewController storyboardIdentifier="SketchesViewController" id="n5x-ya-tL6" customClass="SketchesViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3KW-8t-zoT">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ihh-5i-Az0">
+                                <rect key="frame" x="0.0" y="116" width="375" height="502"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R6c-CC-EFG">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="PCg-qd-5Mk" firstAttribute="trailing" secondItem="Ihh-5i-Az0" secondAttribute="trailing" id="0B3-Nm-4V3"/>
+                            <constraint firstItem="PCg-qd-5Mk" firstAttribute="bottom" secondItem="Ihh-5i-Az0" secondAttribute="bottom" id="IeU-9x-IPK"/>
+                            <constraint firstItem="Ihh-5i-Az0" firstAttribute="top" secondItem="PCg-qd-5Mk" secondAttribute="top" id="Zhv-6A-L0v"/>
+                            <constraint firstItem="Ihh-5i-Az0" firstAttribute="leading" secondItem="PCg-qd-5Mk" secondAttribute="leading" id="lDu-eD-Sfp"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PCg-qd-5Mk"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Sketch" largeTitleDisplayMode="always" id="q74-Sw-H0t"/>
+                    <connections>
+                        <outlet property="collectionView" destination="Ihh-5i-Az0" id="f9X-P6-o6P"/>
+                        <outlet property="collectionViewFlowLayout" destination="R6c-CC-EFG" id="zyY-gM-aCm"/>
+                        <segue destination="L5U-UG-39g" kind="show" identifier="AvatarButtonToSettingsViewController" id="6Dq-AN-L5v"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jA5-Zb-3Wh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="932" y="-45"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="fek-Zx-v86">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="L5U-UG-39g" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FkP-qX-Frt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1785" y="-46"/>
+        </scene>
+        <!--Sketch-->
+        <scene sceneID="tUL-CY-gZB">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jsd-EW-L96" customClass="BaseNavigationController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Sketch" image="Cubes" landscapeImage="Cubes" largeContentSizeImage="Cubes" id="eMa-qb-SOu"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="TyE-mj-itD">
+                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="n5x-ya-tL6" kind="relationship" relationship="rootViewController" id="1fQ-Ux-Eh8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HpY-fV-Saz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2" y="-45"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Cubes" width="50" height="50"/>
+    </resources>
+</document>

@@ -84,22 +84,13 @@ struct WebServiceConfigurations {
 
 }
 
+// MARK: - Web URL String
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+struct ExternalWebServiceUrlString {
+    static let Trello = "https://trello.com/b/8fgpP9ZL/multitask-ios-client"
+    static let TrelloApp = ""
+    static let FAQ = "https://www.reddit.com/r/StarfishApp/"
+    static let FAQRedditApp = ""
+    static let Terms = "https://github.com/jinhedev/MultiTask/blob/develop/LICENSE.md"
+    static let Test = "https://www.apple.com"
+}

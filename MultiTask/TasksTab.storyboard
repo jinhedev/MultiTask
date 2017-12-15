@@ -55,11 +55,20 @@
                         <outlet property="menuBarView" destination="Ocb-OI-z1R" id="8QT-eC-lc3"/>
                         <segue destination="Qb7-A2-IyR" kind="show" identifier="AddButtonToTaskEditorViewController" id="qXS-1W-mkt"/>
                         <segue destination="4U5-QD-6XH" kind="show" identifier="PendingTaskCellToItemsViewController" id="5p0-yC-2ry"/>
+                        <segue destination="pW2-zX-ZIV" kind="show" identifier="AvatarButtonToSettingsViewController" id="qw2-st-klr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zaV-bv-Y6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1724" y="-748"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="WX8-uJ-Z40">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="pW2-zX-ZIV" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="38H-2q-3TQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2600" y="-1487"/>
         </scene>
         <!--Task Editor View Controller-->
         <scene sceneID="UDi-eW-VHO">

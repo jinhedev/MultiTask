@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StashedTaskCell: BaseCollectionViewCell {
+class SketchCell: BaseCollectionViewCell {
 
     // MARK: - API
 
@@ -33,13 +33,12 @@ class StashedTaskCell: BaseCollectionViewCell {
     }
 
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
-    static let cell_id = String(describing: StashedTaskCell.self)
-    static let nibName = String(describing: StashedTaskCell.self)
+    static let cell_id = String(describing: SketchCell.self)
+    static let nibName = String(describing: SketchCell.self)
 
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var sketchImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
 
     private func setHighlighted() {
         self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
@@ -58,16 +57,10 @@ class StashedTaskCell: BaseCollectionViewCell {
         self.containerView.layer.cornerRadius = 8
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
-        self.subtitleLabel.backgroundColor = Color.clear
-        self.subtitleLabel.textColor = Color.lightGray
-        self.dateLabel.backgroundColor = Color.clear
-        self.dateLabel.textColor = Color.lightGray
     }
 
     private func resetDataForReuse() {
         self.titleLabel.text?.removeAll()
-        self.subtitleLabel.text?.removeAll()
-        self.dateLabel.text?.removeAll()
     }
 
     // MARK: - Notifications

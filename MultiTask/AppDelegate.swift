@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
         guard let fetchedUsers = users else { return }
         if fetchedUsers.isEmpty {
-            let newUser = User(email: "")
+            let newUser = User(email: "", displayName: "", avatar: "Snail")
             self.realmManager!.register(newUser: newUser)
         } else {
             // user does exist in local machine, safely ignore.

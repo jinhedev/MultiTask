@@ -37,6 +37,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     lazy var trashButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash(_:)))
+        button.isEnabled = false
         return button
     }()
 

@@ -38,3 +38,16 @@ extension NSDate {
     }
 
 }
+
+extension Date {
+
+    static var currentInternationalTime: Int = {
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let currentTimeString = dateFormatter.string(from: today)
+        let time = Int(currentTimeString)
+        return time!
+    }()
+
+}

@@ -1,5 +1,5 @@
 //
-//  UIView+Parallax.swift
+//  UIView+Animation.swift
 //  MultiTask
 //
 //  Created by rightmeow on 12/15/17.
@@ -22,6 +22,28 @@ extension UIView {
         let group = UIMotionEffectGroup()
         group.motionEffects = [xMotion, yMotion]
         addMotionEffect(group)
+    }
+
+    func fadeIn() {
+        self.alpha = 0.0
+        UIView.animate(withDuration: 0.3, animations: {
+            self.alpha = 1
+        }, completion: nil)
+    }
+
+    func fadeOut() {
+        self.alpha = 1.0
+        UIView.animate(withDuration: 0.3) {
+            self.alpha = 0.0
+        }
+    }
+
+    func animateBlink(withDuration: TimeInterval, toColor: UIColor, fromColor: UIColor) {
+        UIView.animate(withDuration: withDuration, delay: 0, options: [.autoreverse, .repeat], animations: {
+            self.backgroundColor = toColor
+        }) { (completed) in
+            self.backgroundColor = fromColor
+        }
     }
 
 }

@@ -60,23 +60,3 @@ class MenuBarCell: BaseCollectionViewCell {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

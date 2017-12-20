@@ -13,6 +13,8 @@ final class User: Object {
 
     @objc dynamic var id = ""
     @objc dynamic var email = ""
+    @objc dynamic var displayName = ""
+    @objc dynamic var avatar = ""
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
 
@@ -23,10 +25,12 @@ final class User: Object {
         return "id"
     }
 
-    convenience init(email: String) {
+    convenience init(email: String, displayName: String, avatar: String) {
         self.init()
         self.id = String.random(length: 17)
         self.email = email
+        self.avatar = avatar
+        self.displayName = displayName
         self.created_at = NSDate()
     }
 

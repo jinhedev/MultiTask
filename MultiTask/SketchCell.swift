@@ -12,6 +12,12 @@ class SketchCell: BaseCollectionViewCell {
 
     // MARK: - API
 
+    var sketch: Sketch? {
+        didSet {
+            self.updateCell()
+        }
+    }
+
     override var isHighlighted: Bool {
         didSet {
             self.setHighlighted()
@@ -50,6 +56,10 @@ class SketchCell: BaseCollectionViewCell {
 
     private func setSelected() {
 
+    }
+
+    private func updateCell() {
+        
     }
 
     private func setupCell() {

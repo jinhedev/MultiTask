@@ -14,7 +14,7 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
     // MAKR: - API
 
     lazy var saveButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "FloppyDisk"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
         button.isEnabled = false
         return button
     }()

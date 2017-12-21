@@ -13,6 +13,28 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
 
     // MARK: - API
 
+    var currentUser: User? {
+        didSet {
+            self.updateAvatarButton()
+        }
+    }
+
+    var sketches: [Results<Sketch>]?
+    var realmManager: RealmManager?
+    var notificationToken: NotificationToken?
+    static let storyboard_id = String(describing: SketchesViewController.self)
+
+    lazy var avatarButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        button.layer.cornerRadius = 15
+        button.clipsToBounds = true
+        button.contentMode = .scaleAspectFill
+        button.layer.borderColor = Color.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.addTarget(self, action: #selector(handleAvatar), for: UIControlEvents.touchUpInside)
+        return button
+    }()
+
     lazy var editButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit))
         return button
@@ -28,24 +50,20 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         return button
     }()
 
-    var realmManager: RealmManager?
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.addButton.isEnabled = !editing
+        self.avatarButton.isEnabled = !editing
+        self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
+        if editing {
+            self.navigationItem.leftBarButtonItems?.append(trashButton)
+        } else {
+            self.navigationItem.leftBarButtonItems?.remove(at: 1)
+        }
+    }
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
-
-    lazy var avatarButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button.setImage(#imageLiteral(resourceName: "DeadEmoji"), for: UIControlState.normal)
-        button.layer.cornerRadius = 15
-        button.clipsToBounds = true
-        button.contentMode = .scaleAspectFill
-        button.layer.borderColor = Color.lightGray.cgColor
-        button.layer.borderWidth = 1
-        button.addTarget(self, action: #selector(handleAvatar), for: UIControlEvents.touchUpInside)
-        return button
-    }()
-
-    static let storyboard_id = String(describing: SketchesViewController.self)
 
     // MARK: - NavigationBar
 
@@ -53,25 +71,37 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.performSegue(withIdentifier: Segue.AvatarButtonToSettingsViewController, sender: self)
     }
 
-    @objc func handleAdd() {
-
+    @objc func handleAdd(_ sender: UIBarButtonItem) {
+        self.performSegue(withIdentifier: Segue.AddButtonToSketchEditorViewController, sender: self)
     }
 
-    @objc func handleEdit() {
-
+    @objc func handleEdit(_ sender: UIBarButtonItem) {
+        // toggling edit mode
+        if self.isEditing == true {
+            self.isEditing = false
+        } else {
+            self.isEditing = true
+        }
     }
 
-    @objc func handleTrash() {
-
+    @objc func handleTrash(_ sender: UIBarButtonItem) {
+        guard let user = self.currentUser else { return }
+        let avatarName = user.avatar
+        let avatar = UIImage(named: avatarName)
+        self.avatarButton.setImage(avatar, for: UIControlState.normal)
     }
 
     private func setupNavigationBar() {
+        self.isEditing = false
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.navigationBar.prefersLargeTitles = true
-            navController.navigationItem.largeTitleDisplayMode = .always
-        }
+    }
+
+    private func updateAvatarButton() {
+        guard let user = self.currentUser else { return }
+        let avatarName = user.avatar
+        let avatar = UIImage(named: avatarName)
+        self.avatarButton.setImage(avatar, for: UIControlState.normal)
     }
 
     // MARK: - PersistentContainerDelegate
@@ -81,15 +111,43 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.realmManager!.delegate = self
     }
 
+    private func setupRealmNotificationsForCollectionView() {
+        notificationToken = self.sketches!.first?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
     }
 
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUsers = users else { return }
-        if !fetchedUsers.isEmpty {
-            self.avatarButton.setImage(#imageLiteral(resourceName: "Avatar"), for: UIControlState.normal)
+    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {
+        if let fetchedSketches = sketches, !fetchedSketches.isEmpty {
+            self.collectionView.backgroundView?.isHidden = true
+            self.sketches = [Results<Sketch>]()
+            self.sketches!.append(fetchedSketches)
+            self.setupRealmNotificationsForCollectionView()
+        } else {
+            self.collectionView.backgroundView?.isHidden = false
         }
+    }
+
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUser = users?.first else { return }
+        self.currentUser = fetchedUser
+    }
+
+    @objc func performInitialFetch() {
+        // TODO: implement this
     }
 
     // MARK: - Lifecycle
@@ -103,8 +161,26 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.realmManager?.fetchExistingUsers()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateAvatarButton()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+        if let settingsViewController = segue.destination as? SettingsViewController {
+            settingsViewController.currentUser = self.currentUser
+        } else if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
+            // TODO: implement this
+            sketchEditorViewController.hidesBottomBarWhenPushed = true
+            if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
+                sketchEditorViewController.sketch = self.sketches?[selectedIndex.section][selectedIndex.item]
+            }
+        }
     }
 
     // MARK: - CollectionView
@@ -138,7 +214,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //
+        performSegue(withIdentifier: Segue.SketchCellToSketchEditorViewController, sender: self)
     }
 
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
@@ -153,6 +229,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: SketchCell.cell_id, for: indexPath) as? SketchCell {
+            cell.sketch = self.sketches?[indexPath.section][indexPath.item]
             return cell
         } else {
             return BaseCollectionViewCell()
@@ -160,11 +237,11 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return self.sketches?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return self.sketches?[section].count ?? 0
     }
 
 }

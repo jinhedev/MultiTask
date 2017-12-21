@@ -18,6 +18,7 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func didLogout(_ manager: RealmManager, user: User)
     // fetch
     func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?)
+    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?)
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?)
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?)
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?)
@@ -29,6 +30,7 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func didPurgeDatabase(_ manager: RealmManager)
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?)
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?)
+    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?)
 }
 
 extension PersistentContainerDelegate {
@@ -38,6 +40,7 @@ extension PersistentContainerDelegate {
     func didLogout(_ manager: RealmManager, user: User) {}
     // fetch
     func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?) {}
+    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {}
@@ -49,6 +52,7 @@ extension PersistentContainerDelegate {
     func didPurgeDatabase(_ manager: RealmManager) {}
     func persistentContainer(_ manager: RealmManager, didDeleteTasks tasks: [Task]?) {}
     func persistentContainer(_ manager: RealmManager, didDeleteItems items: [Item]?) {}
+    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {}
 }
 
 var realm: Realm!
@@ -119,6 +123,11 @@ class RealmManager: NSObject {
         delegate?.persistentContainer(self, didFetchUsers: users)
     }
 
+    func fetchSketches(sortedBy keyPath: String, ascending: Bool) {
+        let sketches = realm.objects(Sketch.self).sorted(byKeyPath: keyPath, ascending: ascending)
+        delegate?.persistentContainer(self, didFetchSketches: sketches)
+    }
+
     func fetchTasks(predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
         let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetchTasks: tasks)
@@ -160,6 +169,17 @@ class RealmManager: NSObject {
                 realm.delete(items)
             }
             delegate?.persistentContainer(self, didDeleteItems: items)
+        } catch let err {
+            delegate?.persistentContainer(self, didErr: err)
+        }
+    }
+
+    func deleteSketches(sketches: [Sketch]) {
+        do {
+            try realm.write {
+                realm.delete(sketches)
+            }
+            delegate?.persistentContainer(self, didDeleteSketches: sketches)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
         }

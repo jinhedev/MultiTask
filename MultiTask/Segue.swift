@@ -12,6 +12,8 @@ import Foundation
 
 struct Segue {
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
+    static let AddButtonToSketchEditorViewController = "AddButtonToSketchEditorViewController"
+    static let SketchCellToSketchEditorViewController = "SketchCellToSketchEditorViewController"
     static let AvatarButtonToSettingsViewController = "AvatarButtonToSettingsViewController"
     static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
     static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"

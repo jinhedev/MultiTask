@@ -14,11 +14,11 @@
             <objects>
                 <viewController storyboardIdentifier="SketchesViewController" id="n5x-ya-tL6" customClass="SketchesViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3KW-8t-zoT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ihh-5i-Az0">
-                                <rect key="frame" x="0.0" y="116" width="375" height="502"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="R6c-CC-EFG">
                                     <size key="itemSize" width="50" height="50"/>
@@ -38,11 +38,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PCg-qd-5Mk"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Sketch" largeTitleDisplayMode="always" id="q74-Sw-H0t"/>
+                    <navigationItem key="navigationItem" title="Sketch" largeTitleDisplayMode="never" id="q74-Sw-H0t"/>
                     <connections>
                         <outlet property="collectionView" destination="Ihh-5i-Az0" id="f9X-P6-o6P"/>
                         <outlet property="collectionViewFlowLayout" destination="R6c-CC-EFG" id="zyY-gM-aCm"/>
                         <segue destination="L5U-UG-39g" kind="show" identifier="AvatarButtonToSettingsViewController" id="6Dq-AN-L5v"/>
+                        <segue destination="cR5-My-M8e" kind="show" identifier="AddButtonToSketchEditorViewController" id="UpL-tA-x7j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jA5-Zb-3Wh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,7 +56,22 @@
                 <viewControllerPlaceholder storyboardName="Settings" id="L5U-UG-39g" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FkP-qX-Frt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1785" y="-46"/>
+            <point key="canvasLocation" x="1692" y="-477"/>
+        </scene>
+        <!--Sketch Editor View Controller-->
+        <scene sceneID="oHY-KO-kLr">
+            <objects>
+                <viewController storyboardIdentifier="SketchEditorViewController" hidesBottomBarWhenPushed="YES" id="cR5-My-M8e" customClass="SketchEditorViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rJ4-Gz-G7G">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="kjG-LU-T1J"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r1n-5Y-tnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2270" y="-45"/>
         </scene>
         <!--Sketch-->
         <scene sceneID="tUL-CY-gZB">
@@ -64,9 +80,10 @@
                     <tabBarItem key="tabBarItem" title="Sketch" image="Cubes" landscapeImage="Cubes" largeContentSizeImage="Cubes" id="eMa-qb-SOu"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="TyE-mj-itD">
-                        <rect key="frame" x="0.0" y="20" width="375" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="TyE-mj-itD">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

@@ -9,11 +9,11 @@
 import UIKit
 import RealmSwift
 
-class SettingsViewController: UITableViewController, PersistentContainerDelegate {
+class SettingsViewController: UITableViewController {
 
     // MARK: - API
 
-    var realmManager: RealmManager?
+    var currentUser: User?
 
     static let storyboard_id = String(describing: SettingsViewController.self)
 
@@ -42,27 +42,14 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
         }
     }
 
-    // MARK: - PersistentContainerDelegate
+    // MARK: - UINavigationBar
 
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        if let existingUser = users?.first {
-            self.avatarImageView.image = #imageLiteral(resourceName: "Avatar") // <<-- image literal
-            self.userIdLabel.text = "ID. " + existingUser.id
-            self.userStatusLabel.text = "Local User"
+    private func updateUINavigationBar() {
+        if let avatarName = self.currentUser?.avatar {
+            let avatar = UIImage(named: avatarName)
+            self.avatarImageView.image = avatar
         } else {
-            self.avatarImageView.image = #imageLiteral(resourceName: "DeadEmoji")
-            self.userIdLabel.text = "ID Not Found"
-            self.userStatusLabel.text = "User Not Found"
-            print(trace(file: #file, function: #function, line: #line))
+            self.avatarImageView.image = #imageLiteral(resourceName: "DeadEmoji") // <<-- image literal
         }
     }
 
@@ -72,9 +59,11 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
         super.viewDidLoad()
         self.setupTableView()
         self.setupCells()
-        self.setupPersistentContainerDelegate()
-        // perform fetch
-        realmManager!.fetchExistingUsers()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.updateUINavigationBar()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -91,8 +80,10 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
             if let websViewController = segue.destination as? WebsViewController {
                 websViewController.url = ExternalWebServiceUrlString.FAQ
             }
-        } else if segue.identifier == Segue.ProfileCellToWebsViewController {
-            // TODO: implement this
+        } else if segue.identifier == Segue.ProfileCellToAvatarsViewController {
+            if let avatarsViewController = segue.destination as? AvatarsViewController {
+                avatarsViewController.currentUser = self.currentUser
+            }
         }
     }
 
@@ -113,14 +104,15 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
         self.avatarFrameView.layer.cornerRadius = self.avatarFrameViewHeightLayoutConstraint.constant / 2
         self.avatarFrameView.layer.borderWidth = 1
         self.avatarFrameView.layer.borderColor = Color.lightGray.cgColor
-        self.avatarImageView.image = #imageLiteral(resourceName: "DeadEmoji") // <<-- image literal
         self.avatarImageView.backgroundColor = Color.clear
         self.avatarImageView.contentMode = .scaleAspectFill
         self.avatarImageView.enableParallaxMotion(magnitude: 14)
         self.userIdLabel.backgroundColor = Color.clear
         self.userIdLabel.textColor = Color.white
+        self.userIdLabel.text = self.currentUser?.id
         self.userStatusLabel.backgroundColor = Color.clear
         self.userStatusLabel.textColor = Color.lightGray
+        self.userStatusLabel.text = "Local User"
         // about section
         self.agreementCell.backgroundColor = Color.midNightBlack
         self.agreementImageView.backgroundColor = Color.clear
@@ -171,6 +163,7 @@ class SettingsViewController: UITableViewController, PersistentContainerDelegate
             if indexPath.row == 0 {
                 // profileCell
                 // TODO: implement segue
+                self.performSegue(withIdentifier: Segue.ProfileCellToAvatarsViewController, sender: self)
             }
         } else if indexPath.section == 1 {
             if indexPath.row == 0 {

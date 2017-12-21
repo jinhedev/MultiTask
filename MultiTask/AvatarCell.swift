@@ -43,8 +43,8 @@ class AvatarCell: BaseCollectionViewCell {
     private func setupCell() {
         self.backgroundColor = Color.midNightBlack
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.layer.cornerRadius = 8
         self.containerView.clipsToBounds = true
+        self.containerView.layer.cornerRadius = 8
         self.containerView.layer.borderColor = Color.darkGray.cgColor
         self.containerView.layer.borderWidth = 3
         self.avatarImageView.backgroundColor = Color.clear

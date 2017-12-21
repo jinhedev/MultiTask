@@ -16,7 +16,7 @@ struct Segue {
     static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
     static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
     static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
-    static let ProfileCellToWebsViewController = "ProfileCellToWebsViewController"
+    static let ProfileCellToAvatarsViewController = "ProfileCellToAvatarsViewController"
     static let AgreementCellToWebsViewController = "AgreementCellToWebsViewController"
     static let SupportCellToWebsViewController = "SupportCellToWebsViewController"
     static let BugCellToWebsViewController = "BugCellToWebsViewController"

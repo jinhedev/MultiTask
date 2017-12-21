@@ -204,16 +204,7 @@ class MainPendingTasksCell: BaseCollectionViewCell, UICollectionViewDataSource, 
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let selectedItemsCount = collectionView.indexPathsForSelectedItems?.count {
-            self.mainTasksViewController?.trashButton.isEnabled = selectedItemsCount > 0 ? true : false
-        }
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let selectedItemsCount = collectionView.indexPathsForSelectedItems?.count {
-            self.mainTasksViewController?.trashButton.isEnabled = selectedItemsCount > 0 ? true : false
-        }
         if self.isEditing == false {
             if let itemsViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first {
                 itemsViewController.selectedTask = self.pendingTasks?[selectedIndexPath.section][selectedIndexPath.item]

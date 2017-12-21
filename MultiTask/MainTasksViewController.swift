@@ -18,9 +18,14 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     // MARK: - API
 
+    var currentUser: User? {
+        didSet {
+            self.updateAvatarButton()
+        }
+    }
+
     lazy var avatarButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        button.setImage(#imageLiteral(resourceName: "DeadEmoji"), for: UIControlState.normal)
         button.layer.cornerRadius = 15
         button.clipsToBounds = true
         button.contentMode = .scaleAspectFill
@@ -37,7 +42,6 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     lazy var trashButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash(_:)))
-        button.isEnabled = false
         return button
     }()
 
@@ -97,10 +101,8 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     }
 
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUsers = users else { return }
-        if !fetchedUsers.isEmpty {
-            self.avatarButton.setImage(#imageLiteral(resourceName: "Avatar"), for: UIControlState.normal)
-        }
+        guard let fetchedUser = users?.first else { return }
+        self.currentUser = fetchedUser
     }
 
     // MARK: - NavigationBar
@@ -112,13 +114,11 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
     }
 
-    /// This method is to override the navigationBar's displayMode to circumvent an internal bug introduced by Apple's iOS 11. Call this method at viewDidAppear.
-    /// - Remark: 15 Dec 2017 - Nope this mthod does NOT fix the bug
-    private func updateNavigationBar() {
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.navigationBar.prefersLargeTitles = true
-            navController.navigationItem.largeTitleDisplayMode = .always
-        }
+    private func updateAvatarButton() {
+        guard let user = self.currentUser else { return }
+        let avatarName = user.avatar
+        let avatar = UIImage(named: avatarName)
+        self.avatarButton.setImage(avatar, for: UIControlState.normal)
     }
 
     @objc func handleAvatar() {
@@ -205,7 +205,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.updateNavigationBar()
+        self.updateAvatarButton()
     }
 
     override func didReceiveMemoryWarning() {
@@ -218,6 +218,9 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
             if let taskEditorViewController = segue.destination as? TaskEditorViewController {
                 taskEditorViewController.delegate = self
             }
+        }
+        if let settingsViewController = segue.destination as? SettingsViewController {
+            settingsViewController.currentUser = self.currentUser
         }
     }
 

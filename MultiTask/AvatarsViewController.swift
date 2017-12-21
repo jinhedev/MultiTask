@@ -13,12 +13,26 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
 
     // MAKR: - API
 
+    lazy var saveButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
+        button.isEnabled = false
+        return button
+    }()
+
+    var currentUser: User?
     var avatars: [Avatar]?
     var realmManager: RealmManager?
     static let storyboard_id = String(describing: AvatarsViewController.self)
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
+    @objc func handleSave(_ sender: UIBarButtonItem) {
+        guard let user = currentUser, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else { return }
+        if let selectedAvatarName = avatars?[selectedIndexPath.item].name {
+            self.realmManager?.updateObject(object: user, keyedValues: ["avatar" : selectedAvatarName])
+        }
+    }
 
     private func fetchAvatarsFromPropertyList(for resource: String, of type: String) {
         var items = [Avatar]()
@@ -41,10 +55,9 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
         self.realmManager!.delegate = self
     }
 
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUsers = users else { return }
-        if !fetchedUsers.isEmpty {
-
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
+        if let baseNavController = self.navigationController as? BaseNavigationController {
+            baseNavController.popViewController(animated: true)
         }
     }
 
@@ -52,14 +65,20 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
         print(error.localizedDescription)
     }
 
+    // MARK: - UINavigationBar
+
+    private func setupUINavigationBar() {
+        navigationItem.rightBarButtonItem = saveButton
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupUINavigationBar()
         self.setupCollectionView()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupPersistentContainerDelegate()
-        self.realmManager?.fetchExistingUsers()
         self.fetchAvatarsFromPropertyList(for: "Avatars", of: "plist")
     }
 
@@ -94,7 +113,7 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (self.collectionView.frame.width / 2) - 16 - 8
+        let cellWidth = (self.collectionView.frame.width / 3) - 16 - 8
         let cellHeight: CGFloat = cellWidth
         return CGSize(width: cellWidth, height: cellHeight)
     }
@@ -124,11 +143,17 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
         if let cell = self.collectionView.cellForItem(at: indexPath) as? AvatarCell {
             cell.isSelected = true
         }
+        if let selectedItemsCount = self.collectionView.indexPathsForSelectedItems?.count {
+            self.saveButton.isEnabled = selectedItemsCount > 0 ? true : false
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = self.collectionView.cellForItem(at: indexPath) as? AvatarCell {
             cell.isSelected = false
+        }
+        if let selectedItemsCount = self.collectionView.indexPathsForSelectedItems?.count {
+            self.saveButton.isEnabled = selectedItemsCount > 0 ? true : false
         }
     }
 

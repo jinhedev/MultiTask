@@ -73,9 +73,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <connections>
-                                            <segue destination="QQa-cb-EP4" kind="show" identifier="ProfileCellToAvatarEditorViewController" id="jIW-2z-sBV"/>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -113,11 +110,6 @@
                                                 <constraint firstItem="sfW-5e-uxA" firstAttribute="leading" secondItem="F8z-sR-HG2" secondAttribute="leading" constant="16" id="nbh-Tl-6VU"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="VKE-ic-Ng2" kind="show" identifier="AgreementCellToWebsViewController" trigger="accessoryAction" id="qh9-Hq-ygg">
-                                                <nil key="action"/>
-                                            </segue>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -155,11 +147,6 @@
                                                 <constraint firstItem="ZwF-Kd-BOv" firstAttribute="leading" secondItem="txM-Hp-7Im" secondAttribute="leading" constant="16" id="Uhz-PQ-lN1"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="VKE-ic-Ng2" kind="show" identifier="SupportCellToWebsViewController" trigger="accessoryAction" id="53a-2K-nJz">
-                                                <nil key="action"/>
-                                            </segue>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="vuP-IE-RjV">
                                         <rect key="frame" x="0.0" y="355" width="375" height="44"/>
@@ -193,11 +180,6 @@
                                                 <constraint firstAttribute="trailing" secondItem="edg-L1-FNJ" secondAttribute="trailing" constant="16" id="fTD-4K-Nfj"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="VKE-ic-Ng2" kind="show" identifier="BugCellToWebsViewController" id="ewh-Ia-M2m">
-                                                <nil key="action"/>
-                                            </segue>
-                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -224,6 +206,10 @@
                         <outlet property="supportLabel" destination="8E9-mJ-HWy" id="4do-Cu-MyZ"/>
                         <outlet property="userIdLabel" destination="oBY-EJ-n0U" id="xio-cg-UeN"/>
                         <outlet property="userStatusLabel" destination="WH0-Co-AmW" id="NXV-gC-PrJ"/>
+                        <segue destination="QQa-cb-EP4" kind="show" identifier="ProfileCellToAvatarsViewController" id="MLG-aw-V8j"/>
+                        <segue destination="VKE-ic-Ng2" kind="show" identifier="BugCellToWebsViewController" id="vie-pr-oHr"/>
+                        <segue destination="VKE-ic-Ng2" kind="show" identifier="SupportCellToWebsViewController" id="Z1T-OU-yVR"/>
+                        <segue destination="VKE-ic-Ng2" kind="show" identifier="AgreementCellToWebsViewController" id="fBb-jp-GPv"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCx-MC-cmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -262,7 +248,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OTk-Yh-JGU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3308" y="-551"/>
+            <point key="canvasLocation" x="3308" y="-559"/>
         </scene>
         <!--Avatars View Controller-->
         <scene sceneID="g2d-bH-01E">
@@ -293,7 +279,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="j97-Cc-jNe"/>
                     </view>
-                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="U9g-uz-l3D"/>
+                    <navigationItem key="navigationItem" id="hyE-wc-iJ4"/>
                     <connections>
                         <outlet property="collectionView" destination="U7l-Df-kmX" id="ub4-dg-bI2"/>
                         <outlet property="collectionViewFlowLayout" destination="WDn-kR-nuF" id="oag-tS-KZl"/>
@@ -310,6 +296,6 @@
         <image name="Trello" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="53a-2K-nJz"/>
+        <segue reference="fBb-jp-GPv"/>
     </inferredMetricsTieBreakers>
 </document>

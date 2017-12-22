@@ -71,6 +71,7 @@ class SketchCell: BaseCollectionViewCell {
         self.containerView.backgroundColor = Color.midNightBlack
         self.sketchImageView.enableParallaxMotion(magnitude: 14)
         self.sketchImageView.contentMode = .scaleAspectFill
+        self.sketchImageView.image = #imageLiteral(resourceName: "Landscape") // <<-- image literal
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
     }

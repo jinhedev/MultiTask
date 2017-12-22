@@ -19,3 +19,4 @@
 - For something that is hard to define in words
 - profile by Icon Master from the Noun Project
 - Save by Landan Lloyd from the Noun Project
+- Image by Yeong Rong Kim from the Noun Project

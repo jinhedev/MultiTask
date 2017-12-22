@@ -43,7 +43,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pcL-ZL-yaP">
-                                        <rect key="frame" x="16" y="257" width="217" height="30"/>
+                                        <rect key="frame" x="16" y="265" width="217" height="22"/>
                                         <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
@@ -52,7 +52,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="pcL-ZL-yaP" firstAttribute="top" secondItem="1jY-vc-hwV" secondAttribute="bottom" constant="8" id="3ST-Gx-YyK"/>
+                                    <constraint firstItem="pcL-ZL-yaP" firstAttribute="top" secondItem="1jY-vc-hwV" secondAttribute="bottom" constant="16" id="3ST-Gx-YyK"/>
                                     <constraint firstAttribute="trailing" secondItem="pcL-ZL-yaP" secondAttribute="trailing" constant="16" id="5c2-Jn-PP7"/>
                                     <constraint firstAttribute="bottom" secondItem="pcL-ZL-yaP" secondAttribute="bottom" constant="16" id="It6-CP-99v"/>
                                     <constraint firstItem="1jY-vc-hwV" firstAttribute="leading" secondItem="BW8-fq-84A" secondAttribute="leading" id="RQL-82-cht"/>

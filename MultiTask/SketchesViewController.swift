@@ -237,11 +237,13 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.sketches?.count ?? 0
+//        return self.sketches?.count ?? 0
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sketches?[section].count ?? 0
+//        return self.sketches?[section].count ?? 0
+        return 10
     }
 
 }

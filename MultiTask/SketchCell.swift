@@ -42,6 +42,7 @@ class SketchCell: BaseCollectionViewCell {
     static let cell_id = String(describing: SketchCell.self)
     static let nibName = String(describing: SketchCell.self)
 
+    @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var sketchImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -63,8 +64,13 @@ class SketchCell: BaseCollectionViewCell {
     }
 
     private func setupCell() {
+        self.layer.cornerRadius = 8
+        self.clipsToBounds = true
+        self.frameView.backgroundColor = Color.black
+        self.frameView.clipsToBounds = true
         self.containerView.backgroundColor = Color.midNightBlack
-        self.containerView.layer.cornerRadius = 8
+        self.sketchImageView.enableParallaxMotion(magnitude: 14)
+        self.sketchImageView.contentMode = .scaleAspectFill
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
     }

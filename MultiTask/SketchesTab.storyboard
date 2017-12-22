@@ -44,6 +44,7 @@
                         <outlet property="collectionViewFlowLayout" destination="R6c-CC-EFG" id="zyY-gM-aCm"/>
                         <segue destination="L5U-UG-39g" kind="show" identifier="AvatarButtonToSettingsViewController" id="6Dq-AN-L5v"/>
                         <segue destination="cR5-My-M8e" kind="show" identifier="AddButtonToSketchEditorViewController" id="UpL-tA-x7j"/>
+                        <segue destination="cR5-My-M8e" kind="show" identifier="SketchCellToSketchEditorViewController" id="lSo-o3-2Ea"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jA5-Zb-3Wh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -98,4 +99,7 @@
     <resources>
         <image name="Cubes" width="50" height="50"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="lSo-o3-2Ea"/>
+    </inferredMetricsTieBreakers>
 </document>

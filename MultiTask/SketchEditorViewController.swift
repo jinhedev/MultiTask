@@ -21,9 +21,44 @@ class SketchEditorViewController: BaseViewController {
     var opacity: CGFloat = 1.0
     var swiped = false
 
-    var saveButton: UIBarButtonItem = {
+    lazy var saveButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "FloppyDisk"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
+        button.isEnabled = false
         return button
+    }()
+
+    lazy var clearButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "SketchPad"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleClear(_:)))
+        return button
+    }()
+
+    lazy var shareButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleShare(_:)))
+        return button
+    }()
+
+    lazy var redButton: UIBarButtonItem? = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
+        button.backgroundColor = Color.roseScarlet
+        button.layer.cornerRadius = 11
+        let barButtonItem = UIBarButtonItem(customView: button)
+        return barButtonItem
+    }()
+
+    lazy var whiteButton: UIBarButtonItem = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
+        button.backgroundColor = Color.candyWhite
+        button.layer.cornerRadius = 11
+        let barButtonItem = UIBarButtonItem(customView: button)
+        return barButtonItem
+    }()
+
+    lazy var blueButton: UIBarButtonItem = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
+        button.backgroundColor = Color.miamiBlue
+        button.layer.cornerRadius = 11
+        let barButtonItem = UIBarButtonItem(customView: button)
+        return barButtonItem
     }()
 
     static let storyboard_id = String(describing: SketchEditorViewController.self)
@@ -70,6 +105,23 @@ class SketchEditorViewController: BaseViewController {
         }
     }
 
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if self.saveButton.isEnabled == false {
+            self.saveButton.isEnabled = true
+        }
+        if !swiped {
+            // this will draw a single dot/point
+            drawLineFrom(lastPoint, toPoint: lastPoint)
+        }
+        // merge tempImageView into mainImageView
+        UIGraphicsBeginImageContext(mainImageView.frame.size)
+        mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
+        tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: opacity)
+        mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndPDFContext()
+        tempImageView.image = nil
+    }
+
     // MARK: - UIToolBar
 
     private func setupMaterialToolBar() {
@@ -86,11 +138,26 @@ class SketchEditorViewController: BaseViewController {
     // MARK: - UINavigationBar
 
     private func setupUINavigationBar() {
-        navigationItem.rightBarButtonItem = saveButton
+        navigationItem.rightBarButtonItems = [saveButton, shareButton]
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
         print(123)
+    }
+
+    @objc func handleClear(_ sender: UIBarButtonItem) {
+        self.mainImageView.image = nil
+    }
+
+    @objc func handleShare(_ sender: UIBarButtonItem) {
+        UIGraphicsBeginImageContext(self.mainImageView.bounds.size)
+        self.mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.size.width, height: mainImageView.frame.size.height))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        if let image = image {
+            let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+            self.present(activityViewController, animated: true, completion: nil)
+        }
     }
 
     // MARK: - Lifecycle

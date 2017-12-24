@@ -16,6 +16,7 @@ struct Segue {
     static let SketchCellToSketchEditorViewController = "SketchCellToSketchEditorViewController"
     static let AvatarButtonToSettingsViewController = "AvatarButtonToSettingsViewController"
     static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
+    static let SketchEditViewControllerToSaveDataViewController = "SketchEditViewControllerToSaveDataViewController"
     static let PendingTaskCellToItemsViewController = "PendingTaskCellToItemsViewController"
     static let ItemsViewControllerToItemEditorViewController = "ItemsViewControllerToItemEditorViewController"
     static let ProfileCellToAvatarsViewController = "ProfileCellToAvatarsViewController"

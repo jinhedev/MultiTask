@@ -25,7 +25,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
 
     lazy var saveButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "FloppyDisk"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
-        button.isEnabled = false
         return button
     }()
 
@@ -87,9 +86,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if self.saveButton.isEnabled == false {
-            self.saveButton.isEnabled = true
-        }
         if !swiped {
             // this will draw a single dot/point
             drawLineFrom(lastPoint, toPoint: lastPoint)
@@ -159,12 +155,11 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
-        if self.sketch != nil {
-            sketch!.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
-        } else {
-            self.sketch = Sketch(title: "iugh")
-            self.sketch?.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        if self.sketch == nil {
+            self.sketch = Sketch()
         }
+        self.sketch!.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+
         self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : sketch!.imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
     }
 

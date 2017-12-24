@@ -8,11 +8,11 @@
 
 import UIKit
 
-class SaveDataController: BaseViewController {
+class SaveDataViewController: BaseViewController {
 
     // MRAK: - API
 
-    static let storyboard_id = String(describing: SaveDataController.self)
+    static let storyboard_id = String(describing: SaveDataViewController.self)
 
     // MARK: - Lifecycle
 

@@ -13,13 +13,15 @@ protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
     func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch)
 }
 
-class SketchEditorViewController: BaseViewController, PersistentContainerDelegate, SaveDataViewControllerDelegate {
+class SketchEditorViewController: BaseViewController, PersistentContainerDelegate, SaveDataViewControllerDelegate, UIViewControllerTransitioningDelegate {
 
     // MARK: - API
 
     var sketch: Sketch?
     var realmManager: RealmManager?
     weak var delegate: SketchEditorViewControllerDelegate?
+    weak var saveDataViewController: SaveDataViewController?
+    let slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator()
 
     var lastPoint = CGPoint.zero
     var red: CGFloat = 200 / 255
@@ -160,12 +162,20 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
-        if self.sketch == nil {
-            self.sketch = Sketch()
+        if saveDataViewController != nil {
+            self.saveDataViewController!.transitioningDelegate = self
+            present(self.saveDataViewController!, animated: true, completion: nil)
         }
-        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
 
-        performSegue(withIdentifier: Segue.SketchEditViewControllerToSaveDataViewController, sender: self)
+
+
+        ////////////////////////////////////////////////
+//        if self.sketch == nil {
+//            self.sketch = Sketch()
+//        }
+//        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+//
+//        performSegue(withIdentifier: Segue.SketchEditViewControllerToSaveDataViewController, sender: self)
 
 //        self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
     }
@@ -251,6 +261,12 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         if let saveDataViewController = segue.destination as? SaveDataViewController {
             saveDataViewController.delegate = self
         }
+    }
+
+    // MAKR: - UIViewControllerTransitioningDelegate
+
+    private func setupUIViewControllerTransitioningDelegate() {
+        self.saveDataViewController?.transitionCoordinator
     }
 
 }

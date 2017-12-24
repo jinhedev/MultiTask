@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50974351F4EA986007C6EAA /* WebServiceManager.swift */; };
+		C51BEF181FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51BEF171FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift */; };
 		C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */; };
 		C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */; };
 		C53C3EF51FBA47850064DDB4 /* SketchesTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* SketchesTab.storyboard */; };
@@ -166,6 +167,7 @@
 
 /* Begin PBXFileReference section */
 		C50974351F4EA986007C6EAA /* WebServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebServiceManager.swift; sourceTree = "<group>"; };
+		C51BEF171FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerSlideTransitionCoordinator.swift; sourceTree = "<group>"; };
 		C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
 		C53C3EF41FBA47850064DDB4 /* SketchesTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SketchesTab.storyboard; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				C5421FAB1FDFC999009E78C4 /* SketchCell.swift */,
 				C5421FAD1FDFCB29009E78C4 /* SketchCell.xib */,
 				C53C3EF41FBA47850064DDB4 /* SketchesTab.storyboard */,
+				C51BEF171FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -987,6 +990,7 @@
 				C5AACE431FE4F4CD0025AA97 /* AvatarCell.swift in Sources */,
 				C54E52F51FE437E70071E504 /* URL+document.swift in Sources */,
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
+				C51BEF181FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift in Sources */,
 				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,
 				C54B6A1F1F69165900ABC572 /* AppSetting.swift in Sources */,
 				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,

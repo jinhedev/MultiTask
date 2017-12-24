@@ -9,12 +9,17 @@
 import UIKit
 import RealmSwift
 
+protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
+    
+}
+
 class SketchEditorViewController: BaseViewController, PersistentContainerDelegate {
 
     // MARK: - API
 
     var sketch: Sketch?
     var realmManager: RealmManager?
+    weak var delegate: SketchEditorViewControllerDelegate?
 
     var lastPoint = CGPoint.zero
     var red: CGFloat = 200 / 255

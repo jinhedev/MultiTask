@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class SketchesViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
+class SketchesViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UIViewControllerPreviewingDelegate, SketchEditorViewControllerDelegate {
 
     // MARK: - API
 
@@ -181,6 +181,10 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         }
     }
 
+    // MARK: - SketchEditorViewControllerDelegate
+
+
+
     // MARK: - Notifications
 
     func observeNotificationForEditingMode() {
@@ -198,6 +202,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.setupNavigationBar()
         self.setupCollectionView()
         self.setupUICollectionViewDelegateFlowLayout()
+        self.setupUIViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
         self.observeNotificationForSketchCreation()
@@ -226,6 +231,31 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
                 sketchEditorViewController.sketch = self.sketches?[selectedIndex.section][selectedIndex.item]
             }
         }
+    }
+
+    // MARK: - UIViewControllerPreviewingDelegate
+
+    private func setupUIViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            viewControllerToCommit.hidesBottomBarWhenPushed = true
+            navController.pushViewController(viewControllerToCommit, animated: true)
+        }
+    }
+
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let sketchEditorViewController = storyboard?.instantiateViewController(withIdentifier: SketchEditorViewController.storyboard_id) as? SketchEditorViewController
+        sketchEditorViewController?.delegate = self
+        sketchEditorViewController?.sketch = sketches?[indexPath.section][indexPath.row]
+        // setting the peeking cell's animation
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return sketchEditorViewController
     }
 
     // MARK: - CollectionView

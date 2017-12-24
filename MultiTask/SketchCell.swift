@@ -81,7 +81,7 @@ class SketchCell: BaseCollectionViewCell {
         self.checkmarkImageView.layer.borderWidth = 1
         self.checkmarkImageView.backgroundColor = Color.inkBlack
         self.checkmarkImageView.isHidden = true
-        self.frameView.backgroundColor = Color.black
+        self.frameView.backgroundColor = Color.inkBlack
         self.frameView.clipsToBounds = true
         self.containerView.backgroundColor = Color.midNightBlack
         self.containerView.layer.cornerRadius = 8
@@ -90,6 +90,7 @@ class SketchCell: BaseCollectionViewCell {
         self.containerView.layer.borderWidth = 1
         self.sketchImageView.enableParallaxMotion(magnitude: 14)
         self.sketchImageView.contentMode = .scaleAspectFill
+        self.sketchImageView.backgroundColor = Color.inkBlack
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
     }

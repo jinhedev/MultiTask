@@ -146,7 +146,7 @@
                         <outlet property="redButton" destination="QVr-56-ytr" id="jqS-iO-jJa"/>
                         <outlet property="toolboxView" destination="nFI-t5-sst" id="FDa-G9-NpO"/>
                         <outlet property="whiteButton" destination="vpM-MI-hcI" id="jIp-Ov-xj9"/>
-                        <segue destination="yR6-Hd-tV4" kind="custom" identifier="SketchEditViewControllerToSaveDataViewController" id="K2o-aK-Bft"/>
+                        <segue destination="yR6-Hd-tV4" kind="show" identifier="SketchEditViewControllerToSaveDataViewController" id="K2o-aK-Bft"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r1n-5Y-tnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -158,11 +158,11 @@
             <objects>
                 <viewController storyboardIdentifier="SaveDataViewController" id="yR6-Hd-tV4" customClass="SaveDataViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="F29-Sc-PYJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="aEt-2Y-J3v">
-                                <rect key="frame" x="16" y="36" width="343" height="202"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aEt-2Y-J3v">
+                                <rect key="frame" x="16" y="16" width="343" height="154"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8S2-4y-BNv">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="22"/>
@@ -173,30 +173,43 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xat-Ir-6lH">
-                                        <rect key="frame" x="0.0" y="30" width="343" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="6cg-iD-nQN">
+                                        <rect key="frame" x="0.0" y="38" width="343" height="44"/>
+                                        <subviews>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="sketch_title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xat-Ir-6lH">
+                                                <rect key="frame" x="0.0" y="0.0" width="261" height="44"/>
+                                                <nil key="textColor"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                <textInputTraits key="textInputTraits" keyboardAppearance="alert"/>
+                                            </textField>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lSt-qt-hcw">
+                                                <rect key="frame" x="277" y="0.0" width="66" height="44"/>
+                                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="66" id="pTy-Ea-uXX"/>
+                                                </constraints>
+                                                <state key="normal" title="Save">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="handleSave:" destination="yR6-Hd-tV4" eventType="touchUpInside" id="QWO-P3-Xz9"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="eI3-MB-imq"/>
+                                            <constraint firstAttribute="height" constant="44" id="VZz-l7-Dr4"/>
                                         </constraints>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kXu-Fk-U0m">
-                                        <rect key="frame" x="0.0" y="82" width="343" height="56"/>
-                                        <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="56" id="15i-gl-sah"/>
-                                        </constraints>
-                                        <state key="normal" title="Button"/>
-                                    </button>
+                                    </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eEB-xA-hNX">
-                                        <rect key="frame" x="0.0" y="146" width="343" height="56"/>
+                                        <rect key="frame" x="0.0" y="98" width="343" height="56"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="LhL-c8-fT2"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="handleCancel:" destination="yR6-Hd-tV4" eventType="touchUpInside" id="Wy8-iq-w85"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -209,6 +222,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ibJ-DG-NSG"/>
                     </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="eEB-xA-hNX" id="MS7-xO-eiG"/>
+                        <outlet property="saveButton" destination="lSt-qt-hcw" id="D3z-HZ-UTz"/>
+                        <outlet property="titleLabel" destination="8S2-4y-BNv" id="5IU-eC-qM2"/>
+                        <outlet property="titleTextField" destination="Xat-Ir-6lH" id="zyk-6v-Hh1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UhF-vb-WDt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

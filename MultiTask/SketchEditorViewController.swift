@@ -10,10 +10,10 @@ import UIKit
 import RealmSwift
 
 protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
-    
+    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch)
 }
 
-class SketchEditorViewController: BaseViewController, PersistentContainerDelegate {
+class SketchEditorViewController: BaseViewController, PersistentContainerDelegate, SaveDataViewControllerDelegate {
 
     // MARK: - API
 
@@ -163,9 +163,11 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         if self.sketch == nil {
             self.sketch = Sketch()
         }
-        self.sketch!.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
 
-        self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : sketch!.imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
+        performSegue(withIdentifier: Segue.SketchEditViewControllerToSaveDataViewController, sender: self)
+
+//        self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
     }
 
     @objc func handleShare(_ sender: UIBarButtonItem) {
@@ -193,10 +195,8 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-        if let baseNavController = self.navigationController as? BaseNavigationController {
-            guard let selectedSketch = self.sketch else { return }
-            self.postNotificationForTaskPending(selectedSketch: selectedSketch)
-            baseNavController.popViewController(animated: true)
+        if let sketch = object as? Sketch {
+            self.delegate?.sketchEditorViewController(self, didUpdateSketch: sketch)
         }
     }
 
@@ -222,11 +222,14 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         return image
     }
 
-    // MARK: - Notifications
+    // MARK: - SaveDataViewControllerDelegate
 
-    func postNotificationForTaskPending(selectedSketch: Sketch) {
-        let notification = Notification(name: Notification.Name(rawValue: NotificationKey.SketchCreation), object: nil, userInfo: [NotificationKey.SketchCreation : selectedSketch])
-        NotificationCenter.default.post(notification)
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
+        viewController.navigationController?.popViewController(animated: true)
+    }
+
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton) {
+        print(123)
     }
 
     // MARK: - Lifecycle
@@ -245,6 +248,9 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+        if let saveDataViewController = segue.destination as? SaveDataViewController {
+            saveDataViewController.delegate = self
+        }
     }
 
 }

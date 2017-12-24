@@ -183,16 +183,17 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
 
     // MARK: - SketchEditorViewControllerDelegate
 
-
+    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.popViewController(animated: true)
+            self.performInitialFetch(notification: nil)
+        }
+    }
 
     // MARK: - Notifications
 
     func observeNotificationForEditingMode() {
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.SketchCellEditingMode), object: nil)
-    }
-
-    func observeNotificationForSketchCreation() {
-        NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.SketchCreation), object: nil)
     }
 
     // MARK: - Lifecycle
@@ -205,7 +206,6 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.setupUIViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
-        self.observeNotificationForSketchCreation()
         // initial fetches
         self.realmManager?.fetchExistingUsers()
         self.performInitialFetch(notification: nil)
@@ -224,11 +224,18 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         super.prepare(for: segue, sender: sender)
         if let settingsViewController = segue.destination as? SettingsViewController {
             settingsViewController.currentUser = self.currentUser
-        } else if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
-            // TODO: implement this
-            sketchEditorViewController.hidesBottomBarWhenPushed = true
-            if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
-                sketchEditorViewController.sketch = self.sketches?[selectedIndex.section][selectedIndex.item]
+        } else if segue.identifier == Segue.AddButtonToSketchEditorViewController {
+            if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
+                sketchEditorViewController.hidesBottomBarWhenPushed = true
+                sketchEditorViewController.delegate = self
+            }
+        } else if segue.identifier == Segue.SketchCellToSketchEditorViewController {
+            if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
+                sketchEditorViewController.hidesBottomBarWhenPushed = true
+                sketchEditorViewController.delegate = self
+                if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
+                    sketchEditorViewController.sketch = self.sketches?[selectedIndex.section][selectedIndex.item]
+                }
             }
         }
     }

@@ -92,6 +92,8 @@
 		C5AACE431FE4F4CD0025AA97 /* AvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5AACE421FE4F4CD0025AA97 /* AvatarCell.swift */; };
 		C5AACE451FE4F5240025AA97 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5AACE441FE4F5240025AA97 /* AvatarCell.xib */; };
 		C5B412B11FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */; };
+		C5C058B51FEECA980035B1D7 /* UIImageView+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C058B41FEECA980035B1D7 /* UIImageView+Image.swift */; };
+		C5C058B91FEEFAA80035B1D7 /* SaveDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C058B81FEEFAA80035B1D7 /* SaveDataController.swift */; };
 		C5D0386E1FD99F880010085B /* MainPendingTasksCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */; };
 		C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */; };
 		C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D038751FDAF7940010085B /* TaskHeaderView.swift */; };
@@ -252,6 +254,8 @@
 		C5AACE421FE4F4CD0025AA97 /* AvatarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCell.swift; sourceTree = "<group>"; };
 		C5AACE441FE4F5240025AA97 /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		C5B412B01FBE877D006CFDA6 /* CompletedTasksViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewControllerTests.swift; sourceTree = "<group>"; };
+		C5C058B41FEECA980035B1D7 /* UIImageView+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Image.swift"; sourceTree = "<group>"; };
+		C5C058B81FEEFAA80035B1D7 /* SaveDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDataController.swift; sourceTree = "<group>"; };
 		C5D0386D1FD99F880010085B /* MainPendingTasksCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPendingTasksCell.swift; sourceTree = "<group>"; };
 		C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainPendingTasksCell.xib; sourceTree = "<group>"; };
 		C5D038751FDAF7940010085B /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
@@ -525,6 +529,7 @@
 			children = (
 				C55E140A1FD7484400C46BED /* SketchesViewController.swift */,
 				C5A856441FEC33D300377F06 /* SketchEditorViewController.swift */,
+				C5C058B81FEEFAA80035B1D7 /* SaveDataController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -582,6 +587,7 @@
 				C54E52FC1FE4389E0071E504 /* UITableView+IndexPath.swift */,
 				C54E52F61FE437FF0071E504 /* UIView+Animation.swift */,
 				C54E52F41FE437E70071E504 /* URL+document.swift */,
+				C5C058B41FEECA980035B1D7 /* UIImageView+Image.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -967,6 +973,7 @@
 				C549CCCC1FC8EE630039D0D5 /* CompletedTaskCell.swift in Sources */,
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
 				C5A9A8D61F3BE85800601CFF /* Item.swift in Sources */,
+				C5C058B91FEEFAA80035B1D7 /* SaveDataController.swift in Sources */,
 				C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */,
 				C55E140B1FD7484400C46BED /* SketchesViewController.swift in Sources */,
 				C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */,
@@ -991,6 +998,7 @@
 				C54E52FF1FE438D40071E504 /* Error.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
+				C5C058B51FEECA980035B1D7 /* UIImageView+Image.swift in Sources */,
 				C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */,
 				C54394491FB56E90009EC104 /* Menu.swift in Sources */,
 				C59C36FD1FDE298700FA86CF /* WebsViewController.swift in Sources */,

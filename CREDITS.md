@@ -16,9 +16,7 @@
 - degree by Guru from the Noun Project
 - support by Maxim Kulikov from the Noun Project
 - Kanban Board by Vignesh Nandha Kumar from the Noun Project
-- For something that is hard to define in words
-- profile by Icon Master from the Noun Project
 - Save by Landan Lloyd from the Noun Project
-- Image by Yeong Rong Kim from the Noun Project
-- Clear task by icon 54 from the Noun Project
 - Share by Kidiladon from the Noun Project
+- eraser by Aiden Icons from the Noun Project
+- import by Satisfactory from the Noun Project

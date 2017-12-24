@@ -110,6 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - UIAppearance
 
     func setupAppearance() {
+        // FIXME: damnit Apple, this is super annoying!!!
         UITableViewCell.appearance().backgroundColor = .clear
     }
 

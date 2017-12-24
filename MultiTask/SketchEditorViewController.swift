@@ -7,18 +7,20 @@
 //
 
 import UIKit
+import RealmSwift
 
-class SketchEditorViewController: BaseViewController {
+class SketchEditorViewController: BaseViewController, PersistentContainerDelegate {
 
     // MARK: - API
 
     var sketch: Sketch?
+    var realmManager: RealmManager?
+
     var lastPoint = CGPoint.zero
-    var red: CGFloat = 0.0
-    var green: CGFloat = 0.0
-    var blue: CGFloat = 0.0
+    var red: CGFloat = 200 / 255
+    var green: CGFloat = 200 / 255
+    var blue: CGFloat = 200 / 255
     var brushWidth: CGFloat = 10.0
-    var opacity: CGFloat = 1.0
     var swiped = false
 
     lazy var saveButton: UIBarButtonItem = {
@@ -27,81 +29,60 @@ class SketchEditorViewController: BaseViewController {
         return button
     }()
 
-    lazy var clearButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "SketchPad"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleClear(_:)))
-        return button
-    }()
-
     lazy var shareButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Share"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleShare(_:)))
         return button
     }()
 
-    lazy var redButton: UIBarButtonItem? = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
-        button.backgroundColor = Color.roseScarlet
-        button.layer.cornerRadius = 11
-        let barButtonItem = UIBarButtonItem(customView: button)
-        return barButtonItem
-    }()
-
-    lazy var whiteButton: UIBarButtonItem = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
-        button.backgroundColor = Color.candyWhite
-        button.layer.cornerRadius = 11
-        let barButtonItem = UIBarButtonItem(customView: button)
-        return barButtonItem
-    }()
-
-    lazy var blueButton: UIBarButtonItem = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
-        button.backgroundColor = Color.miamiBlue
-        button.layer.cornerRadius = 11
-        let barButtonItem = UIBarButtonItem(customView: button)
-        return barButtonItem
+    lazy var importButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Import"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleImport(_:)))
+        return button
     }()
 
     static let storyboard_id = String(describing: SketchEditorViewController.self)
 
-    @IBOutlet weak var materialToolBar: UIToolbar!
-    @IBOutlet weak var dividerView: UIView!
+    @IBOutlet weak var toolboxView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
-    @IBOutlet weak var tempImageView: UIImageView!
+
+    @IBOutlet weak var whiteButton: UIButton!
+    @IBOutlet weak var blueButton: UIButton!
+    @IBOutlet weak var redButton: UIButton!
+    @IBOutlet weak var eraserButton: UIButton!
+    @IBOutlet weak var clearButton: UIButton!
 
     func drawLineFrom(_ fromPoint: CGPoint, toPoint: CGPoint) {
         // 1
-        UIGraphicsBeginImageContext(view.frame.size)
+        UIGraphicsBeginImageContext(mainImageView.frame.size)
         let context = UIGraphicsGetCurrentContext()
-        tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height))
+        mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.width, height: mainImageView.frame.height))
         // 2
         context?.move(to: fromPoint)
         context?.addLine(to: toPoint)
         // 3
         context?.setLineCap(CGLineCap.round)
         context?.setLineWidth(brushWidth)
-        context?.setStrokeColor(Color.white.cgColor)
+        context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
         context?.setBlendMode(CGBlendMode.normal)
         // 4
         context?.strokePath()
         // 5
-        tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        tempImageView.alpha = opacity
+        mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-    }
-
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        swiped = true
-        if let touch = touches.first {
-            let currentPoint = touch.location(in: view)
-            drawLineFrom(lastPoint, toPoint: currentPoint)
-            lastPoint = currentPoint
-        }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         swiped = false
         if let touch = touches.first {
-            lastPoint = touch.location(in: view)
+            lastPoint = touch.location(in: mainImageView)
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        swiped = true
+        if let touch = touches.first {
+            let currentPoint = touch.location(in: mainImageView)
+            drawLineFrom(lastPoint, toPoint: currentPoint)
+            lastPoint = currentPoint
         }
     }
 
@@ -113,60 +94,149 @@ class SketchEditorViewController: BaseViewController {
             // this will draw a single dot/point
             drawLineFrom(lastPoint, toPoint: lastPoint)
         }
-        // merge tempImageView into mainImageView
-        UIGraphicsBeginImageContext(mainImageView.frame.size)
-        mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: 1.0)
-        tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height), blendMode: CGBlendMode.normal, alpha: opacity)
-        mainImageView.image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndPDFContext()
-        tempImageView.image = nil
+        self.mainImageView.image = mainImageView.imageWithCurrentContext()
     }
 
-    // MARK: - UIToolBar
+    // MARK: - ToolboxView
 
-    private func setupMaterialToolBar() {
-        self.materialToolBar.tintColor = Color.mandarinOrange
-        self.materialToolBar.barTintColor = Color.midNightBlack
-        self.materialToolBar.barStyle = .black
-        self.materialToolBar.isTranslucent = false
+    private func setupToolboxView() {
+        self.toolboxView.backgroundColor = Color.inkBlack
+        // whiteButton
+        self.whiteButton.frame.size = CGSize(width: 22, height: 22)
+        self.whiteButton.layer.cornerRadius = 11
+        self.whiteButton.clipsToBounds = true
+        self.whiteButton.tintColor = Color.offWhite
+        // blueButton
+        self.blueButton.frame.size = CGSize(width: 22, height: 22)
+        self.blueButton.layer.cornerRadius = 11
+        self.blueButton.clipsToBounds = true
+        self.blueButton.tintColor = Color.miamiBlue
+        // redButton
+        self.redButton.frame.size = CGSize(width: 22, height: 22)
+        self.redButton.layer.cornerRadius = 11
+        self.redButton.clipsToBounds = true
+        self.redButton.tintColor = Color.roseScarlet
+        // eraserButton
+        self.eraserButton.frame.size = CGSize(width: 22, height: 22)
+        self.eraserButton.clipsToBounds = true
+        // clearButton
+        self.clearButton.frame.size = CGSize(width: 22, height: 22)
+        self.clearButton.clipsToBounds = true
     }
 
-    private func setupDividerView() {
-        self.dividerView.backgroundColor = Color.darkGray
+    @IBAction func handleWhiteColor(_ sender: UIButton) {
+        self.red = 200 / 255
+        self.green = 200 / 255
+        self.blue = 200 / 255
+    }
+
+    @IBAction func handleBlueColor(_ sender: UIButton) {
+        self.red = 0 / 255
+        self.green = 134 / 255
+        self.blue = 249 / 255
+    }
+
+    @IBAction func handleRedColor(_ sender: UIButton) {
+        self.red = 143 / 255
+        self.green = 50 / 255
+        self.blue = 55 / 255
+    }
+
+    @IBAction func handleEraser(_ sender: UIButton) {
+        self.red = 15 / 255
+        self.green = 15 / 255
+        self.blue = 15 / 255
+    }
+
+    @IBAction func handleClear(_ sender: UIButton) {
+        self.mainImageView.image = nil
     }
 
     // MARK: - UINavigationBar
 
     private func setupUINavigationBar() {
-        navigationItem.rightBarButtonItems = [saveButton, shareButton]
+        navigationItem.rightBarButtonItems = [saveButton, shareButton, importButton]
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
-        print(123)
-    }
-
-    @objc func handleClear(_ sender: UIBarButtonItem) {
-        self.mainImageView.image = nil
+        if self.sketch != nil {
+            sketch!.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        } else {
+            self.sketch = Sketch(title: "iugh")
+            self.sketch?.imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        }
+        self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : sketch!.imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
     }
 
     @objc func handleShare(_ sender: UIBarButtonItem) {
         UIGraphicsBeginImageContext(self.mainImageView.bounds.size)
-        self.mainImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.size.width, height: mainImageView.frame.size.height))
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
+        let image = self.mainImageView.imageWithCurrentContext()
         if let image = image {
             let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
             self.present(activityViewController, animated: true, completion: nil)
         }
     }
 
+    @objc func handleImport(_ sender: UIBarButtonItem) {
+        print(123)
+    }
+
+    // MARK: - PersistentContainerDelegate
+
+    private func setupPersistentContainerDelegate() {
+        self.realmManager = RealmManager()
+        self.realmManager!.delegate = self
+    }
+
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
+        if let baseNavController = self.navigationController as? BaseNavigationController {
+            guard let selectedSketch = self.sketch else { return }
+            self.postNotificationForTaskPending(selectedSketch: selectedSketch)
+            baseNavController.popViewController(animated: true)
+        }
+    }
+
+    // MARK: - MainImageView
+
+    private func setupMainImageView() {
+        if let unwrappedSketch = self.sketch {
+            self.mainImageView.image = UIImage(data: unwrappedSketch.imageData! as Data)
+        } else {
+            self.mainImageView.image = self.draw(withColor: Color.inkBlack)
+        }
+    }
+
+    func draw(withColor: UIColor) -> UIImage? {
+        // TODO: refactor this into an extension or something
+        let rect = CGRect(x: 0, y: 0, width: self.mainImageView.frame.width, height: self.mainImageView.frame.height)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(withColor.cgColor)
+        context?.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+
+    // MARK: - Notifications
+
+    func postNotificationForTaskPending(selectedSketch: Sketch) {
+        let notification = Notification(name: Notification.Name(rawValue: NotificationKey.SketchCreation), object: nil, userInfo: [NotificationKey.SketchCreation : selectedSketch])
+        NotificationCenter.default.post(notification)
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupMainImageView()
         self.setupUINavigationBar()
-        self.setupDividerView()
-        self.setupMaterialToolBar()
+        self.setupToolboxView()
+        self.setupPersistentContainerDelegate()
     }
 
     override func didReceiveMemoryWarning() {

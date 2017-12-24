@@ -58,7 +58,7 @@ extension PersistentContainerDelegate {
 var realm: Realm!
 
 func setupRealm() {
-    let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, AppSetting.self, Session.self, User.self])
+    let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, AppSetting.self, Session.self, User.self, Sketch.self])
     realm = try! Realm(configuration: config)
 }
 

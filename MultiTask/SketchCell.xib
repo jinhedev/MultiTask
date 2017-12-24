@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -61,9 +61,18 @@
                                     <constraint firstAttribute="trailing" secondItem="1jY-vc-hwV" secondAttribute="trailing" id="vk8-bF-N3Q"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="K8X-TI-iEl">
+                                <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="0DB-Wh-tfv"/>
+                                    <constraint firstAttribute="width" constant="22" id="PQs-6l-s9l"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="BW8-fq-84A" secondAttribute="bottom" id="BfJ-Ao-vT3"/>
+                            <constraint firstItem="K8X-TI-iEl" firstAttribute="leading" secondItem="efe-yH-0kl" secondAttribute="leading" id="faC-Eb-iQN"/>
+                            <constraint firstItem="K8X-TI-iEl" firstAttribute="top" secondItem="efe-yH-0kl" secondAttribute="top" id="g4C-Wg-0ZN"/>
                             <constraint firstItem="BW8-fq-84A" firstAttribute="leading" secondItem="efe-yH-0kl" secondAttribute="leading" id="rSr-ln-kCF"/>
                             <constraint firstItem="BW8-fq-84A" firstAttribute="top" secondItem="efe-yH-0kl" secondAttribute="top" id="src-Fg-6NA"/>
                             <constraint firstAttribute="trailing" secondItem="BW8-fq-84A" secondAttribute="trailing" id="ueK-js-mgT"/>
@@ -80,6 +89,7 @@
             <viewLayoutGuide key="safeArea" id="B7t-DC-FkX"/>
             <size key="customSize" width="249" height="303"/>
             <connections>
+                <outlet property="checkmarkImageView" destination="K8X-TI-iEl" id="faw-Qg-z2c"/>
                 <outlet property="containerView" destination="BW8-fq-84A" id="nZx-ZF-lLY"/>
                 <outlet property="frameView" destination="1jY-vc-hwV" id="rHa-FS-cPo"/>
                 <outlet property="sketchImageView" destination="4bC-y3-zs8" id="Vq6-lM-XNX"/>

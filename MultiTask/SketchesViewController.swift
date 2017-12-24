@@ -50,6 +50,9 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         return button
     }()
 
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
@@ -60,10 +63,20 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         } else {
             self.navigationItem.leftBarButtonItems?.remove(at: 1)
         }
+        // put all cells into edit mode
+        self.collectionView?.allowsMultipleSelection = isEditing
+        guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
+        for indexPath in indexPaths {
+            self.collectionView?.deselectItem(at: indexPath, animated: false)
+            if let cell = self.collectionView?.cellForItem(at: indexPath) as? SketchCell {
+                cell.isEditing = isEditing
+            }
+        }
     }
 
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
+    @objc func enableEditingMode() {
+        self.isEditing = true
+    }
 
     // MARK: - NavigationBar
 
@@ -85,10 +98,19 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     }
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
-        guard let user = self.currentUser else { return }
-        let avatarName = user.avatar
-        let avatar = UIImage(named: avatarName)
-        self.avatarButton.setImage(avatar, for: UIControlState.normal)
+        if self.isEditing == true {
+            guard let unwrappedSketches = self.sketches else { return }
+            var sketchesToBeDeleted = [Sketch]()
+            if let indexPaths = self.collectionView.indexPathsForSelectedItems {
+                for indexPath in indexPaths {
+                    let sketchToBeDeleted = unwrappedSketches[indexPath.section][indexPath.item]
+                    sketchesToBeDeleted.append(sketchToBeDeleted)
+                }
+                self.realmManager?.deleteSketches(sketches: sketchesToBeDeleted)
+            }
+        } else {
+            print(trace(file: #file, function: #function, line: #line))
+        }
     }
 
     private func setupNavigationBar() {
@@ -141,13 +163,32 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         }
     }
 
+    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {
+        if self.isEditing == true {
+            // exit edit mode
+            self.isEditing = false
+        }
+    }
+
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
         guard let fetchedUser = users?.first else { return }
         self.currentUser = fetchedUser
     }
 
-    @objc func performInitialFetch() {
-        // TODO: implement this
+    @objc func performInitialFetch(notification: Notification?) {
+        if self.sketches == nil || self.sketches?.isEmpty == true {
+            self.realmManager?.fetchSketches(sortedBy: Sketch.createdAtKeyPath, ascending: false)
+        }
+    }
+
+    // MARK: - Notifications
+
+    func observeNotificationForEditingMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.SketchCellEditingMode), object: nil)
+    }
+
+    func observeNotificationForSketchCreation() {
+        NotificationCenter.default.addObserver(self, selector: #selector(performInitialFetch(notification:)), name: NSNotification.Name(rawValue: NotificationKey.SketchCreation), object: nil)
     }
 
     // MARK: - Lifecycle
@@ -158,7 +199,11 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.setupCollectionView()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupPersistentContainerDelegate()
+        self.observeNotificationForEditingMode()
+        self.observeNotificationForSketchCreation()
+        // initial fetches
         self.realmManager?.fetchExistingUsers()
+        self.performInitialFetch(notification: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -214,15 +259,21 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     // MARK: - UICollectionViewDelegate
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: Segue.SketchCellToSketchEditorViewController, sender: self)
+        if self.isEditing == false {
+            performSegue(withIdentifier: Segue.SketchCellToSketchEditorViewController, sender: self)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        //
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
+            highlightedCell.isHighlighted = true
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        //
+        if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
+            highlightedCell.isHighlighted = false
+        }
     }
 
     // MARK: - UICollectionViewDataSource
@@ -237,13 +288,11 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-//        return self.sketches?.count ?? 0
-        return 1
+        return self.sketches?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return self.sketches?[section].count ?? 0
-        return 1
+        return self.sketches?[section].count ?? 0
     }
 
 }

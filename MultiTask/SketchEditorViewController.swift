@@ -161,22 +161,13 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
+        // transition to saveDataViewController
         if let saveDataViewController = self.storyboard?.instantiateViewController(withIdentifier: SaveDataViewController.storyboard_id) as? SaveDataViewController {
             saveDataViewController.transitioningDelegate = self
+            saveDataViewController.delegate = self
+            saveDataViewController.sketch = self.sketch
             self.present(saveDataViewController, animated: true, completion: nil)
         }
-
-
-
-        ////////////////////////////////////////////////
-//        if self.sketch == nil {
-//            self.sketch = Sketch()
-//        }
-//        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
-//
-//        performSegue(withIdentifier: Segue.SketchEditViewControllerToSaveDataViewController, sender: self)
-
-//        self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "updated_at" : NSDate(), "title" : "askjhdalksjdlaksjdlajksdlkajsdlakjsdlakjsd"])
     }
 
     @objc func handleShare(_ sender: UIBarButtonItem) {
@@ -234,11 +225,18 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - SaveDataViewControllerDelegate
 
     func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
-        viewController.navigationController?.popViewController(animated: true)
+        viewController.dismiss(animated: true, completion: nil)
     }
 
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton) {
-        print(123)
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
+        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        if self.sketch == nil {
+            self.sketch = Sketch(title: withTitle)
+            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!])
+        } else {
+            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "title" : withTitle])
+        }
+        viewController.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Lifecycle
@@ -250,19 +248,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         self.setupToolboxView()
         self.setupUIViewControllerTransitioningDelegate()
         self.setupPersistentContainerDelegate()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if segue.identifier == Segue.SketchEditViewControllerToSaveDataViewController {
-            guard let saveDataViewController = segue.destination as? SaveDataViewController else { return }
-            saveDataViewController.delegate = self
-            saveDataViewController.transitioningDelegate = self
-        }
     }
 
     // MAKR: - UIViewControllerTransitioningDelegate

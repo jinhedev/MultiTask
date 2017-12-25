@@ -10,11 +10,11 @@ import UIKit
 import RealmSwift
 
 protocol SaveDataViewControllerDelegate: NSObjectProtocol {
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton)
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String)
     func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton)
 }
 
-class SaveDataViewController: BaseViewController {
+class SaveDataViewController: BaseViewController, UITextFieldDelegate {
 
     // MRAK: - API
 
@@ -29,12 +29,16 @@ class SaveDataViewController: BaseViewController {
     @IBOutlet weak var cancelButton: UIButton!
 
     @IBAction func handleSave(_ sender: UIButton) {
-        self.delegate?.saveDataViewController(self, didTapSave: sender)
+        if self.titleTextField.text?.isEmpty == false {
+            self.delegate?.saveDataViewController(self, didTapSave: sender, withTitle: self.titleTextField.text!)
+        } else {
+            self.titleTextField.animateJitter(repeatCount: 5, duration: 0.03)
+            self.titleTextField.attributedPlaceholder = NSAttributedString(string: "title must not be blank", attributes: [NSAttributedStringKey.foregroundColor : Color.roseScarlet])
+        }
     }
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.delegate?.saveDataViewController(self, didTapCancel: sender)
-        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
     private func setupView() {
@@ -44,8 +48,8 @@ class SaveDataViewController: BaseViewController {
         self.titleLabel.text = "Choose a title"
         self.titleTextField.backgroundColor = Color.midNightBlack
         self.titleTextField.textColor = Color.white
-        self.titleTextField.attributedPlaceholder = NSAttributedString(string: self.sketch?.title ?? "sketch_title", attributes: [NSAttributedStringKey.foregroundColor : Color.darkGray])
-        self.titleTextField.placeholder = self.sketch?.title ?? "sketch_title"
+        self.titleTextField.attributedPlaceholder = NSAttributedString(string: "sketch_title", attributes: [NSAttributedStringKey.foregroundColor : Color.darkGray])
+        self.titleTextField.text = self.sketch?.title
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.backgroundColor = Color.seaweedGreen
         self.cancelButton.backgroundColor = Color.midNightBlack

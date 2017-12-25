@@ -46,4 +46,14 @@ extension UIView {
         }
     }
 
+    func animateJitter(repeatCount: Float, duration: TimeInterval) {
+        let animation = CABasicAnimation(keyPath: "position")
+        animation.duration = duration
+        animation.repeatCount = repeatCount
+        animation.autoreverses = true
+        animation.fromValue = NSValue(cgPoint: CGPoint.init(x: self.center.x - 5.0, y: self.center.y))
+        animation.toValue = NSValue(cgPoint: CGPoint.init(x: self.center.x + 5.0, y: self.center.y))
+        layer.add(animation, forKey: "position")
+    }
+
 }

@@ -50,6 +50,7 @@ class SketchCell: BaseCollectionViewCell {
 
     private func setHighlighted() {
         self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
+        self.sketchImageView.alpha = self.isHighlighted ? 0.7 : 1.0
     }
 
     private func setEditing() {

@@ -283,6 +283,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: SketchCell.nibName, bundle: nil), forCellWithReuseIdentifier: SketchCell.cell_id)
+        self.collectionView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.sketches)
     }
 
     // MARK: - UICollectionViewDelegateFlowLayout

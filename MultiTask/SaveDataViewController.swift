@@ -45,7 +45,7 @@ class SaveDataViewController: BaseViewController, UITextFieldDelegate {
         self.view.backgroundColor = Color.clear
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
-        self.titleLabel.text = "Choose a title"
+        self.titleLabel.text = "Choose a sketch title"
         self.titleTextField.backgroundColor = Color.midNightBlack
         self.titleTextField.textColor = Color.white
         self.titleTextField.attributedPlaceholder = NSAttributedString(string: "sketch_title", attributes: [NSAttributedStringKey.foregroundColor : Color.darkGray])

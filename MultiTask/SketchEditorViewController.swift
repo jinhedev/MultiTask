@@ -157,7 +157,7 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - UINavigationBar
 
     private func setupUINavigationBar() {
-        navigationItem.rightBarButtonItems = [saveButton, shareButton, importButton]
+        navigationItem.rightBarButtonItems = [saveButton, shareButton]
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {

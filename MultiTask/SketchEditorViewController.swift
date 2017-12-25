@@ -20,8 +20,7 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     var sketch: Sketch?
     var realmManager: RealmManager?
     weak var delegate: SketchEditorViewControllerDelegate?
-    weak var saveDataViewController: SaveDataViewController?
-    let slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator()
+    var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
 
     var lastPoint = CGPoint.zero
     var red: CGFloat = 200 / 255
@@ -162,9 +161,9 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     }
 
     @objc func handleSave(_ sender: UIBarButtonItem) {
-        if saveDataViewController != nil {
-            self.saveDataViewController!.transitioningDelegate = self
-            present(self.saveDataViewController!, animated: true, completion: nil)
+        if let saveDataViewController = self.storyboard?.instantiateViewController(withIdentifier: SaveDataViewController.storyboard_id) as? SaveDataViewController {
+            saveDataViewController.transitioningDelegate = self
+            self.present(saveDataViewController, animated: true, completion: nil)
         }
 
 
@@ -249,6 +248,7 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         self.setupMainImageView()
         self.setupUINavigationBar()
         self.setupToolboxView()
+        self.setupUIViewControllerTransitioningDelegate()
         self.setupPersistentContainerDelegate()
     }
 
@@ -258,15 +258,27 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let saveDataViewController = segue.destination as? SaveDataViewController {
+        if segue.identifier == Segue.SketchEditViewControllerToSaveDataViewController {
+            guard let saveDataViewController = segue.destination as? SaveDataViewController else { return }
             saveDataViewController.delegate = self
+            saveDataViewController.transitioningDelegate = self
         }
     }
 
     // MAKR: - UIViewControllerTransitioningDelegate
 
     private func setupUIViewControllerTransitioningDelegate() {
-        self.saveDataViewController?.transitionCoordinator
+        self.slideTransitionCoordinator = UIViewControllerSlideTransitionCoordinator(transitioningDirection: UIViewControllerTransitioningDirection.top)
+    }
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        self.slideTransitionCoordinator?.isPresenting = true
+        return slideTransitionCoordinator
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        self.slideTransitionCoordinator?.isPresenting = false
+        return slideTransitionCoordinator
     }
 
 }

@@ -146,7 +146,7 @@
                         <outlet property="redButton" destination="QVr-56-ytr" id="jqS-iO-jJa"/>
                         <outlet property="toolboxView" destination="nFI-t5-sst" id="FDa-G9-NpO"/>
                         <outlet property="whiteButton" destination="vpM-MI-hcI" id="jIp-Ov-xj9"/>
-                        <segue destination="yR6-Hd-tV4" kind="show" identifier="SketchEditViewControllerToSaveDataViewController" id="K2o-aK-Bft"/>
+                        <segue destination="yR6-Hd-tV4" kind="custom" identifier="SketchEditViewControllerToSaveDataViewController" id="K2o-aK-Bft"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r1n-5Y-tnt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -158,7 +158,7 @@
             <objects>
                 <viewController storyboardIdentifier="SaveDataViewController" id="yR6-Hd-tV4" customClass="SaveDataViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="F29-Sc-PYJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="186"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aEt-2Y-J3v">
@@ -222,6 +222,8 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="ibJ-DG-NSG"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="375" height="186"/>
                     <connections>
                         <outlet property="cancelButton" destination="eEB-xA-hNX" id="MS7-xO-eiG"/>
                         <outlet property="saveButton" destination="lSt-qt-hcw" id="D3z-HZ-UTz"/>

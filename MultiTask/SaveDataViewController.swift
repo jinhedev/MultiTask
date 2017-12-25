@@ -34,10 +34,11 @@ class SaveDataViewController: BaseViewController {
 
     @IBAction func handleCancel(_ sender: UIButton) {
         self.delegate?.saveDataViewController(self, didTapCancel: sender)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
 
     private func setupView() {
-        self.view.backgroundColor = Color.inkBlack
+        self.view.backgroundColor = Color.clear
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
         self.titleLabel.text = "Choose a title"

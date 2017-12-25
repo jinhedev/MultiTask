@@ -176,6 +176,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     }
 
     @objc func performInitialFetch(notification: Notification?) {
+        // FIXME: this method shouldn't provide checks for sketch's nullality. Move that logic outside
         if self.sketches == nil || self.sketches?.isEmpty == true {
             self.realmManager?.fetchSketches(sortedBy: Sketch.createdAtKeyPath, ascending: false)
         }
@@ -196,6 +197,14 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.SketchCellEditingMode), object: nil)
     }
 
+    // MARK: - UITabBar
+
+    private func updateTabBar() {
+        if let baseTabBarController = self.tabBarController as? BaseTabBarController {
+            baseTabBarController.tabBar.isHidden = false
+        }
+    }
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -214,6 +223,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.updateAvatarButton()
+        self.updateTabBar()
     }
 
     override func didReceiveMemoryWarning() {

@@ -4,68 +4,6 @@
 <dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Saving sketches into Photo</string>
-	<key>AWS</key>
-	<dict>
-		<key>Cognito</key>
-		<dict>
-			<key>Default</key>
-			<dict>
-				<key>Region</key>
-				<string>us-east-1</string>
-			</dict>
-		</dict>
-		<key>CredentialsProvider</key>
-		<dict>
-			<key>CognitoIdentity</key>
-			<dict>
-				<key>Default</key>
-				<dict>
-					<key>PoolId</key>
-					<string>us-east-1:7667df71-a25c-4f24-876f-06f343928a91</string>
-					<key>Region</key>
-					<string>us-east-1</string>
-				</dict>
-			</dict>
-		</dict>
-		<key>IdentityManager</key>
-		<dict>
-			<key>Default</key>
-			<dict/>
-		</dict>
-		<key>MobileHub</key>
-		<dict>
-			<key>ProjectClientId</key>
-			<string>MobileHub a0223bde-4256-42bb-a036-11c67aaab6cd aws-my-sample-app-ios-swift-v0.18</string>
-		</dict>
-		<key>PinpointAnalytics</key>
-		<dict>
-			<key>Default</key>
-			<dict>
-				<key>AppId</key>
-				<string>c9184df3b47f46f8aa0f5c4a350f6389</string>
-				<key>Region</key>
-				<string>us-east-1</string>
-			</dict>
-		</dict>
-		<key>PinpointTargeting</key>
-		<dict>
-			<key>Default</key>
-			<dict>
-				<key>Region</key>
-				<string>us-east-1</string>
-			</dict>
-		</dict>
-		<key>UserFileManager</key>
-		<dict>
-			<key>Default</key>
-			<dict>
-				<key>Region</key>
-				<string>us-east-1</string>
-				<key>S3Bucket</key>
-				<string>multitask-userfiles-mobilehub-1135805022</string>
-			</dict>
-		</dict>
-	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -81,23 +19,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.5</string>
+	<string>2.6</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>92093a426348a8891a1078e275b85083efe56d22</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

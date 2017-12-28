@@ -9,6 +9,7 @@
 import UIKit
 import RealmSwift
 import UserNotifications
+import Amplitude
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PersistentContainerDelegate {
@@ -30,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         self.setupAppearance()
         self.applyCurrentTheme()
+        self.setupAmplitude()
         return true
     }
 
@@ -116,6 +118,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applyCurrentTheme() {
         Theme.current.apply()
+    }
+
+    // MARK: - Amplitude
+
+    private func setupAmplitude() {
+        Amplitude.instance().initializeApiKey("7fd645043b8a91f7adedab334dcb593a")
     }
 
 }

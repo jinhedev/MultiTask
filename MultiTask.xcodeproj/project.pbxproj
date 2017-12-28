@@ -102,6 +102,8 @@
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
 		C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */; };
+		C5EC20DE1FF5554400CE0458 /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC20DC1FF5500600CE0458 /* Amplitude.framework */; };
+		C5EC20DF1FF5554400CE0458 /* Amplitude.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C5EC20DC1FF5500600CE0458 /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C5EC4D0A1F817C2B00DBF675 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */; };
 		C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */; };
 		C5EFB6C81FCC803300A064E3 /* SearchBarAppearanceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EFB6C71FCC803300A064E3 /* SearchBarAppearanceTest.swift */; };
@@ -159,6 +161,7 @@
 			files = (
 				C54E52DD1FE3A2050071E504 /* RealmSwift.framework in Embed Frameworks */,
 				C54E52DB1FE3A2050071E504 /* Realm.framework in Embed Frameworks */,
+				C5EC20DF1FF5554400CE0458 /* Amplitude.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,6 +268,7 @@
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
+		C5EC20DC1FF5500600CE0458 /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		C5EC4D091F817C2B00DBF675 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		C5EC4D0B1F817C5800DBF675 /* BaseTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabBarController.swift; sourceTree = "<group>"; };
 		C5EFB6C71FCC803300A064E3 /* SearchBarAppearanceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarAppearanceTest.swift; sourceTree = "<group>"; };
@@ -295,6 +299,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5EC20DE1FF5554400CE0458 /* Amplitude.framework in Frameworks */,
 				C54E52DC1FE3A2050071E504 /* RealmSwift.framework in Frameworks */,
 				C54E52DA1FE3A2050071E504 /* Realm.framework in Frameworks */,
 			);
@@ -306,6 +311,7 @@
 		C53C3EA71FBA0CFF0064DDB4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5EC20DC1FF5500600CE0458 /* Amplitude.framework */,
 				C54E52D71FE3A1F90071E504 /* Realm.framework */,
 				C54E52D61FE3A1F90071E504 /* RealmSwift.framework */,
 			);
@@ -1241,6 +1247,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1266,6 +1273,7 @@
 				INFOPLIST_FILE = MultiTask/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-lsqlite3.0";
 				PRODUCT_BUNDLE_IDENTIFIER = Duckensburg.MultiTask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

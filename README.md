@@ -9,7 +9,7 @@ _MultiTask is a todo list app that serves as a template case study for iOS devel
 - _Architectural (Object Orientated Design, ViewController Containment, Protocol, Key Value Observing)_
 - _Integration Tools (Fastlane)_
 - _Test (UnitTest, UITest)_
-- _Logging (** Fabric)_
+- _Logging (Amplitude)_
 
 Download on the [App Store](https://itunes.apple.com/us/app/multitask/id1271187729?ls=1&mt=8).
 

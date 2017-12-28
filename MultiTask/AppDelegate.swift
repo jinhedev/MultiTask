@@ -123,6 +123,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - Amplitude
 
     private func setupAmplitude() {
+        Amplitude.instance().trackingSessionEvents = true
+        Amplitude.instance().minTimeBetweenSessionsMillis = 5000
         Amplitude.instance().initializeApiKey("7fd645043b8a91f7adedab334dcb593a")
     }
 

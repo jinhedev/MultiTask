@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,6 +15,7 @@
                 <outlet property="collectionView" destination="bfE-Nc-pud" id="q9f-xU-fCX"/>
                 <outlet property="collectionViewFlowLayout" destination="6eQ-S6-BhU" id="Vom-am-SmG"/>
                 <outlet property="containerView" destination="NNc-og-WgI" id="wkA-jf-7Jg"/>
+                <outlet property="innerScrollIndicatorView" destination="BUP-Vd-ts3" id="Wu3-bO-6hi"/>
                 <outlet property="scrollIndicatorView" destination="2kr-ob-Juf" id="wYb-05-2Vf"/>
                 <outlet property="scrollIndicatorViewHeightConstraint" destination="PXD-qj-chh" id="dTx-vr-ZBZ"/>
                 <outlet property="scrollIndicatorViewLeadingConstraint" destination="cDA-Gb-Eks" id="6tu-3T-q0w"/>
@@ -41,9 +42,19 @@
                         </collectionView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2kr-ob-Juf">
                             <rect key="frame" x="0.0" y="134" width="340.5" height="3"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BUP-Vd-ts3">
+                                    <rect key="frame" x="32" y="0.0" width="276.5" height="3"/>
+                                    <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
+                                <constraint firstItem="BUP-Vd-ts3" firstAttribute="leading" secondItem="2kr-ob-Juf" secondAttribute="leading" constant="32" id="3tr-eJ-zrd"/>
+                                <constraint firstAttribute="trailing" secondItem="BUP-Vd-ts3" secondAttribute="trailing" constant="32" id="P0X-iK-jOS"/>
                                 <constraint firstAttribute="height" constant="3" id="PXD-qj-chh"/>
+                                <constraint firstItem="BUP-Vd-ts3" firstAttribute="top" secondItem="2kr-ob-Juf" secondAttribute="top" id="afs-fE-75z"/>
+                                <constraint firstAttribute="bottom" secondItem="BUP-Vd-ts3" secondAttribute="bottom" id="rFn-4s-p24"/>
                             </constraints>
                         </view>
                     </subviews>

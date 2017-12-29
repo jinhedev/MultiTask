@@ -32,6 +32,7 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var scrollIndicatorView: UIView!
+    @IBOutlet weak var innerScrollIndicatorView: UIView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var scrollIndicatorViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollIndicatorViewHeightConstraint: NSLayoutConstraint!
@@ -39,7 +40,7 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
     private func setEditing() {
         // FIXME: when scrolling very fast in edit mode, some items may not be visible, and the collectionView is not fast enough to turn them into editing mode.
         self.collectionView.allowsSelection = !isEditing
-        self.scrollIndicatorView.backgroundColor = isEditing ? Color.darkGray : Color.mandarinOrange
+        self.innerScrollIndicatorView.backgroundColor = isEditing ? Color.darkGray : Color.mandarinOrange
         self.collectionView.isScrollEnabled = !isEditing
     }
 
@@ -86,8 +87,9 @@ class MenuBarView: UIView, UICollectionViewDelegate, UICollectionViewDataSource,
         self.view.frame = self.bounds
         self.view.backgroundColor = Color.inkBlack
         self.containerView.backgroundColor = Color.inkBlack
-        self.scrollIndicatorView.backgroundColor = Color.mandarinOrange
-        self.scrollIndicatorView.layer.cornerRadius = self.scrollIndicatorViewHeightConstraint.constant / 2
+        self.scrollIndicatorView.backgroundColor = Color.clear
+        self.innerScrollIndicatorView.layer.cornerRadius = self.scrollIndicatorViewHeightConstraint.constant / 2
+        self.innerScrollIndicatorView.backgroundColor = Color.mandarinOrange
     }
 
     // MARK: - CollectionVew

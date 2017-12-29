@@ -102,7 +102,7 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - ToolboxView
 
     private func setupToolboxView() {
-        self.toolboxView.backgroundColor = Color.inkBlack
+        self.toolboxView.backgroundColor = Color.midNightBlack
         // whiteButton
         self.whiteButton.frame.size = CGSize(width: 22, height: 22)
         self.whiteButton.layer.cornerRadius = 11
@@ -204,6 +204,7 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
     // MARK: - MainImageView
 
     private func setupMainImageView() {
+        self.mainImageView.backgroundColor = Color.inkBlack
         if let unwrappedSketch = self.sketch {
             self.mainImageView.image = UIImage(data: unwrappedSketch.imageData! as Data)
         } else {

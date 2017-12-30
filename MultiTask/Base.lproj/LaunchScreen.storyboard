@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,30 +22,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PWW-0x-tiW">
-                                <rect key="frame" x="125" y="271" width="125" height="125"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Starfish" translatesAutoresizingMaskIntoConstraints="NO" id="uXb-eV-rW9">
-                                        <rect key="frame" x="8.5" y="8.5" width="109" height="109"/>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="tintColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Z6O-VJ-gGs">
+                                <rect key="frame" x="124.5" y="270.5" width="125" height="125"/>
                                 <constraints>
-                                    <constraint firstItem="uXb-eV-rW9" firstAttribute="top" secondItem="PWW-0x-tiW" secondAttribute="top" constant="8" id="16e-HX-F00"/>
-                                    <constraint firstItem="uXb-eV-rW9" firstAttribute="leading" secondItem="PWW-0x-tiW" secondAttribute="leading" constant="8" id="GY9-QT-oJo"/>
-                                    <constraint firstAttribute="trailing" secondItem="uXb-eV-rW9" secondAttribute="trailing" constant="8" id="ZVA-Gc-Gub"/>
-                                    <constraint firstAttribute="bottom" secondItem="uXb-eV-rW9" secondAttribute="bottom" constant="8" id="f4t-IQ-1Yg"/>
-                                    <constraint firstAttribute="width" secondItem="PWW-0x-tiW" secondAttribute="height" multiplier="1:1" id="sn8-hr-PK3"/>
+                                    <constraint firstAttribute="width" secondItem="Z6O-VJ-gGs" secondAttribute="height" id="TD6-OU-gQz"/>
                                 </constraints>
-                            </view>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="PWW-0x-tiW" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="1:3" id="8Iw-kY-eEn"/>
-                            <constraint firstItem="PWW-0x-tiW" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="d5A-mT-sn9"/>
-                            <constraint firstItem="PWW-0x-tiW" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="h2h-hE-bbR"/>
+                            <constraint firstItem="Z6O-VJ-gGs" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="1:3" id="0sT-Cw-v5O"/>
+                            <constraint firstItem="Z6O-VJ-gGs" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Bgx-dt-Y09"/>
+                            <constraint firstItem="Z6O-VJ-gGs" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="xRC-2z-Fdn"/>
                         </constraints>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
@@ -56,6 +44,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Starfish" width="50" height="50"/>
+        <image name="Logo" width="512" height="512"/>
     </resources>
 </document>

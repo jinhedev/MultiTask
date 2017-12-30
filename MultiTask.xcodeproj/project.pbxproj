@@ -99,6 +99,7 @@
 		C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */; };
 		C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D038751FDAF7940010085B /* TaskHeaderView.swift */; };
 		C5D038781FDAF7B60010085B /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D038771FDAF7B60010085B /* TaskHeaderView.xib */; };
+		C5D4B7B41FF774A1005DCD24 /* Onboarding.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
 		C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */; };
@@ -265,6 +266,7 @@
 		C5D0386F1FD9A1410010085B /* MainPendingTasksCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainPendingTasksCell.xib; sourceTree = "<group>"; };
 		C5D038751FDAF7940010085B /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
 		C5D038771FDAF7B60010085B /* TaskHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
+		C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Onboarding.xcassets; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		C5E6CB321FC3E82700E8BEA0 /* SearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
@@ -421,7 +423,8 @@
 		C56254811FE33739000D65BF /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				C5A9A8AE1F3BB06C00601CFF /* LaunchScreen.storyboard */,
+				C5D4B7B21FF77494005DCD24 /* Resources */,
+				C5D4B7B11FF7748D005DCD24 /* Views */,
 			);
 			name = Onboarding;
 			sourceTree = "<group>";
@@ -728,6 +731,22 @@
 			path = MultiTask;
 			sourceTree = "<group>";
 		};
+		C5D4B7B11FF7748D005DCD24 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C5A9A8AE1F3BB06C00601CFF /* LaunchScreen.storyboard */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		C5D4B7B21FF77494005DCD24 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -867,6 +886,7 @@
 			files = (
 				C5A9A8B01F3BB06C00601CFF /* LaunchScreen.storyboard in Resources */,
 				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
+				C5D4B7B41FF774A1005DCD24 /* Onboarding.xcassets in Resources */,
 				C54E52E41FE3A7BB0071E504 /* Settings.xcassets in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */,

@@ -29,7 +29,7 @@ class BaseViewController: UIViewController {
 
     private func animateView(didAppear: Bool) {
         UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: { [weak self] in
-            self?.view.alpha = didAppear ? 1.0 : 0.5
+            self?.view.alpha = didAppear ? 1.0 : 0.7
         }, completion: nil)
     }
 

@@ -29,4 +29,19 @@ extension String {
         }
         return randomString
     }
+
+    /**
+     Makes a string into a plural form.
+     - parameter count: the number of objects in the same context.
+     - warning: It doesn't work for all kinds of words. i.e. ...es or ...ies
+     */
+    func pluralize(count: Int) -> String {
+        if count > 1 {
+            let pluralizedString = self + "s"
+            return pluralizedString
+        } else {
+            return self
+        }
+    }
+
 }

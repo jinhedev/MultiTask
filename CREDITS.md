@@ -2,7 +2,6 @@
 
 ## Image Assets
 - Code branches by Anton Anuchin from the Noun Project
-- profile avatar by Shastry from the Noun Project
 - Email by i cons from the Noun Project
 - Starfish by parkjisun from the Noun Project
 - tick by Kidiladon from the Noun Project
@@ -20,3 +19,5 @@
 - Share by Kidiladon from the Noun Project
 - eraser by Aiden Icons from the Noun Project
 - import by Satisfactory from the Noun Project
+- Drawing Tools by Ben Davis from the Noun Project
+- Checklist by ProSymbols from the Noun Project

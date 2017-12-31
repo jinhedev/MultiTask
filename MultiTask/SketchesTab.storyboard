@@ -236,7 +236,7 @@
         <scene sceneID="tUL-CY-gZB">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jsd-EW-L96" customClass="BaseNavigationController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sketch" image="Cubes" landscapeImage="Cubes" largeContentSizeImage="Cubes" id="eMa-qb-SOu"/>
+                    <tabBarItem key="tabBarItem" title="Sketch" image="DrawingTools" landscapeImage="DrawingTools" largeContentSizeImage="DrawingTools" id="eMa-qb-SOu"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="TyE-mj-itD">
@@ -255,8 +255,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Cubes" width="50" height="50"/>
         <image name="Dot" width="50" height="50"/>
+        <image name="DrawingTools" width="50" height="50"/>
         <image name="Eraser" width="50" height="50"/>
         <image name="Wipeout" width="50" height="50"/>
     </resources>

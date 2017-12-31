@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -34,7 +34,7 @@
         <scene sceneID="ZC3-vC-3CO">
             <objects>
                 <viewControllerPlaceholder storyboardName="TasksTab" id="b3A-Kq-BQF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="Starfish" id="wbx-U5-Udb"/>
+                    <tabBarItem key="tabBarItem" title="Tasks" image="Tasks" landscapeImage="Tasks" largeContentSizeImage="Tasks" id="wbx-U5-Udb"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oYP-x6-4sH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -44,7 +44,7 @@
         <scene sceneID="j6M-Fl-CtX">
             <objects>
                 <viewControllerPlaceholder storyboardName="SketchesTab" id="tHN-5A-HlK" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Sketch" image="Cubes" landscapeImage="Cubes" largeContentSizeImage="Cubes" id="8kw-5H-Wnm"/>
+                    <tabBarItem key="tabBarItem" title="Sketch" image="DrawingTools" landscapeImage="DrawingTools" largeContentSizeImage="DrawingTools" id="8kw-5H-Wnm"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wby-ct-DHa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -52,7 +52,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Cubes" width="50" height="50"/>
-        <image name="Starfish" width="50" height="50"/>
+        <image name="DrawingTools" width="50" height="50"/>
+        <image name="Tasks" width="50" height="50"/>
     </resources>
 </document>

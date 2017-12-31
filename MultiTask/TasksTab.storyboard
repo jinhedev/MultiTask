@@ -261,7 +261,7 @@
         <scene sceneID="iKN-MD-4NR">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XIz-TD-94c" customClass="BaseNavigationController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="Starfish" landscapeImage="Starfish" largeContentSizeImage="Starfish" id="X0T-EE-vjH"/>
+                    <tabBarItem key="tabBarItem" title="Tasks" image="Tasks" landscapeImage="Tasks" largeContentSizeImage="Tasks" id="X0T-EE-vjH"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" id="MLV-uS-TL8">
@@ -400,7 +400,7 @@
     </scenes>
     <resources>
         <image name="Plus" width="50" height="50"/>
-        <image name="Starfish" width="50" height="50"/>
+        <image name="Tasks" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="qXS-1W-mkt"/>

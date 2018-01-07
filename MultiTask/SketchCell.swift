@@ -89,7 +89,7 @@ class SketchCell: BaseCollectionViewCell {
         self.containerView.clipsToBounds = true
         self.containerView.layer.borderColor = Color.midNightBlack.cgColor
         self.containerView.layer.borderWidth = 1
-        self.sketchImageView.enableParallaxMotion(magnitude: 14)
+        self.sketchImageView.enableParallaxMotion(magnitude: 32)
         self.sketchImageView.contentMode = .scaleAspectFill
         self.sketchImageView.backgroundColor = Color.inkBlack
         self.titleLabel.backgroundColor = Color.clear

@@ -7,41 +7,41 @@
 //
 
 import Foundation
+import Alamofire
+
+/**
+ WebServiceType is a user-define enum that specified what type of data response the user expect to get.
+ - warning: Expected response may or may not be the actual response. Be warned!
+ */
+enum WebServiceType {
+    case charts
+    case tickers
+    case add_customer
+    case tests
+}
 
 protocol WebServiceDelegate: NSObjectProtocol {
     // error
-    func webService(_ manager: WebServiceManager, didErr error: Error)
-    // auth
-    func webServiceDidLogin(_ manager: WebServiceManager, user: Any, session: Any)
-    func webServiceDidLogout(_ manager: WebServiceManager)
-    func webServiceDidSignup(_ manager: WebServiceManager)
-    // posts
-    func webSerivceDidCreate(_ manager: WebServiceManager, posts: Any)
-    func webServiceDidFetch(_ manager: WebServiceManager, posts: Any)
-    func webServiceDidUpdate(_ manager: WebServiceManager, posts: Any)
-    func webServiceDidDelete(_ manager: WebServiceManager, posts: Any)
-    // comments
-    func webServiceDidCreate(_ manager: WebServiceManager, comments: Any)
-    func webServiceDidFetch(_ manager: WebServiceManager, comments: Any)
-    func webServiceDidUpdate(_ manager: WebServiceManager, comments: Any)
-    func webServiceDidDelete(_ manager: WebServiceManager, comments: Any)
+    func webService(_ manager: WebServiceManager, didErr error: Error, type: WebServiceType)
+    // get
+    func webService(_ manager: WebServiceManager, didFetch result: Any, type: WebServiceType)
+    // post
+    func webService(_ manager: WebServiceManager, didPost result: Any, type: WebServiceType)
+    // patch
+    func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType)
+    // delete
+    func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType)
 }
 
 extension WebServiceDelegate {
-    // auth
-    func webServiceDidLogin(_ manager: WebServiceManager, user: Any, session: Any) {}
-    func webServiceDidLogout(_ manager: WebServiceManager) {}
-    func webServiceDidSignup(_ manager: WebServiceManager) {}
-    // posts
-    func webSerivceDidCreate(_ manager: WebServiceManager, posts: Any) {}
-    func webServiceDidFetch(_ manager: WebServiceManager, posts: Any) {}
-    func webServiceDidUpdate(_ manager: WebServiceManager, posts: Any) {}
-    func webServiceDidDelete(_ manager: WebServiceManager, posts: Any) {}
-    // comments
-    func webServiceDidCreate(_ manager: WebServiceManager, comments: Any) {}
-    func webServiceDidFetch(_ manager: WebServiceManager, comments: Any) {}
-    func webServiceDidUpdate(_ manager: WebServiceManager, comments: Any) {}
-    func webServiceDidDelete(_ manager: WebServiceManager, comments: Any) {}
+    // get
+    func webService(_ manager: WebServiceManager, didFetch data: Any, type: WebServiceType) {}
+    // post
+    func webService(_ manager: WebServiceManager, didPost data: Any, type: WebServiceType) {}
+    // patch
+    func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType) {}
+    // delete
+    func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType) {}
 }
 
 class WebServiceManager: NSObject {
@@ -55,19 +55,43 @@ class WebServiceManager: NSObject {
 
     // MARK: - Get
 
-    func fetch(endpoint: String) {
+    func fetch(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(fromUrl, method: HTTPMethod.get, parameters: params, encoding: URLEncoding.httpBody, headers: headers).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didFetch: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
+    }
+
+    // MARK: - Post
+
+    func post(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(fromUrl, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didPost: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
+    }
+
+    // MARK: - Patch
+
+    func patch() {
 
     }
 
-    // MARK: - Create
-
-    // MARK: - Update
-
     // MARK: - Delete
 
-    // MARK: - Auth
+    func delete() {
+        
+    }
 
-    // ...
+    // MARK: - Auth
 
 }
 

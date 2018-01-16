@@ -17,7 +17,7 @@ protocol PersistentContainerDelegate: NSObjectProtocol {
     func didLogin(_ manager: RealmManager, user: User)
     func didLogout(_ manager: RealmManager, user: User)
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?)
+    func persistentContainer(_ manager: RealmManager, didFetch objects: Results<Object>?)
     func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?)
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?)
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?)
@@ -39,7 +39,7 @@ extension PersistentContainerDelegate {
     func didLogin(_ manager: RealmManager, user: User) {}
     func didLogout(_ manager: RealmManager, user: User) {}
     // fetch
-    func persistentContainer(_ manager: RealmManager, didFetchObjects objects: Results<Object>?) {}
+    func persistentContainer(_ manager: RealmManager, didFetch objects: Results<Object>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {}
     func persistentContainer(_ manager: RealmManager, didFetchTasks tasks: Results<Task>?) {}
@@ -121,6 +121,11 @@ class RealmManager: NSObject {
     func fetchExistingUsers() {
         let users = realm.objects(User.self)
         delegate?.persistentContainer(self, didFetchUsers: users)
+    }
+
+    func fetch(ofType: Object.Type, predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
+        let objects = realm.objects(ofType).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
+        delegate?.persistentContainer(self, didFetch: objects)
     }
 
     func fetchSketches(sortedBy keyPath: String, ascending: Bool) {

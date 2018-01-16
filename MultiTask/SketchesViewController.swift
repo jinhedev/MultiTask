@@ -215,7 +215,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.setupUIViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
-        // initial fetches
+        // initial actions
         self.realmManager?.fetchExistingUsers()
         self.performInitialFetch(notification: nil)
     }

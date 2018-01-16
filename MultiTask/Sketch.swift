@@ -21,6 +21,8 @@ class Sketch: Object {
 
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
 
+    static let allPredicate = NSPredicate(format: "id != %@", "")
+
     // MARK: - Lifecycle
 
     override static func primaryKey() -> String? {

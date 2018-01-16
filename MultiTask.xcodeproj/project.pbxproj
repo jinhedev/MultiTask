@@ -572,6 +572,23 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		C58FD2A4200DC036004759B3 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				C59C36FE1FDF5E0700FA86CF /* Theme.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		C58FD2A5200DC064004759B3 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				C50974351F4EA986007C6EAA /* WebServiceManager.swift */,
+				C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
 		C5A8AC641FE3346100680A9C /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,40 +681,18 @@
 			name = Tasks;
 			sourceTree = "<group>";
 		};
-		C5A8AC6B1FE3359000680A9C /* Persistence */ = {
-			isa = PBXGroup;
-			children = (
-				C5A9A8D31F3BDCBB00601CFF /* RealmManager.swift */,
-			);
-			name = Persistence;
-			sourceTree = "<group>";
-		};
-		C5A8AC6C1FE3359800680A9C /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				C50974351F4EA986007C6EAA /* WebServiceManager.swift */,
-			);
-			name = Networking;
-			sourceTree = "<group>";
-		};
-		C5A8AC6D1FE335B300680A9C /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				C59C36FE1FDF5E0700FA86CF /* Theme.swift */,
-			);
-			name = Theme;
-			sourceTree = "<group>";
-		};
 		C5A9A8971F3BB06C00601CFF = {
 			isa = PBXGroup;
 			children = (
 				C549CCC11FC7EBFE0039D0D5 /* Cartfile */,
-				C549CCC31FC7EC1C0039D0D5 /* Cartfile.resolved */,
 				C549CCC51FC7EC2B0039D0D5 /* CREDITS.md */,
 				C549CCC71FC7EC300039D0D5 /* LICENSE.md */,
 				C549CCC91FC7EC360039D0D5 /* README.md */,
+				C549CCC31FC7EC1C0039D0D5 /* Cartfile.resolved */,
+				C58FD2A4200DC036004759B3 /* Config */,
 				C53C3EA71FBA0CFF0064DDB4 /* Frameworks */,
-				C5A9A8A21F3BB06C00601CFF /* MultiTask iOS */,
+				C58FD2A5200DC064004759B3 /* Lib */,
+				C5A9A8A21F3BB06C00601CFF /* MultiTask */,
 				C55E26731F40F100001743E4 /* MultiTaskTests */,
 				C55E26631F40DC17001743E4 /* MultiTaskUITests */,
 				C5A9A8A11F3BB06C00601CFF /* Products */,
@@ -714,20 +709,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C5A9A8A21F3BB06C00601CFF /* MultiTask iOS */ = {
+		C5A9A8A21F3BB06C00601CFF /* MultiTask */ = {
 			isa = PBXGroup;
 			children = (
 				C5A8AC641FE3346100680A9C /* App */,
-				C5A8AC6C1FE3359800680A9C /* Networking */,
 				C56254811FE33739000D65BF /* Onboarding */,
-				C5A8AC6B1FE3359000680A9C /* Persistence */,
 				C56254821FE33794000D65BF /* Search */,
 				C565A6501FE397D900F1E5B8 /* Settings */,
 				C565A6541FE39A9400F1E5B8 /* Sketches */,
 				C5A8AC6A1FE3355300680A9C /* Tasks */,
-				C5A8AC6D1FE335B300680A9C /* Theme */,
 			);
-			name = "MultiTask iOS";
 			path = MultiTask;
 			sourceTree = "<group>";
 		};

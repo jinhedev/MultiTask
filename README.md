@@ -6,7 +6,7 @@ _MultiTask is a todo list app that serves as a template case study for iOS devel
 - _RESTful (** Rails API)_
 - _Persistence (Realm, UserDefaults, Keychain)_
 - _** Monetasation (In-app Purchase)_
-- _Architectural (Object Orientated Design, ViewController Containment, Protocol, Key Value Observing)_
+- _Architectural (Object Orientated Design, ViewController Containment, Protocol, Key Value Observing, Coordinator Design Pattern, etc.)_
 - _Integration Tools (Fastlane)_
 - _Test (UnitTest, UITest)_
 - _Logging (Amplitude)_

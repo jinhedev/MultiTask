@@ -18,7 +18,6 @@ final class User: Object {
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
 
-    var sessions = List<Session>()
     var tasks = List<Task>()
 
     override static func primaryKey() -> String? {

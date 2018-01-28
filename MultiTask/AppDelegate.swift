@@ -19,18 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // APNS
-        self.setupRemoteNotification()
+        self.setupRemoteNotification(application)
         // Realm
         setupRealm() // see RealmManager
         self.setupPersistentContainerDelegate()
         self.performInitialFetch()
-        if self.realmManager?.isOnboardingCompleted == true {
-            print("fetch app settings and setup themes and other environment objects")
-        } else {
-            print("go to onboarding")
-        }
-        self.setupAppearance()
-        self.applyCurrentTheme()
         self.setupAmplitude()
         return true
     }
@@ -56,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Remote notification
 
-    func setupRemoteNotification() {
+    func setupRemoteNotification(_ application: UIApplication) {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         center.requestAuthorization(options: [.alert, .badge, .sound]) { (completed: Bool, error: Error?) in
@@ -64,7 +57,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print(err.localizedDescription)
             } else {
                 if completed == true {
-                    print("request for remote notification granted")
+                    DispatchQueue.main.async {
+                        application.registerForRemoteNotifications()
+                    }
                 }
             }
         }
@@ -78,6 +73,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("User Info: ", response.notification.request.content.userInfo)
         completionHandler()
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        // TODO: persist token into Keychain
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print(error.localizedDescription)
     }
 
     // MARK: - PersistentContainerDelegate
@@ -103,21 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             // user does exist in local machine, safely ignore.
         }
-    }
-
-    func didRegister(_ manager: RealmManager, user: User) {
-        // new user is now register. All is good. Safely ignore.
-    }
-
-    // MARK: - UIAppearance
-
-    func setupAppearance() {
-        // FIXME: damnit Apple, this is super annoying!!!
-        UITableViewCell.appearance().backgroundColor = .clear
-    }
-
-    func applyCurrentTheme() {
-        Theme.current.apply()
     }
 
     // MARK: - Amplitude

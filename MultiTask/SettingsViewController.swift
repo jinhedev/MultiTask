@@ -36,12 +36,6 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var bugImageView: UIImageView!
     @IBOutlet weak var bugLabel: UILabel!
 
-    @IBAction func handleThemeSwitch(_ sender: UISwitch) {
-        if let selectedTheme = Theme(rawValue: sender.isOn.hashValue) {
-            selectedTheme.apply()
-        }
-    }
-
     // MARK: - UINavigationBar
 
     private func updateUINavigationBar() {
@@ -197,8 +191,8 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
-            guard let appVersion = Bundle.main.releaseVersionNumber else { return nil }
-            guard let buildVersion = Bundle.main.buildVersionNumber else { return nil }
+            let appVersion = Configs.shared.releaseVersion
+            let buildVersion = Configs.shared.buildVersion
             return "You are using MultiTask \(appVersion).\(buildVersion)"
         } else {
             return nil

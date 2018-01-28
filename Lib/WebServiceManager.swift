@@ -14,9 +14,6 @@ import Alamofire
  - warning: Expected response may or may not be the actual response. Be warned!
  */
 enum WebServiceType {
-    case charts
-    case tickers
-    case add_customer
     case tests
 }
 

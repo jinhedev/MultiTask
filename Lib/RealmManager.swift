@@ -58,7 +58,7 @@ extension PersistentContainerDelegate {
 var realm: Realm!
 
 func setupRealm() {
-    let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, AppSetting.self, Session.self, User.self, Sketch.self])
+    let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, User.self, Sketch.self])
     realm = try! Realm(configuration: config)
 }
 
@@ -79,17 +79,6 @@ class RealmManager: NSObject {
             delegate?.didPurgeDatabase(self)
         } catch let err {
             delegate?.persistentContainer(self, didErr: err)
-        }
-    }
-
-    // MARK: - App Settings
-
-    var isOnboardingCompleted: Bool {
-        let settings = realm.objects(AppSetting.self).sorted(byKeyPath: AppSetting.dateKeyPath, ascending: false)
-        if settings.isEmpty || settings.first?.isOnboardingCompleted == false {
-            return false
-        } else {
-            return true
         }
     }
 

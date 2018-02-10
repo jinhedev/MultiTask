@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Amplitude
 import RealmSwift
 
 final class Task: Object {
@@ -32,6 +33,40 @@ final class Task: Object {
     static func getTitlePredicate(value: String) -> NSPredicate {
         let predicate = NSPredicate(format: "title contains[c] %@", value)
         return predicate
+    }
+
+    func isValid() -> Bool {
+        if id.isEmpty || title.isEmpty || title.count <= 3 {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    static func all() -> Results<Task> {
+        let results = defaultRealm.objects(Task.self)
+        return results
+    }
+
+    static func findBy(id: String) -> Task? {
+        let result = defaultRealm.object(ofType: Task.self, forPrimaryKey: id)
+        return result
+    }
+
+    static func get(predicate: NSPredicate) -> Results<Task> {
+        let results = defaultRealm.objects(Task.self).filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
+        return results
+    }
+
+    func save() {
+        do {
+            try defaultRealm.write {
+                defaultRealm.add(self, update: true)
+            }
+        } catch let err {
+            Amplitude.instance().logEvent(LogEventType.relamError)
+            print(err.localizedDescription)
+        }
     }
 
     func shouldComplete() -> Bool {

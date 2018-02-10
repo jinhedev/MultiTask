@@ -9,24 +9,6 @@
 import UIKit
 import UserNotifications
 
-// MARK: - Notification
-
-struct NotificationKey {
-    static let TaskPending = "TaskPending"
-    static let TaskCompletion = "TaskCompletion"
-    static let TaskUpdate = "TaskUpdate"
-    static let SketchCreation = "SketchCreation"
-    static let PendingTaskCellEditingMode = "PendingTaskCellEditingMode"
-    static let CompletedTaskCellEditingMode = "CompletedTaskCellEditingMode"
-    static let SketchCellEditingMode = "SketchCellEditingMode"
-    static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
-}
-
-struct LocalNotificationConfiguration {
-    static let id = "localNotificationID"
-    static let attachment_id = "localNotificationAttachmentID"
-}
-
 protocol NotificationDelegate: NSObjectProtocol {
     func notification(_ manager: Any, didErr error: Error)
 }

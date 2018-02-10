@@ -55,11 +55,11 @@ extension PersistentContainerDelegate {
     func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {}
 }
 
-var realm: Realm!
+var defaultRealm: Realm!
 
 func setupRealm() {
     let config = Realm.Configuration(fileURL: URL.inDocumentDirectory(fileName: "default.realm"), schemaVersion: 0, migrationBlock: nil, objectTypes: [Task.self, Item.self, User.self, Sketch.self])
-    realm = try! Realm(configuration: config)
+    defaultRealm = try! Realm(configuration: config)
 }
 
 class RealmManager: NSObject {
@@ -67,14 +67,15 @@ class RealmManager: NSObject {
     weak var delegate: PersistentContainerDelegate?
     static var pathForDefaultContainer: URL? { return Realm.Configuration.defaultConfiguration.fileURL }
     static var pathForStaticContainer: URL? { return URL.inDocumentDirectory(fileName: "static.realm") }
+    static var pathForTestContainer: URL? { return URL.inDocumentDirectory(fileName: "test.realm") }
     static var pathForSafeContainer: URL? { return URL.inDocumentDirectory(fileName: "safe.realm") }
 
     // MARK: - Database
 
     func purgeDatabase() {
         do {
-            try realm.write {
-                realm.deleteAll()
+            try defaultRealm.write {
+                defaultRealm.deleteAll()
             }
             delegate?.didPurgeDatabase(self)
         } catch let err {
@@ -86,8 +87,8 @@ class RealmManager: NSObject {
 
     func register(newUser: User) {
         do {
-            try realm.write {
-                realm.add(newUser, update: true)
+            try defaultRealm.write {
+                defaultRealm.add(newUser, update: true)
             }
             delegate?.didRegister(self, user: newUser)
         } catch let err {
@@ -108,32 +109,32 @@ class RealmManager: NSObject {
     // MARK: - Fetch
 
     func fetchExistingUsers() {
-        let users = realm.objects(User.self)
+        let users = defaultRealm.objects(User.self)
         delegate?.persistentContainer(self, didFetchUsers: users)
     }
 
     func fetch(ofType: Object.Type, predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
-        let objects = realm.objects(ofType).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
+        let objects = defaultRealm.objects(ofType).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetch: objects)
     }
 
     func fetchSketches(sortedBy keyPath: String, ascending: Bool) {
-        let sketches = realm.objects(Sketch.self).sorted(byKeyPath: keyPath, ascending: ascending)
+        let sketches = defaultRealm.objects(Sketch.self).sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetchSketches: sketches)
     }
 
     func fetchTasks(predicate: NSPredicate, sortedBy keyPath: String, ascending: Bool) {
-        let tasks = realm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
+        let tasks = defaultRealm.objects(Task.self).filter(predicate).sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetchTasks: tasks)
     }
 
     func fetchItems(parentTaskId: String, sortedBy keyPath: String, ascending: Bool) {
-        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.sorted(byKeyPath: keyPath, ascending: ascending)
+        let items = defaultRealm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.sorted(byKeyPath: keyPath, ascending: ascending)
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 
     func fetchItems(parentTaskId: String, predicate: NSPredicate) {
-        let items = realm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.filter(predicate).sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
+        let items = defaultRealm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.filter(predicate).sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 
@@ -141,13 +142,13 @@ class RealmManager: NSObject {
 
     func deleteTasks(tasks: [Task]) {
         do {
-            try realm.write {
+            try defaultRealm.write {
                 for task in tasks {
                     if !task.items.isEmpty {
-                        realm.delete(task.items)
-                        realm.delete(task)
+                        defaultRealm.delete(task.items)
+                        defaultRealm.delete(task)
                     } else {
-                        realm.delete(task)
+                        defaultRealm.delete(task)
                     }
                 }
             }
@@ -159,8 +160,8 @@ class RealmManager: NSObject {
 
     func deleteItems(items: [Item]) {
         do {
-            try realm.write {
-                realm.delete(items)
+            try defaultRealm.write {
+                defaultRealm.delete(items)
             }
             delegate?.persistentContainer(self, didDeleteItems: items)
         } catch let err {
@@ -170,8 +171,8 @@ class RealmManager: NSObject {
 
     func deleteSketches(sketches: [Sketch]) {
         do {
-            try realm.write {
-                realm.delete(sketches)
+            try defaultRealm.write {
+                defaultRealm.delete(sketches)
             }
             delegate?.persistentContainer(self, didDeleteSketches: sketches)
         } catch let err {
@@ -183,8 +184,8 @@ class RealmManager: NSObject {
 
     func addObjects(objects: [Object]) {
         do {
-            try realm.write {
-                realm.add(objects, update: true)
+            try defaultRealm.write {
+                defaultRealm.add(objects, update: true)
             }
             delegate?.persistentContainer(self, didAddObjects: objects)
         } catch let err {
@@ -198,9 +199,9 @@ class RealmManager: NSObject {
      */
     func appendItem(_ item: Item, into parentTask: Task) {
         do {
-            try realm.write {
+            try defaultRealm.write {
                 parentTask.items.append(item)
-                realm.add(parentTask)
+                defaultRealm.add(parentTask)
             }
             delegate?.persistentContainer(self, didAddObjects: [item])
         } catch let err {
@@ -212,9 +213,9 @@ class RealmManager: NSObject {
 
     func updateObject(object: Object, keyedValues: [String : Any]) {
         do {
-            try realm.write {
+            try defaultRealm.write {
                 object.setValuesForKeys(keyedValues)
-                realm.add(object, update: true)
+                defaultRealm.add(object, update: true)
             }
             delegate?.persistentContainer(self, didUpdateObject: object)
         } catch let err {

@@ -20,7 +20,7 @@ class CurrentUser: NSObject {
     var updated_at: NSDate?
 
     func isValid() -> Bool {
-        true false
+        return false
     }
 
     func isAuthenticated() -> Bool {

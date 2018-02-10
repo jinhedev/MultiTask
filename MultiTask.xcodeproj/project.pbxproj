@@ -50,7 +50,6 @@
 		C54E52DF1FE3A6540071E504 /* Sketch.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54E52DE1FE3A6540071E504 /* Sketch.xcassets */; };
 		C54E52E11FE3A7A90071E504 /* Tasks.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54E52E01FE3A7A90071E504 /* Tasks.xcassets */; };
 		C54E52E41FE3A7BB0071E504 /* Settings.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54E52E31FE3A7BB0071E504 /* Settings.xcassets */; };
-		C54E52E61FE3A7CE0071E504 /* Search.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C54E52E51FE3A7CE0071E504 /* Search.xcassets */; };
 		C54E52ED1FE436EE0071E504 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E52EC1FE436EE0071E504 /* Color.swift */; };
 		C54E52EF1FE4373F0071E504 /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E52EE1FE4373F0071E504 /* NSDate.swift */; };
 		C54E52F51FE437E70071E504 /* URL+document.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54E52F41FE437E70071E504 /* URL+document.swift */; };
@@ -114,6 +113,7 @@
 		C5F512D11FEB988E00CE59D4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F512D01FEB988E00CE59D4 /* Sketch.swift */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
 		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
+		F5FFE63F202F846000572CC9 /* Search.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5FFE63E202F846000572CC9 /* Search.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,7 +211,6 @@
 		C54E52DE1FE3A6540071E504 /* Sketch.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Sketch.xcassets; sourceTree = "<group>"; };
 		C54E52E01FE3A7A90071E504 /* Tasks.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Tasks.xcassets; sourceTree = "<group>"; };
 		C54E52E31FE3A7BB0071E504 /* Settings.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Settings.xcassets; sourceTree = "<group>"; };
-		C54E52E51FE3A7CE0071E504 /* Search.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Search.xcassets; sourceTree = "<group>"; };
 		C54E52EC1FE436EE0071E504 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		C54E52EE1FE4373F0071E504 /* NSDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDate.swift; sourceTree = "<group>"; };
 		C54E52F41FE437E70071E504 /* URL+document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+document.swift"; sourceTree = "<group>"; };
@@ -280,6 +279,7 @@
 		C5F512D01FEB988E00CE59D4 /* Sketch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
 		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
+		F5FFE63E202F846000572CC9 /* Search.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Search.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,7 +500,7 @@
 		C56254861FE337BC000D65BF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C54E52E51FE3A7CE0071E504 /* Search.xcassets */,
+				F5FFE63E202F846000572CC9 /* Search.xcassets */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -917,7 +917,6 @@
 				C5421FAE1FDFCB29009E78C4 /* SketchCell.xib in Resources */,
 				C549CCC21FC7EBFF0039D0D5 /* Cartfile in Resources */,
 				C543943F1FB5292C009EC104 /* MenuBarCell.xib in Resources */,
-				C54E52E61FE3A7CE0071E504 /* Search.xcassets in Resources */,
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
 				C53C3EF51FBA47850064DDB4 /* SketchesTab.storyboard in Resources */,
 				C5D038701FD9A1410010085B /* MainPendingTasksCell.xib in Resources */,
@@ -929,6 +928,7 @@
 				C5409B361FA4F81A004BAF4F /* TasksTab.storyboard in Resources */,
 				C54E52E11FE3A7A90071E504 /* Tasks.xcassets in Resources */,
 				C5AACE451FE4F5240025AA97 /* AvatarCell.xib in Resources */,
+				F5FFE63F202F846000572CC9 /* Search.xcassets in Resources */,
 				C55E14351FD8987800C46BED /* MainCompletedTasksCell.xib in Resources */,
 				C549CCC81FC7EC300039D0D5 /* LICENSE.md in Resources */,
 				C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */,

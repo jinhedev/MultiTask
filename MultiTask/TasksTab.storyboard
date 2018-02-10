@@ -60,7 +60,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zaV-bv-Y6t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1724" y="-748"/>
+            <point key="canvasLocation" x="1724" y="-748.87556221889065"/>
         </scene>
         <!--Settings-->
         <scene sceneID="WX8-uJ-Z40">
@@ -403,6 +403,6 @@
         <image name="Tasks" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="P0C-2o-NYU"/>
+        <segue reference="qXS-1W-mkt"/>
     </inferredMetricsTieBreakers>
 </document>

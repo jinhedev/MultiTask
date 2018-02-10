@@ -398,8 +398,8 @@
 			children = (
 				C55E26761F40F100001743E4 /* Info.plist */,
 				C59F32F9202D78B1004EA7F4 /* TaskTests.swift */,
-				C59F32FB202D78BF004EA7F4 /* SketchTests.swift */,
 				C5B4A2FE202E2F8800A2E3A1 /* ItemTests.swift */,
+				C59F32FB202D78BF004EA7F4 /* SketchTests.swift */,
 			);
 			path = MultiTaskTests;
 			sourceTree = SOURCE_ROOT;

@@ -23,6 +23,14 @@ class Sketch: Object {
 
     static let allPredicate = NSPredicate(format: "id != %@", "")
 
+    func isValid() -> Bool {
+        if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 128 {
+            return false
+        } else {
+            return true
+        }
+    }
+
     // MARK: - Lifecycle
 
     override static func primaryKey() -> String? {

@@ -36,7 +36,7 @@ final class Task: Object {
     }
 
     func isValid() -> Bool {
-        if id.isEmpty || title.isEmpty || title.count <= 3 {
+        if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 128 {
             return false
         } else {
             return true

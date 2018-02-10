@@ -46,6 +46,16 @@ final class Item: Object {
         }
     }
 
+    func isValid() -> Bool {
+        if id.isEmpty || title.isEmpty || title.count <= 3 {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    // MARK: - Lifecycle
+
     override static func primaryKey() -> String? {
         return "id"
     }

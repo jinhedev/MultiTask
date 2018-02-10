@@ -18,7 +18,7 @@ class TaskTests: XCTestCase {
         super.setUp()
         self.sut = Task()
         self.sut.created_at = NSDate()
-        self.sut.title = "test"
+        self.sut.title = "test task"
         self.sut.id = UUID().uuidString
     }
     
@@ -47,6 +47,15 @@ class TaskTests: XCTestCase {
             shortString.append("a")
         }
         self.sut.title = shortString
+        XCTAssertFalse(sut.isValid())
+    }
+
+    func test_title_should_have_max_length() {
+        var longString = "a"
+        while longString.count < 129 {
+            longString.append("a")
+        }
+        self.sut.title = longString
         XCTAssertFalse(sut.isValid())
     }
 

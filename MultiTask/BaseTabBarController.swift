@@ -20,6 +20,15 @@ class BaseTabBarController: UITabBarController, SoundEffectDelegate {
         self.tabBar.tintColor = Color.mandarinOrange
         self.tabBar.isTranslucent = false
     }
+    
+    private func removeTabBarItemsText() {
+        if let items = tabBar.items {
+            for item in items {
+                item.title = ""
+                item.imageInsets = UIEdgeInsetsMake(6, 0, -6, 0)
+            }
+        }
+    }
 
     // MARK: - SoundEffectDelegate
 
@@ -41,6 +50,7 @@ class BaseTabBarController: UITabBarController, SoundEffectDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupTabBar()
+        self.removeTabBarItemsText()
         self.setupSoundEffectDelegate()
     }
 

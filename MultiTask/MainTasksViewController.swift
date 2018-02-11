@@ -52,11 +52,11 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     }()
 
     var realmManager: RealmManager?
-    var mainPendingTasksCell: MainPendingTasksCell?
-    var mainCompletedTasksCell: MainCompletedTasksCell?
-    weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
-    weak var delegateForPendingTasksCell: MainTasksViewControllerDelegate? // set in MainPendingTasksCell
-    weak var delegateForCompletedTasksCell: MainTasksViewControllerDelegate? // set in MainCompletedTasksCell
+//    var mainPendingTasksCell: MainPendingTasksCell?
+//    var mainCompletedTasksCell: MainCompletedTasksCell?
+//    weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
+//    weak var delegateForPendingTasksCell: MainTasksViewControllerDelegate? // set in MainPendingTasksCell
+//    weak var delegateForCompletedTasksCell: MainTasksViewControllerDelegate? // set in MainCompletedTasksCell
 
     static let storyboard_id = String(describing: MainTasksViewController.self)
     let searchController = UISearchController(searchResultsController: nil)
@@ -64,6 +64,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     let navigationItemTitles = ["Pending, Completed"]
 
     @IBOutlet weak var menuBarView: MenuBarView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var mainCollectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var mainCollectionView: UICollectionView!
 
@@ -87,6 +88,10 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
 
     @objc func enableEditingMode() {
         self.isEditing = true
+    }
+    
+    @IBAction func segmentedControl_tapped(_ sender: UISegmentedControl) {
+        
     }
 
     // MARK: - PersistentContainerDelegate

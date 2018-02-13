@@ -60,6 +60,7 @@ class MainTasksViewController: BaseViewController {
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var pendingContainerView: UIView!
     @IBOutlet weak var completedContainerView: UIView!
+    @IBOutlet weak var menuView: UIView!
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
@@ -96,6 +97,10 @@ class MainTasksViewController: BaseViewController {
                 self.completedContainerView.alpha = 1
             })
         }
+    }
+    
+    private func setupMenuView() {
+        self.menuView.backgroundColor = Color.clear
     }
     
     private func setupSegmentedControl() {
@@ -160,6 +165,7 @@ class MainTasksViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupNavigationBar()
+        self.setupMenuView()
         self.setupSegmentedControl()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()

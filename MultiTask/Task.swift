@@ -63,13 +63,15 @@ final class Task: Object {
     }
 
     func save() {
-        do {
-            try defaultRealm.write {
-                defaultRealm.add(self, update: true)
+        if self.isValid() {
+            do {
+                try defaultRealm.write {
+                    defaultRealm.add(self, update: true)
+                }
+            } catch let err {
+                Amplitude.instance().logEvent(LogEventType.relamError)
+                print(err.localizedDescription)
             }
-        } catch let err {
-            Amplitude.instance().logEvent(LogEventType.relamError)
-            print(err.localizedDescription)
         }
     }
 

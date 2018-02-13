@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main Tasks View Controller-->
+        <!--Tasks-->
         <scene sceneID="hgm-Wn-b8p">
             <objects>
                 <viewController storyboardIdentifier="MainTasksViewController" id="dsH-gt-lIU" customClass="MainTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,47 +18,61 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QXB-U0-C13">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="501"/>
                                 <connections>
                                     <segue destination="5qH-E1-OyA" kind="embed" identifier="CompletedContainerViewToPendingTasksViewController" id="b1x-Pu-EUp"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o1F-EL-110">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="501"/>
                                 <connections>
                                     <segue destination="3Si-f8-Apw" kind="embed" identifier="PendingContainerViewToPendingTasksViewController" id="t4R-8m-vP0"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hn-Qg-G8T">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="53"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Upo-Jq-ekB">
+                                        <rect key="frame" x="16" y="16.5" width="343" height="29"/>
+                                        <segments>
+                                            <segment title="Pending"/>
+                                            <segment title="Completed"/>
+                                        </segments>
+                                        <color key="tintColor" red="0.74117647060000003" green="0.3921568627" blue="0.22352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="segmentedControl_tapped:" destination="dsH-gt-lIU" eventType="valueChanged" id="oZK-2G-3RH"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Upo-Jq-ekB" secondAttribute="trailing" constant="16" id="1Ak-3s-7QE"/>
+                                    <constraint firstItem="Upo-Jq-ekB" firstAttribute="leading" secondItem="8hn-Qg-G8T" secondAttribute="leading" constant="16" id="59v-wI-oYH"/>
+                                    <constraint firstItem="Upo-Jq-ekB" firstAttribute="top" secondItem="8hn-Qg-G8T" secondAttribute="top" constant="16" id="Mtw-ph-GNf"/>
+                                    <constraint firstAttribute="height" constant="53" id="ZXS-Ey-Xr4"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="o1F-EL-110" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="1o5-FI-SfC"/>
-                            <constraint firstItem="o1F-EL-110" firstAttribute="top" secondItem="Un2-CH-2LP" secondAttribute="top" id="Pha-rb-Sdp"/>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="QXB-U0-C13" secondAttribute="trailing" id="Vok-mV-0AF"/>
-                            <constraint firstItem="QXB-U0-C13" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="bae-A3-bJD"/>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="bottom" secondItem="QXB-U0-C13" secondAttribute="bottom" id="eMt-pf-tSc"/>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="o1F-EL-110" secondAttribute="trailing" id="i9x-GW-ncS"/>
-                            <constraint firstItem="QXB-U0-C13" firstAttribute="top" secondItem="Un2-CH-2LP" secondAttribute="top" id="lG8-tF-kJ2"/>
-                            <constraint firstItem="Un2-CH-2LP" firstAttribute="bottom" secondItem="o1F-EL-110" secondAttribute="bottom" id="old-Mj-zUj"/>
+                            <constraint firstItem="8hn-Qg-G8T" firstAttribute="top" secondItem="Un2-CH-2LP" secondAttribute="top" id="4dv-Lk-hp6"/>
+                            <constraint firstItem="o1F-EL-110" firstAttribute="bottom" secondItem="Un2-CH-2LP" secondAttribute="bottom" id="9fG-EK-Lln"/>
+                            <constraint firstItem="QXB-U0-C13" firstAttribute="top" secondItem="8hn-Qg-G8T" secondAttribute="bottom" id="Ah6-yj-KsR"/>
+                            <constraint firstItem="o1F-EL-110" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="BeK-i6-w2q"/>
+                            <constraint firstItem="o1F-EL-110" firstAttribute="trailing" secondItem="Un2-CH-2LP" secondAttribute="trailing" id="I3w-2W-H22"/>
+                            <constraint firstItem="8hn-Qg-G8T" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="Wbo-d7-e1O"/>
+                            <constraint firstItem="QXB-U0-C13" firstAttribute="trailing" secondItem="Un2-CH-2LP" secondAttribute="trailing" id="Zgg-8T-VeP"/>
+                            <constraint firstItem="QXB-U0-C13" firstAttribute="bottom" secondItem="Un2-CH-2LP" secondAttribute="bottom" id="bQF-OX-T3O"/>
+                            <constraint firstItem="QXB-U0-C13" firstAttribute="leading" secondItem="Un2-CH-2LP" secondAttribute="leading" id="rak-ik-JpB"/>
+                            <constraint firstItem="Un2-CH-2LP" firstAttribute="trailing" secondItem="8hn-Qg-G8T" secondAttribute="trailing" id="ris-Hc-8IB"/>
+                            <constraint firstItem="o1F-EL-110" firstAttribute="top" secondItem="8hn-Qg-G8T" secondAttribute="bottom" id="vQd-30-Wmg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Un2-CH-2LP"/>
                     </view>
-                    <navigationItem key="navigationItem" id="gC8-og-jR3">
-                        <nil key="title"/>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="Upo-Jq-ekB">
-                            <rect key="frame" x="106" y="7" width="163" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="Pending"/>
-                                <segment title="Completed"/>
-                            </segments>
-                            <connections>
-                                <action selector="segmentedControl_tapped:" destination="dsH-gt-lIU" eventType="valueChanged" id="oZK-2G-3RH"/>
-                            </connections>
-                        </segmentedControl>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Tasks" id="gC8-og-jR3"/>
                     <connections>
                         <outlet property="completedContainerView" destination="QXB-U0-C13" id="1ke-mG-YBO"/>
+                        <outlet property="menuView" destination="8hn-Qg-G8T" id="CUf-PW-AjJ"/>
                         <outlet property="pendingContainerView" destination="o1F-EL-110" id="uCh-Ty-Kt3"/>
                         <outlet property="segmentedControl" destination="Upo-Jq-ekB" id="8rL-sk-t2j"/>
                         <segue destination="Qb7-A2-IyR" kind="show" identifier="AddButtonToTaskEditorViewController" id="qXS-1W-mkt"/>
@@ -410,11 +424,11 @@
             <objects>
                 <viewController storyboardIdentifier="PendingTasksViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3Si-f8-Apw" customClass="PendingTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9De-ft-gFW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="vcn-OO-4bO">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
                                 <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oVc-x1-pNS">
                                     <size key="itemSize" width="50" height="50"/>
@@ -448,11 +462,11 @@
             <objects>
                 <viewController storyboardIdentifier="CompletedTasksViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5qH-E1-OyA" customClass="CompletedTasksViewController" customModule="MultiTask" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xhh-c0-r5J">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8DH-0a-f11">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="501"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BVv-mf-LEl">
                                     <size key="itemSize" width="50" height="50"/>

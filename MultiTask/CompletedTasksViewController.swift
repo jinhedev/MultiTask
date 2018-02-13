@@ -173,7 +173,7 @@ extension CompletedTasksViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        let insets = UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
         return insets
     }
     

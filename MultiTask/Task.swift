@@ -18,16 +18,12 @@ final class Task: Object {
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
     @objc dynamic var expired_at: NSDate? = nil
-
     var items = List<Item>()
     let user = LinkingObjects(fromType: User.self, property: "tasks")
     static let titleKeyPath = "title" // called in RealmManager for its updating 
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
     static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
     static let isCompletedKeyPath = "is_completed" // called in RealmManager for its updating logic
-
-    static let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
-    static let completedPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
     static let noEmptyItemsPredicate = NSPredicate(format: "items >= %@", 1)
 
     static func getTitlePredicate(value: String) -> NSPredicate {
@@ -47,14 +43,22 @@ final class Task: Object {
         let results = defaultRealm.objects(Task.self)
         return results
     }
-
-    static func findBy(id: String) -> Task? {
-        let result = defaultRealm.object(ofType: Task.self, forPrimaryKey: id)
-        return result
+    
+    static func pending() -> Results<Task> {
+        let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
+        let results = defaultRealm.objects(Task.self).filter(pendingPredicate).sorted(byKeyPath: "created_at", ascending: false)
+        return results
     }
-
-    static func get(predicate: NSPredicate) -> Results<Task> {
-        let results = defaultRealm.objects(Task.self).filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
+    
+    static func completed() -> Results<Task> {
+        let completedPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
+        let results = defaultRealm.objects(Task.self).filter(completedPredicate).sorted(byKeyPath: "updated_at", ascending: false)
+        return results
+    }
+    
+    static func findBy(title: String) -> Results<Task> {
+        let titlePredicate = NSPredicate(format: "title contains[c] %@", title)
+        let results = defaultRealm.objects(Task.self).filter(titlePredicate)
         return results
     }
 
@@ -79,8 +83,6 @@ final class Task: Object {
             return false
         }
     }
-
-    // MARK: - Lifecycle
 
     override static func primaryKey() -> String? {
         return "id"

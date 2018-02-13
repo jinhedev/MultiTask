@@ -14,7 +14,7 @@ protocol MainTasksViewControllerDelegate: NSObjectProtocol {
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
 }
 
-class MainTasksViewController: BaseViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate, PersistentContainerDelegate, TaskEditorViewControllerDelegate, UITabBarControllerDelegate {
+class MainTasksViewController: BaseViewController {
 
     // MARK: - API
 
@@ -52,37 +52,31 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     }()
 
     var realmManager: RealmManager?
-//    var mainPendingTasksCell: MainPendingTasksCell?
-//    var mainCompletedTasksCell: MainCompletedTasksCell?
-//    weak var delegateForMenuBarView: MainTasksViewControllerDelegate? // set in MenuBarView
-//    weak var delegateForPendingTasksCell: MainTasksViewControllerDelegate? // set in MainPendingTasksCell
-//    weak var delegateForCompletedTasksCell: MainTasksViewControllerDelegate? // set in MainCompletedTasksCell
-
+    weak var delegate: MainTasksViewControllerDelegate?
     static let storyboard_id = String(describing: MainTasksViewController.self)
     let searchController = UISearchController(searchResultsController: nil)
     let popTransitionAnimator = PopTransitionAnimator()
     let navigationItemTitles = ["Pending, Completed"]
-
-    @IBOutlet weak var menuBarView: MenuBarView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var mainCollectionViewFlowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var mainCollectionView: UICollectionView!
-
-    func scrollToIndex(menuIndex: Int) {
-        let indexPath = IndexPath(item: menuIndex, section: 0)
-        self.mainCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.left, animated: true)
-    }
+    @IBOutlet weak var pendingContainerView: UIView!
+    @IBOutlet weak var completedContainerView: UIView!
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        self.mainCollectionView.isScrollEnabled = !editing
         self.addButton.isEnabled = !editing
         self.avatarButton.isEnabled = !editing
         self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
+        self.segmentedControl.isEnabled = !editing
         if editing {
             self.navigationItem.leftBarButtonItems?.append(trashButton)
         } else {
             self.navigationItem.leftBarButtonItems?.remove(at: 1)
+        }
+    }
+    
+    @objc func editMode(notification: Notification) {
+        if let isEditing = notification.userInfo?["isEditing"] as? Bool {
+            self.isEditing = isEditing
         }
     }
 
@@ -91,23 +85,21 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     }
     
     @IBAction func segmentedControl_tapped(_ sender: UISegmentedControl) {
-        
+        if sender.selectedSegmentIndex == 0 {
+            UIView.animate(withDuration: 0.15, animations: {
+                self.pendingContainerView.alpha = 1
+                self.completedContainerView.alpha = 0
+            })
+        } else if sender.selectedSegmentIndex == 1 {
+            UIView.animate(withDuration: 0.15, animations: {
+                self.pendingContainerView.alpha = 0
+                self.completedContainerView.alpha = 1
+            })
+        }
     }
-
-    // MARK: - PersistentContainerDelegate
-
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUser = users?.first else { return }
-        self.currentUser = fetchedUser
+    
+    private func setupSegmentedControl() {
+        self.segmentedControl.selectedSegmentIndex = 0
     }
 
     // MARK: - NavigationBar
@@ -137,9 +129,6 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     @objc func handleTrash(_ sender: UIBarButtonItem) {
         if self.isEditing == true {
             // if already in editMode, first commit trash and then exit editMode
-            self.delegateForMenuBarView?.mainTasksViewController(self, didTapTrash: sender)
-            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapTrash: sender)
-            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapTrash: sender)
             self.isEditing = false
         } else {
             print(trace(file: #file, function: #function, line: #line))
@@ -151,39 +140,11 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         if self.isEditing == true {
             // if already in editMode, exit editMode
             self.isEditing = false
-            self.delegateForMenuBarView?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
-            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
-            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: false)
+            self.delegate?.mainTasksViewController(self, didTapEdit: editButton, isEditing: false)
         } else {
             // if not in editMode, enter editMode
             self.isEditing = true
-            self.delegateForMenuBarView?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
-            self.delegateForPendingTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
-            self.delegateForCompletedTasksCell?.mainTasksViewController(self, didTapEdit: sender, isEditing: true)
-        }
-    }
-
-    // MARK: - MenuBarView
-
-    private func setupMenuBarView() {
-        self.menuBarView.mainTasksViewController = self
-    }
-
-    // MARK: - TaskEditorViewControllerDelegate
-
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
-        if let navigationController = viewController.navigationController {
-            navigationController.popViewController(animated: true)
-            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
-            if self.mainPendingTasksCell?.pendingTasks == nil {
-                self.mainPendingTasksCell?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
-            }
-        }
-    }
-
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task) {
-        if let navigationController = viewController.navigationController {
-            navigationController.popViewController(animated: true)
+            self.delegate?.mainTasksViewController(self, didTapEdit: editButton, isEditing: true)
         }
     }
 
@@ -199,10 +160,7 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupNavigationBar()
-        self.setupUITabBarControllerDelegate()
-        self.setupCollectionView()
-        self.setupMenuBarView()
-        self.setupCollectionViewFlowLayout()
+        self.setupSegmentedControl()
         self.setupPersistentContainerDelegate()
         self.observeNotificationForEditingMode()
         self.realmManager?.fetchExistingUsers()
@@ -227,123 +185,67 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
         if let settingsViewController = segue.destination as? SettingsViewController {
             settingsViewController.currentUser = self.currentUser
         }
-    }
-
-    // MARK: - UITabBarControllerDelegate
-
-    private func setupUITabBarControllerDelegate() {
-        if let baseTabBarController = self.tabBarController as? BaseTabBarController {
-            baseTabBarController.delegate = self
+        if segue.identifier == Segue.PendingContainerViewToPendingTasksViewController {
+            if let pendingTasksViewController = segue.destination as? PendingTasksViewController {
+                pendingTasksViewController.mainTasksViewController = self
+            }
         }
-    }
-
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if let selectedIndex = tabBarController.viewControllers?.index(of: viewController) {
-            if selectedIndex == 0 {
-                let topIndexPath = IndexPath(item: 0, section: 0)
-                if self.menuBarView.selectedIndexPath?.item == 0 {
-                    // you are looking at the mainPendingCell
-                    guard let tasks = self.mainPendingTasksCell?.pendingTasks else { return }
-                    if !tasks.isEmpty {
-                        self.mainPendingTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
-                    }
-                } else {
-                    // looking at the mainCompletedCell
-                    guard let tasks = self.mainCompletedTasksCell?.completedTasks else { return }
-                    if !tasks.isEmpty {
-                        self.mainCompletedTasksCell?.collectionView.scrollToItem(at: topIndexPath, at: UICollectionViewScrollPosition.top, animated: true)
-                    }
-                }
+        if segue.identifier == Segue.CompletedContainerViewToPendingTasksViewController {
+            if let completedTasksViewController = segue.destination as? CompletedTasksViewController {
+                completedTasksViewController.mainTasksViewController = self
             }
         }
     }
 
-    // MARK: - CollectionView
+}
 
-    private func setupCollectionView() {
-        self.mainCollectionView.isPagingEnabled = true
-        self.mainCollectionView.backgroundColor = Color.inkBlack
-        self.mainCollectionView.dataSource = self
-        self.mainCollectionView.delegate = self
-        self.mainCollectionView.register(UINib(nibName: MainPendingTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainPendingTasksCell.cell_id)
-        self.mainCollectionView.register(UINib(nibName: MainCompletedTasksCell.nibName, bundle: nil), forCellWithReuseIdentifier: MainCompletedTasksCell.cell_id)
+extension MainTasksViewController: PersistentContainerDelegate {
+    
+    private func setupPersistentContainerDelegate() {
+        self.realmManager = RealmManager()
+        self.realmManager!.delegate = self
     }
-
-    // MARK: - ScrollViewDelegate
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // synchronising the scrolling position between menuBarView and the mainTasksCollectionView
-        self.menuBarView.scrollIndicatorViewLeadingConstraint.constant = scrollView.contentOffset.x / 2
+    
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
     }
-
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        // select a collectionView item in menuBarView when scroll ends dragging
-        let selectedIndexItem = targetContentOffset.pointee.x / self.mainCollectionView.frame.width
-        let selectedIndexPath = IndexPath(item: Int(selectedIndexItem), section: 0)
-        self.menuBarView.collectionView.selectItem(at: selectedIndexPath, animated: true, scrollPosition: UICollectionViewScrollPosition.left)
-        self.menuBarView.selectedIndexPath = selectedIndexPath
+    
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUser = users?.first else { return }
+        self.currentUser = fetchedUser
     }
+    
+}
 
-    // MARK: - CollectionViewDelegate
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // ignore
-    }
-
-    // MARK: - CollectionViewDataSource
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
-            guard let mainPendingTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainPendingTasksCell.cell_id, for: indexPath) as? MainPendingTasksCell else {
-                return BaseCollectionViewCell()
-            }
-            self.mainPendingTasksCell = mainPendingTasksCell
-            mainPendingTasksCell.mainTasksViewController = self
-            return mainPendingTasksCell
-        } else if indexPath.item == 1 {
-            guard let mainCompletedTasksCell = self.mainCollectionView.dequeueReusableCell(withReuseIdentifier: MainCompletedTasksCell.cell_id, for: indexPath) as? MainCompletedTasksCell else {
-                return BaseCollectionViewCell()
-            }
-            self.mainCompletedTasksCell = mainCompletedTasksCell
-            mainCompletedTasksCell.mainTasksViewController = self
-            return mainCompletedTasksCell
-        } else {
-            return BaseCollectionViewCell()
+extension MainTasksViewController: TaskEditorViewControllerDelegate {
+    
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
+        if let navigationController = viewController.navigationController {
+            navigationController.popViewController(animated: true)
+            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
+//                        if self.mainPendingTasksCell?.pendingTasks == nil {
+//                            self.mainPendingTasksCell?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
+//                        }
         }
     }
-
-    // MARK: - CollectionViewDelegateFlowLayout
-
-    private func setupCollectionViewFlowLayout() {
-        self.mainCollectionViewFlowLayout.scrollDirection = .horizontal
+    
+    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task) {
+        if let navigationController = viewController.navigationController {
+            navigationController.popViewController(animated: true)
+        }
     }
+    
+}
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellSize = CGSize(width: self.mainCollectionView.frame.width, height: self.mainCollectionView.frame.height)
-        return cellSize
-    }
-
-    // MARK: - ViewControllerTransitioningDelegate
-
+extension MainTasksViewController: UIViewControllerTransitioningDelegate {
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { (context) in
-            self.mainCollectionView.alpha = (size.width > size.height) ? 0.25 : 0.55
+            self.view.alpha = (size.width > size.height) ? 0.25 : 0.55
         }, completion: nil)
     }
-
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if let addButtonView = self.addButton.value(forKey: "view") as? UIView {
             let barButtonFrame = addButtonView.frame
@@ -354,11 +256,11 @@ class MainTasksViewController: BaseViewController, UICollectionViewDataSource, U
             return nil
         }
     }
-
+    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         // TODO: - implement this
         popTransitionAnimator.isPresenting = false
         return popTransitionAnimator
     }
-
+    
 }

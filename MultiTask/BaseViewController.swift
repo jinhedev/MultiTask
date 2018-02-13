@@ -27,12 +27,6 @@ class BaseViewController: UIViewController {
         self.view.backgroundColor = Color.inkBlack
     }
 
-    private func animateView(didAppear: Bool) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: [.allowUserInteraction, .curveEaseOut], animations: { [weak self] in
-            self?.view.alpha = didAppear ? 1.0 : 0.7
-        }, completion: nil)
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -42,12 +36,10 @@ class BaseViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.animateView(didAppear: true)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.animateView(didAppear: false)
     }
 
 }

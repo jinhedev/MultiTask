@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import Amplitude
 
 final class Item: Object {
 
@@ -18,7 +19,6 @@ final class Item: Object {
     @objc dynamic var updated_at: NSDate? = nil
     @objc dynamic var expired_at: NSDate? = nil
     @objc dynamic var delegate: String = ""
-    
     let task = LinkingObjects(fromType: Task.self, property: "items")
     static let titleKeyPath = "title" // called in RealmManager for updating
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
@@ -47,10 +47,32 @@ final class Item: Object {
     }
 
     func isValid() -> Bool {
-        if id.isEmpty || title.isEmpty || title.count <= 3 {
+        if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 512 {
             return false
         } else {
             return true
+        }
+    }
+    
+    static func all() -> Results<Item> {
+        let results = defaultRealm.objects(Item.self)
+        return results
+    }
+    
+    static func findBy(title: String) -> Results<Item> {
+        let titlePredicate = NSPredicate(format: "title  contains[c] %@", title)
+        let results = defaultRealm.objects(Item.self).filter(titlePredicate)
+        return results
+    }
+    
+    func save() {
+        do {
+            try defaultRealm.write {
+                defaultRealm.add(self, update: true)
+            }
+        } catch let err {
+            Amplitude.instance().logEvent(LogEventType.relamError)
+            print(err.localizedDescription)
         }
     }
 
@@ -72,33 +94,3 @@ final class Item: Object {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

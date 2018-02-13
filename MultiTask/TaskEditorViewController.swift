@@ -20,7 +20,6 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
 
     var realmManager: RealmManager?
     var selectedTask: Task?
-
     weak var delegate: TaskEditorViewControllerDelegate?
     static let storyboard_id = String(describing: TaskEditorViewController.self)
 
@@ -36,12 +35,12 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.resignFirstResponder()
         if !titleTextView.text.isEmpty {
             if self.selectedTask != nil {
-                // update the task
-                self.realmManager?.updateObject(object: self.selectedTask!, keyedValues: [Task.titleKeyPath : self.titleTextView.text, Task.updatedAtKeyPath : NSDate()])
+                // update an existing task
+                self.selectedTask!.save()
             } else {
                 // add a new task
                 let newTask = self.createNewTask(taskTitle: titleTextView.text)
-                self.realmManager?.addObjects(objects: [newTask])
+                newTask.save()
             }
         }
     }

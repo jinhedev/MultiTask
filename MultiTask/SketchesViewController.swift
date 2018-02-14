@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class SketchesViewController: BaseViewController, PersistentContainerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UIViewControllerPreviewingDelegate, SketchEditorViewControllerDelegate {
+class SketchesViewController: BaseViewController {
 
     // MARK: - API
 
@@ -126,75 +126,10 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         self.avatarButton.setImage(avatar, for: UIControlState.normal)
     }
 
-    // MARK: - PersistentContainerDelegate
-
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-
-    private func setupRealmNotificationsForCollectionView() {
-        notificationToken = self.sketches!.first?.observe({ [weak self] (changes) in
-            guard let collectionView = self?.collectionView else { return }
-            switch changes {
-            case .initial:
-                collectionView.reloadData()
-            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
-            case .error(let err):
-                print(trace(file: #file, function: #function, line: #line))
-                print(err.localizedDescription)
-            }
-        })
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {
-        if let fetchedSketches = sketches, !fetchedSketches.isEmpty {
-            self.collectionView.backgroundView?.isHidden = true
-            self.sketches = [Results<Sketch>]()
-            self.sketches!.append(fetchedSketches)
-            self.setupRealmNotificationsForCollectionView()
-        } else {
-            self.collectionView.backgroundView?.isHidden = false
-        }
-    }
-
-    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {
-        if self.isEditing == true {
-            // exit edit mode
-            self.isEditing = false
-        }
-    }
-
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUser = users?.first else { return }
-        self.currentUser = fetchedUser
-    }
-
-    @objc func performInitialFetch(notification: Notification?) {
-        // FIXME: this method shouldn't provide checks for sketch's nullality. Move that logic outside
-        if self.sketches == nil || self.sketches?.isEmpty == true {
-            self.realmManager?.fetchSketches(sortedBy: Sketch.createdAtKeyPath, ascending: false)
-        }
-    }
-
-    // MARK: - SketchEditorViewControllerDelegate
-
-    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch) {
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.popViewController(animated: true)
-            self.performInitialFetch(notification: nil)
-        }
-    }
-
     // MARK: - Notifications
 
     func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.SketchCellEditingMode), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.SketchCellEditingMode, object: nil)
     }
 
     // MARK: - UITabBar
@@ -211,6 +146,7 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         super.viewDidLoad()
         self.setupNavigationBar()
         self.setupCollectionView()
+        self.setupBackgroundView()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUIViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
@@ -249,20 +185,111 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
             }
         }
     }
+    
+    // MARK: - BackgroundView
+    
+    private func setupBackgroundView() {
+        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+            view.type = PlaceholderType.pendingTasks
+            view.isHidden = true
+            self.collectionView.backgroundView = view
+        }
+    }
 
-    // MARK: - UIViewControllerPreviewingDelegate
+    // MARK: - CollectionView
 
+    private func setupCollectionView() {
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+        self.collectionView.alwaysBounceVertical = true
+        self.collectionView.backgroundColor = Color.inkBlack
+        self.collectionView.register(UINib(nibName: SketchCell.nibName, bundle: nil), forCellWithReuseIdentifier: SketchCell.cell_id)
+    }
+
+}
+
+extension SketchesViewController: PersistentContainerDelegate {
+    
+    private func setupPersistentContainerDelegate() {
+        self.realmManager = RealmManager()
+        self.realmManager!.delegate = self
+    }
+    
+    private func setupRealmNotificationsForCollectionView() {
+        notificationToken = self.sketches!.first?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {
+        if let fetchedSketches = sketches, !fetchedSketches.isEmpty {
+            self.collectionView.backgroundView?.isHidden = true
+            self.sketches = [Results<Sketch>]()
+            self.sketches!.append(fetchedSketches)
+            self.setupRealmNotificationsForCollectionView()
+        } else {
+            self.collectionView.backgroundView?.isHidden = false
+        }
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {
+        if self.isEditing == true {
+            // exit edit mode
+            self.isEditing = false
+        }
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUser = users?.first else { return }
+        self.currentUser = fetchedUser
+    }
+    
+    @objc func performInitialFetch(notification: Notification?) {
+        // FIXME: this method shouldn't provide checks for sketch's nullality. Move that logic outside
+        if self.sketches == nil || self.sketches?.isEmpty == true {
+            self.realmManager?.fetchSketches(sortedBy: Sketch.createdAtKeyPath, ascending: false)
+        }
+    }
+    
+}
+
+extension SketchesViewController: SketchEditorViewControllerDelegate {
+    
+    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            navController.popViewController(animated: true)
+            self.performInitialFetch(notification: nil)
+        }
+    }
+    
+}
+
+extension SketchesViewController: UIViewControllerPreviewingDelegate {
+    
     private func setupUIViewControllerPreviewingDelegate() {
         self.registerForPreviewing(with: self, sourceView: self.collectionView)
     }
-
+    
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         if let navController = self.navigationController as? BaseNavigationController {
             viewControllerToCommit.hidesBottomBarWhenPushed = true
             navController.pushViewController(viewControllerToCommit, animated: true)
         }
     }
-
+    
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
         let sketchEditorViewController = storyboard?.instantiateViewController(withIdentifier: SketchEditorViewController.storyboard_id) as? SketchEditorViewController
@@ -274,58 +301,53 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
         }
         return sketchEditorViewController
     }
+    
+}
 
-    // MARK: - CollectionView
-
-    private func setupCollectionView() {
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        self.collectionView.alwaysBounceVertical = true
-        self.collectionView.backgroundColor = Color.inkBlack
-        self.collectionView.register(UINib(nibName: SketchCell.nibName, bundle: nil), forCellWithReuseIdentifier: SketchCell.cell_id)
-        self.collectionView.backgroundView = self.initPlaceholderBackgroundView(type: PlaceholderType.sketches)
-    }
-
-    // MARK: - UICollectionViewDelegateFlowLayout
-
+extension SketchesViewController: UICollectionViewDelegateFlowLayout {
+    
     private func setupUICollectionViewDelegateFlowLayout() {
         self.collectionViewFlowLayout.minimumLineSpacing = 16
         self.collectionViewFlowLayout.minimumInteritemSpacing = 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         let insets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         return insets
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let cellWidth = (self.collectionView.frame.width / 2) - 8 - 16
         let cellHeight: CGFloat = cellWidth + 8 + (22) + 16
         return CGSize(width: cellWidth, height: cellHeight)
     }
+    
+}
 
-    // MARK: - UICollectionViewDelegate
-
+extension SketchesViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.isEditing == false {
             performSegue(withIdentifier: Segue.SketchCellToSketchEditorViewController, sender: self)
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
         if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
             highlightedCell.isHighlighted = true
         }
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
         if let highlightedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
             highlightedCell.isHighlighted = false
         }
     }
+    
+}
 
-    // MARK: - UICollectionViewDataSource
-
+extension SketchesViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: SketchCell.cell_id, for: indexPath) as? SketchCell {
             cell.sketch = self.sketches?[indexPath.section][indexPath.item]
@@ -334,13 +356,13 @@ class SketchesViewController: BaseViewController, PersistentContainerDelegate, U
             return BaseCollectionViewCell()
         }
     }
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return self.sketches?.count ?? 0
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.sketches?[section].count ?? 0
     }
-
+    
 }

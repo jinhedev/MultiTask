@@ -148,7 +148,7 @@ class CompletedTaskCell: BaseCollectionViewCell {
 
     @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
         if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
-            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.CompletedTaskCellEditingMode), object: nil, userInfo: [NotificationKey.CompletedTaskCellEditingMode : true])
+            let notification = Notification(name: Notification.Name.CompletedTaskCellEditingMode, object: nil, userInfo: [Notification.Name.CompletedTaskCellEditingMode : true, "isEditing" : true])
             NotificationCenter.default.post(notification)
         }
     }

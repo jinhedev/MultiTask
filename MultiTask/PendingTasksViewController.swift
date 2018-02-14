@@ -89,6 +89,10 @@ class PendingTasksViewController: BaseViewController {
         self.observeEditModeForChanges()
         // initial actions
         self.pendingTasks = Task.pending()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let tasks = self.pendingTasks {
             if tasks.count <= 0 {
                 self.collectionView.backgroundView?.isHidden = false
@@ -106,17 +110,18 @@ extension PendingTasksViewController: MainTasksViewControllerDelegate {
         self.mainTasksViewController?.delegate = self
     }
     
+    func editModeDidChange(_ viewController: MainTasksViewController, isEditing: Bool) {
+        self.isEditing = isEditing
+    }
+    
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
         if self.isEditing == true {
             self.isEditing = false
+            viewController.isEditing = false
             if let indexPaths = self.collectionView.indexPathsForSelectedItems {
                 self.deleteTasks(indexPaths: indexPaths)
             }
         }
-    }
-    
-    func mainTasksViewController(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, isEditing: Bool) {
-        self.isEditing = isEditing
     }
     
 }

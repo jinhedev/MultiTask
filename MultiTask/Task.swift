@@ -40,19 +40,25 @@ final class Task: Object {
     }
 
     static func all() -> Results<Task> {
-        let results = defaultRealm.objects(Task.self)
+        let results = defaultRealm.objects(Task.self).sorted(byKeyPath: "created_at", ascending: false)
         return results
     }
     
     static func pending() -> Results<Task> {
-        let pendingPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: false))
-        let results = defaultRealm.objects(Task.self).filter(pendingPredicate).sorted(byKeyPath: "created_at", ascending: false)
+        let pendingPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == false).@count > 0")
+        let emptyItemsPredicate = NSPredicate(format: "items.@count == 0")
+        let comppoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pendingPredicate, emptyItemsPredicate])
+        let results = Task.all().filter(comppoundPredicate)
         return results
     }
     
     static func completed() -> Results<Task> {
-        let completedPredicate = NSPredicate(format: "is_completed == %@", NSNumber(booleanLiteral: true))
-        let results = defaultRealm.objects(Task.self).filter(completedPredicate).sorted(byKeyPath: "updated_at", ascending: false)
+        // TODO: refactor the predicate to use a sub query
+        let completedPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == true).@count > 0")
+        let nonEmptyItemsPredicate = NSPredicate(format: "items.@count > 0")
+        let emptyPendingPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == false).@count <= 0")
+        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [completedPredicate, nonEmptyItemsPredicate, emptyPendingPredicate])
+        let results = Task.all().filter(compoundPredicate)
         return results
     }
     
@@ -66,11 +72,13 @@ final class Task: Object {
         if self.isValid() {
             do {
                 try defaultRealm.write {
+                    self.is_completed = self.shouldComplete() ? true : false
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {
                 Amplitude.instance().logEvent(LogEventType.relamError)
                 print(err.localizedDescription)
+                fatalError(err.localizedDescription)
             }
         }
     }
@@ -90,12 +98,12 @@ final class Task: Object {
         return "id"
     }
 
-    convenience init(title: String, items: List<Item>, is_completed: Bool) {
+    convenience init(title: String, items: List<Item>) {
         self.init()
         self.id = UUID().uuidString
         self.title = title
         self.items = items
-        self.is_completed = is_completed
+        self.is_completed = false
         self.created_at = NSDate()
         self.updated_at = nil
         self.expired_at = nil

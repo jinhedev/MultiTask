@@ -66,13 +66,15 @@ final class Item: Object {
     }
     
     func save() {
-        do {
-            try defaultRealm.write {
-                defaultRealm.add(self, update: true)
+        if isValid() {
+            do {
+                try defaultRealm.write {
+                    defaultRealm.add(self, update: true)
+                }
+            } catch let err {
+                Amplitude.instance().logEvent(LogEventType.relamError)
+                print(err.localizedDescription)
             }
-        } catch let err {
-            Amplitude.instance().logEvent(LogEventType.relamError)
-            print(err.localizedDescription)
         }
     }
 
@@ -82,11 +84,11 @@ final class Item: Object {
         return "id"
     }
 
-    convenience init(title: String, is_completed: Bool) {
+    convenience init(title: String) {
         self.init()
         self.id = UUID().uuidString
         self.title = title
-        self.is_completed = is_completed
+        self.is_completed = false
         self.created_at = NSDate()
         self.updated_at = nil
         self.expired_at = nil

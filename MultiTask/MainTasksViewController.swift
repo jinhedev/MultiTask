@@ -10,8 +10,8 @@ import UIKit
 import RealmSwift
 
 protocol MainTasksViewControllerDelegate: NSObjectProtocol {
-    func mainTasksViewController(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, isEditing: Bool)
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
+    func editModeDidChange(_ viewController: MainTasksViewController, isEditing: Bool)
 }
 
 class MainTasksViewController: BaseViewController {
@@ -56,7 +56,6 @@ class MainTasksViewController: BaseViewController {
     static let storyboard_id = String(describing: MainTasksViewController.self)
     let searchController = UISearchController(searchResultsController: nil)
     let popTransitionAnimator = PopTransitionAnimator()
-    let navigationItemTitles = ["Pending, Completed"]
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var pendingContainerView: UIView!
     @IBOutlet weak var completedContainerView: UIView!
@@ -145,19 +144,19 @@ class MainTasksViewController: BaseViewController {
         if self.isEditing == true {
             // if already in editMode, exit editMode
             self.isEditing = false
-            self.delegate?.mainTasksViewController(self, didTapEdit: editButton, isEditing: false)
+            self.delegate?.editModeDidChange(self, isEditing: false)
         } else {
             // if not in editMode, enter editMode
             self.isEditing = true
-            self.delegate?.mainTasksViewController(self, didTapEdit: editButton, isEditing: true)
+            self.delegate?.editModeDidChange(self, isEditing: true)
         }
     }
 
     // MARK: - Notifications
 
     func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.PendingTaskCellEditingMode), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name(rawValue: NotificationKey.CompletedTaskCellEditingMode), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
     }
 
     // MARK: - Lifecycle
@@ -183,11 +182,6 @@ class MainTasksViewController: BaseViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if segue.identifier == Segue.AddButtonToTaskEditorViewController {
-            if let taskEditorViewController = segue.destination as? TaskEditorViewController {
-                taskEditorViewController.delegate = self
-            }
-        }
         if let settingsViewController = segue.destination as? SettingsViewController {
             settingsViewController.currentUser = self.currentUser
         }
@@ -219,26 +213,6 @@ extension MainTasksViewController: PersistentContainerDelegate {
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
         guard let fetchedUser = users?.first else { return }
         self.currentUser = fetchedUser
-    }
-    
-}
-
-extension MainTasksViewController: TaskEditorViewControllerDelegate {
-    
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task) {
-        if let navigationController = viewController.navigationController {
-            navigationController.popViewController(animated: true)
-            // REMARK: When a new task is added pendingTasks in PendingTasksViewController, but if pendingTasks is still nil, PendingTasksViewController's realmNotification will not be able to track changes because pendingTasks == nil was never allocated on the RealmNotification's run loop. To fix this issue, do a manual fetch on the PendingTasksViewController to get everything kickstarted.
-//                        if self.mainPendingTasksCell?.pendingTasks == nil {
-//                            self.mainPendingTasksCell?.realmManager?.fetchTasks(predicate: Task.pendingPredicate, sortedBy: Task.createdAtKeyPath, ascending: false)
-//                        }
-        }
-    }
-    
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task) {
-        if let navigationController = viewController.navigationController {
-            navigationController.popViewController(animated: true)
-        }
     }
     
 }

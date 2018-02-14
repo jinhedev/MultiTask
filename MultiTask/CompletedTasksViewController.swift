@@ -91,7 +91,7 @@ extension CompletedTasksViewController: MainTasksViewControllerDelegate {
         self.mainTasksViewController?.delegate = self
     }
     
-    func mainTasksViewController(_ viewController: MainTasksViewController, didTapEdit button: UIBarButtonItem, isEditing: Bool) {
+    func editModeDidChange(_ viewController: MainTasksViewController, isEditing: Bool) {
         self.isEditing = isEditing
     }
     

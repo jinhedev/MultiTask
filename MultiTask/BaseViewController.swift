@@ -11,23 +11,19 @@ import AVFoundation
 
 class BaseViewController: UIViewController {
 
-    // MARK: - API
-
-    func initPlaceholderBackgroundView(type: PlaceholderType) -> PlaceholderBackgroundView? {
-        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
-            view.type = type
-            view.isHidden = true
-            return view
-        } else {
-            return nil
-        }
-    }
+//    func initPlaceholderBackgroundView(type: PlaceholderType) -> PlaceholderBackgroundView? {
+//        if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
+//            view.type = type
+//            view.isHidden = true
+//            return view
+//        } else {
+//            return nil
+//        }
+//    }
 
     private func setupView() {
         self.view.backgroundColor = Color.inkBlack
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

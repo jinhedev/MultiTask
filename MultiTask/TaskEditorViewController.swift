@@ -9,19 +9,10 @@
 import UIKit
 import RealmSwift
 
-protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task)
-}
-
 class TaskEditorViewController: BaseViewController {
 
-    // MARK: - API
-
     var selectedTask: Task?
-    weak var delegate: TaskEditorViewControllerDelegate?
     static let storyboard_id = String(describing: TaskEditorViewController.self)
-
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -45,7 +36,7 @@ class TaskEditorViewController: BaseViewController {
     }
     
     func create() -> Task {
-        let task = Task(title: titleTextView.text, items: List<Item>(), is_completed: false)
+        let task = Task(title: titleTextView.text, items: List<Item>())
         return task
     }
 
@@ -81,8 +72,6 @@ class TaskEditorViewController: BaseViewController {
         }
     }
 
-    // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
@@ -96,10 +85,6 @@ class TaskEditorViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.titleTextView.resignFirstResponder()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
 }

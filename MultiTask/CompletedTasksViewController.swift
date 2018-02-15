@@ -12,9 +12,9 @@ import RealmSwift
 class CompletedTasksViewController: BaseViewController {
     
     var completedTasks: Results<Task>? { didSet { self.observeTasksForChanges() } }
-    static let storyboard_id = String(describing: CompletedTasksViewController.self)
-    weak var mainTasksViewController: MainTasksViewController?
     var realmNotificationToken: NotificationToken?
+    var mainTasksViewController: MainTasksViewController?
+    static let storyboard_id = String(describing: CompletedTasksViewController.self)
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
@@ -27,6 +27,12 @@ class CompletedTasksViewController: BaseViewController {
             if let cell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
                 cell.isEditing = isEditing
             }
+        }
+    }
+    
+    @objc func editMode(notification: Notification) {
+        if let isEditing = notification.userInfo?["isEditing"] as? Bool {
+            self.isEditing = isEditing
         }
     }
     

@@ -47,8 +47,8 @@ final class Task: Object {
     static func pending() -> Results<Task> {
         let pendingPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == false).@count > 0")
         let emptyItemsPredicate = NSPredicate(format: "items.@count == 0")
-        let comppoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pendingPredicate, emptyItemsPredicate])
-        let results = Task.all().filter(comppoundPredicate)
+        let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pendingPredicate, emptyItemsPredicate])
+        let results = Task.all().filter(compoundPredicate)
         return results
     }
     
@@ -76,9 +76,8 @@ final class Task: Object {
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {
-                Amplitude.instance().logEvent(LogEventType.relamError)
+                Amplitude.instance().logEvent(LogEventType.realmError)
                 print(err.localizedDescription)
-                fatalError(err.localizedDescription)
             }
         }
     }

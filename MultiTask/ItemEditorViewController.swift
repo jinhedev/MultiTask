@@ -17,7 +17,6 @@ protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
 
 class ItemEditorViewController: BaseViewController {
 
-//    var realmManager: RealmManager?
     var parentTask: Task?
     var selectedItem: Item?
     weak var delegate: ItemEditorViewControllerDelegate?
@@ -52,7 +51,7 @@ class ItemEditorViewController: BaseViewController {
             }
         } catch let err {
             print(err.localizedDescription)
-            Amplitude.instance().logEvent(LogEventType.relamError)
+            Amplitude.instance().logEvent(LogEventType.realmError)
         }
     }
     
@@ -66,7 +65,7 @@ class ItemEditorViewController: BaseViewController {
                 }
             } catch let err {
                 print(err.localizedDescription)
-                Amplitude.instance().logEvent(LogEventType.relamError)
+                Amplitude.instance().logEvent(LogEventType.realmError)
             }
         } else {
             print("invalid format for item")
@@ -113,7 +112,6 @@ class ItemEditorViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-//        self.setupPersistentContainerDelegate()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -126,50 +124,7 @@ class ItemEditorViewController: BaseViewController {
         self.titleTextView.resignFirstResponder()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
 }
-
-//extension ItemEditorViewController: PersistentContainerDelegate {
-//
-//    private func setupPersistentContainerDelegate() {
-//        realmManager = RealmManager()
-//        realmManager!.delegate = self
-//    }
-//
-//    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-//        if let navigationController = self.navigationController as? BaseNavigationController {
-//            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
-//        }
-//    }
-//
-//    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-//        // called when successfully updated an existing item
-//        if let item = self.selectedItem {
-//            self.delegate?.itemEditorViewController(self, didUpdateItem: item)
-//        } else {
-//            print(trace(file: #file, function: #function, line: #line))
-//            if let navController = self.navigationController as? BaseNavigationController {
-//                navController.popViewController(animated: true)
-//            }
-//        }
-//    }
-//
-//    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object]) {
-//        // called when successfully appened a new item to task
-//        if let newItem = objects.first as? Item {
-//            self.delegate?.itemEditorViewController(self, didAddItem: newItem)
-//        } else {
-//            print(trace(file: #file, function: #function, line: #line))
-//            if let navController = self.navigationController as? BaseNavigationController {
-//                navController.popViewController(animated: true)
-//            }
-//        }
-//    }
-//
-//}
 
 extension ItemEditorViewController: UITextViewDelegate {
     

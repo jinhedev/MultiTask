@@ -132,8 +132,9 @@ class MainTasksViewController: BaseViewController {
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
         if self.isEditing == true {
-            // if already in editMode, first commit trash and then exit editMode
             self.isEditing = false
+            self.delegate?.mainTasksViewController(self, didTapTrash: sender)
+            self.delegate?.editModeDidChange(self, isEditing: false)
         } else {
             print(trace(file: #file, function: #function, line: #line))
         }
@@ -152,14 +153,10 @@ class MainTasksViewController: BaseViewController {
         }
     }
 
-    // MARK: - Notifications
-
     func observeNotificationForEditingMode() {
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
     }
-
-    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,11 +172,7 @@ class MainTasksViewController: BaseViewController {
         super.viewDidAppear(animated)
         self.updateAvatarButton()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let settingsViewController = segue.destination as? SettingsViewController {

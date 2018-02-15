@@ -72,7 +72,7 @@ final class Item: Object {
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {
-                Amplitude.instance().logEvent(LogEventType.relamError)
+                Amplitude.instance().logEvent(LogEventType.realmError)
                 print(err.localizedDescription)
             }
         }

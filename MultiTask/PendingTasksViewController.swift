@@ -19,6 +19,18 @@ class PendingTasksViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        self.collectionView.allowsMultipleSelection = isEditing
+        let indexPaths = self.collectionView.indexPathsForVisibleItems
+        for indexPath in indexPaths {
+            self.collectionView.deselectItem(at: indexPath, animated: false)
+            if let cell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
+                cell.isEditing = isEditing
+            }
+        }
+    }
+    
     func observeTasksForChanges() {
         realmNotificationToken = self.pendingTasks?.observe({ [weak self] (changes) in
             guard let collectionView = self?.collectionView else { return }
@@ -50,7 +62,7 @@ class PendingTasksViewController: BaseViewController {
                 }
             } catch let err {
                 print(err.localizedDescription)
-                Amplitude.instance().logEvent(LogEventType.relamError)
+                Amplitude.instance().logEvent(LogEventType.realmError)
             }
         }
     }
@@ -115,12 +127,8 @@ extension PendingTasksViewController: MainTasksViewControllerDelegate {
     }
     
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
-        if self.isEditing == true {
-            self.isEditing = false
-            viewController.isEditing = false
-            if let indexPaths = self.collectionView.indexPathsForSelectedItems {
-                self.deleteTasks(indexPaths: indexPaths)
-            }
+        if let indexPaths = self.collectionView.indexPathsForSelectedItems {
+            self.deleteTasks(indexPaths: indexPaths)
         }
     }
     

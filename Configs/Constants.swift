@@ -64,5 +64,5 @@ struct LocalNotificationConfiguration {
 // MARK: - Amplitude
 
 struct LogEventType {
-    static let relamError = "relamError"
+    static let realmError = "realmError"
 }

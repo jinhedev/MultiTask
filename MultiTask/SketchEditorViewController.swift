@@ -17,18 +17,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
 
     // MARK: - API
 
-    var sketch: Sketch?
-    var realmManager: RealmManager?
-    weak var delegate: SketchEditorViewControllerDelegate?
-    var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
-
-    var lastPoint = CGPoint.zero
-    var red: CGFloat = 200 / 255
-    var green: CGFloat = 200 / 255
-    var blue: CGFloat = 200 / 255
-    var brushWidth: CGFloat = 10.0
-    var swiped = false
-
     lazy var saveButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "FloppyDisk"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
         return button
@@ -44,11 +32,19 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         return button
     }()
 
+    var sketch: Sketch?
+    var realmManager: RealmManager?
+    weak var delegate: SketchEditorViewControllerDelegate?
+    var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
+    var lastPoint = CGPoint.zero
+    var red: CGFloat = 200 / 255
+    var green: CGFloat = 200 / 255
+    var blue: CGFloat = 200 / 255
+    var brushWidth: CGFloat = 10.0
+    var swiped = false
     static let storyboard_id = String(describing: SketchEditorViewController.self)
-
     @IBOutlet weak var toolboxView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
-
     @IBOutlet weak var whiteButton: UIButton!
     @IBOutlet weak var blueButton: UIButton!
     @IBOutlet weak var redButton: UIButton!

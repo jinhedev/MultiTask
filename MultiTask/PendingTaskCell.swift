@@ -42,7 +42,6 @@ class PendingTaskCell: BaseCollectionViewCell {
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
     static let cell_id = String(describing: PendingTaskCell.self)
     static let nibName = String(describing: PendingTaskCell.self)
-
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var checkmarkImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -50,7 +49,7 @@ class PendingTaskCell: BaseCollectionViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var statsLabel: UILabel!
     @IBOutlet weak var containerViewLeadingMargin: NSLayoutConstraint! // increase its constant when in editing mode to give space for checkmarImageView
-
+    
     private func setHightlighted() {
         self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
     }

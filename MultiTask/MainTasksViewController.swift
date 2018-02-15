@@ -16,13 +16,7 @@ protocol MainTasksViewControllerDelegate: NSObjectProtocol {
 
 class MainTasksViewController: BaseViewController {
 
-    // MARK: - API
-
-    var currentUser: User? {
-        didSet {
-            self.updateAvatarButton()
-        }
-    }
+    var currentUser: User? { didSet { self.updateAvatarButton() } }
 
     lazy var avatarButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -80,9 +74,9 @@ class MainTasksViewController: BaseViewController {
         }
     }
 
-    @objc func enableEditingMode() {
-        self.isEditing = true
-    }
+//    @objc func enableEditingMode() {
+//        self.isEditing = true
+//    }
     
     @IBAction func segmentedControl_tapped(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -154,8 +148,10 @@ class MainTasksViewController: BaseViewController {
     }
 
     func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
     }
 
     override func viewDidLoad() {

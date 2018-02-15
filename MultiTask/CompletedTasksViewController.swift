@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import Amplitude
 
 class CompletedTasksViewController: BaseViewController {
     
@@ -51,6 +52,22 @@ class CompletedTasksViewController: BaseViewController {
         })
     }
     
+    func deleteTasks(indexPaths: [IndexPath]) {
+        guard let tasks = self.completedTasks, indexPaths.count > 0 else { return }
+        for indexPath in indexPaths {
+            let taskToBeDeleted = tasks[indexPath.item]
+            do {
+                try defaultRealm.write {
+                    defaultRealm.delete(taskToBeDeleted.items)
+                    defaultRealm.delete(taskToBeDeleted)
+                }
+            } catch let err {
+                print(err.localizedDescription)
+                Amplitude.instance().logEvent(LogEventType.realmError)
+            }
+        }
+    }
+    
     private func setupBackgroundView() {
         if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
             view.type = PlaceholderType.completedTasks
@@ -75,6 +92,7 @@ class CompletedTasksViewController: BaseViewController {
         self.setupUICollectionViewDelegate()
         self.setupUICollectionViewDataSource()
         self.setupUICollectionViewDelegateFlowLayout()
+        self.setupUIViewControllerPreviewingDelegate()
         self.completedTasks = Task.completed()
     }
     
@@ -102,7 +120,34 @@ extension CompletedTasksViewController: MainTasksViewControllerDelegate {
     }
     
     func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
-        self.isEditing = false
+        if let indexPaths = self.collectionView.indexPathsForSelectedItems {
+            self.deleteTasks(indexPaths: indexPaths)
+        }
+    }
+    
+}
+
+extension CompletedTasksViewController: UIViewControllerPreviewingDelegate {
+    
+    private func setupUIViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            viewControllerToCommit.hidesBottomBarWhenPushed = true
+            navController.pushViewController(viewControllerToCommit, animated: true)
+        }
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
+        taskEditorViewController?.selectedTask = self.completedTasks?[indexPath.item]
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? CompletedTaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return taskEditorViewController
     }
     
 }

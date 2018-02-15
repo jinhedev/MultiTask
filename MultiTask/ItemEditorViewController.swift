@@ -10,16 +10,10 @@ import UIKit
 import Amplitude
 import RealmSwift
 
-protocol ItemEditorViewControllerDelegate: NSObjectProtocol {
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item)
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item)
-}
-
 class ItemEditorViewController: BaseViewController {
 
     var parentTask: Task?
     var selectedItem: Item?
-    weak var delegate: ItemEditorViewControllerDelegate?
     static let storyboard_id = String(describing: ItemEditorViewController.self)
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -39,11 +33,11 @@ class ItemEditorViewController: BaseViewController {
             let newItem = self.create()
             self.append(newItem: newItem)
         }
+        self.navigationController?.popViewController(animated: true)
     }
     
     // update an existing item
     func update(item: Item, keyedValues: [String : Any]) {
-        // FIXME: if I update this item idenpendently, I lose the sight of its parent task so that I won't be able to check for parent's completion state.
         do {
             try defaultRealm.write {
                 item.setValuesForKeys(keyedValues)

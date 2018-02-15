@@ -49,21 +49,6 @@ class SearchResultsViewController: BaseViewController {
 
 }
 
-extension SearchResultsViewController: ItemEditorViewControllerDelegate {
-    
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item) {
-        // this viewController does not handle adding new items
-        viewController.dismiss(animated: true, completion: nil)
-    }
-    
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item) {
-        viewController.dismiss(animated: true, completion: {
-            self.tableView.reloadData()
-        })
-    }
-    
-}
-
 extension SearchResultsViewController: PersistentContainerDelegate {
     
     private func setupPersistentContainerDelegate() {
@@ -134,7 +119,6 @@ extension SearchResultsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedItem = self.searchResultsItems?[indexPath.section][indexPath.item] {
             guard let itemEditorViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController else { return }
-            itemEditorViewController.delegate = self
             itemEditorViewController.parentTask = self.selectedTask
             itemEditorViewController.selectedItem = selectedItem
             if let navController = self.itemsViewController?.navigationController as? BaseNavigationController {

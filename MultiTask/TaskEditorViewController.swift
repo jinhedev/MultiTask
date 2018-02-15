@@ -32,6 +32,7 @@ class TaskEditorViewController: BaseViewController {
                 let newTask = self.create()
                 newTask.save()
             }
+            self.navigationController?.popViewController(animated: true)
         }
     }
     

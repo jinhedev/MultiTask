@@ -98,6 +98,7 @@ class PendingTasksViewController: BaseViewController {
         self.setupUICollectionViewDelegate()
         self.setupUICollectionViewDataSource()
         self.setupUICollectionViewDelegateFlowLayout()
+        self.setupUIViewControllerPreviewingDelegate()
         self.observeEditModeForChanges()
         // initial actions
         self.pendingTasks = Task.pending()
@@ -130,6 +131,31 @@ extension PendingTasksViewController: MainTasksViewControllerDelegate {
         if let indexPaths = self.collectionView.indexPathsForSelectedItems {
             self.deleteTasks(indexPaths: indexPaths)
         }
+    }
+    
+}
+
+extension PendingTasksViewController: UIViewControllerPreviewingDelegate {
+    
+    private func setupUIViewControllerPreviewingDelegate() {
+        self.registerForPreviewing(with: self, sourceView: self.collectionView)
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        if let navController = self.navigationController as? BaseNavigationController {
+            viewControllerToCommit.hidesBottomBarWhenPushed = true
+            navController.pushViewController(viewControllerToCommit, animated: true)
+        }
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
+        let taskEditorViewController = storyboard?.instantiateViewController(withIdentifier: TaskEditorViewController.storyboard_id) as? TaskEditorViewController
+        taskEditorViewController?.selectedTask = self.pendingTasks?[indexPath.item]
+        if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? PendingTaskCell {
+            previewingContext.sourceRect = selectedCell.frame
+        }
+        return taskEditorViewController
     }
     
 }

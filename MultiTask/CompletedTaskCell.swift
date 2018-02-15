@@ -42,7 +42,6 @@ class CompletedTaskCell: BaseCollectionViewCell {
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
     static let cell_id = String(describing: CompletedTaskCell.self)
     static let nibName = String(describing: CompletedTaskCell.self)
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -148,7 +147,7 @@ class CompletedTaskCell: BaseCollectionViewCell {
 
     @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
         if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
-            let notification = Notification(name: Notification.Name.CompletedTaskCellEditingMode, object: nil, userInfo: [Notification.Name.CompletedTaskCellEditingMode : true, "isEditing" : true])
+            let notification = Notification(name: Notification.Name.CompletedTaskCellEditingMode, object: nil, userInfo: ["isEditing" : true])
             NotificationCenter.default.post(notification)
         }
     }

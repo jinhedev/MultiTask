@@ -40,7 +40,7 @@ final class Task: Object {
     }
 
     static func all() -> Results<Task> {
-        let results = defaultRealm.objects(Task.self).sorted(byKeyPath: "created_at", ascending: false)
+        let results = defaultRealm.objects(Task.self)
         return results
     }
     
@@ -48,7 +48,7 @@ final class Task: Object {
         let pendingPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == false).@count > 0")
         let emptyItemsPredicate = NSPredicate(format: "items.@count == 0")
         let compoundPredicate = NSCompoundPredicate(orPredicateWithSubpredicates: [pendingPredicate, emptyItemsPredicate])
-        let results = Task.all().filter(compoundPredicate)
+        let results = Task.all().filter(compoundPredicate).sorted(byKeyPath: "created_at", ascending: false)
         return results
     }
     
@@ -58,7 +58,7 @@ final class Task: Object {
         let nonEmptyItemsPredicate = NSPredicate(format: "items.@count > 0")
         let emptyPendingPredicate = NSPredicate(format: "SUBQUERY(items, $item, $item.is_completed == false).@count <= 0")
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [completedPredicate, nonEmptyItemsPredicate, emptyPendingPredicate])
-        let results = Task.all().filter(compoundPredicate)
+        let results = Task.all().filter(compoundPredicate).sorted(byKeyPath: "updated_at", ascending: false)
         return results
     }
     

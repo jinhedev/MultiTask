@@ -42,18 +42,6 @@ class ItemsViewController: BaseViewController {
         navigationItem.hidesSearchBarWhenScrolling = true
     }
 
-    // MARK: - Notifications
-
-    func postNotificationForTaskCompletion(completedTask: Task) {
-        let notification = Notification(name: Notification.Name.TaskCompletion, object: nil, userInfo: [Notification.Name.TaskCompletion : completedTask])
-        NotificationCenter.default.post(notification)
-    }
-
-    func postNotificationForTaskPending(pendingTask: Task) {
-        let notification = Notification(name: Notification.Name.TaskPending, object: nil, userInfo: [Notification.Name.TaskPending : pendingTask])
-        NotificationCenter.default.post(notification)
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -70,15 +58,10 @@ class ItemsViewController: BaseViewController {
         self.setupTaskHeaderViewDelegate()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.ItemsViewControllerToItemEditorViewController {
             itemEditorViewController = segue.destination as? ItemEditorViewController
             itemEditorViewController?.hidesBottomBarWhenPushed = true
-            itemEditorViewController?.delegate = self
             itemEditorViewController?.parentTask = self.selectedTask
         } else if segue.identifier == Segue.EditButtonToTaskEditorViewController {
             if let taskEditorViewController = segue.destination as? TaskEditorViewController {
@@ -171,26 +154,6 @@ extension ItemsViewController: TaskHeaderViewDelegate {
     
 }
 
-extension ItemsViewController: ItemEditorViewControllerDelegate {
-    
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didAddItem item: Item) {
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.popViewController(animated: true)
-            // update the parent task's updated_at
-            guard let task = self.selectedTask else { return }
-            self.realmManager?.updateObject(object: task, keyedValues: [Task.updatedAtKeyPath : NSDate()])
-            self.tableView.backgroundView?.isHidden = true
-        }
-    }
-    
-    func itemEditorViewController(_ viewController: ItemEditorViewController, didUpdateItem item: Item) {
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.popViewController(animated: true)
-        }
-    }
-    
-}
-
 extension ItemsViewController: PersistentContainerDelegate {
     
     private func setupPersistentContainerDelegate() {
@@ -239,20 +202,6 @@ extension ItemsViewController: PersistentContainerDelegate {
         // REMARK: delete an item from items may cause the parentTask to toggle its completion state to either completed or pending. Check to see if the parent task has all items completed, if so, mark parent task completed and set the updated_at and completed_at to today's date
         guard let parentTask = self.selectedTask else { return }
         self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : parentTask.shouldComplete(), Task.updatedAtKeyPath : NSDate()])
-        
-        
-        if parentTask.shouldComplete() == true {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : true, Task.updatedAtKeyPath : NSDate()])
-            self.postNotificationForTaskCompletion(completedTask: parentTask)
-            // play sound effect
-            self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
-        } else if parentTask.shouldComplete() == false {
-            self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : false, Task.updatedAtKeyPath : NSDate()])
-            self.postNotificationForTaskPending(pendingTask: parentTask)
-        } else {
-            // parentTask.shouldComplete() == nil
-            // having updated an item doesn't cause the parentTask to change its completion state
-        }
     }
     
     func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
@@ -264,10 +213,8 @@ extension ItemsViewController: PersistentContainerDelegate {
             guard let parentTask = self.selectedTask else { return }
             self.realmManager?.updateObject(object: parentTask, keyedValues: [Task.isCompletedKeyPath : parentTask.shouldComplete(), Task.updatedAtKeyPath : NSDate()])
             if parentTask.shouldComplete() == true {
-                self.postNotificationForTaskCompletion(completedTask: parentTask) // notify MainCompletedTasksCell
                 self.soundEffectManager?.play(soundEffect: SoundEffect.Coin)
             } else {
-                self.postNotificationForTaskPending(pendingTask: parentTask) // notify MainPendingTasksCell
             }
         } else {
             // don't know what object it is, ignore, for now...
@@ -292,7 +239,6 @@ extension ItemsViewController: UIViewControllerPreviewingDelegate {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
         let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
-        itemEditorViewController?.delegate = self
         itemEditorViewController?.parentTask = self.selectedTask
         itemEditorViewController?.selectedItem = items?[indexPath.section][indexPath.row]
         // setting the peeking cell's animation

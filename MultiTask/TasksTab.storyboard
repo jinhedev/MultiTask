@@ -230,29 +230,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Rx-vH-Iel">
-                                <rect key="frame" x="0.0" y="161" width="375" height="393"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="4U5-QD-6XH" id="qMi-88-kDr"/>
                                     <outlet property="delegate" destination="4U5-QD-6XH" id="fek-04-sSK"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U9V-hq-gNH" customClass="TaskHeaderView" customModule="MultiTask" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="161"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="750" constant="161" id="evg-zl-9sX"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="D7w-K6-Fiz" firstAttribute="trailing" secondItem="U9V-hq-gNH" secondAttribute="trailing" id="8fT-TC-Jf9"/>
                             <constraint firstItem="D7w-K6-Fiz" firstAttribute="bottom" secondItem="8Rx-vH-Iel" secondAttribute="bottom" id="G7l-7g-zVg"/>
-                            <constraint firstItem="8Rx-vH-Iel" firstAttribute="top" secondItem="U9V-hq-gNH" secondAttribute="bottom" id="Xaz-Ox-BuL"/>
+                            <constraint firstItem="8Rx-vH-Iel" firstAttribute="top" secondItem="yWx-3d-LzK" secondAttribute="bottom" id="ILJ-qZ-E6D"/>
                             <constraint firstItem="8Rx-vH-Iel" firstAttribute="leading" secondItem="D7w-K6-Fiz" secondAttribute="leading" id="drg-ut-Rog"/>
-                            <constraint firstItem="U9V-hq-gNH" firstAttribute="top" secondItem="D7w-K6-Fiz" secondAttribute="top" id="hcb-Ri-lLb"/>
-                            <constraint firstItem="U9V-hq-gNH" firstAttribute="leading" secondItem="D7w-K6-Fiz" secondAttribute="leading" id="sFw-KJ-SWp"/>
                             <constraint firstItem="D7w-K6-Fiz" firstAttribute="trailing" secondItem="8Rx-vH-Iel" secondAttribute="trailing" id="vDt-U7-bs9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="D7w-K6-Fiz"/>
@@ -269,8 +259,6 @@
                     <connections>
                         <outlet property="addButton" destination="AHd-sH-VAo" id="7E5-0Q-qNy"/>
                         <outlet property="tableView" destination="8Rx-vH-Iel" id="y6S-gR-hfg"/>
-                        <outlet property="tashHeaderViewHeightLayoutConstraint" destination="evg-zl-9sX" id="3y7-17-hPo"/>
-                        <outlet property="taskHeaderView" destination="U9V-hq-gNH" id="90D-4Z-h9e"/>
                         <segue destination="7lz-Dp-OH2" kind="show" identifier="ItemsViewControllerToItemEditorViewController" id="Njx-nM-cak"/>
                         <segue destination="Qb7-A2-IyR" kind="show" identifier="EditButtonToTaskEditorViewController" id="P0C-2o-NYU"/>
                     </connections>
@@ -501,6 +489,6 @@
         <image name="Tasks" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qXS-1W-mkt"/>
+        <segue reference="P0C-2o-NYU"/>
     </inferredMetricsTieBreakers>
 </document>

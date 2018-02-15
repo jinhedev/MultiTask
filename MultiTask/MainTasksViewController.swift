@@ -73,10 +73,6 @@ class MainTasksViewController: BaseViewController {
             self.isEditing = isEditing
         }
     }
-
-//    @objc func enableEditingMode() {
-//        self.isEditing = true
-//    }
     
     @IBAction func segmentedControl_tapped(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -150,8 +146,6 @@ class MainTasksViewController: BaseViewController {
     func observeNotificationForEditingMode() {
         NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
     }
 
     override func viewDidLoad() {

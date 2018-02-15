@@ -67,6 +67,17 @@ final class Task: Object {
         let results = defaultRealm.objects(Task.self).filter(titlePredicate)
         return results
     }
+    
+    func delete() {
+        do {
+            try defaultRealm.write {
+                defaultRealm.delete(self)
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
+    }
 
     func save() {
         if self.isValid() {

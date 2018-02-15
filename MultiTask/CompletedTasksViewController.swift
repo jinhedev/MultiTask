@@ -68,6 +68,10 @@ class CompletedTasksViewController: BaseViewController {
         }
     }
     
+    func observeEditModeForChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
+    }
+    
     private func setupBackgroundView() {
         if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
             view.type = PlaceholderType.completedTasks
@@ -86,6 +90,7 @@ class CompletedTasksViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // initial setups
         self.setupBackgroundView()
         self.setupUICollectionView()
         self.setupMainTasksViewControllerDelegate()
@@ -93,6 +98,8 @@ class CompletedTasksViewController: BaseViewController {
         self.setupUICollectionViewDataSource()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUIViewControllerPreviewingDelegate()
+        self.observeEditModeForChanges()
+        // initial actions
         self.completedTasks = Task.completed()
     }
     

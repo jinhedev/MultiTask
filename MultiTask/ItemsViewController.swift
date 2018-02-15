@@ -16,22 +16,20 @@ class ItemsViewController: BaseViewController {
 
     var realmManager: RealmManager?
     var soundEffectManager: SoundEffectManager?
-    var selectedTask: Task?
-    var items: [Results<Item>]?
+    var selectedTask: Task? { didSet { self.items = selectedTask?.items } }
+    var items: List<Item>?
     var notificationToken: NotificationToken?
     var itemEditorViewController: ItemEditorViewController?
     var searchController: UISearchController!
     static let storyboard_id = String(describing: ItemsViewController.self)
     @IBOutlet weak var addButton: UIBarButtonItem!
-    @IBOutlet weak var taskHeaderView: TaskHeaderView!
-    @IBOutlet weak var tashHeaderViewHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
 
     private func setupSearchController() {
         guard let searchResultsViewController = UIStoryboard(name: "Search", bundle: nil).instantiateViewController(withIdentifier: SearchResultsViewController.storyboard_id) as? SearchResultsViewController else { return }
         searchResultsViewController.itemsViewController = self
         self.searchController = UISearchController(searchResultsController: searchResultsViewController)
-        searchResultsViewController.selectedTask = self.selectedTask
+//        searchResultsViewController.selectedTask = self.selectedTask
         self.searchController.searchResultsUpdater = searchResultsViewController
         self.searchController.searchBar.barStyle = .black
         self.searchController.searchBar.tintColor = Color.mandarinOrange
@@ -54,8 +52,6 @@ class ItemsViewController: BaseViewController {
         self.setupViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
         self.setupItemsForTableViewWithParentTask()
-        self.setupTaskHeaderView()
-        self.setupTaskHeaderViewDelegate()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -121,39 +117,6 @@ extension ItemsViewController: SoundEffectDelegate {
     
 }
 
-extension ItemsViewController: TaskHeaderViewDelegate {
-    
-    private func setupTaskHeaderViewDelegate() {
-        self.taskHeaderView.delegate = self
-    }
-    
-    private func setupTaskHeaderView() {
-        self.taskHeaderView.selectedTask = self.selectedTask
-        // calculate the total height for the headerView
-        let viewHeight: CGFloat = 16 + 16 + (0) + 8 + 15 + 15 + 15 + 16 + 16 // containerViewTopMargin, titleLabelTopMargin, titleLabelHeight, titleLabelBottomMargin, subtitleLabelHeight, dateLabelHeight, statsLabelHeight, statsLabelBottomMargin, containerViewBottomMargin
-        let titleWidth: CGFloat = self.view.frame.width - 16 - 16 - 16 - 16
-        if let task = self.selectedTask {
-            var estimatedHeightForTitle = task.title.heightForText(systemFont: 15, width: titleWidth)
-            // FIXME: Must override the estimatedHeight! because when estimatedHeight is too big, the whole screen will be covered by the header and currently there is no way to scroll to see the content hidden below, for now.
-            self.taskHeaderView.titleTextView.isScrollEnabled = false
-            if estimatedHeightForTitle > self.view.frame.height / 7 {
-                estimatedHeightForTitle = self.view.frame.height / 7
-                self.taskHeaderView.titleTextView.isScrollEnabled = true
-            }
-            self.tashHeaderViewHeightLayoutConstraint.constant = viewHeight + estimatedHeightForTitle
-            UIView.animate(withDuration: 0.15, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-    
-    func taskHeaderView(_ view: TaskHeaderView, didTapEdit button: UIButton) {
-        // push to task editor
-        self.performSegue(withIdentifier: Segue.EditButtonToTaskEditorViewController, sender: self)
-    }
-    
-}
-
 extension ItemsViewController: PersistentContainerDelegate {
     
     private func setupPersistentContainerDelegate() {
@@ -169,8 +132,8 @@ extension ItemsViewController: PersistentContainerDelegate {
         self.tableView.backgroundView?.isHidden = unwrappedItems.isEmpty ? false : true
     }
     
-    private func setupRealmNotificationsForTableView() {
-        notificationToken = self.items!.first?.observe({ [weak self] (changes) in
+    private func observeItemsForChanges() {
+        notificationToken = self.items?.observe({ [weak self] (changes) in
             guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
@@ -240,7 +203,7 @@ extension ItemsViewController: UIViewControllerPreviewingDelegate {
         guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
         let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
         itemEditorViewController?.parentTask = self.selectedTask
-        itemEditorViewController?.selectedItem = items?[indexPath.section][indexPath.row]
+        itemEditorViewController?.selectedItem = self.selectedTask?.items[indexPath.row]
         // setting the peeking cell's animation
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {
             previewingContext.sourceRect = selectedCell.frame
@@ -253,7 +216,7 @@ extension ItemsViewController: UIViewControllerPreviewingDelegate {
 extension ItemsViewController: UITableViewDelegate {
     
     func isItemCompleted(at indexPath: IndexPath) -> Bool? {
-        if let is_completed = items?[indexPath.section][indexPath.row].is_completed {
+        if let is_completed = self.selectedTask?.items[indexPath.row].is_completed {
             return is_completed
         } else {
             return nil
@@ -263,9 +226,7 @@ extension ItemsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // user marks item for pending
         let pendingAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            // REMARK: perform pending action may cause a completedTask to be transferred to PendingTasksViewController, however when pendingTasks in PendingTasksViewController is nil. It is not tracked by RealmNotification by default, so the UI may not be able to perform its update to show the task that has just been transferred.
-            // to fix this, perform a manual fetch on PendingTasksViewController to get everything kickstarted.
-            if let itemToBePending = self.items?[indexPath.section][indexPath.row] {
+            if let itemToBePending = self.selectedTask?.items[indexPath.row] {
                 self.realmManager?.updateObject(object: itemToBePending, keyedValues: [Item.isCompletedKeyPath : false, Item.updatedAtKeyPath : NSDate()])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
@@ -276,8 +237,7 @@ extension ItemsViewController: UITableViewDelegate {
         pendingAction.backgroundColor = Color.mandarinOrange
         // user marks item for completion
         let doneAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            // REMARK: when a item is marked completed, it may cause the parentTask to change its completion state to is_completed == true. However, if completedViewController has no completedTasks to keep track of by realmNotification, it will not update on its own! The same goes with pendingAction! To fix this issue, perform a manual fetch on CompletedTasksViewController to get everything kickstarted.
-            if let itemToBeCompleted = self.items?[indexPath.section][indexPath.row] {
+            if let itemToBeCompleted = self.selectedTask?.items[indexPath.row] {
                 self.realmManager?.updateObject(object: itemToBeCompleted, keyedValues: [Item.isCompletedKeyPath : true, Item.updatedAtKeyPath : NSDate()])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
@@ -304,10 +264,7 @@ extension ItemsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: nil) { (action, view, is_success) in
-            // REMARK: perform a delete action may cause its parent Task to changed its completion state to either complete or incomplete.
-            // REMARK: If task should become complete, but CompletedTasksViewController's completedTasks == nil, then CompletedTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if completedTasks == nil, if so perform a manual fetch. If completedTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
-            // REMARK: if task should become incomplete, but PendingTasksViewController's pendingTasks == nil, then PendingTasksViewController will not be able to update its UI to correspond to new changes because RealmNotification does not track nil values. To fix this issue, first check if pendingTasks == nil, if so perform a manual fetch. If pendingTasks != nil, that mean RealmNotification has already place a the array on its run loop. Then no additional work needed to be done there, because it is already working properly.
-            if let itemToBeDeleted = self.items?[indexPath.section][indexPath.row] {
+            if let itemToBeDeleted = self.items?[indexPath.row] {
                 self.realmManager?.deleteItems(items: [itemToBeDeleted])
             } else {
                 print(trace(file: #file, function: #function, line: #line))
@@ -335,7 +292,7 @@ extension ItemsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let itemCell = self.tableView.dequeueReusableCell(withIdentifier: ItemCell.cell_id, for: indexPath) as? ItemCell {
-            let item = items?[indexPath.section][indexPath.row]
+            let item = self.items?[indexPath.row]
             itemCell.item = item
             return itemCell
         } else {
@@ -344,11 +301,11 @@ extension ItemsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items?[section].count ?? 0
+        return self.items?.count ?? 0
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return items?.count ?? 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

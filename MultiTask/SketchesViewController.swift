@@ -23,6 +23,8 @@ class SketchesViewController: BaseViewController {
     var realmManager: RealmManager?
     var notificationToken: NotificationToken?
     static let storyboard_id = String(describing: SketchesViewController.self)
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
 
     lazy var avatarButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -50,9 +52,6 @@ class SketchesViewController: BaseViewController {
         return button
     }()
 
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
-
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
@@ -73,9 +72,11 @@ class SketchesViewController: BaseViewController {
             }
         }
     }
-
-    @objc func enableEditingMode() {
-        self.isEditing = true
+    
+    @objc func editMode(notification: Notification) {
+        if let isEditing = notification.userInfo?["isEditing"] as? Bool {
+            self.isEditing = isEditing
+        }
     }
 
     // MARK: - NavigationBar
@@ -128,13 +129,17 @@ class SketchesViewController: BaseViewController {
 
     // MARK: - Notifications
 
-    func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(enableEditingMode), name: NSNotification.Name.SketchCellEditingMode, object: nil)
+    func observeNotificationForEditMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.EditMode, object: nil)
+    }
+    
+    func removeNotificationForEditMode() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.EditMode, object: nil)
     }
 
     // MARK: - UITabBar
 
-    private func updateTabBar() {
+    private func showTabBar() {
         if let baseTabBarController = self.tabBarController as? BaseTabBarController {
             baseTabBarController.tabBar.isHidden = false
         }
@@ -150,7 +155,6 @@ class SketchesViewController: BaseViewController {
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUIViewControllerPreviewingDelegate()
         self.setupPersistentContainerDelegate()
-        self.observeNotificationForEditingMode()
         // initial actions
         self.realmManager?.fetchExistingUsers()
         self.performInitialFetch(notification: nil)
@@ -158,12 +162,14 @@ class SketchesViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.observeNotificationForEditMode()
         self.updateAvatarButton()
-        self.updateTabBar()
+        self.showTabBar()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.removeNotificationForEditMode()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

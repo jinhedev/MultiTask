@@ -46,14 +46,8 @@ struct Segue {
 // MARK: - Notification
 
 extension Notification.Name {
-    static let TaskPending = Notification.Name("TaskPending")
-    static let TaskCompletion = Notification.Name("TaskCompletion")
-    static let TaskUpdate = Notification.Name("TaskUpdate")
-    static let SketchCreation = Notification.Name("SketchCreation")
-    static let PendingTaskCellEditingMode = Notification.Name("PendingTaskCellEditingMode")
-    static let CompletedTaskCellEditingMode = Notification.Name("CompletedTaskCellEditingMode")
-    static let SketchCellEditingMode = Notification.Name("SketchCellEditingMode")
-    static let CollectionViewCommitTrash = Notification.Name("CollectionViewCommitTrash")
+    static let EditMode = Notification.Name("EditMode")
+    static let CommitTrash = Notification.Name("CommitTrash")
 }
 
 struct LocalNotificationConfiguration {

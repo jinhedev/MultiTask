@@ -88,8 +88,6 @@
 		C5B4A2FF202E2F8800A2E3A1 /* ItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B4A2FE202E2F8800A2E3A1 /* ItemTests.swift */; };
 		C5C058B51FEECA980035B1D7 /* UIImageView+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C058B41FEECA980035B1D7 /* UIImageView+Image.swift */; };
 		C5C058B91FEEFAA80035B1D7 /* SaveDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C058B81FEEFAA80035B1D7 /* SaveDataViewController.swift */; };
-		C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D038751FDAF7940010085B /* TaskHeaderView.swift */; };
-		C5D038781FDAF7B60010085B /* TaskHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5D038771FDAF7B60010085B /* TaskHeaderView.xib */; };
 		C5D4B7B41FF774A1005DCD24 /* Onboarding.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */; };
 		C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */; };
 		C5E6CB311FC3E70F00E8BEA0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */; };
@@ -248,8 +246,6 @@
 		C5B4A2FE202E2F8800A2E3A1 /* ItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTests.swift; sourceTree = "<group>"; };
 		C5C058B41FEECA980035B1D7 /* UIImageView+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Image.swift"; sourceTree = "<group>"; };
 		C5C058B81FEEFAA80035B1D7 /* SaveDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveDataViewController.swift; sourceTree = "<group>"; };
-		C5D038751FDAF7940010085B /* TaskHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderView.swift; sourceTree = "<group>"; };
-		C5D038771FDAF7B60010085B /* TaskHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskHeaderView.xib; sourceTree = "<group>"; };
 		C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Onboarding.xcassets; sourceTree = "<group>"; };
 		C5E6CB2E1FC3E69200E8BEA0 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		C5E6CB301FC3E70F00E8BEA0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
@@ -407,8 +403,6 @@
 				C5409B371FA50758004BAF4F /* ItemCell.xib */,
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
-				C5D038751FDAF7940010085B /* TaskHeaderView.swift */,
-				C5D038771FDAF7B60010085B /* TaskHeaderView.xib */,
 				C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */,
 			);
 			name = Views;
@@ -898,7 +892,6 @@
 				C54CEF871FD06EC100AF0B7B /* Bing.wav in Resources */,
 				C53C3EF51FBA47850064DDB4 /* SketchesTab.storyboard in Resources */,
 				C54DA6B91FD1B2170071C3D6 /* PlaceholderBackgroundView.xib in Resources */,
-				C5D038781FDAF7B60010085B /* TaskHeaderView.xib in Resources */,
 				C5A0D7751FB67D8B002968F7 /* PendingTaskCell.xib in Resources */,
 				C549CCCA1FC7EC370039D0D5 /* README.md in Resources */,
 				C54854F3201E7FC700C211F3 /* checkout.sh in Resources */,
@@ -1017,7 +1010,6 @@
 				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,
 				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,
 				C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */,
-				C5D038761FDAF7940010085B /* TaskHeaderView.swift in Sources */,
 				C54E52FB1FE4386C0071E504 /* UICollectionView+IndexPath.swift in Sources */,
 				C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */,
 				C53D92782019206F00FFFBED /* Configs.swift in Sources */,

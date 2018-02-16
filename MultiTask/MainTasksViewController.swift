@@ -9,14 +9,9 @@
 import UIKit
 import RealmSwift
 
-protocol MainTasksViewControllerDelegate: NSObjectProtocol {
-    func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem)
-    func editModeDidChange(_ viewController: MainTasksViewController, isEditing: Bool)
-}
-
 class MainTasksViewController: BaseViewController {
 
-    var currentUser: User? { didSet { self.updateAvatarButton() } }
+    // MARK: - API
 
     lazy var avatarButton: UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -44,9 +39,14 @@ class MainTasksViewController: BaseViewController {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit(_:)))
         return button
     }()
+    
+    lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
+        return button
+    }()
 
+    var currentUser: User? { didSet { self.updateAvatarButton() } }
     var realmManager: RealmManager?
-    weak var delegate: MainTasksViewControllerDelegate?
     static let storyboard_id = String(describing: MainTasksViewController.self)
     let searchController = UISearchController(searchResultsController: nil)
     let popTransitionAnimator = PopTransitionAnimator()
@@ -59,12 +59,15 @@ class MainTasksViewController: BaseViewController {
         super.setEditing(editing, animated: animated)
         self.addButton.isEnabled = !editing
         self.avatarButton.isEnabled = !editing
-        self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
         self.segmentedControl.isEnabled = !editing
         if editing {
+            self.navigationItem.rightBarButtonItems?.remove(at: 1)
+            self.navigationItem.rightBarButtonItems?.append(cancelButton)
             self.navigationItem.leftBarButtonItems?.append(trashButton)
         } else {
             self.navigationItem.leftBarButtonItems?.remove(at: 1)
+            self.navigationItem.rightBarButtonItems?.append(editButton)
+            self.navigationItem.rightBarButtonItems?.remove(at: 1)
         }
     }
     
@@ -99,7 +102,6 @@ class MainTasksViewController: BaseViewController {
     // MARK: - NavigationBar
 
     private func setupNavigationBar() {
-        self.isEditing = false
         // setup barButtons after the isEditting is set, otherwise setEditing get called.
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
@@ -121,32 +123,37 @@ class MainTasksViewController: BaseViewController {
     }
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
-        if self.isEditing == true {
-            self.isEditing = false
-            self.delegate?.mainTasksViewController(self, didTapTrash: sender)
-            self.delegate?.editModeDidChange(self, isEditing: false)
-        } else {
-            print(trace(file: #file, function: #function, line: #line))
-        }
+        self.postNotificationForEditMode(isEditing: false)
+        self.postNotificationForCommitingTrash()
     }
 
     @objc func handleEdit(_ sender: UIBarButtonItem) {
-        // toggling edit mode
-        if self.isEditing == true {
-            // if already in editMode, exit editMode
-            self.isEditing = false
-            self.delegate?.editModeDidChange(self, isEditing: false)
-        } else {
-            // if not in editMode, enter editMode
-            self.isEditing = true
-            self.delegate?.editModeDidChange(self, isEditing: true)
-        }
+        self.postNotificationForEditMode(isEditing: true)
+    }
+    
+    @objc func handleCancel(_ sender: UIBarButtonItem) {
+        self.postNotificationForEditMode(isEditing: false)
+    }
+    
+    // MARK: - Notification
+    
+    func postNotificationForEditMode(isEditing: Bool) {
+        NotificationCenter.default.post(name: NSNotification.Name.EditMode, object: nil, userInfo: ["isEditing" : isEditing])
+    }
+    
+    func postNotificationForCommitingTrash() {
+        NotificationCenter.default.post(name: NSNotification.Name.CommitTrash, object: nil, userInfo: nil)
     }
 
-    func observeNotificationForEditingMode() {
-        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.PendingTaskCellEditingMode, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
+    func observeNotificationForEditMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.EditMode, object: nil)
     }
+    
+    func removeNotificationForEditMode() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.EditMode, object: nil)
+    }
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,29 +161,24 @@ class MainTasksViewController: BaseViewController {
         self.setupMenuView()
         self.setupSegmentedControl()
         self.setupPersistentContainerDelegate()
-        self.observeNotificationForEditingMode()
         self.realmManager?.fetchExistingUsers()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.updateAvatarButton()
+        self.observeNotificationForEditMode()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.removeNotificationForEditMode()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         if let settingsViewController = segue.destination as? SettingsViewController {
             settingsViewController.currentUser = self.currentUser
-        }
-        if segue.identifier == Segue.PendingContainerViewToPendingTasksViewController {
-            if let pendingTasksViewController = segue.destination as? PendingTasksViewController {
-                pendingTasksViewController.mainTasksViewController = self
-            }
-        }
-        if segue.identifier == Segue.CompletedContainerViewToPendingTasksViewController {
-            if let completedTasksViewController = segue.destination as? CompletedTasksViewController {
-                completedTasksViewController.mainTasksViewController = self
-            }
         }
     }
 

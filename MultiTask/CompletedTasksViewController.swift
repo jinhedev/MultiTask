@@ -37,6 +37,10 @@ class CompletedTasksViewController: BaseViewController {
         }
     }
     
+    @objc func commitTrash() {
+        // TODO: implement this
+    }
+    
     func observeTasksForChanges() {
         realmNotificationToken = self.completedTasks?.observe({ [weak self] (changes) in
             guard let collectionView = self?.collectionView else { return }
@@ -68,10 +72,6 @@ class CompletedTasksViewController: BaseViewController {
         }
     }
     
-    func observeEditModeForChanges() {
-        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.CompletedTaskCellEditingMode, object: nil)
-    }
-    
     private func setupBackgroundView() {
         if let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as? PlaceholderBackgroundView {
             view.type = PlaceholderType.completedTasks
@@ -88,23 +88,43 @@ class CompletedTasksViewController: BaseViewController {
         self.collectionView.register(UINib(nibName: CompletedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: CompletedTaskCell.cell_id)
     }
     
+    // MARK: - Notification
+    
+    func observeNotificationForEditMode() {
+        NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.EditMode, object: nil)
+    }
+    
+    func observeNotificationForCommitingTrash() {
+        NotificationCenter.default.addObserver(self, selector: #selector(commitTrash), name: NSNotification.Name.CommitTrash, object: nil)
+    }
+    
+    func removeNotificationForEditMode() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.EditMode, object: nil)
+    }
+    
+    func removeNotificationForCommitingTrash() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.CommitTrash, object: nil)
+    }
+    
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // initial setups
         self.setupBackgroundView()
         self.setupUICollectionView()
-        self.setupMainTasksViewControllerDelegate()
         self.setupUICollectionViewDelegate()
         self.setupUICollectionViewDataSource()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUIViewControllerPreviewingDelegate()
-        self.observeEditModeForChanges()
         // initial actions
         self.completedTasks = Task.completed()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.observeNotificationForEditMode()
+        self.observeNotificationForCommitingTrash()
         if let tasks = self.completedTasks {
             if tasks.count <= 0 {
                 self.collectionView.backgroundView?.isHidden = false
@@ -114,22 +134,10 @@ class CompletedTasksViewController: BaseViewController {
         }
     }
     
-}
-
-extension CompletedTasksViewController: MainTasksViewControllerDelegate {
-    
-    private func setupMainTasksViewControllerDelegate() {
-        self.mainTasksViewController?.delegate = self
-    }
-    
-    func editModeDidChange(_ viewController: MainTasksViewController, isEditing: Bool) {
-        self.isEditing = isEditing
-    }
-    
-    func mainTasksViewController(_ viewController: MainTasksViewController, didTapTrash button: UIBarButtonItem) {
-        if let indexPaths = self.collectionView.indexPathsForSelectedItems {
-            self.deleteTasks(indexPaths: indexPaths)
-        }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.removeNotificationForEditMode()
+        self.removeNotificationForCommitingTrash()
     }
     
 }

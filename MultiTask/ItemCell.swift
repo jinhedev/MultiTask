@@ -22,12 +22,12 @@ class ItemCell: BaseTableViewCell {
     var selectedIndexPath: IndexPath?
     static let cell_id = String(describing: ItemCell.self)
     static let nibName = String(describing: ItemCell.self)
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleTextView: UITextView!
     @IBOutlet weak var delegateLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var dividerView: UIView!
+    @IBOutlet weak var indicatorView: UIView!
     
     /**
      Animate the background to indicate a cell is highlighted
@@ -55,15 +55,18 @@ class ItemCell: BaseTableViewCell {
         if item.is_completed == true {
             self.titleTextView.textColor = Color.lightGray
             self.dateLabel.textColor = Color.seaweedGreen
+            self.indicatorView.backgroundColor = Color.seaweedGreen
             self.dateLabel.text = "Completed " + item.updated_at!.toRelativeDate()
         } else if item.updated_at != nil {
             self.titleTextView.textColor = Color.white
             self.dateLabel.textColor = Color.mandarinOrange
+            self.indicatorView.backgroundColor = Color.clear
             self.dateLabel.text = "Updated " + item.updated_at!.toRelativeDate()
         } else {
             // this includes the case of when is_completed == false
             self.titleTextView.textColor = Color.white
             self.dateLabel.textColor = Color.lightGray
+            self.indicatorView.backgroundColor = Color.clear
             self.dateLabel.text = "Created " + item.created_at.toRelativeDate()
         }
     }
@@ -82,6 +85,7 @@ class ItemCell: BaseTableViewCell {
         self.dateLabel.backgroundColor = Color.clear
         self.dateLabel.textColor = Color.lightGray
         self.dividerView.backgroundColor = Color.darkGray
+        self.indicatorView.backgroundColor = Color.clear
     }
 
     private func resetDataForReuse() {

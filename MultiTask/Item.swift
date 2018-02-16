@@ -42,7 +42,31 @@ final class Item: Object {
         if self.is_completed == true {
             return false
         } else {
-            return false
+            return true
+        }
+    }
+    
+    func pend() {
+        do {
+            try defaultRealm.write {
+                self.is_completed = false
+                self.updated_at = NSDate()
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
+    }
+    
+    func complete() {
+        do {
+            try defaultRealm.write {
+                self.is_completed = true
+                self.updated_at = NSDate()
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
         }
     }
 
@@ -63,6 +87,17 @@ final class Item: Object {
         let titlePredicate = NSPredicate(format: "title  contains[c] %@", title)
         let results = defaultRealm.objects(Item.self).filter(titlePredicate)
         return results
+    }
+    
+    func delete() {
+        do {
+            try defaultRealm.write {
+                defaultRealm.delete(self)
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
     }
     
     func save() {

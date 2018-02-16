@@ -78,6 +78,7 @@ class ItemsViewController: BaseViewController {
             itemEditorViewController = segue.destination as? ItemEditorViewController
             itemEditorViewController?.hidesBottomBarWhenPushed = true
             itemEditorViewController?.parentTask = self.selectedTask
+            itemEditorViewController?.itemEditorAction = ItemEditorAction.AddNewItem
         } else if segue.identifier == Segue.EditButtonToTaskEditorViewController {
             if let taskEditorViewController = segue.destination as? TaskEditorViewController {
                 taskEditorViewController.hidesBottomBarWhenPushed = true
@@ -151,6 +152,7 @@ extension ItemsViewController: UIViewControllerPreviewingDelegate {
         guard let indexPath = self.tableView.indexPathForRow(at: location) else { return nil }
         let itemEditorViewController = storyboard?.instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController
         itemEditorViewController?.parentTask = self.selectedTask
+        itemEditorViewController?.itemEditorAction = ItemEditorAction.UpdateExistingItem
         itemEditorViewController?.selectedItem = self.selectedTask?.items[indexPath.row]
         // setting the peeking cell's animation
         if let selectedCell = self.tableView.cellForRow(at: indexPath) as? ItemCell {

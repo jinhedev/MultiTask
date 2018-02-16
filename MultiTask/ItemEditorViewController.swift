@@ -10,10 +10,16 @@ import UIKit
 import Amplitude
 import RealmSwift
 
-class ItemEditorViewController: BaseViewController {
+enum ItemEditorAction {
+    case AddNewItem
+    case UpdateExistingItem
+}
 
+class ItemEditorViewController: BaseViewController {
+    
     var parentTask: Task?
     var selectedItem: Item?
+    var itemEditorAction: ItemEditorAction!
     static let storyboard_id = String(describing: ItemEditorViewController.self)
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -25,13 +31,12 @@ class ItemEditorViewController: BaseViewController {
 
     @IBAction func handleSave(_ sender: UIButton) {
         self.titleTextView.resignFirstResponder()
-        // if selectedItem is nil, that means this MVC is segued from the AddButton, else it is initiated with peek and pop
-        if self.selectedItem != nil {
-            self.selectedItem!.title = self.titleTextView.text
-            self.selectedItem!.save()
-        } else {
+        if itemEditorAction == ItemEditorAction.AddNewItem {
             let newItem = self.create()
             self.append(newItem: newItem)
+        } else if itemEditorAction == ItemEditorAction.UpdateExistingItem {
+            self.selectedItem!.title = self.titleTextView.text
+            self.selectedItem!.save()
         }
         self.navigationController?.popViewController(animated: true)
     }
@@ -80,7 +85,11 @@ class ItemEditorViewController: BaseViewController {
         self.contentContainerView.backgroundColor = Color.inkBlack
         self.titleLabel.backgroundColor = Color.clear
         self.titleLabel.textColor = Color.white
-        self.titleLabel.text = self.selectedItem == nil ? "Add a new item" : "Edit an item"
+        if itemEditorAction == ItemEditorAction.AddNewItem {
+            self.titleLabel.text = "Add a new item"
+        } else if itemEditorAction == ItemEditorAction.UpdateExistingItem {
+            self.titleLabel.text = "Edit an item"
+        }
         self.subtitleLabel.backgroundColor = Color.clear
         self.subtitleLabel.textColor = Color.lightGray
         self.titleTextView.backgroundColor = Color.midNightBlack
@@ -89,16 +98,20 @@ class ItemEditorViewController: BaseViewController {
         self.titleTextView.clipsToBounds = true
         self.titleTextView.delegate = self
         self.titleTextView.tintColor = Color.mandarinOrange
-        self.titleTextView.text = self.selectedItem == nil ? "" : selectedItem!.title
+        if itemEditorAction == ItemEditorAction.AddNewItem {
+            self.titleTextView.text = ""
+        } else if itemEditorAction == ItemEditorAction.UpdateExistingItem {
+            self.titleTextView.text = selectedItem?.title
+        }
         self.saveButton.setTitle("Save", for: UIControlState.normal)
         self.saveButton.layer.cornerRadius = 8
         self.saveButton.backgroundColor = Color.seaweedGreen
         self.saveButton.setTitleColor(Color.inkBlack, for: UIControlState.disabled)
         self.saveButton.setTitleColor(Color.white, for: UIControlState.normal)
         self.saveButton.isEnabled = false
-        if self.selectedItem == nil {
+        if itemEditorAction == ItemEditorAction.AddNewItem {
             self.subtitleLabel.isHidden = true
-        } else {
+        } else if itemEditorAction == ItemEditorAction.UpdateExistingItem {
             self.subtitleLabel.text = "Hash. " + selectedItem!.id
         }
     }

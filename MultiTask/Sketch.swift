@@ -29,13 +29,13 @@ class Sketch: Object {
         }
     }
     
-    func all() -> Results<Sketch> {
+    static func all() -> Results<Sketch> {
         let results = defaultRealm.objects(Sketch.self)
         return results
     }
     
-    func mostUpdated() -> Results<Sketch> {
-        let results = self.all().sorted(byKeyPath: "created_at", ascending: false)
+    static func mostUpdated() -> Results<Sketch> {
+        let results = Sketch.all().sorted(byKeyPath: "created_at", ascending: false)
         return results
     }
     

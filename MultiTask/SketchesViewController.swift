@@ -20,9 +20,9 @@ class SketchesViewController: BaseViewController {
         }
     }
 
-    var sketches: [Results<Sketch>]?
+    var sketches: Results<Sketch>? { didSet { self.observeSketchesForChanges() } }
     var realmManager: RealmManager?
-    var notificationToken: NotificationToken?
+    var realmNotificationToken: NotificationToken?
     static let storyboard_id = String(describing: SketchesViewController.self)
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
@@ -89,6 +89,21 @@ class SketchesViewController: BaseViewController {
         }
     }
     
+    func observeSketchesForChanges() {
+        realmNotificationToken = self.sketches?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+    
     func deleteSketches(indexPaths: [IndexPath]) {
         guard let unwrappedSketches = self.sketches, indexPaths.count > 0 else { return }
         // FIXME: is there a way to minimise the number of write operations to the db???
@@ -129,8 +144,8 @@ class SketchesViewController: BaseViewController {
     }
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
-        self.postNotificationForEditMode(isEditing: false)
         self.postNotificationForCommitingTrash()
+        self.postNotificationForEditMode(isEditing: false)
     }
     
     @objc func commitTrash() {
@@ -200,7 +215,7 @@ class SketchesViewController: BaseViewController {
         self.setupPersistentContainerDelegate()
         // initial actions
         self.realmManager?.fetchExistingUsers()
-        self.performInitialFetch(notification: nil)
+        self.sketches = Sketch.all()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -231,7 +246,7 @@ class SketchesViewController: BaseViewController {
                 sketchEditorViewController.hidesBottomBarWhenPushed = true
                 sketchEditorViewController.delegate = self
                 if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
-                    sketchEditorViewController.sketch = self.sketches?[selectedIndex.section][selectedIndex.item]
+                    sketchEditorViewController.sketch = self.sketches?[selectedIndex.item]
                 }
             }
         }
@@ -264,34 +279,8 @@ extension SketchesViewController: PersistentContainerDelegate {
         self.realmManager!.delegate = self
     }
     
-    private func setupRealmNotificationsForCollectionView() {
-        notificationToken = self.sketches!.first?.observe({ [weak self] (changes) in
-            guard let collectionView = self?.collectionView else { return }
-            switch changes {
-            case .initial:
-                collectionView.reloadData()
-            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
-                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
-            case .error(let err):
-                print(trace(file: #file, function: #function, line: #line))
-                print(err.localizedDescription)
-            }
-        })
-    }
-    
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didFetchSketches sketches: Results<Sketch>?) {
-        if let fetchedSketches = sketches, !fetchedSketches.isEmpty {
-            self.collectionView.backgroundView?.isHidden = true
-            self.sketches = [Results<Sketch>]()
-            self.sketches!.append(fetchedSketches)
-            self.setupRealmNotificationsForCollectionView()
-        } else {
-            self.collectionView.backgroundView?.isHidden = false
-        }
     }
     
     func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {
@@ -306,13 +295,6 @@ extension SketchesViewController: PersistentContainerDelegate {
         self.currentUser = fetchedUser
     }
     
-    @objc func performInitialFetch(notification: Notification?) {
-        // FIXME: this method shouldn't provide checks for sketch's nullality. Move that logic outside
-        if self.sketches == nil || self.sketches?.isEmpty == true {
-            self.realmManager?.fetchSketches(sortedBy: Sketch.createdAtKeyPath, ascending: false)
-        }
-    }
-    
 }
 
 extension SketchesViewController: SketchEditorViewControllerDelegate {
@@ -320,7 +302,7 @@ extension SketchesViewController: SketchEditorViewControllerDelegate {
     func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch) {
         if let navController = self.navigationController as? BaseNavigationController {
             navController.popViewController(animated: true)
-            self.performInitialFetch(notification: nil)
+//            self.performInitialFetch(notification: nil)
         }
     }
     
@@ -343,7 +325,7 @@ extension SketchesViewController: UIViewControllerPreviewingDelegate {
         guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
         let sketchEditorViewController = storyboard?.instantiateViewController(withIdentifier: SketchEditorViewController.storyboard_id) as? SketchEditorViewController
         sketchEditorViewController?.delegate = self
-        sketchEditorViewController?.sketch = sketches?[indexPath.section][indexPath.row]
+        sketchEditorViewController?.sketch = sketches?[indexPath.item]
         // setting the peeking cell's animation
         if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
             previewingContext.sourceRect = selectedCell.frame
@@ -407,7 +389,7 @@ extension SketchesViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: SketchCell.cell_id, for: indexPath) as? SketchCell {
-            cell.sketch = self.sketches?[indexPath.section][indexPath.item]
+            cell.sketch = self.sketches?[indexPath.item]
             return cell
         } else {
             return BaseCollectionViewCell()
@@ -415,11 +397,11 @@ extension SketchesViewController: UICollectionViewDataSource {
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return self.sketches?.count ?? 0
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.sketches?[section].count ?? 0
+        return self.sketches?.count ?? 0
     }
     
 }

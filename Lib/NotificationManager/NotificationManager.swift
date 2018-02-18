@@ -9,18 +9,9 @@
 import UIKit
 import UserNotifications
 
-protocol NotificationDelegate: NSObjectProtocol {
-    func notification(_ manager: Any, didErr error: Error)
-}
-
-extension NotificationDelegate {
-}
-
 class NotificationManager: NSObject {
 
     static let shared = NotificationManager()
-
-    weak var delegate: NotificationDelegate?
 
     func scheduleNotification(title: String, body: String, timeInterval: TimeInterval) {
         // image content

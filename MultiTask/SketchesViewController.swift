@@ -239,14 +239,14 @@ class SketchesViewController: BaseViewController {
         } else if segue.identifier == Segue.AddButtonToSketchEditorViewController {
             if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
                 sketchEditorViewController.hidesBottomBarWhenPushed = true
-                sketchEditorViewController.delegate = self
+                sketchEditorViewController.sketchEditorAction = SketchEditorAction.AddNewSketch
             }
         } else if segue.identifier == Segue.SketchCellToSketchEditorViewController {
             if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
                 sketchEditorViewController.hidesBottomBarWhenPushed = true
-                sketchEditorViewController.delegate = self
                 if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
                     sketchEditorViewController.sketch = self.sketches?[selectedIndex.item]
+                    sketchEditorViewController.sketchEditorAction = SketchEditorAction.UpdateExistingSketch
                 }
             }
         }
@@ -297,17 +297,6 @@ extension SketchesViewController: PersistentContainerDelegate {
     
 }
 
-extension SketchesViewController: SketchEditorViewControllerDelegate {
-    
-    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch) {
-        if let navController = self.navigationController as? BaseNavigationController {
-            navController.popViewController(animated: true)
-//            self.performInitialFetch(notification: nil)
-        }
-    }
-    
-}
-
 extension SketchesViewController: UIViewControllerPreviewingDelegate {
     
     private func setupUIViewControllerPreviewingDelegate() {
@@ -324,8 +313,8 @@ extension SketchesViewController: UIViewControllerPreviewingDelegate {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.collectionView.indexPathForItem(at: location) else { return nil }
         let sketchEditorViewController = storyboard?.instantiateViewController(withIdentifier: SketchEditorViewController.storyboard_id) as? SketchEditorViewController
-        sketchEditorViewController?.delegate = self
         sketchEditorViewController?.sketch = sketches?[indexPath.item]
+        sketchEditorViewController?.sketchEditorAction = SketchEditorAction.UpdateExistingSketch
         // setting the peeking cell's animation
         if let selectedCell = self.collectionView.cellForItem(at: indexPath) as? SketchCell {
             previewingContext.sourceRect = selectedCell.frame

@@ -8,11 +8,7 @@
 
 import UIKit
 import AVFoundation
-
-protocol SoundEffectDelegate: NSObjectProtocol {
-    func soundEffect(_ manager: SoundEffectManager, didErr error: Error)
-    func soundEffect(_ manager: SoundEffectManager, didPlaySoundEffect soundEffect: SoundEffect, player: AVAudioPlayer)
-}
+import Amplitude
 
 enum SoundEffect: String {
     case Bing
@@ -28,7 +24,7 @@ enum SoundEffect: String {
  */
 class SoundEffectManager: NSObject {
 
-    weak var delegate: SoundEffectDelegate?
+    static let shared = SoundEffectManager()
     var player: AVAudioPlayer?
 
     func play(soundEffect: SoundEffect) {
@@ -40,12 +36,13 @@ class SoundEffectManager: NSObject {
                 sound.prepareToPlay()
                 sound.volume = 0.93
                 sound.play()
-                self.delegate?.soundEffect(self, didPlaySoundEffect: soundEffect, player: player!)
             } catch let err {
-                self.delegate?.soundEffect(self, didErr: err)
+                print(err.localizedDescription)
+                Amplitude.instance().logEvent(LogEventType.pathError)
             }
         } else {
             print("When modifying asset files in the project directory, please match their name by the SoundEffect enum to avoid crash.")
+            Amplitude.instance().logEvent(LogEventType.pathError)
             fatalError("Incorrect name to .wav asset.")
         }
     }

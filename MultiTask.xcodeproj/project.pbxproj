@@ -343,8 +343,6 @@
 			isa = PBXGroup;
 			children = (
 				C556EF5B201D141500CAB650 /* CurrentUser.swift */,
-				C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */,
-				C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */,
 				C5A9A8D71F3C1E7300601CFF /* User.swift */,
 			);
 			name = Models;
@@ -596,6 +594,8 @@
 		C58FD2A5200DC064004759B3 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				F56680632039F0F9000A351E /* NotificationManager */,
+				F56680622039F080000A351E /* SoundEffectManager */,
 				C54854F5201E7FF900C211F3 /* WebServiceManager */,
 				C54854F4201E7FEE00C211F3 /* Realm */,
 			);
@@ -744,6 +744,22 @@
 				C5D4B7B31FF774A1005DCD24 /* Onboarding.xcassets */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F56680622039F080000A351E /* SoundEffectManager */ = {
+			isa = PBXGroup;
+			children = (
+				C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */,
+			);
+			path = SoundEffectManager;
+			sourceTree = "<group>";
+		};
+		F56680632039F0F9000A351E /* NotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				C5A545111F4ABE7B0007DC1E /* NotificationManager.swift */,
+			);
+			path = NotificationManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

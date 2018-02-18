@@ -76,11 +76,11 @@ class Sketch: Object {
         return "id"
     }
 
-    convenience init(title: String) {
+    convenience init(title: String, imageData: NSData) {
         self.init()
         self.id = UUID().uuidString
         self.title = title
-        self.imageData = nil
+        self.imageData = imageData
         self.created_at = NSDate()
     }
 

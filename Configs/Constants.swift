@@ -59,4 +59,5 @@ struct LocalNotificationConfiguration {
 
 struct LogEventType {
     static let realmError = "realmError"
+    static let pathError = "pathError"
 }

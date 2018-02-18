@@ -14,7 +14,6 @@ class ItemsViewController: BaseViewController {
 
     // MARK: - API
 
-    var soundEffectManager: SoundEffectManager?
     var selectedTask: Task?
     var notificationToken: NotificationToken?
     var itemEditorViewController: ItemEditorViewController?
@@ -67,7 +66,6 @@ class ItemsViewController: BaseViewController {
         self.setupTableView()
         self.setupBackgroundView()
         self.setupSearchController()
-        self.setupSoundEffectDelegate()
         self.setupViewControllerPreviewingDelegate()
         // initial actions
         self.observeItemsForChanges()
@@ -114,25 +112,6 @@ class ItemsViewController: BaseViewController {
         self.tableView.register(UINib(nibName: ItemCell.nibName, bundle: nil), forCellReuseIdentifier: ItemCell.cell_id)
     }
 
-}
-
-extension ItemsViewController: SoundEffectDelegate {
-    
-    private func setupSoundEffectDelegate() {
-        self.soundEffectManager = SoundEffectManager()
-        self.soundEffectManager!.delegate = self
-    }
-    
-    func soundEffect(_ manager: SoundEffectManager, didPlaySoundEffect soundEffect: SoundEffect, player: AVAudioPlayer) {
-        // implement this if needed
-    }
-    
-    func soundEffect(_ manager: SoundEffectManager, didErr error: Error) {
-        if let navigationController = self.navigationController as? BaseNavigationController {
-            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
-        }
-    }
-    
 }
 
 extension ItemsViewController: UIViewControllerPreviewingDelegate {

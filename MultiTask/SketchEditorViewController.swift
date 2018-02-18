@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Amplitude
 import RealmSwift
 
-protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
-    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch)
+enum SketchEditorAction {
+    case AddNewSketch
+    case UpdateExistingSketch
 }
 
 class SketchEditorViewController: BaseViewController {
@@ -32,9 +34,7 @@ class SketchEditorViewController: BaseViewController {
         return button
     }()
 
-    var sketch: Sketch?
-    var realmManager: RealmManager?
-    weak var delegate: SketchEditorViewControllerDelegate?
+    var sketch: Sketch? = Sketch()
     var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
     var lastPoint = CGPoint.zero
     var red: CGFloat = 200 / 255
@@ -42,6 +42,7 @@ class SketchEditorViewController: BaseViewController {
     var blue: CGFloat = 200 / 255
     var brushWidth: CGFloat = 10.0
     var swiped = false
+    var sketchEditorAction: SketchEditorAction!
     static let storyboard_id = String(describing: SketchEditorViewController.self)
     @IBOutlet weak var toolboxView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
@@ -93,6 +94,26 @@ class SketchEditorViewController: BaseViewController {
             drawLineFrom(lastPoint, toPoint: lastPoint)
         }
         self.mainImageView.image = mainImageView.imageWithCurrentContext()
+    }
+    
+    // create a new sketch
+    private func create(keyedValues: [String : Any]) -> Sketch {
+        let newSketch = Sketch()
+        newSketch.setValuesForKeys(keyedValues)
+        return newSketch
+    }
+    
+    // update an existing sketch
+    private func update(sketch: Sketch, keyedValues: [String : Any]) {
+        do {
+            try defaultRealm.write {
+                sketch.setValuesForKeys(keyedValues)
+                defaultRealm.add(sketch, update: true)
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
     }
 
     // MARK: - ToolboxView
@@ -184,10 +205,11 @@ class SketchEditorViewController: BaseViewController {
 
     private func setupMainImageView() {
         self.mainImageView.backgroundColor = Color.inkBlack
-        if let unwrappedSketch = self.sketch {
-            self.mainImageView.image = UIImage(data: unwrappedSketch.imageData! as Data)
-        } else {
+        if sketchEditorAction == SketchEditorAction.AddNewSketch {
+            self.sketch = create(keyedValues: [:])
             self.mainImageView.image = self.draw(withColor: Color.inkBlack)
+        } else if sketchEditorAction == SketchEditorAction.UpdateExistingSketch {
+            self.mainImageView.image = UIImage(data: self.sketch!.imageData as Data!)
         }
     }
 
@@ -211,28 +233,8 @@ class SketchEditorViewController: BaseViewController {
         self.setupUINavigationBar()
         self.setupToolboxView()
         self.setupUIViewControllerTransitioningDelegate()
-        self.setupPersistentContainerDelegate()
     }
 
-}
-
-extension SketchEditorViewController: PersistentContainerDelegate {
-    
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-        if let sketch = object as? Sketch {
-            self.delegate?.sketchEditorViewController(self, didUpdateSketch: sketch)
-        }
-    }
-    
 }
 
 extension SketchEditorViewController: SaveDataViewControllerDelegate {
@@ -243,12 +245,8 @@ extension SketchEditorViewController: SaveDataViewControllerDelegate {
     
     func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
         let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
-        if self.sketch == nil {
-            self.sketch = Sketch(title: withTitle)
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!])
-        } else {
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "title" : withTitle])
-        }
+        guard let unwrappedSketch = self.sketch else { return }
+        self.update(sketch: unwrappedSketch, keyedValues: ["title" : withTitle, "imageData" : imageData!])
         viewController.dismiss(animated: true, completion: nil)
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import Amplitude
 
 class SketchesViewController: BaseViewController {
 
@@ -41,6 +42,11 @@ class SketchesViewController: BaseViewController {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "List"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleEdit))
         return button
     }()
+    
+    lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Delete"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleCancel(_:)))
+        return button
+    }()
 
     lazy var trashButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "Trash"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleTrash))
@@ -54,16 +60,20 @@ class SketchesViewController: BaseViewController {
 
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
+        // put navBar into edit mode
         self.addButton.isEnabled = !editing
         self.avatarButton.isEnabled = !editing
-        self.editButton.image = editing ? #imageLiteral(resourceName: "Delete") : #imageLiteral(resourceName: "List") // <<-- image literal
+        self.collectionView?.allowsMultipleSelection = isEditing
         if editing {
             self.navigationItem.leftBarButtonItems?.append(trashButton)
+            self.navigationItem.rightBarButtonItems?.remove(at: 1)
+            self.navigationItem.rightBarButtonItems?.append(cancelButton)
         } else {
             self.navigationItem.leftBarButtonItems?.remove(at: 1)
+            self.navigationItem.rightBarButtonItems?.remove(at: 1)
+            self.navigationItem.rightBarButtonItems?.append(editButton)
         }
         // put all cells into edit mode
-        self.collectionView?.allowsMultipleSelection = isEditing
         guard let indexPaths = self.collectionView?.indexPathsForVisibleItems else { return }
         for indexPath in indexPaths {
             self.collectionView?.deselectItem(at: indexPath, animated: false)
@@ -78,6 +88,22 @@ class SketchesViewController: BaseViewController {
             self.isEditing = isEditing
         }
     }
+    
+    func deleteSketches(indexPaths: [IndexPath]) {
+        guard let unwrappedSketches = self.sketches, indexPaths.count > 0 else { return }
+        // FIXME: is there a way to minimise the number of write operations to the db???
+        for indexPath in indexPaths {
+            let sketchToBeDeleted = unwrappedSketches[indexPath.item]
+            do {
+                try defaultRealm.write {
+                    defaultRealm.delete(sketchToBeDeleted)
+                }
+            } catch let err {
+                print(err.localizedDescription)
+                Amplitude.instance().logEvent(LogEventType.realmError)
+            }
+        }
+    }
 
     // MARK: - NavigationBar
 
@@ -88,29 +114,28 @@ class SketchesViewController: BaseViewController {
     @objc func handleAdd(_ sender: UIBarButtonItem) {
         self.performSegue(withIdentifier: Segue.AddButtonToSketchEditorViewController, sender: self)
     }
+    
+    @objc func handleCancel(_ sender: UIBarButtonItem) {
+        self.postNotificationForEditMode(isEditing: false)
+    }
 
     @objc func handleEdit(_ sender: UIBarButtonItem) {
         // toggling edit mode
         if self.isEditing == true {
-            self.isEditing = false
+            self.postNotificationForEditMode(isEditing: false)
         } else {
-            self.isEditing = true
+            self.postNotificationForEditMode(isEditing: true)
         }
     }
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
-        if self.isEditing == true {
-            guard let unwrappedSketches = self.sketches else { return }
-            var sketchesToBeDeleted = [Sketch]()
-            if let indexPaths = self.collectionView.indexPathsForSelectedItems {
-                for indexPath in indexPaths {
-                    let sketchToBeDeleted = unwrappedSketches[indexPath.section][indexPath.item]
-                    sketchesToBeDeleted.append(sketchToBeDeleted)
-                }
-                self.realmManager?.deleteSketches(sketches: sketchesToBeDeleted)
-            }
-        } else {
-            print(trace(file: #file, function: #function, line: #line))
+        self.postNotificationForEditMode(isEditing: false)
+        self.postNotificationForCommitingTrash()
+    }
+    
+    @objc func commitTrash() {
+        if let selectedSketches = self.collectionView.indexPathsForSelectedItems {
+            deleteSketches(indexPaths: selectedSketches)
         }
     }
 
@@ -128,13 +153,29 @@ class SketchesViewController: BaseViewController {
     }
 
     // MARK: - Notifications
+    
+    func postNotificationForEditMode(isEditing: Bool) {
+        NotificationCenter.default.post(name: NSNotification.Name.EditMode, object: nil, userInfo: ["isEditing" : isEditing])
+    }
+    
+    func postNotificationForCommitingTrash() {
+        NotificationCenter.default.post(name: NSNotification.Name.CommitTrash, object: nil, userInfo: nil)
+    }
 
     func observeNotificationForEditMode() {
         NotificationCenter.default.addObserver(self, selector: #selector(editMode(notification:)), name: NSNotification.Name.EditMode, object: nil)
     }
     
+    func observeNotificationForCommitingTrash() {
+        NotificationCenter.default.addObserver(self, selector: #selector(commitTrash), name: NSNotification.Name.CommitTrash, object: nil)
+    }
+    
     func removeNotificationForEditMode() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.EditMode, object: nil)
+    }
+    
+    func removeNotificationForCommitingTrash() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.CommitTrash, object: nil)
     }
 
     // MARK: - UITabBar
@@ -151,6 +192,8 @@ class SketchesViewController: BaseViewController {
         super.viewDidLoad()
         self.setupNavigationBar()
         self.setupCollectionView()
+        self.setupUICollectionViewDelegate()
+        self.setupUICollectionViewDataSource()
         self.setupBackgroundView()
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUIViewControllerPreviewingDelegate()
@@ -163,6 +206,7 @@ class SketchesViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.observeNotificationForEditMode()
+        self.observeNotificationForCommitingTrash()
         self.updateAvatarButton()
         self.showTabBar()
     }
@@ -170,6 +214,7 @@ class SketchesViewController: BaseViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.removeNotificationForEditMode()
+        self.removeNotificationForCommitingTrash()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -205,8 +250,6 @@ class SketchesViewController: BaseViewController {
     // MARK: - CollectionView
 
     private func setupCollectionView() {
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
         self.collectionView.alwaysBounceVertical = true
         self.collectionView.backgroundColor = Color.inkBlack
         self.collectionView.register(UINib(nibName: SketchCell.nibName, bundle: nil), forCellWithReuseIdentifier: SketchCell.cell_id)
@@ -332,6 +375,10 @@ extension SketchesViewController: UICollectionViewDelegateFlowLayout {
 
 extension SketchesViewController: UICollectionViewDelegate {
     
+    private func setupUICollectionViewDelegate() {
+        self.collectionView.delegate = self
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.isEditing == false {
             performSegue(withIdentifier: Segue.SketchCellToSketchEditorViewController, sender: self)
@@ -353,6 +400,10 @@ extension SketchesViewController: UICollectionViewDelegate {
 }
 
 extension SketchesViewController: UICollectionViewDataSource {
+    
+    private func setupUICollectionViewDataSource() {
+        self.collectionView.dataSource = self
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: SketchCell.cell_id, for: indexPath) as? SketchCell {

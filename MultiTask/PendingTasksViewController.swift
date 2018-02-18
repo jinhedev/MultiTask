@@ -190,7 +190,7 @@ extension PendingTasksViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if self.isEditing == false {
-            if let itemsViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController, let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first {
+            if let itemsViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemsViewController.storyboard_id) as? ItemsViewController, let selectedIndexPath = collectionView.indexPathsForSelectedItems?.first {
                 itemsViewController.selectedTask = self.pendingTasks?[selectedIndexPath.item]
                 self.mainTasksViewController?.navigationController?.pushViewController(itemsViewController, animated: true)
             }
@@ -220,8 +220,7 @@ extension PendingTasksViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: PendingTaskCell.cell_id, for: indexPath) as? PendingTaskCell {
             let task = self.pendingTasks?[indexPath.item]
-            cell.task = task
-            cell.isEditing = isEditing
+            cell.pendingTask = task
             return cell
         } else {
             return BaseCollectionViewCell()

@@ -38,7 +38,9 @@ class CompletedTasksViewController: BaseViewController {
     }
     
     @objc func commitTrash() {
-        // TODO: implement this
+        if let selectedIndexPaths = self.collectionView.indexPathsForSelectedItems {
+            self.deleteTasks(indexPaths: selectedIndexPaths)
+        }
     }
     
     func observeTasksForChanges() {

@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 /**
- WebServiceType is a user-define enum that specified what type of data response the user expect to get.
+ WebServiceType is a user-define enum that specifies what type of data response the user expect to get for response.
  - warning: Expected response may or may not be the actual response. Be warned!
  */
 enum WebServiceType {
@@ -90,28 +90,4 @@ class WebServiceManager: NSObject {
 
     // MARK: - Auth
 
-}
-
-// MARK: - Realm Object Server
-
-struct WebServiceConfigurations {
-
-    private static let baseUrl = "52.14.43.212"
-
-    struct endpoint {
-        static let frontpage = "/posts/frontpage"
-        static let usersub = "/posts/usersub"
-    }
-
-}
-
-// MARK: - Web URL String
-
-struct ExternalWebServiceUrlString {
-    static let Trello = "https://trello.com/b/8fgpP9ZL/multitask-ios-client"
-    static let TrelloApp = ""
-    static let FAQ = "https://www.reddit.com/r/StarfishApp/"
-    static let FAQRedditApp = ""
-    static let Terms = "https://github.com/jinhedev/MultiTask/blob/develop/LICENSE.md"
-    static let Test = "https://www.apple.com"
 }

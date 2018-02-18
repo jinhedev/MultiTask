@@ -20,19 +20,9 @@ final class Task: Object {
     @objc dynamic var expired_at: NSDate? = nil
     var items = List<Item>()
     let user = LinkingObjects(fromType: User.self, property: "tasks")
-    static let titleKeyPath = "title" // called in RealmManager for its updating 
-    static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
-    static let updatedAtKeyPath = "updated_at" // called in RealmManager for its updating logic
-    static let isCompletedKeyPath = "is_completed" // called in RealmManager for its updating logic
-    static let noEmptyItemsPredicate = NSPredicate(format: "items >= %@", 1)
-
-    static func getTitlePredicate(value: String) -> NSPredicate {
-        let predicate = NSPredicate(format: "title contains[c] %@", value)
-        return predicate
-    }
 
     func isValid() -> Bool {
-        if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 128 {
+        if id.isEmpty || title.isEmpty || title.count < 3 || title.count > 128 {
             return false
         } else {
             return true
@@ -115,8 +105,6 @@ final class Task: Object {
         self.items = items
         self.is_completed = false
         self.created_at = NSDate()
-        self.updated_at = nil
-        self.expired_at = nil
     }
 
 }

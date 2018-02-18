@@ -113,8 +113,6 @@ final class Item: Object {
         }
     }
 
-    // MARK: - Lifecycle
-
     override static func primaryKey() -> String? {
         return "id"
     }

@@ -12,34 +12,19 @@ import RealmSwift
 class PendingTaskCell: BaseCollectionViewCell {
 
     // MARK: - API
-
-    var task: Task? {
-        didSet {
-            self.configureCell(task: task)
-        }
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            self.setHightlighted()
-        }
-    }
-
-    var isEditing: Bool = false {
-        didSet {
-            self.setEditing()
-        }
-    }
-
+    
     override var isSelected: Bool {
         didSet {
             if isEditing == true {
-                self.setSelected()
+                self.setSelected(editing: isSelected)
             }
         }
     }
 
+    var pendingTask: Task? { didSet { self.configureCell(task: pendingTask) } }
+    var isEditing: Bool = false { didSet { self.setEditing(editing: isEditing) } }
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    override var isHighlighted: Bool { didSet { self.setHightlighted() } }
     static let cell_id = String(describing: PendingTaskCell.self)
     static let nibName = String(describing: PendingTaskCell.self)
     @IBOutlet weak var containerView: UIView!
@@ -54,30 +39,30 @@ class PendingTaskCell: BaseCollectionViewCell {
         self.containerView.backgroundColor = self.isHighlighted ? Color.mediumBlueGray : Color.midNightBlack
     }
 
-    private func setEditing() {
+    private func setEditing(editing: Bool) {
         // FIXME: There is a UI bug when a cell is finished editing, its content is still remained squeezed due to the change of cell's size during animation.
-        if self.isEditing == true {
-            self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
+        if editing == true {
+            self.containerViewLeadingMargin.constant = editing ? (16 + 22 + 16) : 16
             UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
                 self.layoutIfNeeded()
             }) { (completed) in
-                self.checkmarkImageView.isHidden = self.isEditing ? false : true
+                self.checkmarkImageView.isHidden = editing ? false : true
             }
         } else {
-            self.checkmarkImageView.isHidden = self.isEditing ? false : true
-            self.containerViewLeadingMargin.constant = self.isEditing ? (16 + 22 + 16) : 16
+            self.checkmarkImageView.isHidden = editing ? false : true
+            self.containerViewLeadingMargin.constant = editing ? (16 + 22 + 16) : 16
             UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
                 self.layoutIfNeeded()
             }, completion: nil)
         }
     }
 
-    private func setSelected() {
+    private func setSelected(editing: Bool) {
         UIView.animate(withDuration: 0.15, delay: 0, options: [.allowUserInteraction], animations: {
-            self.containerView.transform = self.isSelected ? CGAffineTransform.init(scaleX: 1.03, y: 1.03) : CGAffineTransform.identity
-            self.containerView.layer.borderColor = self.isSelected ? Color.roseScarlet.cgColor : Color.clear.cgColor
-            self.containerView.layer.borderWidth = self.isSelected ? 1 : 0
-            self.checkmarkImageView.backgroundColor = self.isSelected ? Color.roseScarlet : Color.clear
+            self.containerView.transform = editing ? CGAffineTransform.init(scaleX: 1.03, y: 1.03) : CGAffineTransform.identity
+            self.containerView.layer.borderColor = editing ? Color.roseScarlet.cgColor : Color.clear.cgColor
+            self.containerView.layer.borderWidth = editing ? 1 : 0
+            self.checkmarkImageView.backgroundColor = editing ? Color.roseScarlet : Color.clear
         }, completion: nil)
     }
 

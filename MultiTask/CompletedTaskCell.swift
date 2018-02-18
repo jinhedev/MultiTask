@@ -13,33 +13,17 @@ class CompletedTaskCell: BaseCollectionViewCell {
 
     // MARK: - API
 
-    var completedTask: Task? {
-        didSet {
-            self.configureCell(task: completedTask)
-        }
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            self.setHightlighted()
-        }
-    }
-
-    var isEditing: Bool = false {
-        didSet {
-            self.setEditing()
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
+    override var isSelected: Bool { didSet {
             if isEditing == true {
                 self.setSelected()
             }
         }
     }
 
+    var completedTask: Task? { didSet { self.configureCell(task: completedTask) } }
+    var isEditing: Bool = false { didSet { self.setEditing() } }
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    override var isHighlighted: Bool { didSet { self.setHightlighted() } }
     static let cell_id = String(describing: CompletedTaskCell.self)
     static let nibName = String(describing: CompletedTaskCell.self)
     @IBOutlet weak var containerView: UIView!

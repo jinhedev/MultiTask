@@ -13,7 +13,7 @@ protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
     func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch)
 }
 
-class SketchEditorViewController: BaseViewController, PersistentContainerDelegate, SaveDataViewControllerDelegate, UIViewControllerTransitioningDelegate {
+class SketchEditorViewController: BaseViewController {
 
     // MARK: - API
 
@@ -180,23 +180,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         print(123)
     }
 
-    // MARK: - PersistentContainerDelegate
-
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-        if let sketch = object as? Sketch {
-            self.delegate?.sketchEditorViewController(self, didUpdateSketch: sketch)
-        }
-    }
-
     // MARK: - MainImageView
 
     private func setupMainImageView() {
@@ -220,23 +203,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         return image
     }
 
-    // MARK: - SaveDataViewControllerDelegate
-
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
-        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
-        if self.sketch == nil {
-            self.sketch = Sketch(title: withTitle)
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!])
-        } else {
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "title" : withTitle])
-        }
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -248,20 +214,60 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         self.setupPersistentContainerDelegate()
     }
 
-    // MAKR: - UIViewControllerTransitioningDelegate
+}
 
+extension SketchEditorViewController: PersistentContainerDelegate {
+    
+    private func setupPersistentContainerDelegate() {
+        self.realmManager = RealmManager()
+        self.realmManager!.delegate = self
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
+        if let sketch = object as? Sketch {
+            self.delegate?.sketchEditorViewController(self, didUpdateSketch: sketch)
+        }
+    }
+    
+}
+
+extension SketchEditorViewController: SaveDataViewControllerDelegate {
+    
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
+        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        if self.sketch == nil {
+            self.sketch = Sketch(title: withTitle)
+            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!])
+        } else {
+            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "title" : withTitle])
+        }
+        viewController.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+extension SketchEditorViewController: UIViewControllerTransitioningDelegate {
+    
     private func setupUIViewControllerTransitioningDelegate() {
         self.slideTransitionCoordinator = UIViewControllerSlideTransitionCoordinator(transitioningDirection: UIViewControllerTransitioningDirection.top)
     }
-
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         self.slideTransitionCoordinator?.isPresenting = true
         return slideTransitionCoordinator
     }
-
+    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         self.slideTransitionCoordinator?.isPresenting = false
         return slideTransitionCoordinator
     }
-
+    
 }

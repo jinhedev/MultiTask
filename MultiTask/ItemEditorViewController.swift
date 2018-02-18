@@ -136,7 +136,7 @@ class ItemEditorViewController: BaseViewController {
 extension ItemEditorViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        self.saveButton.isEnabled = textView.text.count > 2 ? true : false
+        self.saveButton.isEnabled = textView.text.count >= 3 ? true : false
     }
     
 }

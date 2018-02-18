@@ -123,8 +123,8 @@ class MainTasksViewController: BaseViewController {
     }
 
     @objc func handleTrash(_ sender: UIBarButtonItem) {
-        self.postNotificationForEditMode(isEditing: false)
         self.postNotificationForCommitingTrash()
+        self.postNotificationForEditMode(isEditing: false)
     }
 
     @objc func handleEdit(_ sender: UIBarButtonItem) {
@@ -179,6 +179,14 @@ class MainTasksViewController: BaseViewController {
         super.prepare(for: segue, sender: sender)
         if let settingsViewController = segue.destination as? SettingsViewController {
             settingsViewController.currentUser = self.currentUser
+        }
+        if segue.identifier == Segue.PendingContainerViewToPendingTasksViewController {
+            guard let pendingTasksViewController = segue.destination as? PendingTasksViewController else { return }
+            pendingTasksViewController.mainTasksViewController = self
+        }
+        if segue.identifier == Segue.CompletedContainerViewToPendingTasksViewController {
+            guard let completedTasksViewController = segue.destination as? CompletedTasksViewController else { return }
+            completedTasksViewController.mainTasksViewController = self
         }
     }
 

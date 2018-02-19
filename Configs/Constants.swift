@@ -10,7 +10,7 @@ import Foundation
 
 // MARK: - Generals
 
-let kOnboardingCompletion = "kOnboardingCompletion"
+let kOnboarding = "kOnboarding"
 let kSessionToken = "kSessionToken"
 let kDeviceToken = "kDeviceToken"
 let kApiKey = "kApiKey"

@@ -44,8 +44,18 @@ class Configs: NSObject {
     func hasDeviceToken() -> Bool {
         return UserDefaults.standard.bool(forKey: kDeviceToken)
     }
+    
+    func deviceToken() -> String {
+        do {
+            let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName, account: "multitask_device_token", accessGroup: KeychainConfiguration.accessGroup)
+            let pass = try passwordItem.readPassword()
+            return pass
+        } catch let err {
+            fatalError("Error retrieving from keychain - \(err)")
+        }
+    }
 
-    func updateDeviceToken(token: String) {
+    func saveDeviceToken(token: String) {
         do {
             let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName, account: "multitask_device_token", accessGroup: KeychainConfiguration.accessGroup)
             try passwordItem.savePassword(token)
@@ -64,12 +74,12 @@ class Configs: NSObject {
     // onboarding
 
     func isOnboardingCompleted() -> Bool {
-        let isOnboardingCompleted = UserDefaults.standard.bool(forKey: kOnboardingCompletion)
+        let isOnboardingCompleted = UserDefaults.standard.bool(forKey: kOnboarding)
         return isOnboardingCompleted
     }
 
-    func updateOnboardingCompletion(isCompleted: Bool) {
-        UserDefaults.standard.set(isCompleted, forKey: kOnboardingCompletion)
+    func saveOnboarding(isCompleted: Bool) {
+        UserDefaults.standard.set(isCompleted, forKey: kOnboarding)
     }
 
     // amplitude

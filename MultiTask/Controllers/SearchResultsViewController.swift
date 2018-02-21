@@ -43,10 +43,6 @@ class SearchResultsViewController: BaseViewController {
         self.setupPersistentContainerDelegate()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
 }
 
 extension SearchResultsViewController: PersistentContainerDelegate {

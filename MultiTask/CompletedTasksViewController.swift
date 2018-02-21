@@ -62,15 +62,7 @@ class CompletedTasksViewController: BaseViewController {
         guard let tasks = self.completedTasks, indexPaths.count > 0 else { return }
         for indexPath in indexPaths {
             let taskToBeDeleted = tasks[indexPath.item]
-            do {
-                try defaultRealm.write {
-                    defaultRealm.delete(taskToBeDeleted.items)
-                    defaultRealm.delete(taskToBeDeleted)
-                }
-            } catch let err {
-                print(err.localizedDescription)
-                Amplitude.instance().logEvent(LogEventType.realmError)
-            }
+            taskToBeDeleted.delete()
         }
     }
     

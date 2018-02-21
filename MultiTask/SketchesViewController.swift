@@ -109,14 +109,7 @@ class SketchesViewController: BaseViewController {
         // FIXME: is there a way to minimise the number of write operations to the db???
         for indexPath in indexPaths {
             let sketchToBeDeleted = unwrappedSketches[indexPath.item]
-            do {
-                try defaultRealm.write {
-                    defaultRealm.delete(sketchToBeDeleted)
-                }
-            } catch let err {
-                print(err.localizedDescription)
-                Amplitude.instance().logEvent(LogEventType.realmError)
-            }
+            sketchToBeDeleted.delete()
         }
     }
 
@@ -239,6 +232,7 @@ class SketchesViewController: BaseViewController {
         } else if segue.identifier == Segue.AddButtonToSketchEditorViewController {
             if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
                 sketchEditorViewController.hidesBottomBarWhenPushed = true
+                sketchEditorViewController.sketch = Sketch()
                 sketchEditorViewController.sketchEditorAction = SketchEditorAction.AddNewSketch
             }
         } else if segue.identifier == Segue.SketchCellToSketchEditorViewController {
@@ -281,13 +275,6 @@ extension SketchesViewController: PersistentContainerDelegate {
     
     func persistentContainer(_ manager: RealmManager, didErr error: Error) {
         print(error.localizedDescription)
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didDeleteSketches sketches: [Sketch]?) {
-        if self.isEditing == true {
-            // exit edit mode
-            self.isEditing = false
-        }
     }
     
     func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {

@@ -48,18 +48,9 @@ class PendingTasksViewController: BaseViewController {
     
     func deleteTasks(indexPaths: [IndexPath]) {
         guard let tasks = self.pendingTasks, indexPaths.count > 0 else { return }
-        // FIXME: is there a way to minimise the number of write operations to the db???
         for indexPath in indexPaths {
             let taskToBeDeleted = tasks[indexPath.item]
-            do {
-                try defaultRealm.write {
-                    defaultRealm.delete(taskToBeDeleted.items)
-                    defaultRealm.delete(taskToBeDeleted)
-                }
-            } catch let err {
-                print(err.localizedDescription)
-                Amplitude.instance().logEvent(LogEventType.realmError)
-            }
+            taskToBeDeleted.delete()
         }
     }
     

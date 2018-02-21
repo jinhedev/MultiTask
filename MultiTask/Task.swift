@@ -61,6 +61,7 @@ final class Task: Object {
     func delete() {
         do {
             try defaultRealm.write {
+                defaultRealm.delete(self.items)
                 defaultRealm.delete(self)
             }
         } catch let err {

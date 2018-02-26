@@ -227,22 +227,19 @@ class SketchesViewController: BaseViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let settingsViewController = segue.destination as? SettingsViewController {
+        if segue.identifier == Segue.AvatarButtonToSettingsViewController {
+            guard let settingsViewController = segue.destination as? SettingsViewController else { return }
             settingsViewController.currentUser = self.currentUser
         } else if segue.identifier == Segue.AddButtonToSketchEditorViewController {
-            if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
-                sketchEditorViewController.hidesBottomBarWhenPushed = true
-                sketchEditorViewController.sketch = Sketch()
-                sketchEditorViewController.sketchEditorAction = SketchEditorAction.AddNewSketch
-            }
+            guard let sketchEditorViewController = segue.destination as? SketchEditorViewController else { return }
+            sketchEditorViewController.hidesBottomBarWhenPushed = true
+            sketchEditorViewController.sketch = Sketch()
+            sketchEditorViewController.sketchEditorAction = SketchEditorAction.AddNewSketch
         } else if segue.identifier == Segue.SketchCellToSketchEditorViewController {
-            if let sketchEditorViewController = segue.destination as? SketchEditorViewController {
-                sketchEditorViewController.hidesBottomBarWhenPushed = true
-                if let selectedIndex = self.collectionView.indexPathsForSelectedItems?.first {
-                    sketchEditorViewController.sketch = self.sketches?[selectedIndex.item]
-                    sketchEditorViewController.sketchEditorAction = SketchEditorAction.UpdateExistingSketch
-                }
-            }
+            guard let sketchEditorViewController = segue.destination as? SketchEditorViewController else { return }
+            guard let selectedIndexPath = self.collectionView.indexPathsForSelectedItems?.first else { return }
+            sketchEditorViewController.sketch = self.sketches?[selectedIndexPath.item]
+            sketchEditorViewController.sketchEditorAction = SketchEditorAction.UpdateExistingSketch
         }
     }
     

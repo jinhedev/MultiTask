@@ -12,9 +12,17 @@ class Configs: NSObject {
 
     static let shared = Configs()
 
-    // app_versions
+    // bundle
+    
+    var pathForInfoPList: String {
+        return Bundle.main.path(forResource: "Info", ofType: "plist")!
+    }
+    
+    var displayName: String? {
+        return Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String
+    }
 
-    var displayName: String {
+    var bundleName: String {
         return Bundle.main.infoDictionary?[kCFBundleNameKey as String] as! String
     }
 
@@ -25,18 +33,16 @@ class Configs: NSObject {
     var buildVersion: String {
         return Bundle.main.infoDictionary?[kCFBundleVersionKey as String] as! String
     }
-
-    // document_path
-
-    func documentDirectory() -> String {
-        let path = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first?.path
-        return path!
-    }
-
-    // bundle_id
-
+    
     var bundleId: String {
         return Bundle.main.bundleIdentifier!
+    }
+
+    // document_path in application's sandbox
+
+    func pathForDocumentDirectory() -> String {
+        let path = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first?.path
+        return path!
     }
 
     // device_token

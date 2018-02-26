@@ -31,13 +31,15 @@ class CompletedTasksViewController: BaseViewController {
         }
     }
     
-    @objc func editMode(notification: Notification) {
+    @objc
+    func editMode(notification: Notification) {
         if let isEditing = notification.userInfo?["isEditing"] as? Bool {
             self.isEditing = isEditing
         }
     }
     
-    @objc func commitTrash() {
+    @objc
+    func commitTrash() {
         if let selectedIndexPaths = self.collectionView.indexPathsForSelectedItems {
             self.deleteTasks(indexPaths: selectedIndexPaths)
         }

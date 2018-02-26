@@ -841,7 +841,7 @@
 					};
 					C5A9A89F1F3BB06C00601CFF = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = ZLUJC28Y9H;
+						DevelopmentTeam = KKSY22G5PE;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -1268,7 +1268,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				DEVELOPMENT_TEAM = KKSY22G5PE;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1294,7 +1294,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZLUJC28Y9H;
+				DEVELOPMENT_TEAM = KKSY22G5PE;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

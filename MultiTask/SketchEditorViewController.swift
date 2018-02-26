@@ -34,7 +34,7 @@ class SketchEditorViewController: BaseViewController {
         return button
     }()
 
-    var sketch: Sketch? = Sketch()
+    var sketch: Sketch?
     var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
     var lastPoint = CGPoint.zero
     var red: CGFloat = 200 / 255
@@ -246,7 +246,14 @@ extension SketchEditorViewController: SaveDataViewControllerDelegate {
     func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
         let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
         guard let unwrappedSketch = self.sketch else { return }
-        self.update(sketch: unwrappedSketch, keyedValues: ["title" : withTitle, "imageData" : imageData!])
+        if self.sketchEditorAction == SketchEditorAction.AddNewSketch {
+            // add a new sketch to db
+            let newSketch = Sketch(title: withTitle, imageData: imageData!)
+            newSketch.save()
+        } else if self.sketchEditorAction == SketchEditorAction.UpdateExistingSketch {
+            // update existing sketch
+            self.update(sketch: unwrappedSketch, keyedValues: ["title" : withTitle, "imageData" : imageData!])
+        }
         viewController.dismiss(animated: true, completion: nil)
     }
     

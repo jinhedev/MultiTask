@@ -113,6 +113,7 @@ class PendingTasksViewController: BaseViewController {
         self.setupUIViewControllerPreviewingDelegate()
         // initial actions
         self.pendingTasks = Task.pending()
+        NotificationManager.shared.scheduleNotification(title: "asjdkasd", body: "aisjkdjaoksjd", timeInterval: 5)
     }
     
     override func viewDidAppear(_ animated: Bool) {

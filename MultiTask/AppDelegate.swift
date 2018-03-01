@@ -50,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Amplitude
 
     private func setupAmplitude() {
-        print(Configs.shared.amplitudeApiKey())
         Amplitude.instance().trackingSessionEvents = true
         Amplitude.instance().minTimeBetweenSessionsMillis = 5000
         Amplitude.instance().initializeApiKey("7fd645043b8a91f7adedab334dcb593a")
@@ -123,3 +122,4 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 
 }
+

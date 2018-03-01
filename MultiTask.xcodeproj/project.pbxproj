@@ -102,6 +102,9 @@
 		C5F512D11FEB988E00CE59D4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F512D01FEB988E00CE59D4 /* Sketch.swift */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
 		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
+		F54C3A1A2047C26900699402 /* StarfishFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54C3A192047C26900699402 /* StarfishFacade.swift */; };
+		F54C3A1C2047CD6800699402 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1B2047CD6800699402 /* icon.png */; };
+		F54C3A1E2047D44D00699402 /* CODE_OF_CONDUCT.md in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */; };
 		F56680612038A5B2000A351E /* WebServiceConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56680602038A5B2000A351E /* WebServiceConfigurations.swift */; };
 		F57C4ABB20302D4900F9FE72 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */; };
 		F57C4ABD20302D5500F9FE72 /* CompletedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */; };
@@ -260,6 +263,9 @@
 		C5F512D01FEB988E00CE59D4 /* Sketch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
 		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
+		F54C3A192047C26900699402 /* StarfishFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarfishFacade.swift; sourceTree = "<group>"; };
+		F54C3A1B2047CD6800699402 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
 		F56680602038A5B2000A351E /* WebServiceConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceConfigurations.swift; sourceTree = "<group>"; };
 		F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
 		F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewController.swift; sourceTree = "<group>"; };
@@ -591,6 +597,7 @@
 				F56680622039F080000A351E /* SoundEffectManager */,
 				C54854F5201E7FF900C211F3 /* WebServiceManager */,
 				C54854F4201E7FEE00C211F3 /* RealmManager */,
+				F54C3A192047C26900699402 /* StarfishFacade.swift */,
 			);
 			path = Lib;
 			sourceTree = "<group>";
@@ -635,6 +642,7 @@
 		C5A8AC671FE3349E00680A9C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F54C3A1B2047CD6800699402 /* icon.png */,
 				C54CEF861FD06EC100AF0B7B /* Bing.wav */,
 				C54CEF8A1FD0F2BF00AF0B7B /* Coin.wav */,
 				C54CEF881FD0EFD000AF0B7B /* Tap.wav */,
@@ -684,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				C549CCC11FC7EBFE0039D0D5 /* Cartfile */,
+				F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */,
 				C549CCC51FC7EC2B0039D0D5 /* CREDITS.md */,
 				C549CCC71FC7EC300039D0D5 /* LICENSE.md */,
 				C549CCC91FC7EC360039D0D5 /* README.md */,
@@ -895,6 +904,7 @@
 				C549CCC41FC7EC1C0039D0D5 /* Cartfile.resolved in Resources */,
 				C5D4B7B41FF774A1005DCD24 /* Onboarding.xcassets in Resources */,
 				C54E52E41FE3A7BB0071E504 /* Settings.xcassets in Resources */,
+				F54C3A1C2047CD6800699402 /* icon.png in Resources */,
 				C5A9A8AD1F3BB06C00601CFF /* Assets.xcassets in Resources */,
 				C54CEF891FD0EFD000AF0B7B /* Tap.wav in Resources */,
 				C549CCC61FC7EC2B0039D0D5 /* CREDITS.md in Resources */,
@@ -919,6 +929,7 @@
 				C54526C01FE9D77800A82D62 /* Avatars.plist in Resources */,
 				C549CCCE1FC8EE960039D0D5 /* CompletedTaskCell.xib in Resources */,
 				C54E53011FE4436D0071E504 /* Settings.storyboard in Resources */,
+				F54C3A1E2047D44D00699402 /* CODE_OF_CONDUCT.md in Resources */,
 				C5409B381FA50758004BAF4F /* ItemCell.xib in Resources */,
 				C54E53031FE4494C0071E504 /* Search.storyboard in Resources */,
 				C54CEF851FD06EB900AF0B7B /* Click.wav in Resources */,
@@ -1015,6 +1026,7 @@
 				C5A9A8D81F3C1E7300601CFF /* User.swift in Sources */,
 				C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */,
 				C5AACE431FE4F4CD0025AA97 /* AvatarCell.swift in Sources */,
+				F54C3A1A2047C26900699402 /* StarfishFacade.swift in Sources */,
 				C54E52F51FE437E70071E504 /* URL+document.swift in Sources */,
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
 				C51BEF181FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift in Sources */,

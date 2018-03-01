@@ -41,10 +41,9 @@ class NotificationManager: NSObject {
             } else {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted: Bool, error: Error?) in
                     if let err = error {
-                        fatalError(err.localizedDescription)
+                        print(err.localizedDescription)
                     } else {
-                        if granted == true {
-                            self.scheduleNotification(title: "Time's Up!", body: "name of the task", timeInterval: 7.0)                        }
+                        if granted { self.scheduleNotification(title: "Time's Up!", body: "name of the task", timeInterval: 7.0) }
                     }
                 }
             }

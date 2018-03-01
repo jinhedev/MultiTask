@@ -71,12 +71,6 @@ class Configs: NSObject {
         }
     }
 
-    // api_key
-
-    func apiKey() -> String {
-        return UserDefaults.standard.string(forKey: kApiKey)!
-    }
-
     // onboarding
 
     func isOnboardingCompleted() -> Bool {
@@ -86,6 +80,16 @@ class Configs: NSObject {
 
     func saveOnboarding(isCompleted: Bool) {
         UserDefaults.standard.set(isCompleted, forKey: kOnboarding)
+    }
+    
+    /// The integer value associated with the specified key. If the specified key doesn‘t exist, this method returns 0.
+    func currentOnboardingStage() -> Int {
+        let stage = UserDefaults.standard.integer(forKey: kOnboarding)
+        return stage
+    }
+    
+    func saveOnboardingProgress(stage: Int) {
+        UserDefaults.standard.set(stage, forKey: kOnboarding)
     }
 
     // amplitude

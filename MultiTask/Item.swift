@@ -35,10 +35,10 @@ final class Item: Object {
         return predicate
     }
 
-    /**
+    /**c
      If task is already marked is_completed == true, this method will return false, so that the controller can toggle its completion state to pending if needed. If task is marked is_completed == false, this method will return true, so that the controller can toggle its completion state to completed if needed.
      */
-    func shouldComplete() -> Bool {
+    var shouldComplete: Bool {
         if self.is_completed == true {
             return false
         } else {
@@ -46,10 +46,10 @@ final class Item: Object {
         }
     }
     
-    func pend() {
+    func update(is_completed: Bool) {
         do {
             try defaultRealm.write {
-                self.is_completed = false
+                self.is_completed = is_completed
                 self.updated_at = NSDate()
             }
         } catch let err {
@@ -58,19 +58,7 @@ final class Item: Object {
         }
     }
     
-    func complete() {
-        do {
-            try defaultRealm.write {
-                self.is_completed = true
-                self.updated_at = NSDate()
-            }
-        } catch let err {
-            print(err.localizedDescription)
-            Amplitude.instance().logEvent(LogEventType.realmError)
-        }
-    }
-
-    func isValid() -> Bool {
+    var isValid: Bool {
         if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 512 {
             return false
         } else {
@@ -101,7 +89,7 @@ final class Item: Object {
     }
     
     func save() {
-        if isValid() {
+        if self.isValid == true {
             do {
                 try defaultRealm.write {
                     defaultRealm.add(self, update: true)
@@ -110,6 +98,8 @@ final class Item: Object {
                 Amplitude.instance().logEvent(LogEventType.realmError)
                 print(err.localizedDescription)
             }
+        } else {
+            print("invalid format")
         }
     }
 

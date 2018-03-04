@@ -21,7 +21,7 @@ class Sketch: Object {
     @objc dynamic var updated_at: NSDate? = nil
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
 
-    func isValid() -> Bool {
+    private var isValid: Bool {
         if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 128 {
             return false
         } else {
@@ -58,7 +58,7 @@ class Sketch: Object {
     }
     
     func save() {
-        if isValid() {
+        if self.isValid {
             do {
                 try defaultRealm.write {
                     defaultRealm.add(self, update: true)
@@ -67,6 +67,8 @@ class Sketch: Object {
                 Amplitude.instance().logEvent(LogEventType.realmError)
                 print(err.localizedDescription)
             }
+        } else {
+            print("invalid format")
         }
     }
     

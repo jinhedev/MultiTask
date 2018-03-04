@@ -152,20 +152,20 @@ extension ItemsViewController: UITableViewDelegate {
         guard let selectedItem = self.selectedTask?.items[indexPath.row] else { return nil }
         // user marks item for pending
         pendingAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            selectedItem.pend()
+            selectedItem.update(is_completed: false)
             is_success(true)
         }
         pendingAction.image = #imageLiteral(resourceName: "Code") // <<-- watch out for image literal
         pendingAction.backgroundColor = Color.mandarinOrange
         // user marks item for completion
         completeAction = UIContextualAction(style: UIContextualAction.Style.normal, title: nil) { (action, view, is_success) in
-            selectedItem.complete()
+            selectedItem.update(is_completed: true)
             is_success(true)
         }
         completeAction.image = #imageLiteral(resourceName: "Tick") // <<-- watch out for image literal. It's almost invisible.
         completeAction.backgroundColor = Color.seaweedGreen
         // if this cell has been completed, show pendingAction, if not, show doneAction
-        if selectedItem.shouldComplete() {
+        if selectedItem.shouldComplete {
             let swipeActionConfigurations = UISwipeActionsConfiguration(actions: [completeAction])
             swipeActionConfigurations.performsFirstActionWithFullSwipe = true
             return swipeActionConfigurations

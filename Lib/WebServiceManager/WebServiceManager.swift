@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 /**
- WebServiceType is a user-define enum that specifies what type of data response the user expect to get for response.
+ WebServiceType is a user-define enum that specifies what type of data response the user expect.
  - warning: Expected response may or may not be the actual response. Be warned!
  */
 enum WebServiceType {
@@ -21,7 +21,7 @@ protocol WebServiceDelegate: NSObjectProtocol {
     // error
     func webService(_ manager: WebServiceManager, didErr error: Error, type: WebServiceType)
     // get
-    func webService(_ manager: WebServiceManager, didFetch result: Any, type: WebServiceType)
+    func webService(_ manager: WebServiceManager, didGet result: Any, type: WebServiceType)
     // post
     func webService(_ manager: WebServiceManager, didPost result: Any, type: WebServiceType)
     // patch
@@ -32,7 +32,7 @@ protocol WebServiceDelegate: NSObjectProtocol {
 
 extension WebServiceDelegate {
     // get
-    func webService(_ manager: WebServiceManager, didFetch data: Any, type: WebServiceType) {}
+    func webService(_ manager: WebServiceManager, didGet data: Any, type: WebServiceType) {}
     // post
     func webService(_ manager: WebServiceManager, didPost data: Any, type: WebServiceType) {}
     // patch
@@ -52,11 +52,11 @@ class WebServiceManager: NSObject {
 
     // MARK: - Get
 
-    func fetch(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
-        Alamofire.request(fromUrl, method: HTTPMethod.get, parameters: params, encoding: URLEncoding.httpBody, headers: headers).responseJSON { (response) in
+    func fetch(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.get, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
             switch response.result {
             case .success(let value):
-                self.delegate?.webService(self, didFetch: value, type: type)
+                self.delegate?.webService(self, didGet: value, type: type)
             case .failure(let error):
                 self.delegate?.webService(self, didErr: error, type: type)
             }
@@ -65,8 +65,8 @@ class WebServiceManager: NSObject {
 
     // MARK: - Post
 
-    func post(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
-        Alamofire.request(fromUrl, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+    func post(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
             switch response.result {
             case .success(let value):
                 self.delegate?.webService(self, didPost: value, type: type)
@@ -78,16 +78,28 @@ class WebServiceManager: NSObject {
 
     // MARK: - Patch
 
-    func patch() {
-
+    func patch(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.patch, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didPatch: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
     }
 
     // MARK: - Delete
 
-    func delete() {
-        
+    func delete(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didDelete: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
     }
-
-    // MARK: - Auth
 
 }

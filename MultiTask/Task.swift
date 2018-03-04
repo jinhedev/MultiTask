@@ -21,7 +21,7 @@ final class Task: Object {
     var items = List<Item>()
     let user = LinkingObjects(fromType: User.self, property: "tasks")
 
-    func isValid() -> Bool {
+    private var isValid: Bool {
         if id.isEmpty || title.isEmpty || title.count < 3 || title.count > 128 {
             return false
         } else {
@@ -71,20 +71,22 @@ final class Task: Object {
     }
 
     func save() {
-        if self.isValid() {
+        if self.isValid == true {
             do {
                 try defaultRealm.write {
-                    self.is_completed = self.shouldComplete() ? true : false
+                    self.is_completed = self.shouldComplete ? true : false
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {
                 Amplitude.instance().logEvent(LogEventType.realmError)
                 print(err.localizedDescription)
             }
+        } else {
+            print("invalid format")
         }
     }
 
-    func shouldComplete() -> Bool {
+    var shouldComplete: Bool {
         let itemsCount = self.items.count
         let completedItems = self.items.filter { $0.is_completed == true }
         let completedItemsCount = completedItems.count

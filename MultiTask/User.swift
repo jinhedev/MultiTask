@@ -17,8 +17,11 @@ final class User: Object {
     @objc dynamic var avatar = ""
     @objc dynamic var created_at: NSDate = NSDate()
     @objc dynamic var updated_at: NSDate? = nil
-
     var tasks = List<Task>()
+    
+    private var isValid: Bool {
+        return true
+    }
 
     override static func primaryKey() -> String? {
         return "id"

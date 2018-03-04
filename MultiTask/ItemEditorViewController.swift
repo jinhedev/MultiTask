@@ -56,7 +56,7 @@ class ItemEditorViewController: BaseViewController {
     
     // append a item to the items list array
     func append(newItem: Item) {
-        if newItem.isValid() {
+        if newItem.isValid {
             do {
                 try defaultRealm.write {
                     self.parentTask!.is_completed = false

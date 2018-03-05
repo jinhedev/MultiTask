@@ -75,6 +75,7 @@ final class Task: Object {
             do {
                 try defaultRealm.write {
                     self.is_completed = self.shouldComplete ? true : false
+                    self.updated_at = NSDate()
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {

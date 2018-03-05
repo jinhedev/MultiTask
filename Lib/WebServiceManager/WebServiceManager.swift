@@ -28,6 +28,8 @@ protocol WebServiceDelegate: NSObjectProtocol {
     func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType)
     // delete
     func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType)
+    // connect
+    func webService(_ manager: WebServiceManager, didConnect result: Any, type: WebServiceType)
 }
 
 extension WebServiceDelegate {
@@ -39,6 +41,8 @@ extension WebServiceDelegate {
     func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType) {}
     // delete
     func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType) {}
+    // connect
+    func webService(_ manager: WebServiceManager, didConnect result: Any, type: WebServiceType) {}
 }
 
 class WebServiceManager: NSObject {
@@ -96,6 +100,19 @@ class WebServiceManager: NSObject {
             switch response.result {
             case .success(let value):
                 self.delegate?.webService(self, didDelete: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
+    }
+    
+    // MARK: - Connect
+    
+    func connect(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.connect, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didConnect: value, type: type)
             case .failure(let error):
                 self.delegate?.webService(self, didErr: error, type: type)
             }

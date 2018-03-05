@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import Amplitude
 import RealmSwift
 
-final class User: Object {
+class User: Object {
 
     @objc dynamic var id = ""
     @objc dynamic var email = ""
@@ -20,7 +21,60 @@ final class User: Object {
     var tasks = List<Task>()
     
     private var isValid: Bool {
-        return true
+        if !id.isEmpty || !email.isEmpty || !displayName.isEmpty || !avatar.isEmpty {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func all() -> Results<User> {
+        let results = defaultRealm.objects(User.self)
+        return results
+    }
+    
+    func mostUpdated() -> Results<User> {
+        let results = self.all().sorted(byKeyPath: "created_at", ascending: false)
+        return results
+    }
+    
+    func delete() {
+        do {
+            try defaultRealm.write {
+                for task in self.tasks {
+                    for item in task.items {
+                        defaultRealm.delete(item)
+                    }
+                    defaultRealm.delete(task)
+                }
+                defaultRealm.delete(self)
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
+    }
+    
+    func findBy(displayName: String) -> Results<User> {
+        let displayNamePredicate = NSPredicate(format: "displayName contains[c] %@", displayName)
+        let results = defaultRealm.objects(User.self).filter(displayNamePredicate)
+        return results
+    }
+    
+    func save() {
+        if self.isValid {
+            do {
+                try defaultRealm.write {
+                    self.updated_at = NSDate()
+                    defaultRealm.add(self, update: true)
+                }
+            } catch let err {
+                Amplitude.instance().logEvent(LogEventType.realmError)
+                print(err.localizedDescription)
+            }
+        } else {
+            print("invalid format")
+        }
     }
 
     override static func primaryKey() -> String? {

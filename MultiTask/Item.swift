@@ -92,6 +92,7 @@ final class Item: Object {
         if self.isValid == true {
             do {
                 try defaultRealm.write {
+                    self.updated_at = NSDate()
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {

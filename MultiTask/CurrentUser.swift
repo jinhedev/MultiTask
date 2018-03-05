@@ -7,11 +7,11 @@
 //
 
 import Foundation
+import RealmSwift
 
-class CurrentUser: NSObject {
+class CurrentUser: Object {
 
     static let shared = CurrentUser()
-
     var id: String?
     var name: String?
     var email: String?

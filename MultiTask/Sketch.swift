@@ -48,7 +48,6 @@ class Sketch: Object {
     func delete() {
         do {
             try defaultRealm.write {
-                self.updated_at = NSDate()
                 defaultRealm.delete(self)
             }
         } catch let err {
@@ -61,6 +60,7 @@ class Sketch: Object {
         if self.isValid {
             do {
                 try defaultRealm.write {
+                    self.updated_at = NSDate()
                     defaultRealm.add(self, update: true)
                 }
             } catch let err {

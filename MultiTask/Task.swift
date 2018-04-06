@@ -101,6 +101,8 @@ final class Task: Object {
     override static func primaryKey() -> String? {
         return "id"
     }
+    
+    // Initialization
 
     convenience init(title: String, items: List<Item>) {
         self.init()
@@ -111,17 +113,4 @@ final class Task: Object {
         self.created_at = NSDate()
     }
 
-}
-
-extension Task: Decodable {
-    
-    private enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case title = "title"
-        case is_completed = "is_completed"
-        case created_at = "created_at"
-        case updated_at = "updated_at"
-        case expired_at = "expired_at"
-    }
-    
 }

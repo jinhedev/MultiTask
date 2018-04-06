@@ -112,3 +112,16 @@ final class Task: Object {
     }
 
 }
+
+extension Task: Decodable {
+    
+    private enum COdingKeys: String, COdingKeys {
+        case id = "id"
+        case title = "title"
+        case is_completed = "is_completed"
+        case created_at = "created_at"
+        case updated_at = "updated_at"
+        case expired_at = "expired_at"
+    }
+    
+}

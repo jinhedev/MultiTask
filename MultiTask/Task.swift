@@ -115,7 +115,7 @@ final class Task: Object {
 
 extension Task: Decodable {
     
-    private enum COdingKeys: String, COdingKeys {
+    private enum CodingKeys: String, CodingKey {
         case id = "id"
         case title = "title"
         case is_completed = "is_completed"

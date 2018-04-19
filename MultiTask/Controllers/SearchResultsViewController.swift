@@ -12,7 +12,11 @@ import RealmSwift
 class SearchResultsViewController: BaseViewController {
 
     var selectedTask: Task?
-    var searchResultsItems: [Results<Item>]?
+    var searchResultsItems: Results<Item>? {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     var realmManager: RealmManager?
     weak var itemsViewController: ItemsViewController?
     static let storyboard_id = String(describing: SearchResultsViewController.self)
@@ -40,41 +44,8 @@ class SearchResultsViewController: BaseViewController {
         super.viewDidLoad()
         self.setupTableView()
         self.setupBackgroundView()
-        self.setupPersistentContainerDelegate()
     }
 
-}
-
-extension SearchResultsViewController: PersistentContainerDelegate {
-    
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        if let navigationController = self.navigationController as? BaseNavigationController {
-            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
-        }
-    }
-    
-    func persistentContainer(_ manager: RealmManager, didFetchItems items: Results<Item>?) {
-        if let fetchedItems = items, !fetchedItems.isEmpty {
-            self.tableView.backgroundView?.isHidden = true
-            if self.searchResultsItems != nil {
-                self.searchResultsItems!.removeAll()
-            } else {
-                self.searchResultsItems = [Results<Item>]()
-            }
-            self.searchResultsItems!.append(fetchedItems)
-            self.tableView.reloadData()
-        } else {
-            self.searchResultsItems?.removeAll()
-            self.tableView.reloadData()
-            self.tableView.backgroundView?.isHidden = false
-        }
-    }
-    
 }
 
 extension SearchResultsViewController: UISearchResultsUpdating {
@@ -86,16 +57,14 @@ extension SearchResultsViewController: UISearchResultsUpdating {
             if !searchString.isEmpty {
                 if searchString.count > 2 {
                     guard let parentTask = self.selectedTask else { return }
-                    self.realmManager?.fetchItems(parentTaskId: parentTask.id, predicate: Item.titlePredicate(by: searchString))
+                    self.searchResultsItems = parentTask.findBy(title: searchString)
                 } else {
                     // searchString.count is < 2, clears out results from the array
-                    self.searchResultsItems?.removeAll()
-                    self.tableView.reloadData()
+                    self.searchResultsItems = nil
                 }
             } else {
                 // user has not entered anything, clear out all remaining result from previous search
-                self.searchResultsItems?.removeAll()
-                self.tableView.reloadData()
+                self.searchResultsItems = nil
             }
         }
     }
@@ -113,7 +82,7 @@ extension SearchResultsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let selectedItem = self.searchResultsItems?[indexPath.section][indexPath.item] {
+        if let selectedItem = self.searchResultsItems?[indexPath.row] {
             guard let itemEditorViewController = UIStoryboard(name: "TasksTab", bundle: nil).instantiateViewController(withIdentifier: ItemEditorViewController.storyboard_id) as? ItemEditorViewController else { return }
             itemEditorViewController.parentTask = self.selectedTask
             itemEditorViewController.selectedItem = selectedItem
@@ -129,7 +98,7 @@ extension SearchResultsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = self.tableView.dequeueReusableCell(withIdentifier: SearchResultCell.cell_id, for: indexPath) as? SearchResultCell {
-            let item = self.searchResultsItems?[indexPath.section][indexPath.row]
+            let item = self.searchResultsItems?[indexPath.row]
             cell.item = item
             return cell
         } else {
@@ -138,11 +107,11 @@ extension SearchResultsViewController: UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.searchResultsItems?.count ?? 0
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.searchResultsItems?[section].count ?? 0
+        return self.searchResultsItems?.count ?? 0
     }
     
 }

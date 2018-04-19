@@ -61,7 +61,6 @@
 		C556EF60201D171700CAB650 /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C556EF5F201D171700CAB650 /* KeychainPasswordItem.swift */; };
 		C55E140B1FD7484400C46BED /* SketchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E140A1FD7484400C46BED /* SketchesViewController.swift */; };
 		C55E266D1F40DE02001743E4 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */; };
-		C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */; };
 		C56564C51FA05F30006EEE5E /* PendingTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */; };
 		C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */; };
 		C59C36F71FDD14A300FA86CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C59C36F61FDD14A300FA86CF /* SettingsViewController.swift */; };
@@ -101,7 +100,7 @@
 		C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */; };
 		C5F512D11FEB988E00CE59D4 /* Sketch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F512D01FEB988E00CE59D4 /* Sketch.swift */; };
 		C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */; };
-		C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F748B21FAE8B86004F2491 /* TransitionManager.swift */; };
+		F524AFD72085AE9300BC0A31 /* PopTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F524AFD62085AE9300BC0A31 /* PopTransitionAnimator.swift */; };
 		F54C3A1A2047C26900699402 /* StarfishFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54C3A192047C26900699402 /* StarfishFacade.swift */; };
 		F54C3A1C2047CD6800699402 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1B2047CD6800699402 /* icon.png */; };
 		F54C3A1E2047D44D00699402 /* CODE_OF_CONDUCT.md in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */; };
@@ -221,7 +220,6 @@
 		C55E266C1F40DE02001743E4 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
 		C55E26721F40F100001743E4 /* MultiTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MultiTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C55E26761F40F100001743E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopTransitionAnimator.swift; sourceTree = "<group>"; };
 		C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTaskCell.swift; sourceTree = "<group>"; };
 		C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTasksViewController.swift; sourceTree = "<group>"; };
 		C59C36F61FDD14A300FA86CF /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -262,7 +260,7 @@
 		C5EFB6CF1FCFD78B00A064E3 /* SoundEffectManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffectManager.swift; sourceTree = "<group>"; };
 		C5F512D01FEB988E00CE59D4 /* Sketch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sketch.swift; sourceTree = "<group>"; };
 		C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskEditorViewController.swift; sourceTree = "<group>"; };
-		C5F748B21FAE8B86004F2491 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
+		F524AFD62085AE9300BC0A31 /* PopTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopTransitionAnimator.swift; sourceTree = "<group>"; };
 		F54C3A192047C26900699402 /* StarfishFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarfishFacade.swift; sourceTree = "<group>"; };
 		F54C3A1B2047CD6800699402 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
@@ -669,8 +667,7 @@
 				C5A9A8A91F3BB06C00601CFF /* Main.storyboard */,
 				C54DA6B61FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift */,
 				C54DA6B81FD1B2170071C3D6 /* PlaceholderBackgroundView.xib */,
-				C562B14E1F946A540090E432 /* PopTransitionAnimator.swift */,
-				C5F748B21FAE8B86004F2491 /* TransitionManager.swift */,
+				F524AFD62085AE9300BC0A31 /* PopTransitionAnimator.swift */,
 				C549CCCF1FC92B230039D0D5 /* UICollectionViewMosaicLayout.swift */,
 				C5418DF21FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift */,
 			);
@@ -1011,7 +1008,6 @@
 				C5AACE411FE4F3C60025AA97 /* AvatarsViewController.swift in Sources */,
 				C5418DF31FCB44130063BC2B /* UICollectionViewWaterfallLayout.swift in Sources */,
 				C56564C51FA05F30006EEE5E /* PendingTaskCell.swift in Sources */,
-				C562B14F1F946A540090E432 /* PopTransitionAnimator.swift in Sources */,
 				C549CCCC1FC8EE630039D0D5 /* CompletedTaskCell.swift in Sources */,
 				C50974361F4EA986007C6EAA /* WebServiceManager.swift in Sources */,
 				C53D927A20193D5C00FFFBED /* Constants.swift in Sources */,
@@ -1031,13 +1027,13 @@
 				C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */,
 				C51BEF181FEF6894003DF481 /* UIViewControllerSlideTransitionCoordinator.swift in Sources */,
 				C5EC4D0C1F817C5800DBF675 /* BaseTabBarController.swift in Sources */,
-				C5F748B31FAE8B86004F2491 /* TransitionManager.swift in Sources */,
 				C5F748B11FAE7076004F2491 /* TaskEditorViewController.swift in Sources */,
 				C54E52FB1FE4386C0071E504 /* UICollectionView+IndexPath.swift in Sources */,
 				C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */,
 				F56680612038A5B2000A351E /* WebServiceConfigurations.swift in Sources */,
 				C53D92782019206F00FFFBED /* Configs.swift in Sources */,
 				C54E52FF1FE438D40071E504 /* Error.swift in Sources */,
+				F524AFD72085AE9300BC0A31 /* PopTransitionAnimator.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,
 				C5A9A8D21F3BD87700601CFF /* Task.swift in Sources */,
 				C5C058B51FEECA980035B1D7 /* UIImageView+Image.swift in Sources */,

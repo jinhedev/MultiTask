@@ -209,7 +209,7 @@ class SketchEditorViewController: BaseViewController {
             self.sketch = create(keyedValues: [:])
             self.mainImageView.image = self.draw(withColor: Color.inkBlack)
         } else if sketchEditorAction == SketchEditorAction.UpdateExistingSketch {
-            self.mainImageView.image = UIImage(data: self.sketch!.imageData as Data!)
+            self.mainImageView.image = UIImage(data: self.sketch!.imageData as! Data)
         }
     }
 

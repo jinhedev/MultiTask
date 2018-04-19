@@ -31,7 +31,7 @@ enum UIViewControllerTransitioningDirection {
 
 }
 
-class UIViewControllerSlideTransitionCoordinator: NSObject, UIViewControllerAnimatedTransitioning {
+class UIViewControllerSlideTransitionCoordinator: NSObject {
 
     var isPresenting: Bool = true
     private let duration: TimeInterval = 0.4
@@ -41,18 +41,23 @@ class UIViewControllerSlideTransitionCoordinator: NSObject, UIViewControllerAnim
         self.transitioningDirection = transitioningDirection
     }
 
+}
+
+extension UIViewControllerSlideTransitionCoordinator: UIViewControllerAnimatedTransitioning {
+    
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
     }
-
+    
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         // FIXME: dear me, please refactor this piece of $#@$%^&
+        let containerView = transitionContext.containerView
+        guard let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from), let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
+        let finalViewControllerFrame = transitionContext.finalFrame(for: toViewController)
+        containerView.addSubview(toViewController.view)
         if isPresenting {
-            let containerView = transitionContext.containerView
-            guard let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from), let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
-            let finalViewControllerFrame = transitionContext.finalFrame(for: toViewController)
             toViewController.view.frame = transitioningDirection.offSetWithFrame(viewFrame: finalViewControllerFrame)
-            containerView.addSubview(toViewController.view)
+//            containerView.addSubview(toViewController.view)
             UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.curveLinear], animations: {
                 fromViewController.view.alpha = 0.0
                 toViewController.view.frame = finalViewControllerFrame
@@ -60,10 +65,7 @@ class UIViewControllerSlideTransitionCoordinator: NSObject, UIViewControllerAnim
                 transitionContext.completeTransition(true)
             }
         } else {
-            let containerView = transitionContext.containerView
-            guard let fromViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from), let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else { return }
-            let finalViewControllerFrame = transitionContext.finalFrame(for: toViewController)
-            containerView.addSubview(toViewController.view)
+//            containerView.addSubview(toViewController.view)
             UIView.animate(withDuration: duration*1.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.curveLinear], animations: {
                 fromViewController.view.alpha = 0.0
                 fromViewController.view.frame = CGRect(x: 0, y: -finalViewControllerFrame.height, width: finalViewControllerFrame.width, height: finalViewControllerFrame.height)
@@ -73,5 +75,5 @@ class UIViewControllerSlideTransitionCoordinator: NSObject, UIViewControllerAnim
             }
         }
     }
-
+    
 }

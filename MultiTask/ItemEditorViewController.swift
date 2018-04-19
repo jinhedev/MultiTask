@@ -119,6 +119,8 @@ class ItemEditorViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        print(parentTask)
+        print(selectedItem)
     }
 
     override func viewDidAppear(_ animated: Bool) {

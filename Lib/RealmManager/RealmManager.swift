@@ -134,7 +134,7 @@ class RealmManager: NSObject {
     }
 
     func fetchItems(parentTaskId: String, predicate: NSPredicate) {
-        let items = defaultRealm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.filter(predicate).sorted(byKeyPath: Item.createdAtKeyPath, ascending: false)
+        let items = defaultRealm.object(ofType: Task.self, forPrimaryKey: parentTaskId)?.items.filter(predicate).sorted(byKeyPath: "created_at", ascending: false)
         delegate?.persistentContainer(self, didFetchItems: items)
     }
 

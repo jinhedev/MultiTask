@@ -58,6 +58,12 @@ final class Task: Object {
         return results
     }
     
+    func findBy(title: String) -> Results<Item> {
+        let titlePredicate = NSPredicate(format: "title contains[c] %@", title)
+        let results = self.items.filter(titlePredicate).sorted(byKeyPath: "created_at", ascending: false)
+        return results
+    }
+    
     func delete() {
         do {
             try defaultRealm.write {

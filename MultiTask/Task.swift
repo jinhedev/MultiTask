@@ -21,7 +21,7 @@ final class Task: Object {
     var items = List<Item>()
     let user = LinkingObjects(fromType: User.self, property: "tasks")
 
-    private var isValid: Bool {
+    var isValid: Bool {
         if id.isEmpty || title.isEmpty || title.count < 3 || title.count > 128 {
             return false
         } else {

@@ -21,7 +21,7 @@ class Sketch: Object {
     @objc dynamic var updated_at: NSDate? = nil
     static let createdAtKeyPath = "created_at" // called in RealmManager for its sorting logic
 
-    private var isValid: Bool {
+    var isValid: Bool {
         if id.isEmpty || title.isEmpty || title.count <= 3 || title.count > 128 {
             return false
         } else {

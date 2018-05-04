@@ -107,6 +107,7 @@
 		F56680612038A5B2000A351E /* WebServiceConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56680602038A5B2000A351E /* WebServiceConfigurations.swift */; };
 		F57C4ABB20302D4900F9FE72 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */; };
 		F57C4ABD20302D5500F9FE72 /* CompletedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */; };
+		F5CDC37B209CBCAF00738EBA /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CDC37A209CBCAF00738EBA /* TasksViewController.swift */; };
 		F5FFE63F202F846000572CC9 /* Search.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5FFE63E202F846000572CC9 /* Search.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -267,6 +268,7 @@
 		F56680602038A5B2000A351E /* WebServiceConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceConfigurations.swift; sourceTree = "<group>"; };
 		F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
 		F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewController.swift; sourceTree = "<group>"; };
+		F5CDC37A209CBCAF00738EBA /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		F5FFE63E202F846000572CC9 /* Search.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Search.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -414,6 +416,7 @@
 				C56BF9221FB61A1E00A2D621 /* MainTasksViewController.swift */,
 				F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */,
 				C5F748B01FAE7076004F2491 /* TaskEditorViewController.swift */,
+				F5CDC37A209CBCAF00738EBA /* TasksViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -996,6 +999,7 @@
 			files = (
 				C5A9A8C31F3BD51000601CFF /* ItemsViewController.swift in Sources */,
 				C54E52ED1FE436EE0071E504 /* Color.swift in Sources */,
+				F5CDC37B209CBCAF00738EBA /* TasksViewController.swift in Sources */,
 				C5A0D77D1FB7DF98002968F7 /* BaseViewController.swift in Sources */,
 				C54E52EF1FE4373F0071E504 /* NSDate.swift in Sources */,
 				C54E52F71FE437FF0071E504 /* UIView+Animation.swift in Sources */,

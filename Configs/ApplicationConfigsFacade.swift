@@ -78,18 +78,24 @@ class ApplicationConfigsFacade: NSObject {
         return isOnboardingCompleted
     }
 
-    func saveOnboarding(isCompleted: Bool) {
+    func setOnboarding(isCompleted: Bool) {
         UserDefaults.standard.set(isCompleted, forKey: kOnboarding)
     }
     
-    /// The integer value associated with the specified key. If the specified key doesn‘t exist, this method returns 0.
-    var currentOnboardingStage: Int {
-        let stage = UserDefaults.standard.integer(forKey: kOnboarding)
-        return stage
+    // tutorial
+    // similar to onboarding, but tutorial offers update info to users who have just updated to a later version of the app
+    
+    var isTutorialCompleted: Bool {
+        return false
     }
     
-    func saveOnboardingProgress(stage: Int) {
-        UserDefaults.standard.set(stage, forKey: kOnboarding)
+    /// The integer value associated with the specified key. If the specified key doesn‘t exist, this method returns 0.
+    var currentTutorialStage: Int {
+        return 0
+    }
+    
+    func saveTutorialProgress(at stage: Int) {
+        UserDefaults.standard.set(stage, forKey: kTutorial)
     }
 
     // amplitude

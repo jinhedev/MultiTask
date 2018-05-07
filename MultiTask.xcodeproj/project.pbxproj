@@ -12,7 +12,7 @@
 		C53B99AC1FB8B98800160BFD /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */; };
 		C53B99B01FB8FDE300160BFD /* ItemEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */; };
 		C53C3EF51FBA47850064DDB4 /* SketchesTab.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C53C3EF41FBA47850064DDB4 /* SketchesTab.storyboard */; };
-		C53D92782019206F00FFFBED /* Configs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D92772019206F00FFFBED /* Configs.swift */; };
+		C53D92782019206F00FFFBED /* ApplicationConfigsFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D92772019206F00FFFBED /* ApplicationConfigsFacade.swift */; };
 		C53D927A20193D5C00FFFBED /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53D927920193D5C00FFFBED /* Constants.swift */; };
 		C53D927C20194F0400FFFBED /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C53D927B20194F0400FFFBED /* Alamofire.framework */; };
 		C53D927E20194F4F00FFFBED /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C53D927B20194F0400FFFBED /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -173,7 +173,7 @@
 		C53B99AB1FB8B98800160BFD /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		C53B99AF1FB8FDE300160BFD /* ItemEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorViewController.swift; sourceTree = "<group>"; };
 		C53C3EF41FBA47850064DDB4 /* SketchesTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SketchesTab.storyboard; sourceTree = "<group>"; };
-		C53D92772019206F00FFFBED /* Configs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configs.swift; sourceTree = "<group>"; };
+		C53D92772019206F00FFFBED /* ApplicationConfigsFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfigsFacade.swift; sourceTree = "<group>"; };
 		C53D927920193D5C00FFFBED /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C53D927B20194F0400FFFBED /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TasksTab.storyboard; sourceTree = "<group>"; };
@@ -589,7 +589,7 @@
 		C58FD2A4200DC036004759B3 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				C53D92772019206F00FFFBED /* Configs.swift */,
+				C53D92772019206F00FFFBED /* ApplicationConfigsFacade.swift */,
 				C53D927920193D5C00FFFBED /* Constants.swift */,
 				C54E52EC1FE436EE0071E504 /* Color.swift */,
 			);
@@ -1043,7 +1043,7 @@
 				C54E52FB1FE4386C0071E504 /* UICollectionView+IndexPath.swift in Sources */,
 				C5EFB6D01FCFD78B00A064E3 /* SoundEffectManager.swift in Sources */,
 				F56680612038A5B2000A351E /* WebServiceConfigurations.swift in Sources */,
-				C53D92782019206F00FFFBED /* Configs.swift in Sources */,
+				C53D92782019206F00FFFBED /* ApplicationConfigsFacade.swift in Sources */,
 				C54E52FF1FE438D40071E504 /* Error.swift in Sources */,
 				F524AFD72085AE9300BC0A31 /* PopTransitionAnimator.swift in Sources */,
 				C5A9A8D41F3BDCBB00601CFF /* RealmManager.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  Config.swift
+//  ApplicationConfigsFacade.swift
 //  MultiTask
 //
 //  Created by rightmeow on 1/24/18.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-class Configs: NSObject {
+class ApplicationConfigsFacade: NSObject {
 
-    static let shared = Configs()
+    static let shared = ApplicationConfigsFacade()
 
     // bundle
     
@@ -40,18 +40,18 @@ class Configs: NSObject {
 
     // document_path in application's sandbox
 
-    func pathForDocumentDirectory() -> String {
+    var pathForDocumentDirectory: String {
         let path = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first?.path
         return path!
     }
 
     // device_token
 
-    func hasDeviceToken() -> Bool {
+    var hasDeviceToken: Bool {
         return UserDefaults.standard.bool(forKey: kDeviceToken)
     }
     
-    func deviceToken() -> String {
+    var deviceToken: String {
         do {
             let passwordItem = KeychainPasswordItem(service: KeychainConfiguration.serviceName, account: "multitask_device_token", accessGroup: KeychainConfiguration.accessGroup)
             let pass = try passwordItem.readPassword()
@@ -73,7 +73,7 @@ class Configs: NSObject {
 
     // onboarding
 
-    func isOnboardingCompleted() -> Bool {
+    var isOnboardingCompleted: Bool {
         let isOnboardingCompleted = UserDefaults.standard.bool(forKey: kOnboarding)
         return isOnboardingCompleted
     }
@@ -83,7 +83,7 @@ class Configs: NSObject {
     }
     
     /// The integer value associated with the specified key. If the specified key doesn‘t exist, this method returns 0.
-    func currentOnboardingStage() -> Int {
+    var currentOnboardingStage: Int {
         let stage = UserDefaults.standard.integer(forKey: kOnboarding)
         return stage
     }
@@ -94,7 +94,7 @@ class Configs: NSObject {
 
     // amplitude
 
-    func amplitudeApiKey() -> String {
+    var amplitudeApiKey: String {
         let key = Bundle.main.object(forInfoDictionaryKey: "AMPLITUDE_API_KEY") as! String
         return key
     }

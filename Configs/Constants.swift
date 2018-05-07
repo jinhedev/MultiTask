@@ -10,7 +10,8 @@ import Foundation
 
 // MARK: - Generals
 
-let kOnboardingCompletion = "kOnboardingCompletion"
+let kOnboarding = "kOnboarding"
+let kTutorial = "kTutorial"
 let kSessionToken = "kSessionToken"
 let kDeviceToken = "kDeviceToken"
 let kApiKey = "kApiKey"
@@ -29,6 +30,8 @@ struct KeychainConfiguration {
 struct Segue {
     static let AddButtonToTaskEditorViewController = "AddButtonToTaskEditorViewController"
     static let AddButtonToSketchEditorViewController = "AddButtonToSketchEditorViewController"
+    static let PendingContainerViewToPendingTasksViewController = "PendingContainerViewToPendingTasksViewController"
+    static let CompletedContainerViewToPendingTasksViewController = "CompletedContainerViewToPendingTasksViewController"
     static let SketchCellToSketchEditorViewController = "SketchCellToSketchEditorViewController"
     static let AvatarButtonToSettingsViewController = "AvatarButtonToSettingsViewController"
     static let EditButtonToTaskEditorViewController = "EditButtonToTaskEditorViewController"
@@ -43,15 +46,9 @@ struct Segue {
 
 // MARK: - Notification
 
-struct NotificationKey {
-    static let TaskPending = "TaskPending"
-    static let TaskCompletion = "TaskCompletion"
-    static let TaskUpdate = "TaskUpdate"
-    static let SketchCreation = "SketchCreation"
-    static let PendingTaskCellEditingMode = "PendingTaskCellEditingMode"
-    static let CompletedTaskCellEditingMode = "CompletedTaskCellEditingMode"
-    static let SketchCellEditingMode = "SketchCellEditingMode"
-    static let CollectionViewCommitTrash = "CollectionViewCommitTrash"
+extension Notification.Name {
+    static let EditMode = Notification.Name("EditMode")
+    static let CommitTrash = Notification.Name("CommitTrash")
 }
 
 struct LocalNotificationConfiguration {
@@ -62,5 +59,6 @@ struct LocalNotificationConfiguration {
 // MARK: - Amplitude
 
 struct LogEventType {
-    static let relamError = "relamError"
+    static let realmError = "realmError"
+    static let pathError = "pathError"
 }

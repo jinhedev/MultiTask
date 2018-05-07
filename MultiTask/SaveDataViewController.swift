@@ -19,10 +19,9 @@ class SaveDataViewController: BaseViewController, UITextFieldDelegate {
     // MRAK: - API
 
     var sketch: Sketch?
+    var sketchTitle = ""
     weak var delegate: SaveDataViewControllerDelegate?
-
     static let storyboard_id = String(describing: SaveDataViewController.self)
-
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!

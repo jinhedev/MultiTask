@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 
 /**
- WebServiceType is a user-define enum that specified what type of data response the user expect to get.
+ WebServiceType is a user-define enum that specifies what type of data response the user expect.
  - warning: Expected response may or may not be the actual response. Be warned!
  */
 enum WebServiceType {
@@ -21,24 +21,28 @@ protocol WebServiceDelegate: NSObjectProtocol {
     // error
     func webService(_ manager: WebServiceManager, didErr error: Error, type: WebServiceType)
     // get
-    func webService(_ manager: WebServiceManager, didFetch result: Any, type: WebServiceType)
+    func webService(_ manager: WebServiceManager, didGet result: Any, type: WebServiceType)
     // post
     func webService(_ manager: WebServiceManager, didPost result: Any, type: WebServiceType)
     // patch
     func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType)
     // delete
     func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType)
+    // connect
+    func webService(_ manager: WebServiceManager, didConnect result: Any, type: WebServiceType)
 }
 
 extension WebServiceDelegate {
     // get
-    func webService(_ manager: WebServiceManager, didFetch data: Any, type: WebServiceType) {}
+    func webService(_ manager: WebServiceManager, didGet data: Any, type: WebServiceType) {}
     // post
     func webService(_ manager: WebServiceManager, didPost data: Any, type: WebServiceType) {}
     // patch
     func webService(_ manager: WebServiceManager, didPatch result: Any, type: WebServiceType) {}
     // delete
     func webService(_ manager: WebServiceManager, didDelete result: Any, type: WebServiceType) {}
+    // connect
+    func webService(_ manager: WebServiceManager, didConnect result: Any, type: WebServiceType) {}
 }
 
 class WebServiceManager: NSObject {
@@ -52,11 +56,11 @@ class WebServiceManager: NSObject {
 
     // MARK: - Get
 
-    func fetch(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
-        Alamofire.request(fromUrl, method: HTTPMethod.get, parameters: params, encoding: URLEncoding.httpBody, headers: headers).responseJSON { (response) in
+    func fetch(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.get, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
             switch response.result {
             case .success(let value):
-                self.delegate?.webService(self, didFetch: value, type: type)
+                self.delegate?.webService(self, didGet: value, type: type)
             case .failure(let error):
                 self.delegate?.webService(self, didErr: error, type: type)
             }
@@ -65,8 +69,8 @@ class WebServiceManager: NSObject {
 
     // MARK: - Post
 
-    func post(fromUrl: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
-        Alamofire.request(fromUrl, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON { (response) in
+    func post(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
             switch response.result {
             case .success(let value):
                 self.delegate?.webService(self, didPost: value, type: type)
@@ -78,40 +82,41 @@ class WebServiceManager: NSObject {
 
     // MARK: - Patch
 
-    func patch() {
-
+    func patch(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.patch, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didPatch: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
     }
 
     // MARK: - Delete
 
-    func delete() {
-        
+    func delete(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.delete, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didDelete: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
+    }
+    
+    // MARK: - Connect
+    
+    func connect(url: String, params: [String : Any]? = nil, headers: [String : String]? = nil, type: WebServiceType) {
+        Alamofire.request(url, method: HTTPMethod.connect, parameters: params, encoding: JSONEncoding.default, headers: headers).responseJSON(queue: DispatchQueue.main, options: JSONSerialization.ReadingOptions.mutableContainers) { (response) in
+            switch response.result {
+            case .success(let value):
+                self.delegate?.webService(self, didConnect: value, type: type)
+            case .failure(let error):
+                self.delegate?.webService(self, didErr: error, type: type)
+            }
+        }
     }
 
-    // MARK: - Auth
-
-}
-
-// MARK: - Realm Object Server
-
-struct WebServiceConfigurations {
-
-    private static let baseUrl = "52.14.43.212"
-
-    struct endpoint {
-        static let frontpage = "/posts/frontpage"
-        static let usersub = "/posts/usersub"
-    }
-
-}
-
-// MARK: - Web URL String
-
-struct ExternalWebServiceUrlString {
-    static let Trello = "https://trello.com/b/8fgpP9ZL/multitask-ios-client"
-    static let TrelloApp = ""
-    static let FAQ = "https://www.reddit.com/r/StarfishApp/"
-    static let FAQRedditApp = ""
-    static let Terms = "https://github.com/jinhedev/MultiTask/blob/develop/LICENSE.md"
-    static let Test = "https://www.apple.com"
 }

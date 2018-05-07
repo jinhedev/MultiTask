@@ -191,8 +191,8 @@ class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 2 {
-            let appVersion = Configs.shared.releaseVersion
-            let buildVersion = Configs.shared.buildVersion
+            let appVersion = ApplicationConfigsFacade.shared.releaseVersion
+            let buildVersion = ApplicationConfigsFacade.shared.buildVersion
             return "You are using MultiTask \(appVersion).\(buildVersion)"
         } else {
             return nil

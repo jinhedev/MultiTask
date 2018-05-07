@@ -36,11 +36,11 @@ class AvatarsViewController: BaseViewController, UICollectionViewDelegate, UICol
 
     private func fetchAvatarsFromPropertyList(for resource: String, of type: String) {
         var items = [Avatar]()
-        guard let inputFile = Bundle.main.path(forResource: resource, ofType: type) else {
+        guard let path = Bundle.main.path(forResource: resource, ofType: type) else {
             print("AvatarsViewController: - Undefined property list")
             return
         }
-        let inputArray = NSArray(contentsOfFile: inputFile)
+        let inputArray = NSArray(contentsOfFile: path)
         for inputItem in inputArray as! [Dictionary<String, String>] {
             let imageNameItem = Avatar(nameDictionary: inputItem)
             items.append(imageNameItem)

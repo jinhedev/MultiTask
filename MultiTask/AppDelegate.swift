@@ -1,4 +1,4 @@
-//
+                                                                                                                                                                                                                                                      //
 //  AppDelegate.swift
 //  MultiTask
 //
@@ -12,7 +12,7 @@ import UserNotifications
 import Amplitude
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, PersistentContainerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var realmManager: RealmManager?
@@ -47,8 +47,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_ application: UIApplication) {
     }
 
-    // MARK: - Remote notification
+    // MARK: - Amplitude
 
+    private func setupAmplitude() {
+        Amplitude.instance().trackingSessionEvents = true
+        Amplitude.instance().minTimeBetweenSessionsMillis = 5000
+        Amplitude.instance().initializeApiKey("7fd645043b8a91f7adedab334dcb593a")
+    }
+
+}
+
+extension AppDelegate: PersistentContainerDelegate {
+    
+    func setupPersistentContainerDelegate() {
+        realmManager = RealmManager()
+        realmManager!.delegate = self
+    }
+    
+    func performInitialFetch() {
+        self.realmManager?.fetchExistingUsers()
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
+        print(error.localizedDescription)
+    }
+    
+    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
+        guard let fetchedUsers = users else { return }
+        if fetchedUsers.isEmpty {
+            let newUser = User(email: "", displayName: "", avatar: "Snail")
+            self.realmManager!.register(newUser: newUser)
+        } else {
+            // user does exist in local machine, safely ignore.
+        }
+    }
+    
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
     func setupRemoteNotification(_ application: UIApplication) {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
@@ -64,57 +101,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("User Info: ", notification.request.content.userInfo)
         completionHandler([.alert, .sound, .badge])
     }
-
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("User Info: ", response.notification.request.content.userInfo)
         completionHandler()
     }
-
+    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
-        // TODO: persist token into Keychain
+        ApplicationConfigsFacade.shared.saveDeviceToken(token: token)
     }
-
+    
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print(error.localizedDescription)
     }
 
-    // MARK: - PersistentContainerDelegate
-
-    func setupPersistentContainerDelegate() {
-        realmManager = RealmManager()
-        realmManager!.delegate = self
-    }
-
-    func performInitialFetch() {
-        self.realmManager?.fetchExistingUsers()
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didFetchUsers users: Results<User>?) {
-        guard let fetchedUsers = users else { return }
-        if fetchedUsers.isEmpty {
-            let newUser = User(email: "", displayName: "", avatar: "Snail")
-            self.realmManager!.register(newUser: newUser)
-        } else {
-            // user does exist in local machine, safely ignore.
-        }
-    }
-
-    // MARK: - Amplitude
-
-    private func setupAmplitude() {
-        Amplitude.instance().trackingSessionEvents = true
-        Amplitude.instance().minTimeBetweenSessionsMillis = 5000
-        Amplitude.instance().initializeApiKey("7fd645043b8a91f7adedab334dcb593a")
-    }
-
 }
+

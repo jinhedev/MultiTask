@@ -28,18 +28,18 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
                             </textView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ot4-0g-sdQ">
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ot4-0g-sdQ">
                                 <rect key="frame" x="16" y="80.5" width="142.5" height="15"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dateLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPu-Cd-47D">
-                                        <rect key="frame" x="0.0" y="0.0" width="52" height="15"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="52" height="13.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="delegateLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raS-eD-xv7">
-                                        <rect key="frame" x="68" y="0.0" width="74.5" height="15"/>
+                                        <rect key="frame" x="68" y="0.0" width="74.5" height="13.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,6 +57,13 @@
                                     <constraint firstAttribute="height" constant="0.29999999999999999" id="038-30-3OQ"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wmM-gp-EKI">
+                                <rect key="frame" x="0.0" y="0.0" width="3" height="113"/>
+                                <color key="backgroundColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="3" id="iBY-I0-zF0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -65,11 +72,14 @@
                             <constraint firstItem="9TT-hU-Fuw" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="8R6-Tu-9Yk"/>
                             <constraint firstAttribute="bottom" secondItem="AnC-KY-4i7" secondAttribute="bottom" id="Di4-JE-vRj"/>
                             <constraint firstAttribute="trailing" secondItem="AnC-KY-4i7" secondAttribute="trailing" id="GqS-ES-9AI"/>
+                            <constraint firstItem="wmM-gp-EKI" firstAttribute="top" secondItem="cKm-45-CUT" secondAttribute="top" id="Jdv-bF-mJt"/>
                             <constraint firstItem="ot4-0g-sdQ" firstAttribute="top" secondItem="9TT-hU-Fuw" secondAttribute="bottom" id="JtJ-u3-OH9"/>
+                            <constraint firstAttribute="bottom" secondItem="wmM-gp-EKI" secondAttribute="bottom" id="Ksz-Ny-VTL"/>
                             <constraint firstItem="AnC-KY-4i7" firstAttribute="top" secondItem="ot4-0g-sdQ" secondAttribute="bottom" constant="16" id="fH5-Xb-22H"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ot4-0g-sdQ" secondAttribute="trailing" constant="16" id="kJM-l5-3d8"/>
                             <constraint firstItem="ot4-0g-sdQ" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" constant="16" id="kLS-MU-U7N"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9TT-hU-Fuw" secondAttribute="trailing" constant="16" id="prN-Hd-HU8"/>
+                            <constraint firstItem="wmM-gp-EKI" firstAttribute="leading" secondItem="cKm-45-CUT" secondAttribute="leading" id="umd-0k-A7T"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -86,6 +96,7 @@
                 <outlet property="dateLabel" destination="BPu-Cd-47D" id="8T8-Hk-5bJ"/>
                 <outlet property="delegateLabel" destination="raS-eD-xv7" id="M3z-ry-BdZ"/>
                 <outlet property="dividerView" destination="AnC-KY-4i7" id="df0-07-M9y"/>
+                <outlet property="indicatorView" destination="wmM-gp-EKI" id="Aur-tp-xf1"/>
                 <outlet property="titleTextView" destination="9TT-hU-Fuw" id="lRW-ut-RZy"/>
             </connections>
             <point key="canvasLocation" x="72" y="82.5"/>

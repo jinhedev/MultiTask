@@ -13,36 +13,19 @@ class CompletedTaskCell: BaseCollectionViewCell {
 
     // MARK: - API
 
-    var completedTask: Task? {
-        didSet {
-            self.configureCell(task: completedTask)
-        }
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            self.setHightlighted()
-        }
-    }
-
-    var isEditing: Bool = false {
-        didSet {
-            self.setEditing()
-        }
-    }
-
-    override var isSelected: Bool {
-        didSet {
+    override var isSelected: Bool { didSet {
             if isEditing == true {
                 self.setSelected()
             }
         }
     }
 
+    var completedTask: Task? { didSet { self.configureCell(task: completedTask) } }
+    var isEditing: Bool = false { didSet { self.setEditing() } }
     var longPressGestureRecognizer: UILongPressGestureRecognizer?
+    override var isHighlighted: Bool { didSet { self.setHightlighted() } }
     static let cell_id = String(describing: CompletedTaskCell.self)
     static let nibName = String(describing: CompletedTaskCell.self)
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -140,15 +123,15 @@ class CompletedTaskCell: BaseCollectionViewCell {
     // MARK: - UILongPressGesture
 
     private func setupLongPressGestureRecognizer() {
-        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationForTaskEditing(gestureRecognizer:)))
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationToEnableEditMode(gestureRecognizer:)))
         self.longPressGestureRecognizer!.allowableMovement = 22
         self.longPressGestureRecognizer!.minimumPressDuration = 1.3
         self.containerView.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
 
-    @objc func postNotificationForTaskEditing(gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func postNotificationToEnableEditMode(gestureRecognizer: UILongPressGestureRecognizer) {
         if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
-            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.CompletedTaskCellEditingMode), object: nil, userInfo: [NotificationKey.CompletedTaskCellEditingMode : true])
+            let notification = Notification(name: Notification.Name.EditMode, object: nil, userInfo: ["isEditing" : true])
             NotificationCenter.default.post(notification)
         }
     }

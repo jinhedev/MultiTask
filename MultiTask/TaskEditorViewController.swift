@@ -9,21 +9,10 @@
 import UIKit
 import RealmSwift
 
-protocol TaskEditorViewControllerDelegate: NSObjectProtocol {
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didUpdateTask task: Task)
-    func taskEditorViewController(_ viewController: TaskEditorViewController, didAddTask task: Task)
-}
+class TaskEditorViewController: BaseViewController {
 
-class TaskEditorViewController: BaseViewController, UITextViewDelegate, PersistentContainerDelegate {
-
-    // MARK: - API
-
-    var realmManager: RealmManager?
     var selectedTask: Task?
-
-    weak var delegate: TaskEditorViewControllerDelegate?
     static let storyboard_id = String(describing: TaskEditorViewController.self)
-
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -36,18 +25,19 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.resignFirstResponder()
         if !titleTextView.text.isEmpty {
             if self.selectedTask != nil {
-                // update the task
-                self.realmManager?.updateObject(object: self.selectedTask!, keyedValues: [Task.titleKeyPath : self.titleTextView.text, Task.updatedAtKeyPath : NSDate()])
+                // update an existing task
+                self.selectedTask!.save()
             } else {
                 // add a new task
-                let newTask = self.createNewTask(taskTitle: titleTextView.text)
-                self.realmManager?.addObjects(objects: [newTask])
+                let newTask = self.create()
+                newTask.save()
             }
+            self.navigationController?.popViewController(animated: true)
         }
     }
-
-    func createNewTask(taskTitle: String) -> Task {
-        let task = Task(title: taskTitle, items: List<Item>(), is_completed: false)
+    
+    func create() -> Task {
+        let task = Task(title: titleTextView.text, items: List<Item>())
         return task
     }
 
@@ -83,53 +73,9 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         }
     }
 
-    // MARK: - UITextViewDelegate
-
-    func textViewDidChange(_ textView: UITextView) {
-        self.saveButton.isEnabled = textView.text.count > 2 ? true : false
-    }
-
-    // MARK: - PersistentContainerDelegate
-
-    private func setupPersistentContainerDelegate() {
-        realmManager = RealmManager()
-        realmManager!.delegate = self
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        if let navigationController = self.navigationController as? BaseNavigationController {
-            navigationController.scheduleNavigationPrompt(with: error.localizedDescription, duration: 5)
-        }
-    }
-
-    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-        if let task = self.selectedTask {
-            self.delegate?.taskEditorViewController(self, didUpdateTask: task)
-        } else {
-            print(trace(file: #file, function: #function, line: #line))
-            if let navController = self.navigationController as? BaseNavigationController {
-                navController.popViewController(animated: true)
-            }
-        }
-    }
-
-    func persistentContainer(_ manager: RealmManager, didAddObjects objects: [Object]) {
-        if let newTask = objects.first as? Task {
-            self.delegate?.taskEditorViewController(self, didAddTask: newTask)
-        } else {
-            print(trace(file: #file, function: #function, line: #line))
-            if let navController = self.navigationController as? BaseNavigationController {
-                navController.popViewController(animated: true)
-            }
-        }
-    }
-
-    // MARK: - Lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
-        self.setupPersistentContainerDelegate()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -142,8 +88,12 @@ class TaskEditorViewController: BaseViewController, UITextViewDelegate, Persiste
         self.titleTextView.resignFirstResponder()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
+}
 
+extension TaskEditorViewController: UITextViewDelegate {
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.saveButton.isEnabled = textView.text.count >= 3 ? true : false
+    }
+    
 }

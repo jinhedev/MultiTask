@@ -31,26 +31,35 @@ class ItemTests: XCTestCase {
     // MARK: - Tests
 
     func test_item_should_be_valid() {
-        XCTAssertTrue(sut.isValid())
+        XCTAssertTrue(sut.isValid)
     }
 
     func test_id_should_be_present() {
         self.sut.id = ""
-        XCTAssertFalse(sut.isValid())
+        XCTAssertFalse(sut.isValid)
     }
 
     func test_title_should_be_present() {
         self.sut.title = ""
-        XCTAssertFalse(sut.isValid())
+        XCTAssertFalse(sut.isValid)
     }
 
     func test_title_should_have_min_length() {
-        var shortString = ""
+        var shortString = "a"
         while shortString.count < 3 {
             shortString.append("a")
         }
         self.sut.title = shortString
-        XCTAssertFalse(sut.isValid())
+        XCTAssertFalse(sut.isValid)
+    }
+    
+    func test_title_should_have_max_length() {
+        var longString = "a"
+        while longString.count < 513 {
+            longString.append("a")
+        }
+        self.sut.title = longString
+        XCTAssertFalse(sut.isValid)
     }
     
 }

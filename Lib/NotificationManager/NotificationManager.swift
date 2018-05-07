@@ -9,18 +9,9 @@
 import UIKit
 import UserNotifications
 
-protocol NotificationDelegate: NSObjectProtocol {
-    func notification(_ manager: Any, didErr error: Error)
-}
-
-extension NotificationDelegate {
-}
-
 class NotificationManager: NSObject {
 
     static let shared = NotificationManager()
-
-    weak var delegate: NotificationDelegate?
 
     func scheduleNotification(title: String, body: String, timeInterval: TimeInterval) {
         // image content
@@ -50,10 +41,9 @@ class NotificationManager: NSObject {
             } else {
                 UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted: Bool, error: Error?) in
                     if let err = error {
-                        fatalError(err.localizedDescription)
+                        print(err.localizedDescription)
                     } else {
-                        if granted == true {
-                            self.scheduleNotification(title: "Time's Up!", body: "name of the task", timeInterval: 7.0)                        }
+                        if granted { self.scheduleNotification(title: "Time's Up!", body: "name of the task", timeInterval: 7.0) }
                     }
                 }
             }

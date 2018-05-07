@@ -104,15 +104,15 @@ class SketchCell: BaseCollectionViewCell {
     // MARK: - Notifications
 
     private func setupLongPressGestureRecognizer() {
-        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationForSketchEditing(gestureRecognizer:)))
+        self.longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(postNotificationToEnableEditMode(gestureRecognizer:)))
         self.longPressGestureRecognizer!.allowableMovement = 22
         self.longPressGestureRecognizer!.minimumPressDuration = 1.3
         self.containerView.addGestureRecognizer(self.longPressGestureRecognizer!)
     }
 
-    @objc func postNotificationForSketchEditing(gestureRecognizer: UILongPressGestureRecognizer) {
+    @objc func postNotificationToEnableEditMode(gestureRecognizer: UILongPressGestureRecognizer) {
         if self.isEditing == false && gestureRecognizer.minimumPressDuration >= 1.3 {
-            let notification = Notification(name: Notification.Name(rawValue: NotificationKey.SketchCellEditingMode), object: nil, userInfo: [NotificationKey.SketchCellEditingMode : true])
+            let notification = Notification(name: Notification.Name.EditMode, object: nil, userInfo: ["isEditing" : true])
             NotificationCenter.default.post(notification)
         }
     }

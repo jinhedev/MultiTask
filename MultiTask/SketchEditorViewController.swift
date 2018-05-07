@@ -7,27 +7,17 @@
 //
 
 import UIKit
+import Amplitude
 import RealmSwift
 
-protocol SketchEditorViewControllerDelegate: NSObjectProtocol {
-    func sketchEditorViewController(_ viewController: SketchEditorViewController, didUpdateSketch sketch: Sketch)
+enum SketchEditorAction {
+    case AddNewSketch
+    case UpdateExistingSketch
 }
 
-class SketchEditorViewController: BaseViewController, PersistentContainerDelegate, SaveDataViewControllerDelegate, UIViewControllerTransitioningDelegate {
+class SketchEditorViewController: BaseViewController {
 
     // MARK: - API
-
-    var sketch: Sketch?
-    var realmManager: RealmManager?
-    weak var delegate: SketchEditorViewControllerDelegate?
-    var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
-
-    var lastPoint = CGPoint.zero
-    var red: CGFloat = 200 / 255
-    var green: CGFloat = 200 / 255
-    var blue: CGFloat = 200 / 255
-    var brushWidth: CGFloat = 10.0
-    var swiped = false
 
     lazy var saveButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: #imageLiteral(resourceName: "FloppyDisk"), style: UIBarButtonItemStyle.plain, target: self, action: #selector(handleSave(_:)))
@@ -44,11 +34,18 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         return button
     }()
 
+    var sketch: Sketch?
+    var slideTransitionCoordinator: UIViewControllerSlideTransitionCoordinator?
+    var lastPoint = CGPoint.zero
+    var red: CGFloat = 200 / 255
+    var green: CGFloat = 200 / 255
+    var blue: CGFloat = 200 / 255
+    var brushWidth: CGFloat = 10.0
+    var swiped = false
+    var sketchEditorAction: SketchEditorAction!
     static let storyboard_id = String(describing: SketchEditorViewController.self)
-
     @IBOutlet weak var toolboxView: UIView!
     @IBOutlet weak var mainImageView: UIImageView!
-
     @IBOutlet weak var whiteButton: UIButton!
     @IBOutlet weak var blueButton: UIButton!
     @IBOutlet weak var redButton: UIButton!
@@ -97,6 +94,26 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
             drawLineFrom(lastPoint, toPoint: lastPoint)
         }
         self.mainImageView.image = mainImageView.imageWithCurrentContext()
+    }
+    
+    // create a new sketch
+    private func create(keyedValues: [String : Any]) -> Sketch {
+        let newSketch = Sketch()
+        newSketch.setValuesForKeys(keyedValues)
+        return newSketch
+    }
+    
+    // update an existing sketch
+    private func update(sketch: Sketch, keyedValues: [String : Any]) {
+        do {
+            try defaultRealm.write {
+                sketch.setValuesForKeys(keyedValues)
+                defaultRealm.add(sketch, update: true)
+            }
+        } catch let err {
+            print(err.localizedDescription)
+            Amplitude.instance().logEvent(LogEventType.realmError)
+        }
     }
 
     // MARK: - ToolboxView
@@ -184,31 +201,15 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         print(123)
     }
 
-    // MARK: - PersistentContainerDelegate
-
-    private func setupPersistentContainerDelegate() {
-        self.realmManager = RealmManager()
-        self.realmManager!.delegate = self
-    }
-
-    func persistentContainer(_ manager: RealmManager, didErr error: Error) {
-        print(error.localizedDescription)
-    }
-
-    func persistentContainer(_ manager: RealmManager, didUpdateObject object: Object) {
-        if let sketch = object as? Sketch {
-            self.delegate?.sketchEditorViewController(self, didUpdateSketch: sketch)
-        }
-    }
-
     // MARK: - MainImageView
 
     private func setupMainImageView() {
         self.mainImageView.backgroundColor = Color.inkBlack
-        if let unwrappedSketch = self.sketch {
-            self.mainImageView.image = UIImage(data: unwrappedSketch.imageData! as Data)
-        } else {
+        if sketchEditorAction == SketchEditorAction.AddNewSketch {
+            self.sketch = create(keyedValues: [:])
             self.mainImageView.image = self.draw(withColor: Color.inkBlack)
+        } else if sketchEditorAction == SketchEditorAction.UpdateExistingSketch {
+            self.mainImageView.image = UIImage(data: self.sketch!.imageData as! Data)
         }
     }
 
@@ -224,23 +225,6 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         return image
     }
 
-    // MARK: - SaveDataViewControllerDelegate
-
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
-    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
-        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
-        if self.sketch == nil {
-            self.sketch = Sketch(title: withTitle)
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!])
-        } else {
-            self.realmManager?.updateObject(object: self.sketch!, keyedValues: ["imageData" : imageData!, "title" : withTitle])
-        }
-        viewController.dismiss(animated: true, completion: nil)
-    }
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -249,23 +233,46 @@ class SketchEditorViewController: BaseViewController, PersistentContainerDelegat
         self.setupUINavigationBar()
         self.setupToolboxView()
         self.setupUIViewControllerTransitioningDelegate()
-        self.setupPersistentContainerDelegate()
     }
 
-    // MAKR: - UIViewControllerTransitioningDelegate
+}
 
+extension SketchEditorViewController: SaveDataViewControllerDelegate {
+    
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapCancel button: UIButton) {
+        viewController.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveDataViewController(_ viewController: SaveDataViewController, didTapSave button: UIButton, withTitle: String) {
+        let imageData = UIImagePNGRepresentation(self.mainImageView.imageWithCurrentContext()!) as NSData?
+        guard let unwrappedSketch = self.sketch else { return }
+        if self.sketchEditorAction == SketchEditorAction.AddNewSketch {
+            // add a new sketch to db
+            let newSketch = Sketch(title: withTitle, imageData: imageData!)
+            newSketch.save()
+        } else if self.sketchEditorAction == SketchEditorAction.UpdateExistingSketch {
+            // update existing sketch
+            self.update(sketch: unwrappedSketch, keyedValues: ["title" : withTitle, "imageData" : imageData!])
+        }
+        viewController.dismiss(animated: true, completion: nil)
+    }
+    
+}
+
+extension SketchEditorViewController: UIViewControllerTransitioningDelegate {
+    
     private func setupUIViewControllerTransitioningDelegate() {
         self.slideTransitionCoordinator = UIViewControllerSlideTransitionCoordinator(transitioningDirection: UIViewControllerTransitioningDirection.top)
     }
-
+    
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         self.slideTransitionCoordinator?.isPresenting = true
         return slideTransitionCoordinator
     }
-
+    
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         self.slideTransitionCoordinator?.isPresenting = false
         return slideTransitionCoordinator
     }
-
+    
 }

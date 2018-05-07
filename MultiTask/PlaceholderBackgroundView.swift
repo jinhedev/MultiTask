@@ -74,6 +74,11 @@ class PlaceholderBackgroundView: UIView {
     @IBAction func handleSuggestion(_ sender: UIButton) {
         // TODO: create a new protocol to handle this
     }
+    
+    func setView(isHidden: Bool, type: PlaceholderType) {
+        self.isHidden = isHidden
+        self.type = type
+    }
 
     private func setupView() {
         self.backgroundColor = Color.clear

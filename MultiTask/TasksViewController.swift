@@ -19,6 +19,7 @@ class TasksViewController: BaseViewController {
     
     lazy var placeholderBackgroundView: PlaceholderBackgroundView = {
         let view = UINib(nibName: PlaceholderBackgroundView.nibName, bundle: nil).instantiate(withOwner: nil, options: nil).first as! PlaceholderBackgroundView
+        view.setView(isHidden: false, type: PlaceholderType.pendingTasks)
         return view
     }()
     
@@ -125,11 +126,6 @@ class TasksViewController: BaseViewController {
         collectionView.backgroundView = placeholderBackgroundView
     }
     
-    private func setBackgroundView(isHidden: Bool, type: PlaceholderType) {
-        placeholderBackgroundView.isHidden = isHidden
-        placeholderBackgroundView.type = type
-    }
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -140,7 +136,6 @@ class TasksViewController: BaseViewController {
         self.setupUICollectionViewDelegateFlowLayout()
         self.setupUICollectionViewDelegate()
         self.setupUICollectionViewDataSource()
-        self.setBackgroundView(isHidden: false, type: PlaceholderType.pendingTasks)
         self.registerSupplementaryViews()
         self.registerCells()
         self.tasks = Task.pending()

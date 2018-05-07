@@ -12,7 +12,7 @@ import RealmSwift
 class TasksViewController: BaseViewController {
     
     static let storyboardId = String(describing: TasksViewController.self)
-    var tasks: Results<Task>?
+    var tasks: Results<Task>? { didSet { self.observeTasksForChanges() } }
     var realmNotificationToken: NotificationToken?
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -78,6 +78,23 @@ class TasksViewController: BaseViewController {
         
     }
     
+    // MARK: - Realm
+    
+    private func observeTasksForChanges() {
+        realmNotificationToken = self.tasks?.observe({ [weak self] (changes) in
+            guard let collectionView = self?.collectionView else { return }
+            switch changes {
+            case .initial:
+                collectionView.reloadData()
+            case .update(_, deletions: let deletions, insertions: let insertions, modifications: let modifications):
+                collectionView.applyChanges(deletions: deletions, insertions: insertions, updates: modifications)
+            case .error(let err):
+                print(trace(file: #file, function: #function, line: #line))
+                print(err.localizedDescription)
+            }
+        })
+    }
+    
     // MARK: - Setups
     
     private func setupCollectionView() {
@@ -87,7 +104,7 @@ class TasksViewController: BaseViewController {
         collectionView.scrollsToTop = true
     }
     
-    private func registerCellsToCollectionView() {
+    private func registerCells() {
         collectionView.register(UINib(nibName: CompletedTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: CompletedTaskCell.cell_id)
         collectionView.register(UINib(nibName: PendingTaskCell.nibName, bundle: nil), forCellWithReuseIdentifier: PendingTaskCell.cell_id)
         // TODO: Adds segmented control as a complimentary view
@@ -96,6 +113,10 @@ class TasksViewController: BaseViewController {
     private func setupNavigationBar() {
         self.navigationItem.rightBarButtonItems = [addButton, editButton]
         self.navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: avatarButton)]
+    }
+    
+    private func registerSupplementaryViews() {
+        collectionView.register(UINib(nibName: TasksHeaderView.nibName, bundle: nil), forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: TasksHeaderView.viewId)
     }
     
     // MARK: - Background PlaceholderView
@@ -116,7 +137,13 @@ class TasksViewController: BaseViewController {
         self.setupNavigationBar()
         self.setupCollectionView()
         self.addBackgroundViewToCollectionView()
+        self.setupUICollectionViewDelegateFlowLayout()
+        self.setupUICollectionViewDelegate()
+        self.setupUICollectionViewDataSource()
         self.setBackgroundView(isHidden: false, type: PlaceholderType.pendingTasks)
+        self.registerSupplementaryViews()
+        self.registerCells()
+        self.tasks = Task.pending()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -135,8 +162,26 @@ class TasksViewController: BaseViewController {
 
 extension TasksViewController: UICollectionViewDelegateFlowLayout {
     
+    private func setupUICollectionViewDelegateFlowLayout() {
+        collectionViewFlowLayout.sectionHeadersPinToVisibleBounds = true
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize.zero
+        let cellWidth = self.collectionView.frame.width
+        let cellHeight: CGFloat = 8 + 16 + (0) + 8 + 15 + 15 + 16 + 8
+        // REMARK: containerViewTopMargin + titleLabelTopMargin + (titleLabelHeight) + titleLabelBottomMargin + subtitleLabelHeight + dateLabelHeight + dateLabelBottomMargin + containerViewBottomMargin (see TaskCell.xib for references)
+        if let task = self.tasks?[indexPath.item] {
+            let titleWidth: CGFloat = cellWidth - 16 - 16 - 16 - 16
+            let estimateHeightForTitle = task.title.heightForText(systemFont: 15, width: titleWidth) // (the container's leading margin to View's leading == 16) + (titleLabel's leading margin to container's leading == 16), same for the trailling
+            return CGSize(width: cellWidth, height: estimateHeightForTitle + cellHeight)
+        }
+        return CGSize(width: cellWidth, height: cellHeight + 44) // 44 is the estimated minimum height for titleLabel when none is provided
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let width = collectionView.frame.width
+        let height: CGFloat = 56
+        return CGSize(width: width, height: height)
     }
     
 }
@@ -168,14 +213,39 @@ extension TasksViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return BaseCollectionViewCell()
+        if let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: PendingTaskCell.cell_id, for: indexPath) as? PendingTaskCell {
+            let task = self.tasks?[indexPath.item]
+            cell.pendingTask = task
+            return cell
+        } else {
+            return BaseCollectionViewCell()
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionElementKindSectionHeader:
+            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TasksHeaderView.viewId, for: indexPath) as! TasksHeaderView
+            view.delegate = self
+            return view
+        default:
+            return UICollectionReusableView()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.tasks?.count ?? 0
     }
+}
+
+extension TasksViewController: TasksHeaderViewDelegate {
+    
+    func headerView(_ sender: UISegmentedControl, fromView: TasksHeaderView) {
+        // TODO: implement this
+    }
+    
 }

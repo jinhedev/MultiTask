@@ -105,6 +105,8 @@
 		F54C3A1C2047CD6800699402 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1B2047CD6800699402 /* icon.png */; };
 		F54C3A1E2047D44D00699402 /* CODE_OF_CONDUCT.md in Resources */ = {isa = PBXBuildFile; fileRef = F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */; };
 		F56680612038A5B2000A351E /* WebServiceConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56680602038A5B2000A351E /* WebServiceConfigurations.swift */; };
+		F579F423209EDA4F00B3802A /* TasksHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F579F422209EDA4F00B3802A /* TasksHeaderView.swift */; };
+		F579F425209EDAF100B3802A /* TasksHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F579F424209EDAF100B3802A /* TasksHeaderView.xib */; };
 		F57C4ABB20302D4900F9FE72 /* PendingTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */; };
 		F57C4ABD20302D5500F9FE72 /* CompletedTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */; };
 		F5CDC37B209CBCAF00738EBA /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CDC37A209CBCAF00738EBA /* TasksViewController.swift */; };
@@ -266,6 +268,8 @@
 		F54C3A1B2047CD6800699402 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F54C3A1D2047D44D00699402 /* CODE_OF_CONDUCT.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CODE_OF_CONDUCT.md; sourceTree = "<group>"; };
 		F56680602038A5B2000A351E /* WebServiceConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceConfigurations.swift; sourceTree = "<group>"; };
+		F579F422209EDA4F00B3802A /* TasksHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksHeaderView.swift; sourceTree = "<group>"; };
+		F579F424209EDAF100B3802A /* TasksHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TasksHeaderView.xib; sourceTree = "<group>"; };
 		F57C4ABA20302D4900F9FE72 /* PendingTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingTasksViewController.swift; sourceTree = "<group>"; };
 		F57C4ABC20302D5500F9FE72 /* CompletedTasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedTasksViewController.swift; sourceTree = "<group>"; };
 		F5CDC37A209CBCAF00738EBA /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
@@ -403,6 +407,8 @@
 				C56564C31FA05F30006EEE5E /* PendingTaskCell.swift */,
 				C5A0D7741FB67D8B002968F7 /* PendingTaskCell.xib */,
 				C5409B351FA4F81A004BAF4F /* TasksTab.storyboard */,
+				F579F422209EDA4F00B3802A /* TasksHeaderView.swift */,
+				F579F424209EDAF100B3802A /* TasksHeaderView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -924,6 +930,7 @@
 				C54CEF811FD06EA700AF0B7B /* Notification.wav in Resources */,
 				C5A9A8AB1F3BB06C00601CFF /* Main.storyboard in Resources */,
 				C54CEF8B1FD0F2BF00AF0B7B /* Coin.wav in Resources */,
+				F579F425209EDAF100B3802A /* TasksHeaderView.xib in Resources */,
 				C5E6CB331FC3E82700E8BEA0 /* SearchResultCell.xib in Resources */,
 				C54E52DF1FE3A6540071E504 /* Sketch.xcassets in Resources */,
 				C54526C01FE9D77800A82D62 /* Avatars.plist in Resources */,
@@ -1023,6 +1030,7 @@
 				C56BF9231FB61A1E00A2D621 /* MainTasksViewController.swift in Sources */,
 				C54E52FD1FE4389E0071E504 /* UITableView+IndexPath.swift in Sources */,
 				C54DA6B71FD1B1A50071C3D6 /* PlaceholderBackgroundView.swift in Sources */,
+				F579F423209EDA4F00B3802A /* TasksHeaderView.swift in Sources */,
 				C5A9A8D81F3C1E7300601CFF /* User.swift in Sources */,
 				C5E6CB2F1FC3E69200E8BEA0 /* SearchResultsViewController.swift in Sources */,
 				C5AACE431FE4F4CD0025AA97 /* AvatarCell.swift in Sources */,
